@@ -90,7 +90,7 @@ export function Header() {
               "bg-coral/80 text-gray-900 font-medium rounded-full transition-all duration-300 whitespace-nowrap",
               scrolled ? "text-xs px-3 py-1" : "text-sm px-4 py-1.5"
             )}>
-              Only <span className="font-bold">$10</span>/mo
+              Only <span className="font-bold">$10</span>/screen
             </span>
             <Button
               variant="ghost"
@@ -168,7 +168,7 @@ export function Header() {
             ))}
             <div className="flex flex-col gap-2 pt-4 mt-2 border-t border-gray-100">
               <p className="bg-coral/80 text-gray-900 font-medium rounded-full px-5 py-2 text-center">
-                Only <span className="font-bold">$10</span> a month
+                Only <span className="font-bold">$10</span>/screen
               </p>
               <Button variant="outline" className="rounded-full h-12" asChild>
                 <Link href={APP_URL}>Sign In</Link>

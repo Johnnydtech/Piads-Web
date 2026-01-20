@@ -257,6 +257,47 @@
   animation: gradient-shift 3s ease infinite;
 }
 
+/* Slow drifting animations for background elements - full page movement */
+@keyframes drift-full {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(-80vw, 30vh) rotate(-15deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@keyframes drift-full-reverse {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(80vw, -30vh) rotate(15deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+.animate-drift-full {
+  animation: drift-full 60s ease-in-out infinite;
+}
+
+.animate-drift-full-reverse {
+  animation: drift-full-reverse 45s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: drift-full 60s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: drift-full-reverse 45s ease-in-out infinite;
+}
+
 /* Scroll-triggered animation classes */
 .scroll-animate {
   opacity: 0;

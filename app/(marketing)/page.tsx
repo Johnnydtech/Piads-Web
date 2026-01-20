@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ScrollAnimate, StaggerChildren } from "@/components/ui/scroll-animate"
+import { CountUp } from "@/components/ui/count-up"
 import {
   Monitor,
   TrendingUp,
@@ -25,9 +26,9 @@ const rotatingHeadlines = [
 ]
 
 const stats = [
-  { label: "Active Screens", value: "10+", color: "text-blue" },
-  { label: "Monthly Impressions", value: "50K+", color: "text-teal" },
-  { label: "Partner Venues", value: "4", color: "text-blue" },
+  { label: "Active Screens", value: 10, suffix: "+", color: "text-blue" },
+  { label: "Monthly Impressions", value: 50, suffix: "K+", color: "text-teal" },
+  { label: "Partner Venues", value: 4, suffix: "", color: "text-blue" },
 ]
 
 const partnerVenues = [
@@ -140,13 +141,13 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-br from-blue/5 via-transparent to-teal/5 -z-10" />
 
         {/* Large background logo */}
-        <div className="absolute -right-32 md:-right-20 top-20 opacity-[0.03] -z-10 pointer-events-none">
+        <div className="absolute right-0 top-20 opacity-[0.12] -z-10 pointer-events-none animate-drift-full">
           <Image
-            src="/logo/piads-logo-text.png"
+            src="/logo/piads_new_log_transparent.png"
             alt=""
             width={800}
-            height={300}
-            className="w-[500px] md:w-[700px] lg:w-[900px] h-auto rotate-[-15deg]"
+            height={800}
+            className="w-[400px] md:w-[600px] lg:w-[800px] h-auto"
           />
         </div>
 
@@ -316,21 +317,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Stats - Simple inline */}
-      <section className="py-16 border-y bg-secondary/30">
+      {/* Stats */}
+      <section className="py-12">
         <div className="container">
-          <ScrollAnimate>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-20">
-              {stats.map((stat, index) => (
-                <div key={stat.label} className="text-center group">
-                  <div className={`text-4xl md:text-5xl font-bold font-display ${stat.color} transition-transform group-hover:scale-110 duration-300`}>
-                    {stat.value}
-                  </div>
-                  <div className="text-muted-foreground mt-1">{stat.label}</div>
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
+            {stats.map((stat, index) => (
+              <div key={stat.label} className="text-center group">
+                <div className={`text-4xl md:text-5xl font-bold font-display ${stat.color} transition-transform group-hover:scale-110 duration-300`}>
+                  <CountUp end={stat.value} suffix={stat.suffix} duration={2000} />
                 </div>
-              ))}
-            </div>
-          </ScrollAnimate>
+                <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -370,13 +369,13 @@ export default function HomePage() {
       {/* Features - Colorful cards grid */}
       <section className="py-24 md:py-32 relative overflow-hidden">
         {/* Large background logo */}
-        <div className="absolute -left-40 bottom-0 opacity-[0.02] -z-10 pointer-events-none">
+        <div className="absolute left-0 bottom-0 opacity-[0.10] -z-10 pointer-events-none animate-drift-full-reverse">
           <Image
-            src="/logo/piads-logo-text.png"
+            src="/logo/piads_new_log_transparent.png"
             alt=""
             width={800}
-            height={300}
-            className="w-[600px] md:w-[800px] h-auto rotate-[10deg]"
+            height={800}
+            className="w-[500px] md:w-[700px] h-auto"
           />
         </div>
         <div className="container">
@@ -411,7 +410,17 @@ export default function HomePage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-24 md:py-32 bg-secondary/50">
+      <section className="py-24 md:py-32 bg-secondary/50 relative overflow-hidden">
+        {/* Background logo */}
+        <div className="absolute -right-20 top-1/2 -translate-y-1/2 opacity-[0.06] -z-10 pointer-events-none animate-drift-full">
+          <Image
+            src="/logo/piads_new_log_transparent.png"
+            alt=""
+            width={600}
+            height={600}
+            className="w-[400px] md:w-[500px] h-auto"
+          />
+        </div>
         <div className="container">
           <ScrollAnimate>
             <div className="text-center mb-16">
@@ -481,7 +490,17 @@ export default function HomePage() {
       </section>
 
       {/* Demo Video Section */}
-      <section className="py-24 md:py-32">
+      <section className="py-24 md:py-32 relative overflow-hidden">
+        {/* Background logo */}
+        <div className="absolute -left-32 top-0 opacity-[0.08] -z-10 pointer-events-none animate-drift-full-reverse">
+          <Image
+            src="/logo/piads_new_log_transparent.png"
+            alt=""
+            width={600}
+            height={600}
+            className="w-[350px] md:w-[450px] h-auto"
+          />
+        </div>
         <div className="container max-w-5xl">
           <ScrollAnimate>
             <div className="text-center mb-12">
@@ -519,7 +538,17 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-24 md:py-32 bg-secondary/30">
+      <section className="py-24 md:py-32 bg-secondary/30 relative overflow-hidden">
+        {/* Background logo */}
+        <div className="absolute right-10 bottom-10 opacity-[0.05] -z-10 pointer-events-none animate-drift-full">
+          <Image
+            src="/logo/piads_new_log_transparent.png"
+            alt=""
+            width={500}
+            height={500}
+            className="w-[300px] md:w-[400px] h-auto"
+          />
+        </div>
         <div className="container">
           <ScrollAnimate>
             <div className="text-center mb-16">
@@ -570,6 +599,16 @@ export default function HomePage() {
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-white blur-3xl" />
           <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-teal blur-3xl" />
+        </div>
+        {/* Animated logo */}
+        <div className="absolute -left-20 top-1/2 -translate-y-1/2 opacity-[0.15] pointer-events-none animate-drift-full-reverse">
+          <Image
+            src="/logo/piads_new_log_transparent.png"
+            alt=""
+            width={500}
+            height={500}
+            className="w-[300px] md:w-[400px] h-auto"
+          />
         </div>
 
         <div className="container text-center max-w-3xl relative">
