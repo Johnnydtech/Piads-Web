@@ -101,6 +101,30 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateX(20px)" },
           "100%": { opacity: "1", transform: "translateX(0)" },
         },
+        "spin-slow": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
+        "cloud-drift": {
+          "0%": { transform: "translateX(-10px)", opacity: "0.4" },
+          "50%": { opacity: "0.6" },
+          "100%": { transform: "translateX(60px)", opacity: "0.4" },
+        },
+        "cloud-drift-slow": {
+          "0%": { transform: "translateX(-5px)", opacity: "0.3" },
+          "50%": { opacity: "0.5" },
+          "100%": { transform: "translateX(50px)", opacity: "0.3" },
+        },
+        rain: {
+          "0%": { transform: "translateY(-10px)", opacity: "0" },
+          "20%": { opacity: "0.8" },
+          "100%": { transform: "translateY(60px)", opacity: "0" },
+        },
+        snow: {
+          "0%": { transform: "translateY(-10px) rotate(0deg)", opacity: "0" },
+          "20%": { opacity: "0.9" },
+          "100%": { transform: "translateY(60px) rotate(180deg)", opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -111,6 +135,11 @@ const config: Config = {
         fadeInScale: "fadeInScale 0.5s ease-out",
         slideInFromLeft: "slideInFromLeft 0.5s ease-out",
         slideInFromRight: "slideInFromRight 0.5s ease-out",
+        "spin-slow": "spin-slow 10s linear infinite",
+        "cloud-drift": "cloud-drift 4s ease-in-out infinite",
+        "cloud-drift-slow": "cloud-drift-slow 6s ease-in-out infinite",
+        rain: "rain 0.7s linear infinite",
+        snow: "snow 2.5s ease-in-out infinite",
       },
     },
   },

@@ -25,6 +25,13 @@ import {
   CircleDollarSign,
   Handshake,
   MapPin,
+  Upload,
+  ImageIcon,
+  Clock,
+  Youtube,
+  CloudSun,
+  Maximize,
+  Minimize2,
 } from "lucide-react"
 import { CurrencyCircleDollar, MapPinArea, PlayCircle } from "@phosphor-icons/react"
 
@@ -116,25 +123,25 @@ const howItWorks = {
 
 const testimonials = [
   {
-    quote: "My members love seeing our WOD and PR board on the screen. The ad revenue covers my cleaning service each month.",
-    author: "Marcus Chen",
+    quote: "My members love seeing our WOD and PR board on the screen. It keeps the energy high and everyone engaged.",
+    author: "Coach Bobby K",
     role: "Owner",
-    company: "CrossFit Box",
+    company: "Ballston CrossFit",
     type: "venue",
   },
   {
-    quote: "Someone came in and said 'I saw your ad at the gym!' That's when I knew my business was real.",
-    author: "Jenna Park",
-    role: "Health Coach",
-    company: "Local Wellness",
-    type: "advertiser",
+    quote: "We display our coworking events and community highlights on the TV. Members actually stop and watch. Engagement is way up!",
+    author: "Hope",
+    role: "Front Desk",
+    company: "Venture X Coworking",
+    type: "venue",
   },
   {
-    quote: "No algorithms, no complexity. My ad plays at the coworking space and I get calls. Simple.",
-    author: "Ray Martinez",
+    quote: "Now our customers see our discounts and services right when they walk in. It's been great for upselling repairs and accessories.",
+    author: "Yoseph",
     role: "Owner",
-    company: "Local Plumbing Co",
-    type: "advertiser",
+    company: "Millennium Mobile",
+    type: "venue",
   },
 ]
 
@@ -146,6 +153,17 @@ export default function HomePage() {
   const [selectedRole, setSelectedRole] = useState<'venue' | 'advertiser'>('venue')
   const [isRoleAnimating, setIsRoleAnimating] = useState(false)
   const [userSelectedRole, setUserSelectedRole] = useState(false)
+
+  // Demo section state
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [currentTime, setCurrentTime] = useState(new Date())
+  const [imageFit, setImageFit] = useState<'contain' | 'cover'>('cover')
+  const [weather, setWeather] = useState<{
+    temp: number
+    condition: 'sunny' | 'cloudy' | 'rainy' | 'snowy' | 'partly-cloudy'
+    location: string
+  }>({ temp: 72, condition: 'sunny', location: 'Arlington, VA' })
 
   // FIX #4: Slow down rotating headline to 4.5s (was 3s)
   useEffect(() => {
@@ -181,6 +199,94 @@ export default function HomePage() {
     }, 5000)
     return () => clearInterval(interval)
   }, [])
+
+  // Demo clock update
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date())
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  // Fetch real weather data
+  useEffect(() => {
+    const fetchWeather = async (lat: number, lon: number) => {
+      try {
+        // Get location name
+        const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+        const geoData = await geoRes.json()
+        const city = geoData.address?.city || geoData.address?.town || geoData.address?.village || 'Your Location'
+        const state = geoData.address?.state ? `, ${geoData.address.state.slice(0, 2).toUpperCase()}` : ''
+
+        // Get weather from Open-Meteo
+        const weatherRes = await fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=fahrenheit`
+        )
+        const weatherData = await weatherRes.json()
+        const temp = Math.round(weatherData.current.temperature_2m)
+        const code = weatherData.current.weather_code
+
+        // Map weather codes to conditions
+        let condition: 'sunny' | 'cloudy' | 'rainy' | 'snowy' | 'partly-cloudy' = 'sunny'
+        if (code === 0) condition = 'sunny'
+        else if (code >= 1 && code <= 3) condition = 'partly-cloudy'
+        else if (code >= 45 && code <= 48) condition = 'cloudy'
+        else if (code >= 51 && code <= 67) condition = 'rainy'
+        else if (code >= 71 && code <= 86) condition = 'snowy'
+        else if (code >= 95) condition = 'rainy'
+
+        setWeather({ temp, condition, location: `${city}${state}` })
+      } catch (error) {
+        console.log('Weather fetch failed, using defaults')
+      }
+    }
+
+    // Try to get user's location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          fetchWeather(position.coords.latitude, position.coords.longitude)
+        },
+        () => {
+          // Default to Arlington, VA if location denied
+          fetchWeather(38.8816, -77.0910)
+        }
+      )
+    } else {
+      fetchWeather(38.8816, -77.0910)
+    }
+  }, [])
+
+  // Demo file handlers
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragging(false)
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragging(false)
+    const file = e.dataTransfer.files[0]
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader()
+      reader.onload = () => setUploadedImage(reader.result as string)
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader()
+      reader.onload = () => setUploadedImage(reader.result as string)
+      reader.readAsDataURL(file)
+    }
+  }
 
   const handleRoleSelect = (role: 'venue' | 'advertiser') => {
     setUserSelectedRole(true)
@@ -318,20 +424,19 @@ export default function HomePage() {
                 </div>
 
                 {/* Screenshot */}
-                <div className="relative bg-white rounded-b-2xl overflow-hidden shadow-2xl">
+                <div className="relative bg-white rounded-b-2xl overflow-hidden shadow-2xl aspect-[1920/1080]">
                   {heroScreenshots.map((screenshot, index) => (
                     <div
                       key={screenshot.src}
-                      className={`transition-opacity duration-700 ${
-                        index === screenshotIndex ? 'opacity-100' : 'opacity-0 absolute inset-0'
+                      className={`absolute inset-0 transition-opacity duration-700 ${
+                        index === screenshotIndex ? 'opacity-100' : 'opacity-0'
                       }`}
                     >
                       <Image
                         src={screenshot.src}
                         alt={screenshot.label}
-                        width={1920}
-                        height={1080}
-                        className="w-full h-auto"
+                        fill
+                        className="object-contain"
                         priority={index === 0}
                       />
                     </div>
@@ -514,7 +619,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* How It Works - with anchor ID */}
+      {/* How It Works + Interactive Demo - Combined Section */}
       <section id="how-it-works" className="py-24 md:py-32 bg-secondary/50 relative overflow-hidden scroll-mt-24">
         {/* Background logo */}
         <div className="absolute -right-20 top-1/2 -translate-y-1/2 opacity-[0.06] -z-10 pointer-events-none animate-drift-full">
@@ -528,47 +633,282 @@ export default function HomePage() {
         </div>
         <div className="container">
           <ScrollAnimate>
-            <div className="text-center mb-16">
+            <div className="text-center mb-12">
               <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">
                 How It Works
               </h2>
-              <p className="text-xl text-muted-foreground">
-                Three simple steps for venues and advertisers.
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Upload your ad and see it live. Three simple steps for venues and advertisers.
               </p>
             </div>
           </ScrollAnimate>
 
+          {/* Interactive Demo - Centered */}
+          <div className="max-w-4xl mx-auto mb-16">
+            <ScrollAnimate>
+              <div className="flex flex-col lg:flex-row gap-8 items-center">
+                {/* Screen Mockup */}
+                <div className="relative flex-1 w-full">
+                  {/* Ambient glow */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue/20 via-transparent to-teal/20 blur-3xl -z-10 scale-110" />
+
+                  {/* TV Frame */}
+                  <div className="bg-gray-900 rounded-2xl p-3 md:p-4 shadow-2xl">
+                    {/* Screen with zones */}
+                    <div className="aspect-video bg-gray-950 rounded-lg overflow-hidden relative grid grid-cols-3 grid-rows-2 gap-1 p-1">
+                      {/* Main content zone (2x2) */}
+                      <div className="col-span-2 row-span-2 bg-black rounded-md overflow-hidden relative">
+                        {uploadedImage ? (
+                          <img
+                            src={uploadedImage}
+                            alt="Your preview"
+                            className={`w-full h-full animate-fadeIn ${imageFit === 'cover' ? 'object-cover' : 'object-contain'}`}
+                          />
+                        ) : (
+                          <div className="flex flex-col items-center justify-center h-full text-gray-500 bg-gradient-to-br from-gray-900 to-black">
+                            <Tv className="h-8 md:h-10 w-8 md:w-10 mb-2 opacity-40" />
+                            <p className="text-xs text-center opacity-60">Your Ad Here</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Side zone 1 - YouTube */}
+                      <div className="bg-black rounded-md overflow-hidden relative">
+                        <div className="absolute inset-0 bg-gradient-to-br from-red-600/20 to-black" />
+                        <iframe
+                          src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk"
+                          className="w-full h-full"
+                          allow="autoplay; encrypted-media"
+                          title="YouTube Video"
+                        />
+                        <div className="absolute bottom-1 left-1 bg-red-600 px-1.5 py-0.5 rounded flex items-center gap-1">
+                          <Youtube className="h-2.5 w-2.5 text-white" />
+                          <span className="text-white text-[8px] font-semibold">LIVE</span>
+                        </div>
+                      </div>
+
+                      {/* Side zone 2 - Weather (Apple-style) */}
+                      <div className={`rounded-md flex flex-col items-center justify-center p-2 text-white relative overflow-hidden ${
+                        weather.condition === 'sunny' ? 'bg-gradient-to-b from-sky-400 via-sky-500 to-blue-600' :
+                        weather.condition === 'partly-cloudy' ? 'bg-gradient-to-b from-sky-400 via-sky-500 to-slate-500' :
+                        weather.condition === 'cloudy' ? 'bg-gradient-to-b from-slate-400 via-slate-500 to-slate-600' :
+                        weather.condition === 'rainy' ? 'bg-gradient-to-b from-slate-500 via-slate-600 to-slate-700' :
+                        'bg-gradient-to-b from-slate-300 via-blue-200 to-slate-400'
+                      }`}>
+                        {/* Animated Sun */}
+                        {(weather.condition === 'sunny' || weather.condition === 'partly-cloudy') && (
+                          <div className="absolute -top-2 -right-2 w-14 h-14">
+                            <div className="absolute inset-0 bg-yellow-300 rounded-full blur-lg opacity-60 animate-pulse" />
+                            <div className="absolute inset-2 bg-yellow-200 rounded-full blur-md opacity-80" />
+                          </div>
+                        )}
+
+                        {/* Animated Clouds */}
+                        {(weather.condition === 'cloudy' || weather.condition === 'partly-cloudy' || weather.condition === 'rainy') && (
+                          <>
+                            <div className="absolute top-1 -left-4 w-12 h-4 bg-white/40 rounded-full blur-sm animate-cloud-drift" />
+                            <div className="absolute top-3 left-2 w-8 h-3 bg-white/30 rounded-full blur-sm animate-cloud-drift-slow" />
+                          </>
+                        )}
+
+                        {/* Rain drops */}
+                        {weather.condition === 'rainy' && (
+                          <div className="absolute inset-0 overflow-hidden">
+                            {[...Array(8)].map((_, i) => (
+                              <div
+                                key={i}
+                                className="absolute w-0.5 h-3 bg-gradient-to-b from-transparent via-blue-200/60 to-blue-300/80 rounded-full animate-rain"
+                                style={{
+                                  left: `${10 + i * 12}%`,
+                                  animationDelay: `${i * 0.15}s`,
+                                  animationDuration: `${0.6 + Math.random() * 0.3}s`
+                                }}
+                              />
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Snow flakes */}
+                        {weather.condition === 'snowy' && (
+                          <div className="absolute inset-0 overflow-hidden">
+                            {[...Array(6)].map((_, i) => (
+                              <div
+                                key={i}
+                                className="absolute w-1.5 h-1.5 bg-white rounded-full opacity-80 animate-snow"
+                                style={{
+                                  left: `${15 + i * 14}%`,
+                                  animationDelay: `${i * 0.3}s`,
+                                  animationDuration: `${2 + Math.random()}s`
+                                }}
+                              />
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Weather icon */}
+                        <div className="relative z-10">
+                          {weather.condition === 'sunny' && (
+                            <svg className="h-5 w-5 text-yellow-200 drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
+                              <circle cx="12" cy="12" r="5" />
+                              <g className="animate-spin-slow origin-center" style={{ animationDuration: '20s' }}>
+                                {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+                                  <rect key={angle} x="11" y="1" width="2" height="3" rx="1" transform={`rotate(${angle} 12 12)`} />
+                                ))}
+                              </g>
+                            </svg>
+                          )}
+                          {weather.condition === 'partly-cloudy' && <CloudSun className="h-5 w-5 drop-shadow-lg" />}
+                          {weather.condition === 'cloudy' && (
+                            <svg className="h-5 w-5 text-white drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M6.5 20q-2.275 0-3.887-1.575T1 14.575q0-1.95 1.175-3.475T5.25 9.15q.625-2.3 2.5-3.725T12 4q2.925 0 4.963 2.037T19 11q1.725.2 2.863 1.488T23 15.5q0 1.875-1.313 3.188T18.5 20H6.5Z"/>
+                            </svg>
+                          )}
+                          {weather.condition === 'rainy' && (
+                            <svg className="h-5 w-5 text-white drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M12 21.5q-.425 0-.713-.288T11 20.5v-2q0-.425.288-.713T12 17.5q.425 0 .713.288t.288.712v2q0 .425-.288.713T12 21.5Zm-4 -2q-.425 0-.713-.288T7 18.5v-2q0-.425.288-.713T8 15.5q.425 0 .713.288t.288.712v2q0 .425-.288.713T8 19.5Zm8 0q-.425 0-.713-.288T15 18.5v-2q0-.425.288-.713T16 15.5q.425 0 .713.288t.288.712v2q0 .425-.288.713T16 19.5ZM6.5 14q-2.275 0-3.887-1.575T1 8.575q0-1.95 1.175-3.475T5.25 3.15Q5.875.85 7.75-.575 9.625-2 12-2q2.925 0 4.963 2.037T19 5q1.725.2 2.863 1.488T23 9.5q0 1.875-1.313 3.188T18.5 14H6.5Z"/>
+                            </svg>
+                          )}
+                          {weather.condition === 'snowy' && <CloudSun className="h-5 w-5 drop-shadow-lg" />}
+                        </div>
+                        <span className="text-base font-bold leading-none mt-1 relative z-10 drop-shadow-md">{weather.temp}°F</span>
+                        <span className="text-[7px] opacity-90 mt-0.5 relative z-10 truncate max-w-full px-1">{weather.location}</span>
+                      </div>
+
+                      {/* Clock overlay */}
+                      <div className="absolute top-2 right-2 bg-black/80 backdrop-blur-sm px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <Clock className="h-2.5 w-2.5 text-white/70" />
+                        <span className="text-white text-[10px] font-mono">
+                          {currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+
+                      {/* Live indicator */}
+                      <div className="absolute top-2 left-2 bg-red-500/90 backdrop-blur-sm px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+                        <span className="text-white text-[9px] font-semibold">LIVE</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* TV Stand */}
+                  <div className="flex justify-center">
+                    <div className="w-20 h-5 bg-gray-800 rounded-b-xl shadow-lg" />
+                  </div>
+                  <div className="flex justify-center -mt-1">
+                    <div className="w-36 h-2 bg-gray-700 rounded-full shadow-md" />
+                  </div>
+                </div>
+
+                {/* Upload Controls */}
+                <div className="w-full lg:w-64 flex-shrink-0">
+                  <div
+                    className={`relative border-2 border-dashed rounded-2xl p-6 text-center transition-all duration-300 cursor-pointer group bg-white ${
+                      isDragging
+                        ? 'border-blue bg-blue/5 scale-[1.02]'
+                        : 'border-gray-300 hover:border-blue/50'
+                    }`}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    onClick={() => document.getElementById('demo-file-input')?.click()}
+                  >
+                    <input
+                      id="demo-file-input"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                    <div className={`transition-transform duration-300 ${isDragging ? 'scale-110' : 'group-hover:scale-105'}`}>
+                      <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-blue/10 flex items-center justify-center">
+                        <Upload className="h-6 w-6 text-blue" />
+                      </div>
+                      <p className="font-semibold text-sm mb-1">Try it now!</p>
+                      <p className="text-muted-foreground text-xs mb-3">Drop image or click</p>
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 rounded-full text-xs text-muted-foreground">
+                        <ImageIcon className="h-3 w-3" />
+                        JPG, PNG
+                      </div>
+                    </div>
+                    {uploadedImage && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setUploadedImage(null)
+                        }}
+                        className="absolute top-2 right-2 px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-xs font-medium transition-colors"
+                      >
+                        Clear
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Fit/Contain Toggle */}
+                  {uploadedImage && (
+                    <div className="mt-3 flex items-center justify-center gap-2">
+                      <div className="inline-flex rounded-full bg-white border p-0.5">
+                        <button
+                          onClick={() => setImageFit('cover')}
+                          className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
+                            imageFit === 'cover' ? 'bg-blue text-white' : 'text-gray-600 hover:text-gray-900'
+                          }`}
+                        >
+                          <Maximize className="h-3 w-3" />
+                          Fill
+                        </button>
+                        <button
+                          onClick={() => setImageFit('contain')}
+                          className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
+                            imageFit === 'contain' ? 'bg-blue text-white' : 'text-gray-600 hover:text-gray-900'
+                          }`}
+                        >
+                          <Minimize2 className="h-3 w-3" />
+                          Fit
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  <p className="text-center text-xs text-muted-foreground mt-3">
+                    {uploadedImage ? '✨ Looking great!' : 'Multi-zone layout'}
+                  </p>
+                </div>
+              </div>
+            </ScrollAnimate>
+          </div>
+
+          {/* Venue & Advertiser Cards */}
           <div className="grid lg:grid-cols-2 gap-6">
             {/* For Venues */}
             <ScrollAnimate animation="left">
               <div className="bg-blue rounded-3xl p-8 md:p-10 text-white h-full">
-                <div className="flex items-center gap-3 mb-8">
+                <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                     <Building2 className="h-5 w-5" />
                   </div>
                   <h3 className="text-2xl font-semibold font-display">For Venues</h3>
                 </div>
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {howItWorks.venues.map((item, index) => (
-                    <div key={item.step} className="flex gap-4">
-                      <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                    <div key={item.step} className="flex gap-3">
+                      <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold flex-shrink-0">
                         {index + 1}
                       </div>
                       <div>
-                        <h4 className="font-semibold mb-1">{item.title}</h4>
-                        <p className="text-white/70 text-sm">{item.description}</p>
+                        <h4 className="font-semibold text-sm mb-0.5">{item.title}</h4>
+                        <p className="text-white/70 text-xs">{item.description}</p>
                       </div>
                     </div>
                   ))}
                 </div>
-                <div className="mt-8 pt-6 border-t border-white/20">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-white/70">Platform fee:</span>
-                    <span className="font-bold text-xl">$10/screen/month</span>
+                <div className="mt-6 pt-5 border-t border-white/20 flex items-center justify-between">
+                  <div>
+                    <span className="text-white/70 text-sm">Platform fee</span>
+                    <p className="font-bold text-lg">$10/screen/mo</p>
                   </div>
-                  <Button variant="secondary" className="w-full rounded-full" asChild>
+                  <Button variant="secondary" className="rounded-full" asChild>
                     <Link href={`${APP_URL}/sign-up?role=venue`}>
-                      Start as Venue
+                      Start Now
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
@@ -579,31 +919,31 @@ export default function HomePage() {
             {/* For Advertisers */}
             <ScrollAnimate animation="right">
               <div className="bg-teal rounded-3xl p-8 md:p-10 text-white h-full">
-                <div className="flex items-center gap-3 mb-8">
+                <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                     <Megaphone className="h-5 w-5" />
                   </div>
                   <h3 className="text-2xl font-semibold font-display">For Advertisers</h3>
                 </div>
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {howItWorks.advertisers.map((item, index) => (
-                    <div key={item.step} className="flex gap-4">
-                      <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                    <div key={item.step} className="flex gap-3">
+                      <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold flex-shrink-0">
                         {index + 1}
                       </div>
                       <div>
-                        <h4 className="font-semibold mb-1">{item.title}</h4>
-                        <p className="text-white/70 text-sm">{item.description}</p>
+                        <h4 className="font-semibold text-sm mb-0.5">{item.title}</h4>
+                        <p className="text-white/70 text-xs">{item.description}</p>
                       </div>
                     </div>
                   ))}
                 </div>
-                <div className="mt-8 pt-6 border-t border-white/20">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-white/70">Start advertising:</span>
-                    <span className="font-bold text-xl">$50-75/week</span>
+                <div className="mt-6 pt-5 border-t border-white/20 flex items-center justify-between">
+                  <div>
+                    <span className="text-white/70 text-sm">Start from</span>
+                    <p className="font-bold text-lg">$50/week</p>
                   </div>
-                  <Button variant="secondary" className="w-full rounded-full" asChild>
+                  <Button variant="secondary" className="rounded-full" asChild>
                     <Link href={`${APP_URL}/sign-up?role=advertiser`}>
                       Browse Venues
                       <ArrowRight className="ml-2 h-4 w-4" />
@@ -616,8 +956,20 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Wave Divider */}
+      <div className="relative overflow-hidden bg-secondary/50">
+        <svg
+          className="w-[200%] h-12 md:h-16 text-white animate-wave"
+          viewBox="0 0 2880 60"
+          preserveAspectRatio="none"
+          fill="currentColor"
+        >
+          <path d="M0,30 C360,60 1080,0 1440,30 C1800,60 2520,0 2880,30 L2880,60 L0,60 Z" />
+        </svg>
+      </div>
+
       {/* Testimonials */}
-      <section className="py-24 md:py-32 relative overflow-hidden">
+      <section className="pt-16 pb-24 md:pt-20 md:pb-32 relative overflow-hidden">
         {/* Background logo */}
         <div className="absolute right-10 bottom-10 opacity-[0.05] -z-10 pointer-events-none animate-drift-full">
           <Image
@@ -635,7 +987,7 @@ export default function HomePage() {
                 From Our Community
               </h2>
               <p className="text-xl text-muted-foreground">
-                Real stories from venues and advertisers.
+                Real stories from local venues in Arlington & Falls Church.
               </p>
             </div>
           </ScrollAnimate>

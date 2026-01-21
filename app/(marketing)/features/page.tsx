@@ -28,7 +28,7 @@ const venueFeatures = [
   {
     icon: Monitor,
     title: "Screen Management",
-    description: "Add unlimited screens across multiple venues. Our Raspberry Pi solution makes setup a breeze.",
+    description: "Add unlimited screens across multiple venues. Works with Raspberry Pi, Android devices, and Fire TV.",
     color: "bg-blue",
   },
   {
