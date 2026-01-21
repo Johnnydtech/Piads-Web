@@ -290,8 +290,30 @@
   animation: drift-full-reverse 45s ease-in-out infinite;
 }
 
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
 .animate-float-slow {
-  animation: drift-full 60s ease-in-out infinite;
+  animation: float-gentle 6s ease-in-out infinite;
+}
+
+@keyframes wave {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-wave {
+  animation: wave 15s linear infinite;
 }
 
 .animate-float-reverse {

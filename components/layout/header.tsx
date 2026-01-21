@@ -16,17 +16,36 @@ const navigation = [
   { name: "Contact", href: "/contact" },
 ]
 
+const badgeMessages = [
+  { text: "Keep", bold: "75%", suffix: "of Revenue" },
+  { text: "Only", bold: "$10", suffix: "/screen" },
+]
+
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
 
 export function Header() {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [badgeIndex, setBadgeIndex] = useState(0)
+  const [isAnimating, setIsAnimating] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  // Rotate badge messages
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsAnimating(true)
+      setTimeout(() => {
+        setBadgeIndex((prev) => (prev + 1) % badgeMessages.length)
+        setIsAnimating(false)
+      }, 300)
+    }, 4000)
+    return () => clearInterval(interval)
   }, [])
 
   return (
@@ -87,10 +106,15 @@ export function Header() {
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
             <span className={cn(
-              "bg-coral/80 text-gray-900 font-medium rounded-full transition-all duration-300 whitespace-nowrap",
+              "bg-coral/80 text-gray-900 font-medium rounded-full transition-all duration-300 whitespace-nowrap overflow-hidden",
               scrolled ? "text-xs px-3 py-1" : "text-sm px-4 py-1.5"
             )}>
-              Only <span className="font-bold">$10</span>/screen
+              <span className={cn(
+                "inline-block transition-all duration-300",
+                isAnimating ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
+              )}>
+                {badgeMessages[badgeIndex].text} <span className="font-bold">{badgeMessages[badgeIndex].bold}</span> {badgeMessages[badgeIndex].suffix}
+              </span>
             </span>
             <Button
               variant="ghost"
@@ -167,8 +191,13 @@ export function Header() {
               </Link>
             ))}
             <div className="flex flex-col gap-2 pt-4 mt-2 border-t border-gray-100">
-              <p className="bg-coral/80 text-gray-900 font-medium rounded-full px-5 py-2 text-center">
-                Only <span className="font-bold">$10</span>/screen
+              <p className="bg-coral/80 text-gray-900 font-medium rounded-full px-5 py-2 text-center overflow-hidden">
+                <span className={cn(
+                  "inline-block transition-all duration-300",
+                  isAnimating ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
+                )}>
+                  {badgeMessages[badgeIndex].text} <span className="font-bold">{badgeMessages[badgeIndex].bold}</span> {badgeMessages[badgeIndex].suffix}
+                </span>
               </p>
               <Button variant="outline" className="rounded-full h-12" asChild>
                 <Link href={APP_URL}>Sign In</Link>

@@ -1,38 +1,39 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Target, Users, Zap, Heart, ArrowRight, Sparkles } from "lucide-react"
+import { Heart, Users, Shield, Handshake, Building2, TrendingUp } from "lucide-react"
 
 export const metadata = {
-  title: "About",
-  description: "Learn about PiAds - the digital signage advertising marketplace connecting venues with advertisers.",
+  title: "About | Keeping Advertising Local",
+  description: "Learn why we built PiAds - a community-first platform where local businesses advertise to each other, and big corporations aren't welcome.",
 }
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
 
 const values = [
   {
-    icon: Target,
-    title: "Simplicity",
-    description: "We believe powerful tools should be easy to use. No complex setups or confusing interfaces.",
+    icon: Heart,
+    title: "Community-First",
+    description: "No big corporations. Only local businesses advertising to local customers. Money stays in the neighborhood.",
+    color: "bg-coral",
+  },
+  {
+    icon: Handshake,
+    title: "Cooperation Over Competition",
+    description: "Venues and advertisers succeed together. When one wins, everyone wins.",
+    color: "bg-teal",
+  },
+  {
+    icon: Shield,
+    title: "Venue Control",
+    description: "Your screens, your rules. Full approval power over every ad that displays.",
     color: "bg-blue",
   },
   {
     icon: Users,
-    title: "Transparency",
-    description: "Clear pricing, honest metrics, and open communication. What you see is what you get.",
-    color: "bg-teal",
-  },
-  {
-    icon: Zap,
-    title: "Innovation",
-    description: "We're constantly improving our platform to help venues and advertisers succeed.",
+    title: "Fair Revenue",
+    description: "Venues keep 75% of ad revenue. We believe in sharing success, not hoarding it.",
     color: "bg-orange",
-  },
-  {
-    icon: Heart,
-    title: "Community",
-    description: "We're building a marketplace where local businesses thrive together.",
-    color: "bg-coral",
   },
 ]
 
@@ -42,57 +43,95 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="py-24 md:py-32">
         <div className="container max-w-4xl text-center">
-          <div className="inline-flex items-center gap-2 bg-secondary px-4 py-2 rounded-full mb-8">
-            <Sparkles className="h-4 w-4 text-blue" />
-            <span className="text-sm font-medium">About Us</span>
+          <div className="inline-flex items-center gap-2 bg-coral/20 border border-coral/30 px-4 py-2 rounded-full mb-8">
+            <Heart className="h-4 w-4 text-coral" />
+            <span className="text-sm font-medium text-coral">Our Story</span>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 font-display">
-            Connecting Screens
+            Keeping Advertising
             <br />
-            <span className="text-blue">with Brands</span>
+            <span className="text-coral">Local</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            PiAds is the digital signage advertising marketplace that helps
-            venue owners monetize their screens while giving advertisers
-            access to high-traffic, real-world locations.
+            We built PiAds because we believe advertising dollars should stay in the community.
+            No big corporations. Just neighbors supporting neighbors.
           </p>
         </div>
       </section>
 
-      {/* Mission */}
+      {/* Founder Story */}
+      <section className="py-24 md:py-32 bg-coral text-white">
+        <div className="container max-w-4xl">
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full mb-8">
+              <span className="text-sm font-medium">From the Founder</span>
+            </div>
+
+            <blockquote className="text-2xl md:text-3xl lg:text-4xl font-medium font-display mb-8 leading-relaxed">
+              &ldquo;I saw how big media companies put profit and control over people.
+              PiAds is the antidote. A platform where local businesses support
+              each other, and advertising dollars stay in the community.&rdquo;
+            </blockquote>
+
+            <div className="flex items-center justify-center gap-4">
+              <div className="w-16 h-16 rounded-full bg-white/20 p-0.5">
+                <Image
+                  src="/founder.png"
+                  alt="Yohanes Woldegerima"
+                  width={64}
+                  height={64}
+                  className="w-full h-full rounded-full object-cover"
+                />
+              </div>
+              <div className="text-left">
+                <div className="font-semibold text-lg">Yohanes Woldegerima</div>
+                <div className="text-white/70">Founder, PiAds</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why We're Different */}
       <section className="py-24 md:py-32 bg-secondary/50">
-        <div className="container">
+        <div className="container max-w-5xl">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full mb-6">
-                <span className="text-sm font-medium">Our Mission</span>
+                <span className="text-sm font-medium">Why PiAds Exists</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-bold font-display mb-6">
-                Making Digital Advertising Accessible to Everyone
+                The Problem We Saw
               </h2>
               <p className="text-muted-foreground mb-4 text-lg">
-                We started PiAds because we saw an opportunity to democratize
-                out-of-home advertising. Small coffee shops, gyms, and restaurants
-                have screens that sit idle or show generic content. Meanwhile,
-                local businesses struggle to reach customers in their community.
+                Small coffee shops, gyms, and restaurants have screens that could earn money.
+                Local businesses like personal trainers, plumbers, and yoga studios want to advertise
+                but can&apos;t afford $10K billboard campaigns.
               </p>
               <p className="text-muted-foreground mb-4 text-lg">
-                Our platform bridges this gap. We make it easy for any venue to
-                turn their displays into a revenue stream, and we give advertisers
-                of all sizes access to targeted, location-based advertising.
+                Meanwhile, big platforms treat venues as inventory for corporate advertisers.
+                Money flows out of the community into the pockets of massive media companies.
               </p>
-              <p className="text-muted-foreground text-lg">
-                Built on affordable Raspberry Pi technology, PiAds brings
-                enterprise-level digital signage capabilities to businesses
-                of all sizes.
+              <p className="text-muted-foreground text-lg font-medium">
+                We flipped the model. On PiAds, venues run their own content first,
+                then open slots for local advertisers only. No big corporations welcome.
               </p>
             </div>
-            <div className="bg-teal rounded-3xl p-10 text-white">
-              <blockquote className="text-2xl md:text-3xl font-medium font-display mb-6 leading-relaxed">
-                &ldquo;Every screen is an opportunity. Every location is an audience.
-                We&apos;re here to connect them.&rdquo;
-              </blockquote>
-              <p className="text-white/70">— The PiAds Team</p>
+            <div className="space-y-6">
+              <div className="bg-white rounded-2xl p-6 shadow-sm">
+                <div className="text-3xl font-bold text-coral mb-2">$0</div>
+                <div className="font-medium mb-1">stays local with traditional ads</div>
+                <div className="text-sm text-muted-foreground">
+                  Billboard companies take your money and run national campaigns
+                </div>
+              </div>
+              <div className="bg-white rounded-2xl p-6 shadow-sm">
+                <div className="text-3xl font-bold text-teal mb-2">100%</div>
+                <div className="font-medium mb-1">stays local with PiAds</div>
+                <div className="text-sm text-muted-foreground">
+                  Local venues earn from local advertisers reaching local customers
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -103,10 +142,10 @@ export default function AboutPage() {
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold font-display mb-4">
-              What We Believe In
+              What We Stand For
             </h2>
             <p className="text-xl text-muted-foreground">
-              Our core values drive everything we do.
+              These aren&apos;t just words. They&apos;re how we build and run PiAds.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -138,65 +177,65 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* How We Help */}
+      {/* How It Works for Both */}
       <section className="py-24 md:py-32 bg-secondary/50">
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold font-display mb-4">
-              Built for Both Sides
+              Everyone Benefits
             </h2>
             <p className="text-xl text-muted-foreground">
-              Benefits for venues and advertisers alike.
+              A marketplace where local businesses help each other grow.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-blue rounded-3xl p-10 text-white">
-              <h3 className="text-2xl font-semibold font-display mb-6">For Venue Owners</h3>
+              <h3 className="text-2xl font-semibold font-display mb-6">Venues Earn</h3>
               <ul className="space-y-4 text-white/90">
                 <li className="flex items-start gap-3">
                   <span className="text-white/60">•</span>
-                  Generate passive income from existing screens
+                  Run YOUR content: announcements, promos, member spotlights
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-white/60">•</span>
-                  Full control over what ads appear in your venue
+                  Open slots for local advertisers when you want
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-white/60">•</span>
-                  Simple setup with Raspberry Pi technology
+                  Keep 75% of every booking with weekly payouts
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-white/60">•</span>
-                  Automated payouts and transparent reporting
+                  Approve every ad before it goes live
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-white/60">•</span>
-                  Keep your own content playing between ads
+                  Turn a cost (screens) into a profit center
                 </li>
               </ul>
             </div>
             <div className="bg-teal rounded-3xl p-10 text-white">
-              <h3 className="text-2xl font-semibold font-display mb-6">For Advertisers</h3>
+              <h3 className="text-2xl font-semibold font-display mb-6">Advertisers Grow</h3>
               <ul className="space-y-4 text-white/90">
                 <li className="flex items-start gap-3">
                   <span className="text-white/60">•</span>
-                  Access to hyper-local advertising opportunities
+                  Reach customers at the gym, coffee shop, coworking space
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-white/60">•</span>
-                  Target customers at the point of decision
+                  Start at $50-75/week with no $10K minimums
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-white/60">•</span>
-                  Flexible booking by day or daypart
+                  Feel like a &quot;real business&quot; when people say &quot;I saw your ad!&quot;
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-white/60">•</span>
-                  Real-time performance tracking
+                  Track performance with QR codes and analytics
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-white/60">•</span>
-                  No long-term contracts or commitments
+                  Support your neighbors instead of big corporations
                 </li>
               </ul>
             </div>
@@ -204,26 +243,45 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* The Community Promise */}
+      <section className="py-24 md:py-32">
+        <div className="container max-w-3xl text-center">
+          <Heart className="h-12 w-12 text-coral mx-auto mb-6" />
+          <h2 className="text-3xl md:text-4xl font-bold font-display mb-6">
+            Our Promise
+          </h2>
+          <p className="text-xl text-muted-foreground mb-8">
+            We will never allow big corporations on PiAds. No national chains
+            drowning out local voices. No venture-backed advertisers outbidding
+            the yoga studio down the street.
+          </p>
+          <p className="text-xl text-muted-foreground">
+            This is a platform for the community, by the community.
+          </p>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-24 md:py-32 bg-blue text-white">
         <div className="container text-center max-w-3xl">
           <h2 className="text-4xl md:text-5xl font-bold font-display mb-6">
-            Join the PiAds Community
+            Join the Movement
           </h2>
           <p className="text-xl text-white/80 mb-10">
-            Whether you&apos;re a venue owner or an advertiser, we&apos;d love to have you
-            on the platform.
+            4 venues are already keeping advertising local. Be part of building
+            something different.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" variant="secondary" className="h-14 px-8 text-base rounded-xl" asChild>
-              <Link href={`${APP_URL}/sign-up`}>
-                Get Started Free
-                <ArrowRight className="ml-2 h-5 w-5" />
+              <Link href={`${APP_URL}/sign-up?role=venue`}>
+                Start as Venue
+                <Building2 className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-xl bg-transparent border-white text-white hover:bg-white/10" asChild>
-              <Link href="/contact">
-                Contact Us
+            <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-xl bg-transparent border-white/30 hover:bg-white/10" asChild>
+              <Link href={`${APP_URL}/sign-up?role=advertiser`}>
+                Start as Advertiser
+                <TrendingUp className="ml-2 h-5 w-5" />
               </Link>
             </Button>
           </div>
