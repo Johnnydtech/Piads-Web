@@ -11,8 +11,8 @@ import { cn } from "@/lib/utils"
 const navigation = [
   { name: "Features", href: "/features" },
   { name: "Pricing", href: "/pricing" },
+  { name: "Devices", href: "/devices" },
   { name: "About", href: "/about" },
-  { name: "Blog", href: "/blog" },
   { name: "Contact", href: "/contact" },
 ]
 
@@ -66,17 +66,14 @@ export function Header() {
         >
           <Link
             href="/"
-            className="flex items-center transition-transform duration-300 hover:scale-105"
+            className="flex-shrink-0 flex items-center transition-transform duration-300 hover:scale-105"
           >
             <Image
               src="/logo/piads-logo-text.png"
               alt="PiAds"
               width={200}
               height={60}
-              className={cn(
-                "transition-all duration-500",
-                scrolled ? "h-12 w-auto" : "h-16 md:h-20 w-auto"
-              )}
+              className="h-10 w-auto"
             />
           </Link>
 
@@ -106,7 +103,7 @@ export function Header() {
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
             <span className={cn(
-              "bg-coral/80 text-gray-900 font-medium rounded-full transition-all duration-300 whitespace-nowrap overflow-hidden",
+              "bg-coral/80 text-gray-900 font-medium rounded-full transition-all duration-300 whitespace-nowrap overflow-hidden text-center min-w-[155px]",
               scrolled ? "text-xs px-3 py-1" : "text-sm px-4 py-1.5"
             )}>
               <span className={cn(
