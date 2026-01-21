@@ -32,6 +32,22 @@ import {
   CloudSun,
   Maximize,
   Minimize2,
+  MoreVertical,
+  Eye,
+  ExternalLink,
+  Activity,
+  RefreshCw,
+  Settings,
+  Unplug,
+  Trash2,
+  Plus,
+  X,
+  Terminal,
+  Wifi,
+  Zap,
+  HardDrive,
+  Info,
+  Check,
 } from "lucide-react"
 import { CurrencyCircleDollar, MapPinArea, PlayCircle } from "@phosphor-icons/react"
 
@@ -164,6 +180,18 @@ export default function HomePage() {
     condition: 'sunny' | 'cloudy' | 'rainy' | 'snowy' | 'partly-cloudy'
     location: string
   }>({ temp: 72, condition: 'sunny', location: 'Arlington, VA' })
+  const [showDemoMenu, setShowDemoMenu] = useState(false)
+  const [showDeviceHealth, setShowDeviceHealth] = useState(false)
+  const [showConnectScreen, setShowConnectScreen] = useState(false)
+  const [showWebPlayerHelp, setShowWebPlayerHelp] = useState(false)
+  const [selectedPlayerType, setSelectedPlayerType] = useState<'web' | 'firetv' | 'android' | 'pi'>('web')
+  const [showPairingPage, setShowPairingPage] = useState(false)
+  const [demoPairingCode] = useState('ABC-123-XY')
+  const [enteredPairingCode, setEnteredPairingCode] = useState('')
+  const [isScreenConnected, setIsScreenConnected] = useState(false)
+  const [showMediaUpload, setShowMediaUpload] = useState(false)
+  const [isConnecting, setIsConnecting] = useState(false)
+  const [imageFitMode, setImageFitMode] = useState<'cover' | 'contain'>('cover')
 
   // FIX #4: Slow down rotating headline to 4.5s (was 3s)
   useEffect(() => {
@@ -332,17 +360,24 @@ export default function HomePage() {
                     {rotatingHeadlines[headlineIndex]}
                   </span>
                   <svg className="absolute -bottom-2 left-0 w-full h-3 text-blue/30" viewBox="0 0 200 12" preserveAspectRatio="none">
-                    <path d="M0,8 Q50,0 100,8 T200,8" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
+                    <path
+                      d="M0,8 Q50,0 100,8 T200,8"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      className="animate-draw-curve"
+                    />
                   </svg>
                 </span>
               </h1>
             </ScrollAnimate>
 
             <ScrollAnimate animation="up" delay={200}>
-              <p className="text-xl text-muted-foreground mb-4 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-xl text-muted-foreground mb-4 max-w-2xl mx-auto leading-relaxed font-display">
                 Run your own content <span className="font-semibold text-foreground">AND</span> earn from local advertisers.
               </p>
-              <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
+              <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto font-display">
                 No big corporations. Just neighbors supporting neighbors.
               </p>
             </ScrollAnimate>
@@ -643,238 +678,692 @@ export default function HomePage() {
             </div>
           </ScrollAnimate>
 
-          {/* Interactive Demo - Centered */}
-          <div className="max-w-4xl mx-auto mb-16">
+          {/* CMS-Style Screen Cards */}
+          <div className="max-w-5xl mx-auto mb-16">
             <ScrollAnimate>
-              <div className="flex flex-col lg:flex-row gap-8 items-center">
-                {/* Screen Mockup */}
-                <div className="relative flex-1 w-full">
-                  {/* Ambient glow */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue/20 via-transparent to-teal/20 blur-3xl -z-10 scale-110" />
-
-                  {/* TV Frame */}
-                  <div className="bg-gray-900 rounded-2xl p-3 md:p-4 shadow-2xl">
-                    {/* Screen with zones */}
-                    <div className="aspect-video bg-gray-950 rounded-lg overflow-hidden relative grid grid-cols-3 grid-rows-2 gap-1 p-1">
-                      {/* Main content zone (2x2) */}
-                      <div className="col-span-2 row-span-2 bg-black rounded-md overflow-hidden relative">
-                        {uploadedImage ? (
-                          <img
-                            src={uploadedImage}
-                            alt="Your preview"
-                            className={`w-full h-full animate-fadeIn ${imageFit === 'cover' ? 'object-cover' : 'object-contain'}`}
-                          />
-                        ) : (
-                          <div className="flex flex-col items-center justify-center h-full text-gray-500 bg-gradient-to-br from-gray-900 to-black">
-                            <Tv className="h-8 md:h-10 w-8 md:w-10 mb-2 opacity-40" />
-                            <p className="text-xs text-center opacity-60">Your Ad Here</p>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Side zone 1 - YouTube */}
-                      <div className="bg-black rounded-md overflow-hidden relative">
-                        <div className="absolute inset-0 bg-gradient-to-br from-red-600/20 to-black" />
-                        <iframe
-                          src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk"
-                          className="w-full h-full"
-                          allow="autoplay; encrypted-media"
-                          title="YouTube Video"
-                        />
-                        <div className="absolute bottom-1 left-1 bg-red-600 px-1.5 py-0.5 rounded flex items-center gap-1">
-                          <Youtube className="h-2.5 w-2.5 text-white" />
-                          <span className="text-white text-[8px] font-semibold">LIVE</span>
-                        </div>
-                      </div>
-
-                      {/* Side zone 2 - Weather (Apple-style) */}
-                      <div className={`rounded-md flex flex-col items-center justify-center p-2 text-white relative overflow-hidden ${
-                        weather.condition === 'sunny' ? 'bg-gradient-to-b from-sky-400 via-sky-500 to-blue-600' :
-                        weather.condition === 'partly-cloudy' ? 'bg-gradient-to-b from-sky-400 via-sky-500 to-slate-500' :
-                        weather.condition === 'cloudy' ? 'bg-gradient-to-b from-slate-400 via-slate-500 to-slate-600' :
-                        weather.condition === 'rainy' ? 'bg-gradient-to-b from-slate-500 via-slate-600 to-slate-700' :
-                        'bg-gradient-to-b from-slate-300 via-blue-200 to-slate-400'
+              <div className="flex flex-col lg:flex-row gap-6 items-start justify-center">
+                {/* Screen Card - Shows different states based on connection */}
+                <div className="bg-white rounded-2xl border border-gray-200 shadow-lg w-full max-w-md relative">
+                  {/* Screen Preview */}
+                  <div className="relative bg-gray-900 p-3 rounded-t-2xl overflow-hidden">
+                    {/* Connection indicator */}
+                    <div className="absolute top-4 left-4 z-10">
+                      <span className={`w-3 h-3 rounded-full block shadow-lg ${
+                        isScreenConnected
+                          ? 'bg-green-500 shadow-green-500/50'
+                          : 'bg-orange-500 shadow-orange-500/50 animate-pulse'
+                      }`} />
+                    </div>
+                    {/* Status badge */}
+                    <div className="absolute top-3 right-3 z-10">
+                      <span className={`text-white text-xs font-semibold px-3 py-1 rounded-full ${
+                        isScreenConnected ? 'bg-green-500' : 'bg-orange-500'
                       }`}>
-                        {/* Animated Sun */}
-                        {(weather.condition === 'sunny' || weather.condition === 'partly-cloudy') && (
-                          <div className="absolute -top-2 -right-2 w-14 h-14">
-                            <div className="absolute inset-0 bg-yellow-300 rounded-full blur-lg opacity-60 animate-pulse" />
-                            <div className="absolute inset-2 bg-yellow-200 rounded-full blur-md opacity-80" />
-                          </div>
-                        )}
+                        {isScreenConnected ? 'Active' : 'Offline'}
+                      </span>
+                    </div>
 
-                        {/* Animated Clouds */}
-                        {(weather.condition === 'cloudy' || weather.condition === 'partly-cloudy' || weather.condition === 'rainy') && (
-                          <>
-                            <div className="absolute top-1 -left-4 w-12 h-4 bg-white/40 rounded-full blur-sm animate-cloud-drift" />
-                            <div className="absolute top-3 left-2 w-8 h-3 bg-white/30 rounded-full blur-sm animate-cloud-drift-slow" />
-                          </>
-                        )}
-
-                        {/* Rain drops */}
-                        {weather.condition === 'rainy' && (
-                          <div className="absolute inset-0 overflow-hidden">
-                            {[...Array(8)].map((_, i) => (
-                              <div
-                                key={i}
-                                className="absolute w-0.5 h-3 bg-gradient-to-b from-transparent via-blue-200/60 to-blue-300/80 rounded-full animate-rain"
-                                style={{
-                                  left: `${10 + i * 12}%`,
-                                  animationDelay: `${i * 0.15}s`,
-                                  animationDuration: `${0.6 + Math.random() * 0.3}s`
-                                }}
-                              />
-                            ))}
-                          </div>
-                        )}
-
-                        {/* Snow flakes */}
-                        {weather.condition === 'snowy' && (
-                          <div className="absolute inset-0 overflow-hidden">
-                            {[...Array(6)].map((_, i) => (
-                              <div
-                                key={i}
-                                className="absolute w-1.5 h-1.5 bg-white rounded-full opacity-80 animate-snow"
-                                style={{
-                                  left: `${15 + i * 14}%`,
-                                  animationDelay: `${i * 0.3}s`,
-                                  animationDuration: `${2 + Math.random()}s`
-                                }}
-                              />
-                            ))}
-                          </div>
-                        )}
-
-                        {/* Weather icon */}
-                        <div className="relative z-10">
-                          {weather.condition === 'sunny' && (
-                            <svg className="h-5 w-5 text-yellow-200 drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
-                              <circle cx="12" cy="12" r="5" />
-                              <g className="animate-spin-slow origin-center" style={{ animationDuration: '20s' }}>
-                                {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
-                                  <rect key={angle} x="11" y="1" width="2" height="3" rx="1" transform={`rotate(${angle} 12 12)`} />
-                                ))}
-                              </g>
-                            </svg>
-                          )}
-                          {weather.condition === 'partly-cloudy' && <CloudSun className="h-5 w-5 drop-shadow-lg" />}
-                          {weather.condition === 'cloudy' && (
-                            <svg className="h-5 w-5 text-white drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
-                              <path d="M6.5 20q-2.275 0-3.887-1.575T1 14.575q0-1.95 1.175-3.475T5.25 9.15q.625-2.3 2.5-3.725T12 4q2.925 0 4.963 2.037T19 11q1.725.2 2.863 1.488T23 15.5q0 1.875-1.313 3.188T18.5 20H6.5Z"/>
-                            </svg>
-                          )}
-                          {weather.condition === 'rainy' && (
-                            <svg className="h-5 w-5 text-white drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
-                              <path d="M12 21.5q-.425 0-.713-.288T11 20.5v-2q0-.425.288-.713T12 17.5q.425 0 .713.288t.288.712v2q0 .425-.288.713T12 21.5Zm-4 -2q-.425 0-.713-.288T7 18.5v-2q0-.425.288-.713T8 15.5q.425 0 .713.288t.288.712v2q0 .425-.288.713T8 19.5Zm8 0q-.425 0-.713-.288T15 18.5v-2q0-.425.288-.713T16 15.5q.425 0 .713.288t.288.712v2q0 .425-.288.713T16 19.5ZM6.5 14q-2.275 0-3.887-1.575T1 8.575q0-1.95 1.175-3.475T5.25 3.15Q5.875.85 7.75-.575 9.625-2 12-2q2.925 0 4.963 2.037T19 5q1.725.2 2.863 1.488T23 9.5q0 1.875-1.313 3.188T18.5 14H6.5Z"/>
-                            </svg>
-                          )}
-                          {weather.condition === 'snowy' && <CloudSun className="h-5 w-5 drop-shadow-lg" />}
+                    {/* TV Frame */}
+                    <div className="aspect-video bg-black rounded-lg overflow-hidden relative">
+                      {isScreenConnected && uploadedImage ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={uploadedImage} alt="Your content" className={`w-full h-full ${imageFitMode === 'cover' ? 'object-cover' : 'object-contain'}`} />
+                      ) : isScreenConnected ? (
+                        <div className="flex flex-col items-center justify-center h-full text-gray-500">
+                          <Upload className="h-10 w-10 mb-2 opacity-40" />
+                          <span className="text-sm opacity-60">Upload media below</span>
                         </div>
-                        <span className="text-base font-bold leading-none mt-1 relative z-10 drop-shadow-md">{weather.temp}°F</span>
-                        <span className="text-[7px] opacity-90 mt-0.5 relative z-10 truncate max-w-full px-1">{weather.location}</span>
-                      </div>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center h-full text-gray-500">
+                          <Tv className="h-12 w-12 mb-2 opacity-30" />
+                          <span className="text-sm opacity-50">Waiting for connection...</span>
+                        </div>
+                      )}
+                      {/* Filename badge - only show when connected AND has image */}
+                      {isScreenConnected && uploadedImage && (
+                        <div className="absolute bottom-2 right-2 bg-blue/90 backdrop-blur-sm text-white text-[10px] px-2 py-1 rounded flex items-center gap-1">
+                          <ImageIcon className="h-3 w-3" />
+                          <span>your-image.jpg</span>
+                        </div>
+                      )}
+                    </div>
 
-                      {/* Clock overlay */}
-                      <div className="absolute top-2 right-2 bg-black/80 backdrop-blur-sm px-2 py-0.5 rounded-full flex items-center gap-1">
-                        <Clock className="h-2.5 w-2.5 text-white/70" />
-                        <span className="text-white text-[10px] font-mono">
-                          {currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-                        </span>
-                      </div>
-
-                      {/* Live indicator */}
-                      <div className="absolute top-2 left-2 bg-red-500/90 backdrop-blur-sm px-1.5 py-0.5 rounded-full flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-                        <span className="text-white text-[9px] font-semibold">LIVE</span>
-                      </div>
+                    {/* TV Stand */}
+                    <div className="flex justify-center mt-2">
+                      <div className="w-16 h-3 bg-gray-700 rounded-b-lg" />
                     </div>
                   </div>
 
-                  {/* TV Stand */}
-                  <div className="flex justify-center">
-                    <div className="w-20 h-5 bg-gray-800 rounded-b-xl shadow-lg" />
-                  </div>
-                  <div className="flex justify-center -mt-1">
-                    <div className="w-36 h-2 bg-gray-700 rounded-full shadow-md" />
+                  {/* Card Info */}
+                  <div className="p-4">
+                    {/* Screen name row with menu */}
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold text-gray-900">Main Display</h4>
+                      {isScreenConnected && (
+                        <div className="relative">
+                          <button
+                            onClick={() => setShowDemoMenu(!showDemoMenu)}
+                            className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+                          >
+                            <MoreVertical className="h-5 w-5 text-gray-400" />
+                          </button>
+
+                          {/* Dropdown Menu - Opens upward */}
+                          {showDemoMenu && (
+                            <div className="absolute right-0 bottom-full mb-1 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-1 z-50 max-h-80 overflow-y-auto">
+                              <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3">
+                                <Eye className="h-4 w-4 text-gray-400" />
+                                Preview in CMS
+                              </button>
+                              <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3">
+                                <ExternalLink className="h-4 w-4 text-gray-400" />
+                                Launch Web Player
+                              </button>
+                              <button
+                                onClick={() => { setShowDemoMenu(false); setShowDeviceHealth(true); }}
+                                className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3"
+                              >
+                                <Activity className="h-4 w-4 text-gray-400" />
+                                Device Health
+                              </button>
+                              <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3">
+                                <RefreshCw className="h-4 w-4 text-gray-400" />
+                                Refresh Screen
+                              </button>
+                              <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3">
+                                <Settings className="h-4 w-4 text-gray-400" />
+                                Edit Settings
+                              </button>
+                              <div className="border-t border-gray-100 my-1" />
+                              <div className="px-4 py-1.5">
+                                <span className="text-xs text-gray-400 uppercase tracking-wider">Image Fit</span>
+                              </div>
+                              <button
+                                onClick={() => { setImageFitMode('cover'); setShowDemoMenu(false); }}
+                                className={`w-full px-4 py-2 text-left text-sm flex items-center gap-3 ${
+                                  imageFitMode === 'cover' ? 'text-blue bg-blue/5' : 'text-gray-700 hover:bg-gray-50'
+                                }`}
+                              >
+                                <Maximize className="h-4 w-4" />
+                                Fill (Cover)
+                                {imageFitMode === 'cover' && <Check className="h-4 w-4 ml-auto" />}
+                              </button>
+                              <button
+                                onClick={() => { setImageFitMode('contain'); setShowDemoMenu(false); }}
+                                className={`w-full px-4 py-2 text-left text-sm flex items-center gap-3 ${
+                                  imageFitMode === 'contain' ? 'text-blue bg-blue/5' : 'text-gray-700 hover:bg-gray-50'
+                                }`}
+                              >
+                                <Minimize2 className="h-4 w-4" />
+                                Fit (Contain)
+                                {imageFitMode === 'contain' && <Check className="h-4 w-4 ml-auto" />}
+                              </button>
+                              <div className="border-t border-gray-100 my-1" />
+                              <button className="w-full px-4 py-2 text-left text-sm text-orange-500 hover:bg-orange-50 flex items-center gap-3">
+                                <Unplug className="h-4 w-4" />
+                                Release Device
+                              </button>
+                              <button className="w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-red-50 flex items-center gap-3">
+                                <Trash2 className="h-4 w-4" />
+                                Delete Screen
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Media section - shows upload when connected */}
+                    {isScreenConnected ? (
+                      <>
+                        {/* Media filename or upload */}
+                        {uploadedImage ? (
+                          <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-gray-50 rounded-lg">
+                            <ImageIcon className="h-4 w-4 text-blue" />
+                            <span className="text-sm text-gray-600 truncate">your-image.jpg</span>
+                          </div>
+                        ) : (
+                          <label className="flex items-center justify-center gap-2 mb-4 px-3 py-3 bg-blue/5 border-2 border-dashed border-blue/30 rounded-lg cursor-pointer hover:bg-blue/10 transition-colors">
+                            <Upload className="h-4 w-4 text-blue" />
+                            <span className="text-sm text-blue font-medium">Upload your media</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0]
+                                if (file) {
+                                  const reader = new FileReader()
+                                  reader.onload = () => setUploadedImage(reader.result as string)
+                                  reader.readAsDataURL(file)
+                                }
+                              }}
+                            />
+                          </label>
+                        )}
+
+                        {/* Connection details */}
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-gray-500">Connection</span>
+                            <span className="text-green-500 font-medium">Connected</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-500">Last Checked</span>
+                            <span className="text-gray-700">Just now</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-500">Browser</span>
+                            <span className="text-gray-700">Chrome 143.0</span>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {/* Needs connection state */}
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-gray-500">Connection</span>
+                            <span className="text-orange-500 font-medium">Needs Connection</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-500">Last Seen</span>
+                            <span className="text-gray-400">Never</span>
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
 
-                {/* Upload Controls */}
-                <div className="w-full lg:w-64 flex-shrink-0">
-                  <div
-                    className={`relative border-2 border-dashed rounded-2xl p-6 text-center transition-all duration-300 cursor-pointer group bg-white ${
-                      isDragging
-                        ? 'border-blue bg-blue/5 scale-[1.02]'
-                        : 'border-gray-300 hover:border-blue/50'
-                    }`}
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onDrop={handleDrop}
-                    onClick={() => document.getElementById('demo-file-input')?.click()}
-                  >
-                    <input
-                      id="demo-file-input"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
-                    <div className={`transition-transform duration-300 ${isDragging ? 'scale-110' : 'group-hover:scale-105'}`}>
-                      <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-blue/10 flex items-center justify-center">
-                        <Upload className="h-6 w-6 text-blue" />
-                      </div>
-                      <p className="font-semibold text-sm mb-1">Try it now!</p>
-                      <p className="text-muted-foreground text-xs mb-3">Drop image or click</p>
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 rounded-full text-xs text-muted-foreground">
-                        <ImageIcon className="h-3 w-3" />
-                        JPG, PNG
-                      </div>
+                {/* Connect a Screen Card */}
+                <div
+                  className="bg-white rounded-2xl border-2 border-dashed border-gray-300 shadow-sm overflow-hidden w-full max-w-md cursor-pointer hover:border-blue/50 hover:shadow-md transition-all group"
+                  onClick={() => setShowConnectScreen(true)}
+                >
+                  <div className="p-8 flex flex-col items-center justify-center min-h-[360px]">
+                    <div className="w-16 h-16 rounded-full bg-gray-100 group-hover:bg-blue/10 flex items-center justify-center mb-4 transition-colors">
+                      <Plus className="h-8 w-8 text-gray-400 group-hover:text-blue transition-colors" />
                     </div>
-                    {uploadedImage && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          setUploadedImage(null)
-                        }}
-                        className="absolute top-2 right-2 px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-xs font-medium transition-colors"
-                      >
-                        Clear
-                      </button>
-                    )}
+                    <h4 className="font-semibold text-gray-900 mb-1">Connect a Screen</h4>
+                    <p className="text-sm text-gray-500 mb-4">Add a new display to your venue</p>
+                    <p className="text-xs text-gray-400">Click to pair a device</p>
                   </div>
-
-                  {/* Fit/Contain Toggle */}
-                  {uploadedImage && (
-                    <div className="mt-3 flex items-center justify-center gap-2">
-                      <div className="inline-flex rounded-full bg-white border p-0.5">
-                        <button
-                          onClick={() => setImageFit('cover')}
-                          className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
-                            imageFit === 'cover' ? 'bg-blue text-white' : 'text-gray-600 hover:text-gray-900'
-                          }`}
-                        >
-                          <Maximize className="h-3 w-3" />
-                          Fill
-                        </button>
-                        <button
-                          onClick={() => setImageFit('contain')}
-                          className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
-                            imageFit === 'contain' ? 'bg-blue text-white' : 'text-gray-600 hover:text-gray-900'
-                          }`}
-                        >
-                          <Minimize2 className="h-3 w-3" />
-                          Fit
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  <p className="text-center text-xs text-muted-foreground mt-3">
-                    {uploadedImage ? '✨ Looking great!' : 'Multi-zone layout'}
-                  </p>
                 </div>
               </div>
             </ScrollAnimate>
+
+            {/* Device Health Modal */}
+            {showDeviceHealth && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowDeviceHealth(false)}>
+                <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4" onClick={e => e.stopPropagation()}>
+                  {/* Header */}
+                  <div className="flex items-center justify-between p-4 border-b">
+                    <div className="flex items-center gap-2">
+                      <Activity className="h-5 w-5 text-gray-600" />
+                      <h3 className="font-semibold">Device Health: Screen name</h3>
+                    </div>
+                    <button onClick={() => setShowDeviceHealth(false)} className="p-1 hover:bg-gray-100 rounded-lg">
+                      <X className="h-5 w-5 text-gray-400" />
+                    </button>
+                  </div>
+
+                  {/* Tabs */}
+                  <div className="flex border-b">
+                    <button className="flex-1 px-4 py-3 text-sm font-medium bg-gray-900 text-white rounded-t-lg mx-2 mt-2 flex items-center justify-center gap-2">
+                      <Activity className="h-4 w-4" />
+                      Status
+                    </button>
+                    <button className="flex-1 px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 flex items-center justify-center gap-2">
+                      <Monitor className="h-4 w-4" />
+                      Device
+                    </button>
+                    <button className="flex-1 px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 flex items-center justify-center gap-2">
+                      <Terminal className="h-4 w-4" />
+                      Commands
+                    </button>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-4 space-y-4">
+                    {/* Connection Status */}
+                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                      <div className="flex items-center gap-3">
+                        <Wifi className="h-5 w-5 text-green-500" />
+                        <div>
+                          <p className="font-medium text-sm">Connection Status</p>
+                          <p className="text-green-500 text-sm">Connected</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs text-gray-400">Last Heartbeat</p>
+                        <p className="text-sm font-medium">16 seconds ago</p>
+                      </div>
+                    </div>
+
+                    {/* Now Playing */}
+                    <div className="border rounded-xl p-3">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <Play className="h-4 w-4 text-gray-500" />
+                          <span className="text-sm font-medium">Now Playing</span>
+                        </div>
+                        <span className="bg-green-500 text-white text-xs px-2 py-0.5 rounded-full">Playing</span>
+                      </div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="bg-gray-200 text-gray-600 text-xs px-2 py-0.5 rounded">IMAGE</span>
+                        <span className="text-sm text-gray-600 truncate">menu-demo.png</span>
+                      </div>
+                      <div className="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                          <p className="text-xs text-gray-400">Uptime</p>
+                          <p className="font-semibold">28m</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-400">Switches</p>
+                          <p className="font-semibold">0</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-400">Errors (1h)</p>
+                          <p className="font-semibold text-green-500">0</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Stats */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="border rounded-xl p-3">
+                        <div className="flex items-center gap-2 text-gray-400 mb-1">
+                          <Zap className="h-4 w-4" />
+                          <span className="text-xs">FPS</span>
+                        </div>
+                        <p className="text-2xl font-bold">77 <span className="text-green-500 text-sm">✓</span></p>
+                      </div>
+                      <div className="border rounded-xl p-3">
+                        <div className="flex items-center gap-2 text-gray-400 mb-1">
+                          <HardDrive className="h-4 w-4" />
+                          <span className="text-xs">Memory</span>
+                        </div>
+                        <p className="text-2xl font-bold">12 MB</p>
+                      </div>
+                    </div>
+
+                    {/* WebSocket */}
+                    <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
+                      <Wifi className="h-4 w-4 text-green-500" />
+                      <span className="text-sm text-gray-600">WebSocket:</span>
+                      <span className="text-sm font-medium text-green-600">Connected</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Connect New Screen Modal */}
+            {showConnectScreen && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowConnectScreen(false)}>
+                <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                  {/* Header */}
+                  <div className="flex items-center justify-between p-5 border-b">
+                    <div>
+                      <h3 className="font-semibold text-lg">Connect New Screen</h3>
+                      <p className="text-sm text-gray-500 mt-1">Enter the pairing code shown on your screen to connect it to this venue.</p>
+                    </div>
+                    <button onClick={() => setShowConnectScreen(false)} className="p-1 hover:bg-gray-100 rounded-lg">
+                      <X className="h-5 w-5 text-gray-400" />
+                    </button>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-5 space-y-5">
+                    {/* Select Player Type */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-3">Select Player Type</label>
+                      <div className="grid grid-cols-4 gap-3">
+                        <button
+                          onClick={() => setSelectedPlayerType('web')}
+                          className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
+                            selectedPlayerType === 'web' ? 'border-blue bg-blue/5' : 'border-gray-200 hover:border-gray-300 bg-white'
+                          }`}
+                        >
+                          <div className={`h-12 w-12 rounded-lg flex items-center justify-center mb-1 ${
+                            selectedPlayerType === 'web' ? 'bg-blue/10' : 'bg-gray-100'
+                          }`}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src="/app_icon/Niconico-Logo-2--Streamline-Logos.svg"
+                              alt="Web Player"
+                              className="h-9 w-9"
+                            />
+                          </div>
+                          <span className={`text-xs font-medium ${selectedPlayerType === 'web' ? 'text-blue' : 'text-gray-600'}`}>Web</span>
+                        </button>
+                        <button
+                          onClick={() => setSelectedPlayerType('firetv')}
+                          className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
+                            selectedPlayerType === 'firetv' ? 'border-blue bg-blue/5' : 'border-gray-200 hover:border-gray-300 bg-white'
+                          }`}
+                        >
+                          <div className={`h-12 w-12 rounded-lg flex items-center justify-center mb-1 ${
+                            selectedPlayerType === 'firetv' ? 'bg-blue/10' : 'bg-gray-100'
+                          }`}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src="/app_icon/Amazon-Logo--Streamline-Logos.svg"
+                              alt="Fire TV"
+                              className="h-9 w-9"
+                            />
+                          </div>
+                          <span className={`text-xs font-medium ${selectedPlayerType === 'firetv' ? 'text-blue' : 'text-gray-600'}`}>Fire TV</span>
+                        </button>
+                        <button
+                          onClick={() => setSelectedPlayerType('android')}
+                          className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
+                            selectedPlayerType === 'android' ? 'border-blue bg-blue/5' : 'border-gray-200 hover:border-gray-300 bg-white'
+                          }`}
+                        >
+                          <div className={`h-12 w-12 rounded-lg flex items-center justify-center mb-1 ${
+                            selectedPlayerType === 'android' ? 'bg-blue/10' : 'bg-gray-100'
+                          }`}>
+                            <svg className="h-9 w-9" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M6 18c0 .55.45 1 1 1h1v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h2v3.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V19h1c.55 0 1-.45 1-1V8H6v10zM3.5 8C2.67 8 2 8.67 2 9.5v7c0 .83.67 1.5 1.5 1.5S5 17.33 5 16.5v-7C5 8.67 4.33 8 3.5 8zm17 0c-.83 0-1.5.67-1.5 1.5v7c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-7c0-.83-.67-1.5-1.5-1.5zm-4.97-5.84l1.3-1.3c.2-.2.2-.51 0-.71-.2-.2-.51-.2-.71 0l-1.48 1.48A5.84 5.84 0 0012 1c-.96 0-1.86.23-2.66.63L7.85.15c-.2-.2-.51-.2-.71 0-.2.2-.2.51 0 .71l1.31 1.31A5.983 5.983 0 006 7h12c0-1.99-.97-3.75-2.47-4.84zM10 5H9V4h1v1zm5 0h-1V4h1v1z"/>
+                            </svg>
+                          </div>
+                          <span className={`text-xs font-medium ${selectedPlayerType === 'android' ? 'text-blue' : 'text-gray-600'}`}>Android</span>
+                        </button>
+                        <button
+                          onClick={() => setSelectedPlayerType('pi')}
+                          className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
+                            selectedPlayerType === 'pi' ? 'border-blue bg-blue/5' : 'border-gray-200 hover:border-gray-300 bg-white'
+                          }`}
+                        >
+                          <div className={`h-12 w-12 rounded-lg flex items-center justify-center mb-1 ${
+                            selectedPlayerType === 'pi' ? 'bg-blue/10' : 'bg-gray-100'
+                          }`}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src="/app_icon/Raspberry-Pi--Streamline-Font-Awesome.svg"
+                              alt="Raspberry Pi"
+                              className="h-9 w-9"
+                            />
+                          </div>
+                          <span className={`text-xs font-medium ${selectedPlayerType === 'pi' ? 'text-blue' : 'text-gray-600'}`}>Pi</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Selected Player Info - Compact */}
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-gray-900">
+                          {selectedPlayerType === 'web' && 'Web Player'}
+                          {selectedPlayerType === 'firetv' && 'Fire TV Stick'}
+                          {selectedPlayerType === 'android' && 'Android TV'}
+                          {selectedPlayerType === 'pi' && 'Pi Player'}
+                        </span>
+                        <span className="text-xs font-semibold text-blue">
+                          {selectedPlayerType === 'pi' ? 'Up to 4K' : 'Up to 1080p'}
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-600">
+                        {selectedPlayerType === 'web' && (
+                          <>
+                            <span className="flex items-center gap-1">
+                              <Check className="h-3 w-3 text-green-500" />
+                              Any browser
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Check className="h-3 w-3 text-green-500" />
+                              No install
+                            </span>
+                          </>
+                        )}
+                        {selectedPlayerType === 'firetv' && (
+                          <>
+                            <span className="flex items-center gap-1">
+                              <Check className="h-3 w-3 text-green-500" />
+                              Easy setup
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Check className="h-3 w-3 text-green-500" />
+                              Affordable
+                            </span>
+                          </>
+                        )}
+                        {selectedPlayerType === 'android' && (
+                          <>
+                            <span className="flex items-center gap-1">
+                              <Check className="h-3 w-3 text-green-500" />
+                              Android TV
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Check className="h-3 w-3 text-green-500" />
+                              Kiosk mode
+                            </span>
+                          </>
+                        )}
+                        {selectedPlayerType === 'pi' && (
+                          <>
+                            <span className="flex items-center gap-1">
+                              <Check className="h-3 w-3 text-green-500" />
+                              24/7 operation
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Check className="h-3 w-3 text-green-500" />
+                              Low power
+                            </span>
+                          </>
+                        )}
+                      </div>
+                      {selectedPlayerType === 'web' && (
+                        <p className="text-xs text-amber-600 mt-2">
+                          ⚠️ Requires constant internet
+                        </p>
+                      )}
+                      <div className="mt-2 pt-2 border-t border-gray-200">
+                        <button className="text-blue text-xs font-medium flex items-center gap-1 hover:underline">
+                          <Info className="h-3 w-3" />
+                          View recommended devices
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Launch Web Player Section - Only for Web player */}
+                    {selectedPlayerType === 'web' && (
+                      <div className="border border-gray-200 rounded-lg overflow-hidden">
+                        <button
+                          type="button"
+                          onClick={() => setShowWebPlayerHelp(!showWebPlayerHelp)}
+                          className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Info className="h-4 w-4 text-blue" />
+                            <span className="text-sm font-medium text-gray-700">Need help getting a pairing code?</span>
+                          </div>
+                          <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform ${showWebPlayerHelp ? 'rotate-180' : ''}`} />
+                        </button>
+                        {showWebPlayerHelp && (
+                          <div className="p-3 border-t border-gray-200 bg-white space-y-2">
+                            <button
+                              type="button"
+                              className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                              onClick={() => setShowPairingPage(true)}
+                            >
+                              <ExternalLink className="h-3 w-3" />
+                              Launch Web Player
+                            </button>
+                            <div className="text-center">
+                              <span className="text-xs text-gray-500">Or go to: </span>
+                              <span className="text-xs font-mono text-gray-900 select-all">player.piads.co</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Pairing Code */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Pairing Code</label>
+                      <input
+                        type="text"
+                        placeholder="XXX-XXX-XX"
+                        value={enteredPairingCode}
+                        onChange={(e) => {
+                          const raw = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase()
+                          let formatted = ''
+                          if (raw.length > 0) formatted += raw.slice(0, 3)
+                          if (raw.length > 3) formatted += '-' + raw.slice(3, 6)
+                          if (raw.length > 6) formatted += '-' + raw.slice(6, 8)
+                          setEnteredPairingCode(formatted)
+                        }}
+                        maxLength={10}
+                        className={`w-full px-4 py-3 border rounded-xl text-center text-lg tracking-widest font-mono placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue/20 focus:border-blue ${
+                          enteredPairingCode === demoPairingCode ? 'border-green-500 bg-green-50' : 'border-gray-200'
+                        }`}
+                      />
+                      {enteredPairingCode === demoPairingCode && (
+                        <p className="text-xs text-green-600 mt-1 text-center">✓ Valid pairing code</p>
+                      )}
+                    </div>
+
+                    {/* Screen Name */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Screen Name</label>
+                      <input
+                        type="text"
+                        placeholder="e.g., Main Display"
+                        defaultValue="Main Display"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue/20 focus:border-blue"
+                      />
+                    </div>
+
+                    {/* Screen Group */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Screen Group <span className="text-gray-400 font-normal">(Optional)</span>
+                      </label>
+                      <div className="flex gap-2">
+                        <div className="flex-1 relative">
+                          <select className="w-full px-4 py-3 border border-gray-200 rounded-xl appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-blue/20 focus:border-blue">
+                            <option>No Group</option>
+                          </select>
+                          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
+                        </div>
+                        <button className="px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
+                          <Plus className="h-5 w-5 text-gray-500" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-end gap-3 p-5 border-t">
+                    <button
+                      onClick={() => {
+                        setShowConnectScreen(false)
+                        setEnteredPairingCode('')
+                        setShowWebPlayerHelp(false)
+                      }}
+                      className="px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-xl transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (enteredPairingCode === demoPairingCode) {
+                          setIsConnecting(true)
+                          setTimeout(() => {
+                            setIsConnecting(false)
+                            setIsScreenConnected(true)
+                            setShowConnectScreen(false)
+                            setEnteredPairingCode('')
+                            setShowWebPlayerHelp(false)
+                          }, 1500)
+                        }
+                      }}
+                      disabled={enteredPairingCode !== demoPairingCode || isConnecting}
+                      className={`px-5 py-2.5 text-sm font-medium text-white rounded-xl transition-colors flex items-center gap-2 ${
+                        enteredPairingCode === demoPairingCode && !isConnecting
+                          ? 'bg-blue hover:bg-blue/90'
+                          : 'bg-gray-300 cursor-not-allowed'
+                      }`}
+                    >
+                      {isConnecting ? (
+                        <>
+                          <RefreshCw className="h-4 w-4 animate-spin" />
+                          Connecting...
+                        </>
+                      ) : (
+                        'Connect Screen'
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Web Player Pairing Page Modal */}
+            {showPairingPage && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60]" onClick={() => setShowPairingPage(false)}>
+                <div className="bg-gray-900 rounded-2xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden" onClick={e => e.stopPropagation()}>
+                  {/* Browser Chrome */}
+                  <div className="bg-gray-800 px-4 py-2 flex items-center gap-3">
+                    <div className="flex gap-1.5">
+                      <button onClick={() => setShowPairingPage(false)} className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600" />
+                      <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                      <div className="w-3 h-3 rounded-full bg-green-500" />
+                    </div>
+                    <div className="flex-1 bg-gray-700 rounded-lg px-3 py-1 text-sm text-gray-300 font-mono">
+                      player.piads.co
+                    </div>
+                  </div>
+
+                  {/* Player Content */}
+                  <div className="p-8 md:p-12 text-center">
+                    {/* Logo */}
+                    <div className="flex items-center justify-center gap-2 mb-8">
+                      <div className="w-10 h-10 rounded-xl bg-blue flex items-center justify-center">
+                        <Tv className="h-6 w-6 text-white" />
+                      </div>
+                      <span className="text-2xl font-bold text-white font-[Pacifico]">PiAds</span>
+                    </div>
+
+                    <h2 className="text-xl font-semibold text-white mb-2">Web Player</h2>
+                    <p className="text-gray-400 mb-8">Enter this pairing code in your dashboard to connect this screen</p>
+
+                    {/* Pairing Code Display */}
+                    <div className="bg-gray-800 rounded-2xl p-6 mb-6 inline-block">
+                      <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Pairing Code</p>
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="text-4xl md:text-5xl font-mono font-bold text-white tracking-widest">
+                          {demoPairingCode}
+                        </span>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(demoPairingCode)
+                            // Auto-paste to input
+                            setEnteredPairingCode(demoPairingCode)
+                          }}
+                          className="p-2 hover:bg-gray-700 rounded-lg transition-colors group"
+                          title="Copy to clipboard"
+                        >
+                          <svg className="h-6 w-6 text-gray-400 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-gray-500">
+                      Waiting for connection...
+                      <span className="inline-block ml-2">
+                        <span className="animate-pulse">●</span>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Venue & Advertiser Cards */}

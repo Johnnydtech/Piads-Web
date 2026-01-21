@@ -425,3 +425,27 @@
 .btn-glow:hover::after {
   transform: translateX(100%);
 }
+
+/* Wave curve animation */
+@keyframes wave-flow {
+  0% {
+    transform: translateX(0) scaleY(1);
+  }
+  25% {
+    transform: translateX(-2%) scaleY(1.1);
+  }
+  50% {
+    transform: translateX(0) scaleY(0.9);
+  }
+  75% {
+    transform: translateX(2%) scaleY(1.1);
+  }
+  100% {
+    transform: translateX(0) scaleY(1);
+  }
+}
+
+.animate-draw-curve {
+  transform-origin: center;
+  animation: wave-flow 3s ease-in-out infinite;
+}
