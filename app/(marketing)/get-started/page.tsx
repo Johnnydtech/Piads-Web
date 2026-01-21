@@ -1305,7 +1305,7 @@ function GuideItem({ item, color, colorLight, textColor }: {
   color: string
   colorLight: string
   textColor: string
-) {
+}) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
