@@ -120,20 +120,20 @@ RASPBERRY PI (Best for permanent displays)
 7. Your screen connects automatically!
 
 FIRE TV / FIRE TV STICK
-1. Download the PiAds APK from piads.co/app
-2. On Fire TV, go to Settings > My Fire TV > Developer Options
-3. Enable "Apps from Unknown Sources"
-4. Install the APK using the Downloader app
-5. Open PiAds app - it shows a pairing code
-6. In PiAds dashboard, click "New Screen" and enter the code
-7. Your screen connects automatically!
+1. In PiAds dashboard, click "New Screen" and select Fire TV / Android
+2. The dashboard will guide you through installing the app on your device
+3. On Fire TV, go to Settings > My Fire TV > Developer Options
+4. Enable "Apps from Unknown Sources"
+5. Install the PiAds app using the Downloader app
+6. Open PiAds app - it shows a pairing code
+7. Enter the code in the dashboard and your screen connects automatically!
 
 ANDROID TV / ANDROID TABLET
-1. Download the PiAds APK from piads.co/app
-2. Install and open the app
-3. The app displays a pairing code
-4. In PiAds dashboard, click "New Screen" and enter the code
-5. Your screen connects automatically!
+1. In PiAds dashboard, click "New Screen" and select Android
+2. The dashboard will guide you through installing the app on your device
+3. Install and open the app
+4. The app displays a pairing code
+5. Enter the code in the dashboard and your screen connects automatically!
 
 WEB PLAYER (For testing or computer displays)
 1. Click "New Screen" in dashboard

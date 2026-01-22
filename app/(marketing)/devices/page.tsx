@@ -1,4 +1,4 @@
-import { Monitor, Tv, Check, Star, ExternalLink, Wifi, Zap, Play, Download, Smartphone } from "lucide-react"
+import { Monitor, Tv, Check, Star, ExternalLink, Wifi, Zap, Play, Smartphone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
@@ -230,91 +230,6 @@ export default function DevicesPage() {
         </div>
       </section>
 
-      {/* Downloads Section */}
-      <section className="py-10 bg-gradient-to-br from-blue/5 via-transparent to-teal/5">
-        <div className="container max-w-6xl">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold font-display mb-2">Download Player Apps</h2>
-            <p className="text-muted-foreground">Get the PiAds player for your device</p>
-          </div>
-
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-white rounded-2xl border shadow-sm overflow-hidden">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b bg-secondary/30">
-                    <th className="text-left px-6 py-4 font-semibold">Platform</th>
-                    <th className="text-left px-6 py-4 font-semibold hidden sm:table-cell">Details</th>
-                    <th className="text-right px-6 py-4 font-semibold">Download</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <Image src="/icons/raspberrry_pi_logo.png" alt="Raspberry Pi" width={32} height={32} />
-                        <div>
-                          <p className="font-medium">Raspberry Pi</p>
-                          <p className="text-xs text-muted-foreground sm:hidden">Pi 4 & 5, 64-bit, ~2GB</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 hidden sm:table-cell">
-                      <div className="flex gap-2">
-                        <span className="text-xs bg-pink-50 text-pink-600 px-2 py-1 rounded">Pi 4 & 5</span>
-                        <span className="text-xs bg-pink-50 text-pink-600 px-2 py-1 rounded">64-bit</span>
-                        <span className="text-xs bg-pink-50 text-pink-600 px-2 py-1 rounded">~2GB</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <Button size="sm" className="bg-pink-600 hover:bg-pink-700" asChild>
-                        <a href="https://github.com/piads/piads-image/releases/latest" target="_blank" rel="noopener noreferrer">
-                          <Download className="h-4 w-4 mr-2" />
-                          Image
-                        </a>
-                      </Button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <Image src="/icons/fireTV.png" alt="Fire TV / Android" width={32} height={32} />
-                        <div>
-                          <p className="font-medium">Android / Fire TV</p>
-                          <p className="text-xs text-muted-foreground sm:hidden">Fire TV, Android 8+, ~15MB</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 hidden sm:table-cell">
-                      <div className="flex gap-2">
-                        <span className="text-xs bg-orange-50 text-orange-600 px-2 py-1 rounded">Fire TV</span>
-                        <span className="text-xs bg-orange-50 text-orange-600 px-2 py-1 rounded">Android 8+</span>
-                        <span className="text-xs bg-orange-50 text-orange-600 px-2 py-1 rounded">~15MB</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <a
-                        href="https://piads.co/app"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ backgroundColor: '#f97316', color: 'white' }}
-                        className="inline-flex items-center gap-2 font-medium text-sm rounded-md px-3 py-2 transition-colors hover:opacity-90"
-                      >
-                        <Download className="h-4 w-4" />
-                        APK
-                      </a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <p className="text-center text-sm text-muted-foreground mt-6">
-            Need help setting up? Check our <Link href="/get-started" className="text-blue hover:underline">setup guides</Link>
-          </p>
-        </div>
-      </section>
 
       {/* Device Sections */}
       <section className="py-10">
