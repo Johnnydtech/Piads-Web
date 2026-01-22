@@ -175,11 +175,6 @@ export default function HomePage() {
   const [isDragging, setIsDragging] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date())
   const [imageFit, setImageFit] = useState<'contain' | 'cover'>('cover')
-  const [weather, setWeather] = useState<{
-    temp: number
-    condition: 'sunny' | 'cloudy' | 'rainy' | 'snowy' | 'partly-cloudy'
-    location: string
-  }>({ temp: 72, condition: 'sunny', location: 'Arlington, VA' })
   const [showDemoMenu, setShowDemoMenu] = useState(false)
   const [showDeviceHealth, setShowDeviceHealth] = useState(false)
   const [showConnectScreen, setShowConnectScreen] = useState(false)
@@ -236,54 +231,6 @@ export default function HomePage() {
     return () => clearInterval(interval)
   }, [])
 
-  // Fetch real weather data
-  useEffect(() => {
-    const fetchWeather = async (lat: number, lon: number) => {
-      try {
-        // Get location name
-        const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
-        const geoData = await geoRes.json()
-        const city = geoData.address?.city || geoData.address?.town || geoData.address?.village || 'Your Location'
-        const state = geoData.address?.state ? `, ${geoData.address.state.slice(0, 2).toUpperCase()}` : ''
-
-        // Get weather from Open-Meteo
-        const weatherRes = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=fahrenheit`
-        )
-        const weatherData = await weatherRes.json()
-        const temp = Math.round(weatherData.current.temperature_2m)
-        const code = weatherData.current.weather_code
-
-        // Map weather codes to conditions
-        let condition: 'sunny' | 'cloudy' | 'rainy' | 'snowy' | 'partly-cloudy' = 'sunny'
-        if (code === 0) condition = 'sunny'
-        else if (code >= 1 && code <= 3) condition = 'partly-cloudy'
-        else if (code >= 45 && code <= 48) condition = 'cloudy'
-        else if (code >= 51 && code <= 67) condition = 'rainy'
-        else if (code >= 71 && code <= 86) condition = 'snowy'
-        else if (code >= 95) condition = 'rainy'
-
-        setWeather({ temp, condition, location: `${city}${state}` })
-      } catch (error) {
-        console.log('Weather fetch failed, using defaults')
-      }
-    }
-
-    // Try to get user's location
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          fetchWeather(position.coords.latitude, position.coords.longitude)
-        },
-        () => {
-          // Default to Arlington, VA if location denied
-          fetchWeather(38.8816, -77.0910)
-        }
-      )
-    } else {
-      fetchWeather(38.8816, -77.0910)
-    }
-  }, [])
 
   // Demo file handlers
   const handleDragOver = (e: React.DragEvent) => {
