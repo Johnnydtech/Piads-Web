@@ -43,7 +43,7 @@ export default function BlogPage() {
               </div>
             </div>
           ) : (
-            <div className="space-y-6">
+            <div className="space-y-8">
               {posts.map((post, index) => {
                 const colors = ["bg-blue", "bg-teal", "bg-coral", "bg-orange", "bg-cyan"]
                 const bgColor = colors[index % colors.length]
