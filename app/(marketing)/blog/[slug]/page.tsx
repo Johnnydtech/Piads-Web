@@ -77,14 +77,6 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <div className="py-12 md:py-20">
       <article className="container max-w-3xl">
-        {/* Back Link */}
-        <Button variant="ghost" size="sm" asChild className="mb-8 rounded-xl">
-          <Link href="/blog">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Blog
-          </Link>
-        </Button>
-
         {/* Header */}
         <header className="mb-12">
           <div className="flex flex-wrap gap-2 mb-6">
