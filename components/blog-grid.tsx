@@ -52,7 +52,7 @@ export function BlogGrid({ posts }: { posts: PostMeta[] }) {
   return (
     <div>
       {/* Search + Filter Bar */}
-      <div className="mb-8 space-y-4">
+      <div className="mb-6 space-y-3">
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
           <input
@@ -60,7 +60,7 @@ export function BlogGrid({ posts }: { posts: PostMeta[] }) {
             placeholder="Search articles..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-12 pr-12 py-3.5 rounded-2xl bg-white border border-border text-base focus:outline-none focus:ring-2 focus:ring-blue/50 focus:border-blue transition-all"
+            className="w-full pl-12 pr-12 py-3 rounded-2xl bg-white border border-border text-base focus:outline-none focus:ring-2 focus:ring-blue/50 focus:border-blue transition-all"
           />
           {search && (
             <button
@@ -73,10 +73,10 @@ export function BlogGrid({ posts }: { posts: PostMeta[] }) {
         </div>
 
         {/* Tag filters */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
           <button
             onClick={() => setActiveTag(null)}
-            className={`text-sm px-4 py-1.5 rounded-full transition-all ${
+            className={`text-xs px-3 py-1 rounded-full transition-all whitespace-nowrap flex-shrink-0 ${
               !activeTag
                 ? "bg-blue text-white"
                 : "bg-white border border-border text-muted-foreground hover:border-blue hover:text-blue"
@@ -88,7 +88,7 @@ export function BlogGrid({ posts }: { posts: PostMeta[] }) {
             <button
               key={tag}
               onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-              className={`text-sm px-4 py-1.5 rounded-full transition-all capitalize ${
+              className={`text-xs px-3 py-1 rounded-full transition-all capitalize whitespace-nowrap flex-shrink-0 ${
                 activeTag === tag
                   ? "bg-blue text-white"
                   : "bg-white border border-border text-muted-foreground hover:border-blue hover:text-blue"

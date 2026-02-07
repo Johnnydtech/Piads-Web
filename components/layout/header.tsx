@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils"
 const mainNavigation = [
   { name: "Features", href: "/features" },
   { name: "Pricing", href: "/pricing" },
+  { name: "Blog", href: "/blog" },
 ]
 
 const resourcesNavigation = [
@@ -226,7 +227,7 @@ export function Header() {
         "md:hidden overflow-hidden transition-all duration-500 ease-out mx-auto",
         scrolled ? "max-w-4xl mt-2" : "max-w-7xl",
         mobileMenuOpen
-          ? "max-h-[500px] opacity-100"
+          ? "max-h-[80vh] opacity-100"
           : "max-h-0 opacity-0"
       )}>
         <div className={cn(

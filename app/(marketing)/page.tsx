@@ -67,8 +67,8 @@ const heroScreenshots = [
 ]
 
 const stats = [
-  { label: "Active Screens", value: 10, suffix: "+", color: "text-blue" },
-  { label: "Monthly Impressions", value: 50, suffix: "K+", color: "text-teal" },
+  { label: "Arlington Neighborhoods", value: 4, suffix: "+", color: "text-blue" },
+  { label: "Local Businesses Connected", value: 10, suffix: "+", color: "text-teal" },
   { label: "Kept Local", value: 100, suffix: "%", color: "text-coral" },
 ]
 
@@ -117,7 +117,7 @@ const features = [
   },
   {
     title: "Community Network",
-    description: "Join venues supporting local businesses. Money stays in the neighborhood.",
+    description: "Join venues across Clarendon, Ballston, and Columbia Pike. Money stays in the neighborhood.",
     color: "bg-blue",
     textColor: "text-white",
     icon: Users,
@@ -498,7 +498,7 @@ export default function HomePage() {
         <div className="container">
           <ScrollAnimate>
             <p className="text-center text-sm text-muted-foreground mb-8">
-              Growing in Arlington & Falls Church
+              Growing across Ballston, Clarendon, Columbia Pike & Falls Church
             </p>
           </ScrollAnimate>
         </div>
@@ -1423,7 +1423,7 @@ export default function HomePage() {
                 From Our Community
               </h2>
               <p className="text-xl text-muted-foreground">
-                Real stories from local venues in Arlington & Falls Church.
+                Real stories from local venues across Ballston, Clarendon & Falls Church.
               </p>
             </div>
           </ScrollAnimate>
@@ -1498,7 +1498,7 @@ export default function HomePage() {
           </ScrollAnimate>
           <ScrollAnimate delay={100}>
             <p className="text-xl text-white/80 mb-4">
-              Early venues are already keeping advertising local in Arlington & Falls Church.
+              Venues across Ballston, Clarendon, Columbia Pike & Falls Church are already keeping advertising local.
             </p>
             <p className="text-lg text-white/60 mb-10">
               $10/screen for venues. $50-75/week for advertisers. No big corporations.

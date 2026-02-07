@@ -3,7 +3,7 @@ import { Mail, MessageSquare, Calendar, Sparkles } from "lucide-react"
 
 export const metadata = {
   title: "Contact",
-  description: "Get in touch with the PiAds team. Schedule a call or send us an email.",
+  description: "Get in touch with the PiAds team in Arlington, VA. Schedule a call or send us an email about digital signage for your local business.",
 }
 
 export default function ContactPage() {

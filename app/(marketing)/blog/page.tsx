@@ -13,17 +13,17 @@ export default function BlogPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="py-24 md:py-32">
+      <section className="pt-16 pb-10 md:pt-20 md:pb-12">
         <div className="container max-w-4xl text-center">
-          <div className="inline-flex items-center gap-2 bg-secondary px-4 py-2 rounded-full mb-8">
+          <div className="inline-flex items-center gap-2 bg-secondary px-4 py-2 rounded-full mb-6">
             <Sparkles className="h-4 w-4 text-blue" />
             <span className="text-sm font-medium">Blog</span>
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 font-display">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 font-display">
             Insights &
             <span className="text-blue"> Resources</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Tips, tutorials, and insights about digital signage advertising
             for venue owners and advertisers.
           </p>
@@ -31,7 +31,7 @@ export default function BlogPage() {
       </section>
 
       {/* Posts */}
-      <section className="py-12 md:py-20 bg-secondary/50">
+      <section className="py-10 md:py-14 bg-secondary/50">
         <div className="container max-w-6xl">
           <BlogGrid posts={posts} />
         </div>

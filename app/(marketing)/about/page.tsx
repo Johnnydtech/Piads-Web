@@ -14,7 +14,7 @@ const values = [
   {
     icon: Heart,
     title: "Community-First",
-    description: "No big corporations. Only local businesses advertising to local customers. Money stays in the neighborhood.",
+    description: "No big corporations. Only Arlington & Falls Church businesses advertising to local customers. Money stays in the neighborhood.",
     color: "bg-coral",
   },
   {
@@ -54,7 +54,7 @@ export default function AboutPage() {
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             We built PiAds because we believe advertising dollars should stay in the community.
-            No big corporations. Just neighbors supporting neighbors.
+            From Clarendon to Columbia Pike, no big corporations — just neighbors supporting neighbors.
           </p>
         </div>
       </section>
@@ -104,8 +104,9 @@ export default function AboutPage() {
                 The Problem We Saw
               </h2>
               <p className="text-muted-foreground mb-4 text-lg">
-                Small coffee shops, gyms, and restaurants have screens that could earn money.
-                Local businesses like personal trainers, plumbers, and yoga studios want to advertise
+                Small coffee shops on Clarendon Blvd, CrossFit boxes in Ballston, and restaurants along Columbia Pike
+                have screens that could connect them with their neighbors.
+                Local personal trainers, plumbers, and yoga studios want to advertise
                 but can&apos;t afford $10K billboard campaigns.
               </p>
               <p className="text-muted-foreground mb-4 text-lg">
@@ -219,7 +220,7 @@ export default function AboutPage() {
               <ul className="space-y-4 text-white/90">
                 <li className="flex items-start gap-3">
                   <span className="text-white/60">•</span>
-                  Reach customers at the gym, coffee shop, coworking space
+                  Reach customers at local gyms, coffee shops, and coworking spaces across Arlington
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-white/60">•</span>
@@ -268,8 +269,8 @@ export default function AboutPage() {
             Join the Movement
           </h2>
           <p className="text-xl text-white/80 mb-10">
-            4 venues are already keeping advertising local. Be part of building
-            something different.
+            Venues across Ballston, Clarendon, and Falls Church are already keeping advertising local.
+            Be part of building something different.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" variant="secondary" className="h-14 px-8 text-base rounded-xl" asChild>

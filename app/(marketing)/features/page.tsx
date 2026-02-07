@@ -19,7 +19,7 @@ import {
 
 export const metadata = {
   title: "Features",
-  description: "Explore PiAds features for venue owners and advertisers. Easy screen management, real-time analytics, and powerful advertising tools.",
+  description: "Digital signage tools for Arlington venues and local advertisers. Easy screen management, content scheduling, ad approval, and real-time analytics.",
 }
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
@@ -67,13 +67,13 @@ const advertiserFeatures = [
   {
     icon: Search,
     title: "Marketplace Discovery",
-    description: "Browse hundreds of venue screens filtered by location, audience type, and price.",
+    description: "Browse local venue screens across Clarendon, Ballston, Columbia Pike and more — filtered by location, audience type, and price.",
     color: "bg-teal",
   },
   {
     icon: Target,
     title: "Audience Targeting",
-    description: "Reach customers at coffee shops, gyms, restaurants, and more. Target by demographics and location.",
+    description: "Reach customers at Arlington coffee shops, gyms, restaurants, and salons. Target by neighborhood and venue type.",
     color: "bg-orange",
   },
   {
@@ -142,8 +142,8 @@ export default function FeaturesPage() {
             <h2 className="text-2xl md:text-3xl font-bold font-display">For Venues</h2>
           </div>
           <p className="text-muted-foreground max-w-2xl mb-12 text-lg">
-            Turn your screens into a revenue stream. Our platform handles everything
-            from advertiser matching to payment processing.
+            Display your own content and optionally earn from local advertisers. Our platform handles everything
+            from content scheduling to payment processing.
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -194,8 +194,8 @@ export default function FeaturesPage() {
             <h2 className="text-2xl md:text-3xl font-bold font-display">For Advertisers</h2>
           </div>
           <p className="text-muted-foreground max-w-2xl mb-12 text-lg">
-            Reach customers at the point of decision. Advertise on screens in coffee shops,
-            gyms, restaurants, and more.
+            Reach your neighbors at the point of decision. Advertise on screens in local coffee shops,
+            gyms, restaurants, and salons across Arlington.
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
