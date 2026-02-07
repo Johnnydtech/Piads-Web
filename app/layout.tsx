@@ -43,6 +43,9 @@ export const metadata: Metadata = {
     "Clarendon digital signage",
     "Columbia Pike advertising",
   ],
+  alternates: {
+    canonical: "/",
+  },
   authors: [{ name: "PiAds Team" }],
   creator: "PiAds",
   openGraph: {
