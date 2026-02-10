@@ -63,7 +63,7 @@ const rotatingHeadlines = [
 // CMS Screenshots for hero
 const heroScreenshots = [
   { src: "/cms-screenshots/hero-dashboard.png", label: "Manage Screens" },
-  { src: "/cms-screenshots/hero-marketplace.png", label: "Browse Venues" },
+  { src: "/cms-screenshots/marketplace-cms-new.png", label: "Browse Venues" },
 ]
 
 const stats = [

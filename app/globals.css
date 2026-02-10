@@ -458,3 +458,24 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* Flyer print styles */
+@media print {
+  @page {
+    size: letter;
+    margin: 0;
+  }
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: white !important;
+  }
+  .flyer-page {
+    width: 8.5in !important;
+    height: 11in !important;
+    max-height: 11in !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+}
