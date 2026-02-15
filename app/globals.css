@@ -459,6 +459,74 @@
   display: none;
 }
 
+/* Bouncing pointer arrow animation */
+@keyframes bounce-right {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(8px);
+  }
+}
+
+@keyframes bounce-down {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes bounce-left {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-8px);
+  }
+}
+
+.animate-bounce-right {
+  animation: bounce-right 1.2s ease-in-out infinite;
+}
+
+.animate-bounce-down {
+  animation: bounce-down 1.2s ease-in-out infinite;
+}
+
+.animate-bounce-left {
+  animation: bounce-left 1.2s ease-in-out infinite;
+}
+
+/* Step connector line pulse */
+@keyframes line-pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-line-pulse {
+  animation: line-pulse 2s ease-in-out infinite;
+}
+
+/* Active step glow */
+@keyframes step-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(72, 86, 196, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(72, 86, 196, 0);
+  }
+}
+
+.animate-step-glow {
+  animation: step-glow 2s ease-in-out infinite;
+}
+
 /* Flyer print styles */
 @media print {
   @page {

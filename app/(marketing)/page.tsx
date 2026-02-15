@@ -48,6 +48,8 @@ import {
   HardDrive,
   Info,
   Check,
+  MousePointerClick,
+  Hand,
 } from "lucide-react"
 import { CurrencyCircleDollar, MapPinArea, PlayCircle } from "@phosphor-icons/react"
 
@@ -167,8 +169,6 @@ export default function HomePage() {
   const [isAnimating, setIsAnimating] = useState(false)
   const [screenshotIndex, setScreenshotIndex] = useState(0)
   const [selectedRole, setSelectedRole] = useState<'venue' | 'advertiser'>('venue')
-  const [isRoleAnimating, setIsRoleAnimating] = useState(false)
-  const [userSelectedRole, setUserSelectedRole] = useState(false)
 
   // Demo section state
   const [uploadedImage, setUploadedImage] = useState<string | null>(null)
@@ -188,6 +188,9 @@ export default function HomePage() {
   const [isConnecting, setIsConnecting] = useState(false)
   const [imageFitMode, setImageFitMode] = useState<'cover' | 'contain'>('cover')
 
+  // Guided demo step tracker: 1 = connect, 2 = pair, 3 = upload
+  const demoStep = isScreenConnected && uploadedImage ? 3 : isScreenConnected ? 2 : 1
+
   // FIX #4: Slow down rotating headline to 4.5s (was 3s)
   useEffect(() => {
     const interval = setInterval(() => {
@@ -200,20 +203,13 @@ export default function HomePage() {
     return () => clearInterval(interval)
   }, [])
 
-  // Auto-rotate role selector (synced with header badge at 4s)
-  // Only auto-rotate if user hasn't manually selected
+  // Auto-rotate role selector for How It Works section
   useEffect(() => {
-    if (userSelectedRole) return
-
     const interval = setInterval(() => {
-      setIsRoleAnimating(true)
-      setTimeout(() => {
-        setSelectedRole((prev) => prev === 'venue' ? 'advertiser' : 'venue')
-        setIsRoleAnimating(false)
-      }, 300)
+      setSelectedRole((prev) => prev === 'venue' ? 'advertiser' : 'venue')
     }, 4000)
     return () => clearInterval(interval)
-  }, [userSelectedRole])
+  }, [])
 
   // Screenshot rotation
   useEffect(() => {
@@ -263,15 +259,10 @@ export default function HomePage() {
     }
   }
 
-  const handleRoleSelect = (role: 'venue' | 'advertiser') => {
-    setUserSelectedRole(true)
-    setSelectedRole(role)
-  }
-
   return (
     <div className="flex flex-col overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative py-24 md:py-32 lg:py-40 overflow-hidden">
+      {/* Hero Section - 2 Column Layout */}
+      <section className="relative pt-32 md:pt-36 lg:pt-40 pb-16 md:pb-20 overflow-hidden">
         {/* Background gradient blobs */}
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue/20 rounded-full blur-3xl animate-pulse" />
@@ -279,216 +270,194 @@ export default function HomePage() {
           <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-coral/10 rounded-full blur-3xl" />
         </div>
 
-        {/* Large background logo */}
-        <div className="absolute right-0 top-20 opacity-[0.08] -z-10 pointer-events-none animate-drift-full">
-          <Image
-            src="/logo/piads_new_log_transparent.png"
-            alt=""
-            width={800}
-            height={800}
-            className="w-[400px] md:w-[600px] lg:w-[800px] h-auto"
-          />
-        </div>
-
-        <div className="container max-w-6xl">
-          <div className="text-center mb-12">
-            <ScrollAnimate animation="up">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 font-display">
-                Your Screens.
-                <br />
-                <span className="text-blue relative inline-block min-w-[280px] md:min-w-[380px]">
-                  <span
-                    className={`inline-block transition-all duration-500 ${
-                      isAnimating
-                        ? "opacity-0 translate-y-8"
-                        : "opacity-100 translate-y-0"
-                    }`}
-                  >
-                    {rotatingHeadlines[headlineIndex]}
+        <div className="container max-w-7xl">
+          <div className="grid lg:grid-cols-[5fr_7fr] gap-8 lg:gap-12 items-center">
+            {/* Left Column - Text & CTAs */}
+            <div>
+              <ScrollAnimate animation="up">
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 font-display">
+                  Your Screens.
+                  <br />
+                  <span className="text-blue relative inline-block min-w-[280px] md:min-w-[380px]">
+                    <span
+                      className={`inline-block transition-all duration-500 ${
+                        isAnimating
+                          ? "opacity-0 translate-y-8"
+                          : "opacity-100 translate-y-0"
+                      }`}
+                    >
+                      {rotatingHeadlines[headlineIndex]}
+                    </span>
+                    <svg className="absolute -bottom-2 left-0 w-full h-3 text-blue/30" viewBox="0 0 200 12" preserveAspectRatio="none">
+                      <path
+                        d="M0,8 Q50,0 100,8 T200,8"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                        className="animate-draw-curve"
+                      />
+                    </svg>
                   </span>
-                  <svg className="absolute -bottom-2 left-0 w-full h-3 text-blue/30" viewBox="0 0 200 12" preserveAspectRatio="none">
-                    <path
-                      d="M0,8 Q50,0 100,8 T200,8"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                      className="animate-draw-curve"
-                    />
-                  </svg>
-                </span>
-              </h1>
-            </ScrollAnimate>
+                </h1>
+              </ScrollAnimate>
 
-            <ScrollAnimate animation="up" delay={200}>
-              <p className="text-xl text-muted-foreground mb-4 max-w-2xl mx-auto leading-relaxed font-display">
-                Run your own content <span className="font-semibold text-foreground">AND</span> earn from local advertisers.
-              </p>
-              <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto font-display">
-                No big corporations. Just neighbors supporting neighbors.
-              </p>
-            </ScrollAnimate>
+              <ScrollAnimate animation="up" delay={200}>
+                <p className="text-2xl md:text-3xl text-foreground mb-3 leading-snug font-display font-medium">
+                  Run your own content <span className="text-blue font-bold">AND</span> earn from local advertisers.
+                </p>
+                <p className="text-xl text-muted-foreground mb-8 font-display">
+                  No big corporations. Just neighbors supporting neighbors.
+                </p>
+              </ScrollAnimate>
 
-            {/* FIX #5: Role-specific signup toggle */}
-            <ScrollAnimate animation="up" delay={300}>
-              <div className="flex flex-col items-center gap-4">
-                {/* Role selector */}
-                <div className="inline-flex rounded-full bg-white/80 backdrop-blur-sm p-1.5 mb-4 shadow-lg border border-gray-200/50">
-                  <button
-                    onClick={() => handleRoleSelect('venue')}
-                    className={`px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
-                      userSelectedRole && selectedRole === 'venue'
-                        ? 'bg-blue text-white shadow-lg shadow-blue/30'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                    }`}
-                  >
-                    <Building2 className="inline h-4 w-4 mr-2" />
-                    I&apos;m a Venue
-                  </button>
-                  <button
-                    onClick={() => handleRoleSelect('advertiser')}
-                    className={`px-8 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
-                      userSelectedRole && selectedRole === 'advertiser'
-                        ? 'bg-teal text-white shadow-lg shadow-teal/30'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                    }`}
-                  >
-                    <Megaphone className="inline h-4 w-4 mr-2" />
-                    I&apos;m an Advertiser
-                  </button>
-                </div>
-
-                {/* Primary CTA based on role - only shows after user selects */}
-                <div className={`transition-all duration-500 ${userSelectedRole ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none h-0'}`}>
+              {/* Two big CTA buttons - always visible */}
+              <ScrollAnimate animation="up" delay={300}>
+                <div className="flex flex-col sm:flex-row gap-4 mb-6">
                   <Button
                     size="lg"
-                    className={`h-16 px-12 text-lg rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 font-semibold ${
-                      selectedRole === 'advertiser' ? 'bg-teal hover:bg-teal/90' : 'bg-blue hover:bg-blue/90'
-                    }`}
+                    className="h-16 sm:h-18 px-8 sm:px-10 text-lg rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 font-bold bg-blue hover:bg-blue/90"
                     asChild
                   >
-                    <Link href={`${APP_URL}/sign-up?role=${selectedRole}`}>
-                      {selectedRole === 'venue' ? 'Start Earning · $10/screen' : 'Browse Venues · from $50/week'}
+                    <Link href={`${APP_URL}/sign-up?role=venue`}>
+                      <Building2 className="mr-3 h-6 w-6" />
+                      I&apos;m a Venue
+                      <ArrowRight className="ml-3 h-5 w-5" />
+                    </Link>
+                  </Button>
+                  <Button
+                    size="lg"
+                    className="h-16 sm:h-18 px-8 sm:px-10 text-lg rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 font-bold bg-teal hover:bg-teal/90"
+                    asChild
+                  >
+                    <Link href={`${APP_URL}/sign-up?role=advertiser`}>
+                      <Megaphone className="mr-3 h-6 w-6" />
+                      I&apos;m an Advertiser
                       <ArrowRight className="ml-3 h-5 w-5" />
                     </Link>
                   </Button>
                 </div>
 
-                {/* See How It Works → anchor scroll */}
-                <a
-                  href="#how-it-works"
-                  className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-blue transition-all mt-4 group bg-white/50 backdrop-blur-sm px-5 py-2.5 rounded-full border border-gray-200/50 hover:border-blue/30 hover:shadow-md"
-                >
-                  <Play className="h-4 w-4 group-hover:scale-110 transition-transform" />
-                  See how it works
-                  <ChevronDown className="h-4 w-4 animate-bounce" />
-                </a>
-              </div>
-            </ScrollAnimate>
-          </div>
+                {/* Value props - inline */}
+                <div className="flex flex-wrap gap-3 mb-6">
+                  <span className="inline-flex items-center gap-2 bg-coral/90 text-gray-900 font-bold text-base px-5 py-2.5 rounded-full shadow-md">
+                    <CurrencyCircleDollar weight="fill" className="w-5 h-5" />
+                    You Keep 75% of Ad Revenue
+                  </span>
+                  <span className="inline-flex items-center gap-2 bg-blue text-white font-bold text-base px-5 py-2.5 rounded-full shadow-md">
+                    <MapPinArea weight="fill" className="w-5 h-5" />
+                    Local Only
+                  </span>
+                </div>
 
-          {/* Product Screenshot */}
-          <ScrollAnimate animation="scale" delay={400}>
-            <div className="relative mt-16 mx-auto max-w-[1400px] px-4">
-              <div className="animate-float-slow">
-                {/* Browser Chrome */}
-                <div className="bg-slate-800 rounded-t-2xl px-4 py-3 flex items-center gap-2 shadow-2xl">
-                  <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-red-400" />
-                    <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                    <div className="w-3 h-3 rounded-full bg-green-400" />
-                  </div>
-                  <div className="flex-1 mx-4">
-                    <div className="bg-slate-700 rounded-lg h-7 px-4 flex items-center justify-center">
-                      <span className="text-slate-400 text-sm">app.piads.co</span>
+                <div className="flex items-center gap-6 text-lg text-muted-foreground">
+                  <span className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    <span><strong className="text-foreground">$10</strong>/screen/mo</span>
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    Free to try
+                  </span>
+                </div>
+              </ScrollAnimate>
+            </div>
+
+            {/* Right Column - Product Screenshot */}
+            <div className="relative lg:-mr-8 xl:-mr-16">
+              <ScrollAnimate animation="scale" delay={300}>
+                <div className="animate-float-slow">
+                  {/* Browser Chrome */}
+                  <div className="bg-slate-800 rounded-t-2xl px-4 py-3 flex items-center gap-2 shadow-2xl">
+                    <div className="flex gap-1.5">
+                      <div className="w-3 h-3 rounded-full bg-red-400" />
+                      <div className="w-3 h-3 rounded-full bg-yellow-400" />
+                      <div className="w-3 h-3 rounded-full bg-green-400" />
                     </div>
+                    <div className="flex-1 mx-4">
+                      <div className="bg-slate-700 rounded-lg h-7 px-4 flex items-center justify-center">
+                        <span className="text-slate-400 text-sm">app.piads.co</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Screenshot */}
+                  <div className="relative bg-white rounded-b-2xl overflow-hidden shadow-2xl aspect-[1920/1080]">
+                    {heroScreenshots.map((screenshot, index) => (
+                      <div
+                        key={screenshot.src}
+                        className={`absolute inset-0 transition-opacity duration-700 ${
+                          index === screenshotIndex ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      >
+                        <Image
+                          src={screenshot.src}
+                          alt={screenshot.label}
+                          fill
+                          className="object-contain"
+                          priority={index === 0}
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                {/* Screenshot */}
-                <div className="relative bg-white rounded-b-2xl overflow-hidden shadow-2xl aspect-[1920/1080]">
+                {/* Screenshot indicator dots */}
+                <div className="flex justify-center gap-2 mt-4">
                   {heroScreenshots.map((screenshot, index) => (
-                    <div
-                      key={screenshot.src}
-                      className={`absolute inset-0 transition-opacity duration-700 ${
-                        index === screenshotIndex ? 'opacity-100' : 'opacity-0'
+                    <button
+                      key={index}
+                      onClick={() => setScreenshotIndex(index)}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        index === screenshotIndex
+                          ? 'bg-blue w-8'
+                          : 'bg-gray-300 w-2 hover:bg-gray-400'
                       }`}
-                    >
-                      <Image
-                        src={screenshot.src}
-                        alt={screenshot.label}
-                        fill
-                        className="object-contain"
-                        priority={index === 0}
-                      />
-                    </div>
+                      aria-label={screenshot.label}
+                    />
                   ))}
                 </div>
-              </div>
-
-              {/* Screenshot indicator dots - outside floating animation */}
-              <div className="flex justify-center gap-2 mt-6">
-                {heroScreenshots.map((screenshot, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setScreenshotIndex(index)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      index === screenshotIndex
-                        ? 'bg-blue w-8'
-                        : 'bg-gray-300 w-2 hover:bg-gray-400'
-                    }`}
-                    aria-label={screenshot.label}
-                  />
-                ))}
-              </div>
+              </ScrollAnimate>
             </div>
-          </ScrollAnimate>
-
-          {/* Value props below screenshot */}
-          <ScrollAnimate animation="up" delay={500}>
-            <div className="flex flex-wrap justify-center gap-4 mt-12 px-4">
-              <div className="bg-coral rounded-full px-6 py-3 flex items-center gap-3 shadow-lg shadow-coral/25 hover:shadow-xl hover:shadow-coral/30 transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                <CurrencyCircleDollar weight="fill" className="w-6 h-6 text-white" />
-                <span className="text-white font-bold text-lg">75% Revenue</span>
-              </div>
-
-              <div className="bg-blue rounded-full px-6 py-3 flex items-center gap-3 shadow-lg shadow-blue/25 hover:shadow-xl hover:shadow-blue/30 transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                <MapPinArea weight="fill" className="w-6 h-6 text-white" />
-                <span className="text-white font-bold text-lg">Local Only</span>
-              </div>
-
-              <div className="bg-teal rounded-full px-6 py-3 flex items-center gap-3 shadow-lg shadow-teal/25 hover:shadow-xl hover:shadow-teal/30 transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                <PlayCircle weight="fill" className="w-6 h-6 text-white" />
-                <span className="text-white font-bold text-lg">Your Content First</span>
-              </div>
-            </div>
-          </ScrollAnimate>
-
+          </div>
         </div>
       </section>
 
-      {/* Animated Wave Divider */}
-      <div className="relative -mt-8 overflow-hidden">
-        <svg
-          className="w-[200%] h-12 md:h-16 text-secondary/30 animate-wave"
-          viewBox="0 0 2880 60"
-          preserveAspectRatio="none"
-          fill="currentColor"
-        >
-          <path d="M0,30 C360,60 1080,0 1440,30 C1800,60 2520,0 2880,30 L2880,60 L0,60 Z" />
-        </svg>
-      </div>
+      {/* Try It Now Banner - Prominent CTA for Connect Screen */}
+      <section className="bg-gray-900 py-6">
+        <div className="container max-w-5xl">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4 text-white">
+              <div className="w-12 h-12 rounded-full bg-blue/20 flex items-center justify-center">
+                <Monitor className="h-6 w-6 text-blue" />
+              </div>
+              <div>
+                <p className="text-xl font-bold font-display">Want to see how it works?</p>
+                <p className="text-gray-400 text-base">Try connecting a screen right now — no sign-up needed</p>
+              </div>
+            </div>
+            <a
+              href="#how-it-works"
+              className="inline-flex items-center gap-2 bg-blue hover:bg-blue/90 text-white font-bold text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 whitespace-nowrap"
+            >
+              <Sparkles className="h-5 w-5" />
+              Try the Live Demo
+              <ArrowRight className="h-5 w-5" />
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* Stats + Trusted By Section */}
-      <section className="bg-secondary/30 pt-12 pb-16 overflow-hidden">
+      <section className="bg-secondary/30 pt-16 pb-16 overflow-hidden">
         <div className="container mb-12">
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
             {stats.map((stat) => (
               <div key={stat.label} className="text-center group">
-                <div className={`text-4xl md:text-5xl font-bold font-display ${stat.color} transition-transform group-hover:scale-110 duration-300`}>
+                <div className={`text-5xl md:text-6xl font-bold font-display ${stat.color} transition-transform group-hover:scale-110 duration-300`}>
                   <CountUp end={stat.value} suffix={stat.suffix} duration={2000} />
                 </div>
-                <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
+                <div className="text-base text-muted-foreground mt-2 font-medium">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -497,7 +466,7 @@ export default function HomePage() {
         {/* Trusted By - Logo carousel */}
         <div className="container">
           <ScrollAnimate>
-            <p className="text-center text-sm text-muted-foreground mb-8">
+            <p className="text-center text-base text-muted-foreground mb-8 font-medium">
               Growing across Ballston, Clarendon, Columbia Pike & Falls Church
             </p>
           </ScrollAnimate>
@@ -527,29 +496,27 @@ export default function HomePage() {
       </section>
 
       {/* Founder Quote */}
-      <section className="py-16 md:py-24">
-        <div className="container">
+      <section className="py-20 md:py-28">
+        <div className="container max-w-4xl">
           <ScrollAnimate>
-            <div className="max-w-3xl mx-auto">
-              <div className="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-gray-100">
-                <blockquote className="text-lg md:text-xl text-center mb-6 leading-relaxed">
-                  &ldquo;I saw how big media companies put profit before people.
-                  PiAds flips that. Local businesses supporting each other.&rdquo;
-                </blockquote>
-                <div className="flex items-center justify-center gap-4">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-coral via-blue to-teal p-0.5">
-                    <Image
-                      src="/founder.png"
-                      alt="Yohanes Woldegerima"
-                      width={56}
-                      height={56}
-                      className="w-full h-full rounded-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <div className="font-semibold">Yohanes Woldegerima</div>
-                    <div className="text-sm text-muted-foreground">Founder, PiAds</div>
-                  </div>
+            <div className="text-center">
+              <blockquote className="text-3xl md:text-4xl lg:text-5xl font-bold font-display text-foreground mb-8 leading-tight">
+                &ldquo;I saw how big media companies put profit before people.
+                <span className="text-blue"> PiAds flips that.</span> Local businesses supporting each other.&rdquo;
+              </blockquote>
+              <div className="flex items-center justify-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-coral via-blue to-teal p-0.5">
+                  <Image
+                    src="/founder.png"
+                    alt="Yohanes Woldegerima"
+                    width={64}
+                    height={64}
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                </div>
+                <div className="text-left">
+                  <div className="font-bold text-lg">Yohanes Woldegerima</div>
+                  <div className="text-base text-muted-foreground">Founder, PiAds</div>
                 </div>
               </div>
             </div>
@@ -585,13 +552,13 @@ export default function HomePage() {
             {features.map((feature, index) => (
               <ScrollAnimate key={feature.title} delay={index * 100}>
                 <div
-                  className={`${feature.color} rounded-3xl p-8 hover-lift cursor-default h-full min-h-[200px] flex flex-col justify-end`}
+                  className={`${feature.color} rounded-3xl p-10 hover-lift cursor-default h-full min-h-[240px] flex flex-col justify-end`}
                 >
-                  <feature.icon className={`h-8 w-8 mb-4 ${feature.textColor} opacity-80`} />
-                  <h3 className={`text-xl font-semibold font-display mb-2 ${feature.textColor}`}>
+                  <feature.icon className={`h-10 w-10 mb-4 ${feature.textColor} opacity-80`} />
+                  <h3 className={`text-2xl font-bold font-display mb-3 ${feature.textColor}`}>
                     {feature.title}
                   </h3>
-                  <p className={`${feature.textColor} opacity-80`}>
+                  <p className={`text-lg ${feature.textColor} opacity-80`}>
                     {feature.description}
                   </p>
                 </div>
@@ -615,22 +582,143 @@ export default function HomePage() {
         </div>
         <div className="container">
           <ScrollAnimate>
-            <div className="text-center mb-12">
+            <div className="text-center mb-6">
               <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">
-                How It Works
+                Try It Yourself
               </h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Upload your ad and see it live. Three simple steps for venues and advertisers.
+                See how easy it is. Follow the 3 steps below — it actually works!
               </p>
             </div>
           </ScrollAnimate>
 
-          {/* CMS-Style Screen Cards */}
+          {/* Step Progress Bar */}
+          <ScrollAnimate delay={100}>
+            <div className="max-w-2xl mx-auto mb-12">
+              <div className="flex items-center justify-between relative">
+                {/* Connector lines */}
+                <div className="absolute top-5 left-[16.67%] right-[16.67%] h-1 bg-gray-200 rounded-full" />
+                <div
+                  className="absolute top-5 left-[16.67%] h-1 bg-blue rounded-full transition-all duration-700 ease-out"
+                  style={{ width: demoStep === 1 ? '0%' : demoStep === 2 ? '33.33%' : '66.66%' }}
+                />
+
+                {/* Step 1 */}
+                <div className="flex flex-col items-center relative z-10 w-1/3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-base font-bold transition-all duration-500 ${
+                    demoStep >= 1 ? 'bg-blue text-white shadow-lg' : 'bg-gray-200 text-gray-500'
+                  } ${demoStep === 1 ? 'animate-step-glow ring-4 ring-blue/20' : ''}`}>
+                    {demoStep > 1 ? <Check className="h-5 w-5" /> : '1'}
+                  </div>
+                  <span className={`text-sm font-semibold mt-2 transition-colors ${demoStep === 1 ? 'text-blue' : demoStep > 1 ? 'text-green-600' : 'text-gray-400'}`}>
+                    Connect Screen
+                  </span>
+                </div>
+
+                {/* Step 2 */}
+                <div className="flex flex-col items-center relative z-10 w-1/3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-base font-bold transition-all duration-500 ${
+                    demoStep >= 2 ? 'bg-blue text-white shadow-lg' : 'bg-gray-200 text-gray-500'
+                  } ${demoStep === 2 ? 'animate-step-glow ring-4 ring-blue/20' : ''}`}>
+                    {demoStep > 2 ? <Check className="h-5 w-5" /> : '2'}
+                  </div>
+                  <span className={`text-sm font-semibold mt-2 transition-colors ${demoStep === 2 ? 'text-blue' : demoStep > 2 ? 'text-green-600' : 'text-gray-400'}`}>
+                    Upload Content
+                  </span>
+                </div>
+
+                {/* Step 3 */}
+                <div className="flex flex-col items-center relative z-10 w-1/3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-base font-bold transition-all duration-500 ${
+                    demoStep >= 3 ? 'bg-green-500 text-white shadow-lg' : 'bg-gray-200 text-gray-500'
+                  }`}>
+                    {demoStep >= 3 ? <Check className="h-5 w-5" /> : '3'}
+                  </div>
+                  <span className={`text-sm font-semibold mt-2 transition-colors ${demoStep >= 3 ? 'text-green-600' : 'text-gray-400'}`}>
+                    See It Live!
+                  </span>
+                </div>
+              </div>
+            </div>
+          </ScrollAnimate>
+
+          {/* Interactive Demo Cards */}
           <div className="max-w-5xl mx-auto mb-16">
             <ScrollAnimate>
-              <div className="flex flex-col lg:flex-row gap-6 items-start justify-center">
+              <div className="flex flex-col lg:flex-row gap-6 items-start justify-center relative">
+
+                {/* Bouncing Arrow - Points from "Connect a Screen" to the card */}
+                {demoStep === 1 && (
+                  <div className="hidden lg:flex absolute -top-2 right-[15%] z-20 flex-col items-center">
+                    <div className="bg-blue text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg whitespace-nowrap">
+                      <MousePointerClick className="inline h-4 w-4 mr-1.5 -mt-0.5" />
+                      Click here to start!
+                    </div>
+                    {/* Curly arrow SVG pointing down-right */}
+                    <svg width="60" height="50" viewBox="0 0 60 50" fill="none" className="animate-bounce-down mt-1">
+                      <path d="M30 2 C30 2, 15 20, 30 30 C45 40, 35 48, 30 48" stroke="#4856c4" strokeWidth="2.5" strokeLinecap="round" fill="none" strokeDasharray="4 3" />
+                      <path d="M24 42 L30 50 L33 41" stroke="#4856c4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                    </svg>
+                  </div>
+                )}
+
+                {/* Mobile arrow hint */}
+                {demoStep === 1 && (
+                  <div className="lg:hidden flex justify-center mb-2 w-full">
+                    <div className="bg-blue text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg inline-flex items-center gap-2 animate-bounce-down">
+                      <Hand className="h-4 w-4" />
+                      Tap &quot;Connect a Screen&quot; below
+                      <svg width="16" height="20" viewBox="0 0 16 20" fill="none" className="ml-1">
+                        <path d="M8 2 L8 14" stroke="white" strokeWidth="2" strokeLinecap="round" />
+                        <path d="M3 11 L8 18 L13 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 2 guide moved to upload button area below */}
+
+                {demoStep === 2 && (
+                  <div className="lg:hidden flex justify-center mb-2 w-full">
+                    <div className="bg-blue text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg inline-flex items-center gap-2 animate-bounce-down">
+                      <Upload className="h-4 w-4" />
+                      Upload an image to your screen
+                      <svg width="16" height="20" viewBox="0 0 16 20" fill="none" className="ml-1">
+                        <path d="M8 2 L8 14" stroke="white" strokeWidth="2" strokeLinecap="round" />
+                        <path d="M3 11 L8 18 L13 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+
+                {/* Success message for step 3 */}
+                {demoStep === 3 && (
+                  <div className="flex flex-col items-center mb-6 w-full gap-3">
+                    <div className="bg-green-500 text-white text-lg md:text-xl font-bold px-8 py-4 rounded-2xl shadow-lg inline-flex items-center gap-3 animate-scaleIn">
+                      <CheckCircle2 className="h-6 w-6" />
+                      It&apos;s LIVE on your TV!
+                    </div>
+                    <p className="text-center text-gray-600 text-base md:text-lg max-w-lg">
+                      Your image is now showing on the TV screen below — exactly what a real venue screen would display. <span className="font-semibold text-gray-900">That&apos;s it. 3 steps. Done.</span>
+                    </p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="animate-bounce-down">
+                        <path d="M10 2 L10 14" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" />
+                        <path d="M5 12 L10 18 L15 12" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                      </svg>
+                      <span className="text-green-600 font-semibold text-sm">Your content is playing on the screen right now</span>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="animate-bounce-down">
+                        <path d="M10 2 L10 14" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" />
+                        <path d="M5 12 L10 18 L15 12" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+
                 {/* Screen Card - Shows different states based on connection */}
-                <div className="bg-white rounded-2xl border border-gray-200 shadow-lg w-full max-w-md relative">
+                <div className={`bg-white rounded-2xl border-2 shadow-lg w-full max-w-md relative transition-all duration-500 ${
+                  demoStep === 2 ? 'border-blue/50 shadow-blue/20 shadow-xl' : demoStep === 3 ? 'border-green-400 shadow-green-500/20 shadow-xl' : 'border-gray-200'
+                }`}>
                   {/* Screen Preview */}
                   <div className="relative bg-gray-900 p-3 rounded-t-2xl overflow-hidden">
                     {/* Connection indicator */}
@@ -688,9 +776,21 @@ export default function HomePage() {
                       <h4 className="font-semibold text-gray-900">Main Display</h4>
                       {isScreenConnected && (
                         <div className="relative">
+                          {/* Guide to explore menu when live */}
+                          {demoStep === 3 && !showDemoMenu && (
+                            <div className="absolute right-full top-1/2 -translate-y-1/2 mr-2 flex items-center gap-1 animate-bounce-right pointer-events-none z-30">
+                              <div className="bg-blue text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap">
+                                Explore more!
+                              </div>
+                              <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
+                                <path d="M2 8 L14 8" stroke="#4856c4" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="4 3" />
+                                <path d="M12 3 L18 8 L12 13" stroke="#4856c4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                              </svg>
+                            </div>
+                          )}
                           <button
                             onClick={() => setShowDemoMenu(!showDemoMenu)}
-                            className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+                            className={`p-1.5 hover:bg-gray-100 rounded-lg transition-colors ${demoStep === 3 && !showDemoMenu ? 'ring-2 ring-blue/40 animate-step-glow' : ''}`}
                           >
                             <MoreVertical className="h-5 w-5 text-gray-400" />
                           </button>
@@ -770,6 +870,24 @@ export default function HomePage() {
                             <span className="text-sm text-gray-600 truncate">your-image.jpg</span>
                           </div>
                         ) : (
+                          <div className="relative">
+                            {/* Bouncing guide arrow pointing to upload button */}
+                            {demoStep === 2 && (
+                              <div className="flex justify-center mb-2 animate-bounce-down">
+                                <div className="bg-blue text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg whitespace-nowrap inline-flex items-center gap-1.5">
+                                  <Upload className="h-4 w-4" />
+                                  Upload an image here!
+                                </div>
+                              </div>
+                            )}
+                            {demoStep === 2 && (
+                              <div className="flex justify-center -mb-1">
+                                <svg width="16" height="20" viewBox="0 0 16 20" fill="none" className="animate-bounce-down">
+                                  <path d="M8 2 L8 14" stroke="#4856c4" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="4 3" />
+                                  <path d="M3 12 L8 18 L13 12" stroke="#4856c4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                                </svg>
+                              </div>
+                            )}
                           <label className="flex items-center justify-center gap-2 mb-4 px-3 py-3 bg-blue/5 border-2 border-dashed border-blue/30 rounded-lg cursor-pointer hover:bg-blue/10 transition-colors">
                             <Upload className="h-4 w-4 text-blue" />
                             <span className="text-sm text-blue font-medium">Upload your media</span>
@@ -787,6 +905,7 @@ export default function HomePage() {
                               }}
                             />
                           </label>
+                          </div>
                         )}
 
                         {/* Connection details */}
@@ -825,16 +944,24 @@ export default function HomePage() {
 
                 {/* Connect a Screen Card */}
                 <div
-                  className="bg-white rounded-2xl border-2 border-dashed border-gray-300 shadow-sm overflow-hidden w-full max-w-md cursor-pointer hover:border-blue/50 hover:shadow-md transition-all group"
+                  className={`bg-white rounded-2xl border-2 border-dashed overflow-hidden w-full max-w-md cursor-pointer hover:border-blue/50 hover:shadow-md transition-all group ${
+                    demoStep === 1 ? 'border-blue/50 shadow-xl shadow-blue/20 animate-step-glow' : 'border-gray-300 shadow-sm'
+                  }`}
                   onClick={() => setShowConnectScreen(true)}
                 >
                   <div className="p-8 flex flex-col items-center justify-center min-h-[360px]">
-                    <div className="w-16 h-16 rounded-full bg-gray-100 group-hover:bg-blue/10 flex items-center justify-center mb-4 transition-colors">
-                      <Plus className="h-8 w-8 text-gray-400 group-hover:text-blue transition-colors" />
+                    <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 transition-colors ${
+                      demoStep === 1 ? 'bg-blue/10' : 'bg-gray-100 group-hover:bg-blue/10'
+                    }`}>
+                      <Plus className={`h-8 w-8 transition-colors ${
+                        demoStep === 1 ? 'text-blue' : 'text-gray-400 group-hover:text-blue'
+                      }`} />
                     </div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Connect a Screen</h4>
-                    <p className="text-sm text-gray-500 mb-4">Add a new display to your venue</p>
-                    <p className="text-xs text-gray-400">Click to pair a device</p>
+                    <h4 className={`font-bold mb-1 text-lg ${demoStep === 1 ? 'text-blue' : 'text-gray-900'}`}>Connect a Screen</h4>
+                    <p className="text-base text-gray-500 mb-4">Add a new display to your venue</p>
+                    <p className={`text-sm font-medium ${demoStep === 1 ? 'text-blue' : 'text-gray-400'}`}>
+                      {demoStep === 1 ? 'Click here to get started' : 'Click to pair a device'}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1117,34 +1244,60 @@ export default function HomePage() {
 
                     {/* Launch Web Player Section - Only for Web player */}
                     {selectedPlayerType === 'web' && (
-                      <div className="border border-gray-200 rounded-lg overflow-hidden">
-                        <button
-                          type="button"
-                          onClick={() => setShowWebPlayerHelp(!showWebPlayerHelp)}
-                          className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-colors"
-                        >
-                          <div className="flex items-center gap-2">
-                            <Info className="h-4 w-4 text-blue" />
-                            <span className="text-sm font-medium text-gray-700">Need help getting a pairing code?</span>
-                          </div>
-                          <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform ${showWebPlayerHelp ? 'rotate-180' : ''}`} />
-                        </button>
-                        {showWebPlayerHelp && (
-                          <div className="p-3 border-t border-gray-200 bg-white space-y-2">
-                            <button
-                              type="button"
-                              className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-                              onClick={() => setShowPairingPage(true)}
-                            >
-                              <ExternalLink className="h-3 w-3" />
-                              Launch Web Player
-                            </button>
-                            <div className="text-center">
-                              <span className="text-xs text-gray-500">Or go to: </span>
-                              <span className="text-xs font-mono text-gray-900 select-all">player.piads.co</span>
+                      <div className="relative">
+                        {/* Bouncing guide arrow when help is closed */}
+                        {!showWebPlayerHelp && !enteredPairingCode && (
+                          <div className="absolute -left-2 top-1/2 -translate-y-1/2 -translate-x-full z-10 flex items-center gap-1 animate-bounce-right">
+                            <div className="bg-blue text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap">
+                              Click here!
                             </div>
+                            <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
+                              <path d="M2 8 L14 8" stroke="#4856c4" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="4 3" />
+                              <path d="M12 3 L18 8 L12 13" stroke="#4856c4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                            </svg>
                           </div>
                         )}
+                        <div className={`border rounded-lg overflow-hidden transition-all ${!showWebPlayerHelp && !enteredPairingCode ? 'border-blue shadow-md shadow-blue/20 ring-2 ring-blue/20' : 'border-gray-200'}`}>
+                          <button
+                            type="button"
+                            onClick={() => setShowWebPlayerHelp(!showWebPlayerHelp)}
+                            className={`w-full flex items-center justify-between p-3 transition-colors ${!showWebPlayerHelp && !enteredPairingCode ? 'bg-blue/5 hover:bg-blue/10' : 'bg-gray-50 hover:bg-gray-100'}`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <Info className={`h-4 w-4 ${!showWebPlayerHelp && !enteredPairingCode ? 'text-blue animate-pulse-soft' : 'text-blue'}`} />
+                              <span className={`text-sm font-medium ${!showWebPlayerHelp && !enteredPairingCode ? 'text-blue' : 'text-gray-700'}`}>Need help getting a pairing code?</span>
+                            </div>
+                            <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform ${showWebPlayerHelp ? 'rotate-180' : ''}`} />
+                          </button>
+                          {showWebPlayerHelp && (
+                            <div className="p-3 border-t border-gray-200 bg-white space-y-2 relative">
+                              {/* Bouncing guide to Launch Web Player button */}
+                              {!enteredPairingCode && (
+                                <div className="absolute -right-2 top-3 translate-x-full z-10 flex items-center gap-1 animate-bounce-left">
+                                  <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
+                                    <path d="M18 8 L6 8" stroke="#4856c4" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="4 3" />
+                                    <path d="M8 3 L2 8 L8 13" stroke="#4856c4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                                  </svg>
+                                  <div className="bg-blue text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap">
+                                    Get your code!
+                                  </div>
+                                </div>
+                              )}
+                              <button
+                                type="button"
+                                className={`w-full flex items-center justify-center gap-1.5 px-3 py-2.5 text-sm rounded-lg transition-all ${!enteredPairingCode ? 'bg-blue text-white hover:bg-blue/90 font-semibold shadow-md' : 'border border-gray-200 hover:bg-gray-50'}`}
+                                onClick={() => setShowPairingPage(true)}
+                              >
+                                <ExternalLink className="h-3.5 w-3.5" />
+                                Launch Web Player
+                              </button>
+                              <div className="text-center">
+                                <span className="text-xs text-gray-500">Or go to: </span>
+                                <span className="text-xs font-mono text-gray-900 select-all">player.piads.co</span>
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     )}
 
@@ -1204,46 +1357,62 @@ export default function HomePage() {
                   </div>
 
                   {/* Footer */}
-                  <div className="flex items-center justify-end gap-3 p-5 border-t">
-                    <button
-                      onClick={() => {
-                        setShowConnectScreen(false)
-                        setEnteredPairingCode('')
-                        setShowWebPlayerHelp(false)
-                      }}
-                      className="px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-xl transition-colors"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={() => {
-                        if (enteredPairingCode === demoPairingCode) {
-                          setIsConnecting(true)
-                          setTimeout(() => {
-                            setIsConnecting(false)
-                            setIsScreenConnected(true)
-                            setShowConnectScreen(false)
-                            setEnteredPairingCode('')
-                            setShowWebPlayerHelp(false)
-                          }, 1500)
-                        }
-                      }}
-                      disabled={enteredPairingCode !== demoPairingCode || isConnecting}
-                      className={`px-5 py-2.5 text-sm font-medium text-white rounded-xl transition-colors flex items-center gap-2 ${
-                        enteredPairingCode === demoPairingCode && !isConnecting
-                          ? 'bg-blue hover:bg-blue/90'
-                          : 'bg-gray-300 cursor-not-allowed'
-                      }`}
-                    >
-                      {isConnecting ? (
-                        <>
-                          <RefreshCw className="h-4 w-4 animate-spin" />
-                          Connecting...
-                        </>
-                      ) : (
-                        'Connect Screen'
-                      )}
-                    </button>
+                  <div className="sticky bottom-0 bg-white border-t relative">
+                    {/* Bouncing scroll-down guide when code is valid */}
+                    {enteredPairingCode === demoPairingCode && !isConnecting && (
+                      <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce-down pointer-events-none">
+                        <div className="bg-blue text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap">
+                          Scroll down &amp; connect!
+                        </div>
+                        <svg width="16" height="20" viewBox="0 0 16 20" fill="none" className="mt-1">
+                          <path d="M8 2 L8 14" stroke="#4856c4" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="4 3" />
+                          <path d="M3 12 L8 18 L13 12" stroke="#4856c4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                        </svg>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-end gap-3 p-5">
+                      <button
+                        onClick={() => {
+                          setShowConnectScreen(false)
+                          setEnteredPairingCode('')
+                          setShowWebPlayerHelp(false)
+                        }}
+                        className="px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-xl transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <div className="relative">
+                        <button
+                          onClick={() => {
+                            if (enteredPairingCode === demoPairingCode) {
+                              setIsConnecting(true)
+                              setTimeout(() => {
+                                setIsConnecting(false)
+                                setIsScreenConnected(true)
+                                setShowConnectScreen(false)
+                                setEnteredPairingCode('')
+                                setShowWebPlayerHelp(false)
+                              }, 1500)
+                            }
+                          }}
+                          disabled={enteredPairingCode !== demoPairingCode || isConnecting}
+                          className={`px-5 py-2.5 text-sm font-medium text-white rounded-xl transition-colors flex items-center gap-2 ${
+                            enteredPairingCode === demoPairingCode && !isConnecting
+                              ? 'bg-blue hover:bg-blue/90 ring-2 ring-blue/40 animate-step-glow'
+                              : 'bg-gray-300 cursor-not-allowed'
+                          }`}
+                        >
+                          {isConnecting ? (
+                            <>
+                              <RefreshCw className="h-4 w-4 animate-spin" />
+                              Connecting...
+                            </>
+                          ) : (
+                            'Connect Screen'
+                          )}
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1285,19 +1454,32 @@ export default function HomePage() {
                         <span className="text-4xl md:text-5xl font-mono font-bold text-white tracking-widest">
                           {demoPairingCode}
                         </span>
-                        <button
-                          onClick={() => {
-                            navigator.clipboard.writeText(demoPairingCode)
-                            // Auto-paste to input
-                            setEnteredPairingCode(demoPairingCode)
-                          }}
-                          className="p-2 hover:bg-gray-700 rounded-lg transition-colors group"
-                          title="Copy to clipboard"
-                        >
-                          <svg className="h-6 w-6 text-gray-400 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                          </svg>
-                        </button>
+                        <div className="relative">
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(demoPairingCode)
+                              // Auto-paste to input and close player modal
+                              setEnteredPairingCode(demoPairingCode)
+                              setShowPairingPage(false)
+                            }}
+                            className="p-2 hover:bg-gray-700 rounded-lg transition-colors group ring-2 ring-blue/60 animate-step-glow"
+                            title="Copy to clipboard"
+                          >
+                            <svg className="h-6 w-6 text-gray-400 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                          </button>
+                          {/* Bouncing guide arrow pointing up to copy button */}
+                          <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 flex flex-col items-center animate-bounce-down">
+                            <svg width="16" height="20" viewBox="0 0 16 20" fill="none">
+                              <path d="M8 18 L8 6" stroke="#6C7AE0" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="4 3" />
+                              <path d="M3 8 L8 2 L13 8" stroke="#6C7AE0" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                            </svg>
+                            <div className="bg-blue text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap mt-1">
+                              Copy &amp; connect!
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
@@ -1317,35 +1499,35 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-6">
             {/* For Venues */}
             <ScrollAnimate animation="left">
-              <div className="bg-blue rounded-3xl p-8 md:p-10 text-white h-full">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                    <Building2 className="h-5 w-5" />
+              <div className="bg-blue rounded-3xl p-8 md:p-12 text-white h-full">
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+                    <Building2 className="h-6 w-6" />
                   </div>
-                  <h3 className="text-2xl font-semibold font-display">For Venues</h3>
+                  <h3 className="text-3xl font-bold font-display">For Venues</h3>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-5">
                   {howItWorks.venues.map((item, index) => (
-                    <div key={item.step} className="flex gap-3">
-                      <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                    <div key={item.step} className="flex gap-4">
+                      <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-base font-bold flex-shrink-0">
                         {index + 1}
                       </div>
                       <div>
-                        <h4 className="font-semibold text-sm mb-0.5">{item.title}</h4>
-                        <p className="text-white/70 text-xs">{item.description}</p>
+                        <h4 className="font-bold text-lg mb-1">{item.title}</h4>
+                        <p className="text-white/80 text-base">{item.description}</p>
                       </div>
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 pt-5 border-t border-white/20 flex items-center justify-between">
+                <div className="mt-8 pt-6 border-t border-white/20 flex items-center justify-between">
                   <div>
-                    <span className="text-white/70 text-sm">Platform fee</span>
-                    <p className="font-bold text-lg">$10/screen/mo</p>
+                    <span className="text-white/70 text-base">Platform fee</span>
+                    <p className="font-bold text-2xl">$10/screen/mo</p>
                   </div>
-                  <Button variant="secondary" className="rounded-full" asChild>
+                  <Button variant="secondary" className="rounded-full h-12 px-6 text-base font-bold" asChild>
                     <Link href={`${APP_URL}/sign-up?role=venue`}>
                       Start Now
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <ArrowRight className="ml-2 h-5 w-5" />
                     </Link>
                   </Button>
                 </div>
@@ -1354,35 +1536,35 @@ export default function HomePage() {
 
             {/* For Advertisers */}
             <ScrollAnimate animation="right">
-              <div className="bg-teal rounded-3xl p-8 md:p-10 text-white h-full">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                    <Megaphone className="h-5 w-5" />
+              <div className="bg-teal rounded-3xl p-8 md:p-12 text-white h-full">
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+                    <Megaphone className="h-6 w-6" />
                   </div>
-                  <h3 className="text-2xl font-semibold font-display">For Advertisers</h3>
+                  <h3 className="text-3xl font-bold font-display">For Advertisers</h3>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-5">
                   {howItWorks.advertisers.map((item, index) => (
-                    <div key={item.step} className="flex gap-3">
-                      <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                    <div key={item.step} className="flex gap-4">
+                      <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-base font-bold flex-shrink-0">
                         {index + 1}
                       </div>
                       <div>
-                        <h4 className="font-semibold text-sm mb-0.5">{item.title}</h4>
-                        <p className="text-white/70 text-xs">{item.description}</p>
+                        <h4 className="font-bold text-lg mb-1">{item.title}</h4>
+                        <p className="text-white/80 text-base">{item.description}</p>
                       </div>
                     </div>
                   ))}
                 </div>
-                <div className="mt-6 pt-5 border-t border-white/20 flex items-center justify-between">
+                <div className="mt-8 pt-6 border-t border-white/20 flex items-center justify-between">
                   <div>
-                    <span className="text-white/70 text-sm">Start from</span>
-                    <p className="font-bold text-lg">$50/week</p>
+                    <span className="text-white/70 text-base">Start from</span>
+                    <p className="font-bold text-2xl">$50/week</p>
                   </div>
-                  <Button variant="secondary" className="rounded-full" asChild>
+                  <Button variant="secondary" className="rounded-full h-12 px-6 text-base font-bold" asChild>
                     <Link href={`${APP_URL}/sign-up?role=advertiser`}>
                       Browse Venues
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <ArrowRight className="ml-2 h-5 w-5" />
                     </Link>
                   </Button>
                 </div>
@@ -1392,20 +1574,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Wave Divider */}
-      <div className="relative overflow-hidden bg-secondary/50">
-        <svg
-          className="w-[200%] h-12 md:h-16 text-white animate-wave"
-          viewBox="0 0 2880 60"
-          preserveAspectRatio="none"
-          fill="currentColor"
-        >
-          <path d="M0,30 C360,60 1080,0 1440,30 C1800,60 2520,0 2880,30 L2880,60 L0,60 Z" />
-        </svg>
-      </div>
-
       {/* Testimonials */}
-      <section className="pt-16 pb-24 md:pt-20 md:pb-32 relative overflow-hidden">
+      <section className="pt-20 pb-28 md:pt-24 md:pb-36 relative overflow-hidden">
         {/* Background logo */}
         <div className="absolute right-10 bottom-10 opacity-[0.05] -z-10 pointer-events-none animate-drift-full">
           <Image
@@ -1431,36 +1601,36 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <ScrollAnimate key={testimonial.author} delay={index * 150}>
-                <div className="bg-white rounded-3xl p-8 shadow-sm hover-lift h-full flex flex-col border border-gray-100">
-                  <div className="mb-4">
-                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full ${
+                <div className="bg-white rounded-3xl p-8 md:p-10 shadow-md hover-lift h-full flex flex-col border border-gray-100">
+                  <div className="mb-6">
+                    <span className={`inline-flex items-center gap-2 text-sm font-semibold px-4 py-1.5 rounded-full ${
                       testimonial.type === 'venue'
                         ? 'bg-blue/10 text-blue'
                         : 'bg-teal/10 text-teal'
                     }`}>
                       {testimonial.type === 'venue' ? (
                         <>
-                          <Building2 className="h-3 w-3" />
+                          <Building2 className="h-4 w-4" />
                           Venue
                         </>
                       ) : (
                         <>
-                          <Megaphone className="h-3 w-3" />
+                          <Megaphone className="h-4 w-4" />
                           Advertiser
                         </>
                       )}
                     </span>
                   </div>
-                  <blockquote className="text-lg mb-6 leading-relaxed flex-1">
+                  <blockquote className="text-xl md:text-2xl mb-8 leading-relaxed flex-1 font-medium">
                     &ldquo;{testimonial.quote}&rdquo;
                   </blockquote>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue to-teal flex items-center justify-center text-white font-semibold">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue to-teal flex items-center justify-center text-white font-bold text-lg">
                       {testimonial.author.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
-                      <div className="font-semibold">{testimonial.author}</div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="font-bold text-lg">{testimonial.author}</div>
+                      <div className="text-base text-muted-foreground">
                         {testimonial.role}, {testimonial.company}
                       </div>
                     </div>
@@ -1473,10 +1643,10 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-24 md:py-32 bg-blue text-white relative overflow-hidden">
+      <section className="py-28 md:py-36 bg-gray-900 text-white relative overflow-hidden">
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-white blur-3xl" />
+          <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-blue blur-3xl" />
           <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-teal blur-3xl" />
         </div>
         {/* Animated logo */}
@@ -1490,32 +1660,42 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="container text-center max-w-3xl relative">
+        <div className="container text-center max-w-4xl relative">
           <ScrollAnimate>
-            <h2 className="text-4xl md:text-5xl font-bold font-display mb-6">
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold font-display mb-8">
               Be Part of the Founding Community
             </h2>
           </ScrollAnimate>
           <ScrollAnimate delay={100}>
-            <p className="text-xl text-white/80 mb-4">
-              Venues across Ballston, Clarendon, Columbia Pike & Falls Church are already keeping advertising local.
+            <p className="text-2xl md:text-3xl text-white/90 mb-4 font-medium">
+              Venues across Arlington & Falls Church are already keeping advertising local.
             </p>
-            <p className="text-lg text-white/60 mb-10">
-              $10/screen for venues. $50-75/week for advertisers. No big corporations.
+            <div className="flex flex-wrap justify-center gap-4 my-8">
+              <span className="bg-white/10 border border-white/20 text-white font-bold text-xl px-6 py-3 rounded-full">
+                $10/screen for venues
+              </span>
+              <span className="bg-white/10 border border-white/20 text-white font-bold text-xl px-6 py-3 rounded-full">
+                $50-75/week for advertisers
+              </span>
+            </div>
+            <p className="text-xl text-white/60 mb-10">
+              No big corporations. No contracts. Free to try.
             </p>
           </ScrollAnimate>
           <ScrollAnimate delay={200}>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" className="h-14 px-8 text-base rounded-xl shadow-lg hover:scale-105 transition-all duration-300" asChild>
+              <Button size="lg" className="h-16 px-10 text-lg rounded-2xl shadow-xl hover:scale-105 transition-all duration-300 bg-blue hover:bg-blue/90 font-bold" asChild>
                 <Link href={`${APP_URL}/sign-up?role=venue`}>
-                  <Building2 className="mr-2 h-5 w-5" />
+                  <Building2 className="mr-3 h-6 w-6" />
                   Join as Venue
+                  <ArrowRight className="ml-3 h-5 w-5" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-xl bg-transparent border-white text-white hover:bg-white/10 hover:scale-105 transition-all duration-300" asChild>
+              <Button size="lg" className="h-16 px-10 text-lg rounded-2xl shadow-xl hover:scale-105 transition-all duration-300 bg-teal hover:bg-teal/90 font-bold" asChild>
                 <Link href={`${APP_URL}/sign-up?role=advertiser`}>
-                  <Megaphone className="mr-2 h-5 w-5" />
+                  <Megaphone className="mr-3 h-6 w-6" />
                   Join as Advertiser
+                  <ArrowRight className="ml-3 h-5 w-5" />
                 </Link>
               </Button>
             </div>

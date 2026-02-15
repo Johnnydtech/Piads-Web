@@ -27,8 +27,8 @@ const allNavigation = [
 ]
 
 const badgeMessages = [
-  { text: "Keep", bold: "75%", suffix: "of Revenue" },
-  { text: "Only", bold: "$10", suffix: "/screen" },
+  { text: "You Keep", bold: "75%", suffix: "of Ad Revenue" },
+  { text: "Only", bold: "$10", suffix: "/screen/mo" },
 ]
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
@@ -167,7 +167,7 @@ export function Header() {
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
             <span className={cn(
-              "bg-coral/80 text-gray-900 font-medium rounded-full transition-all duration-300 whitespace-nowrap overflow-hidden text-center w-[175px]",
+              "bg-coral/80 text-gray-900 font-medium rounded-full transition-all duration-300 whitespace-nowrap overflow-hidden text-center w-[220px]",
               scrolled ? "text-xs px-3 py-1" : "text-sm px-4 py-1.5"
             )}>
               <span className={cn(
