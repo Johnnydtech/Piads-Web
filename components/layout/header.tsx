@@ -5,10 +5,13 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Menu, X, ChevronDown, BookOpen, Tv, Building2, Mail } from "lucide-react"
+import { Menu, X, ChevronDown, BookOpen, Tv, Building2, Mail, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
+
 const mainNavigation = [
+  { name: "Explore Screens", href: `${APP_URL}/discover`, external: true },
   { name: "Features", href: "/features" },
   { name: "Pricing", href: "/pricing" },
   { name: "Blog", href: "/blog" },
@@ -30,8 +33,6 @@ const badgeMessages = [
   { text: "You Keep", bold: "75%", suffix: "of Ad Revenue" },
   { text: "Only", bold: "$10", suffix: "/screen/mo" },
 ]
-
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
 
 export function Header() {
   const pathname = usePathname()
@@ -99,15 +100,19 @@ export function Header() {
               <Link
                 key={item.name}
                 href={item.href}
+                {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 className={cn(
-                  "relative font-medium transition-all duration-300 rounded-full",
+                  "relative font-medium transition-all duration-300 rounded-full flex items-center gap-1.5",
                   "hover:bg-gray-100 hover:text-blue",
                   scrolled ? "px-4 py-2 text-sm" : "px-5 py-2.5 text-base",
-                  pathname === item.href
-                    ? "text-blue"
-                    : "text-gray-700"
+                  item.external
+                    ? "text-blue font-semibold"
+                    : pathname === item.href
+                      ? "text-blue"
+                      : "text-gray-700"
                 )}
               >
+                {item.external && <MapPin className="h-4 w-4" />}
                 {item.name}
               </Link>
             ))}
@@ -239,15 +244,19 @@ export function Header() {
               <Link
                 key={item.name}
                 href={item.href}
+                {...('external' in item && item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 className={cn(
-                  "text-base font-medium transition-all duration-300 py-3 px-4 rounded-xl",
+                  "text-base font-medium transition-all duration-300 py-3 px-4 rounded-xl flex items-center gap-2",
                   "hover:bg-gray-100 hover:text-blue",
-                  pathname === item.href
-                    ? "text-blue bg-blue/5"
-                    : "text-gray-700"
+                  'external' in item && item.external
+                    ? "text-blue font-semibold"
+                    : pathname === item.href
+                      ? "text-blue bg-blue/5"
+                      : "text-gray-700"
                 )}
                 onClick={() => setMobileMenuOpen(false)}
               >
+                {'external' in item && item.external && <MapPin className="h-4 w-4" />}
                 {item.name}
               </Link>
             ))}

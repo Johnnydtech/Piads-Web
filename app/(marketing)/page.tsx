@@ -360,6 +360,15 @@ export default function HomePage() {
                     Free to try
                   </span>
                 </div>
+
+                <Link
+                  href={`${APP_URL}/discover`}
+                  className="inline-flex items-center gap-2 mt-4 text-base text-muted-foreground hover:text-blue transition-colors group"
+                >
+                  <MapPin className="h-4 w-4" />
+                  Or explore available screens near you
+                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
               </ScrollAnimate>
             </div>
 
@@ -1562,8 +1571,8 @@ export default function HomePage() {
                     <p className="font-bold text-2xl">$50/week</p>
                   </div>
                   <Button variant="secondary" className="rounded-full h-12 px-6 text-base font-bold" asChild>
-                    <Link href={`${APP_URL}/sign-up?role=advertiser`}>
-                      Browse Venues
+                    <Link href={`${APP_URL}/discover`}>
+                      Explore Screens
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Link>
                   </Button>
