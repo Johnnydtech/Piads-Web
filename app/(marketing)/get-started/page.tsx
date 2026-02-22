@@ -20,6 +20,8 @@ import {
   ArrowRight,
   BookOpen,
   Tv,
+  ExternalLink,
+  Smartphone,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -67,81 +69,62 @@ Tip: We recommend connecting your first screen next!`,
       {
         id: "add-first-screen",
         title: "Connect your first screen",
-        description: "The easiest way using the Web Player",
-        content: `The Web Player is the easiest way to get started - no hardware needed!
+        description: "Download the app, open it, and pair in 2 minutes",
+        content: `The fastest way to get started is with the PiAds Player app from Google Play.
 
-Step 1: Click "New Screen"
-From your dashboard, click the "New Screen" button.
+Step 1: Download the PiAds Player app
+Open Google Play on your Android TV, Fire TV, or Android device and search for "PiAds Player", or visit:
+https://play.google.com/store/apps/details?id=co.piads.kiosk
 
-Step 2: Select player type
-You'll see options for different player types:
-• Web Player (easiest - recommended to start)
-• Raspberry Pi
-• Fire TV
-• Android
+Step 2: Open the app
+Launch PiAds Player. It will display a 6-digit pairing code on screen.
 
-Select "Web Player" to get started quickly.
+Step 3: Add a new screen in PiAds
+In your PiAds dashboard (app.piads.co), go to Screens and click "New Screen".
 
-Step 3: Get your pairing code
-Click "Need help getting a pairing code?" then click "Launch Web Player".
-This opens a new browser tab with your pairing code displayed.
+Step 4: Enter the pairing code
+Type the 6-digit code from your device into the pairing code field. Give your screen a name (e.g., "Front Counter TV").
 
-Step 4: Copy the pairing code
-Copy the pairing code shown on the Web Player tab.
-
-Step 5: Connect the screen
-Back in the "Connect new screen" dialog:
-• Paste the pairing code into the "Pairing code" field
-• Give your screen a name (e.g., "Front Counter TV")
-• Click "Connect"
-
-Your screen is now connected! You'll see it appear on the Screens page.
+Step 5: Click "Connect"
+Your screen pairs instantly! You'll see it appear on the Screens page.
 
 Step 6: Activate your screen
-• Click on your new screen to open the Editor
-• At the top, toggle the switch to activate the screen
-• Your screen is now live!
+Click on your new screen to open the Editor. Toggle the switch at the top to activate it. Your screen is now live!
 
-Next: Attach media or a playlist to display content.`,
+Next: Attach media or a playlist to display content.
+
+No Android device? You can also use the Web Player — click "New Screen" and select "Web Player" to open a browser-based player.`,
       },
       {
         id: "device-setup",
-        title: "Other player devices",
-        description: "Raspberry Pi, Fire TV, and Android setup",
-        content: `Besides the Web Player, you can use dedicated hardware for 24/7 displays.
+        title: "All supported player devices",
+        description: "Android TV, Fire TV, Raspberry Pi, and Web Player",
+        content: `PiAds supports multiple device types. The Google Play app is the easiest way to get started.
 
-RASPBERRY PI (Best for permanent displays)
-1. Go to piads.co/devices and download the PiAds Player image
+ANDROID TV / FIRE TV / ANDROID TABLET (Recommended)
+1. Download "PiAds Player" from Google Play:
+   https://play.google.com/store/apps/details?id=co.piads.kiosk
+2. Open the app — a 6-digit pairing code appears
+3. In PiAds dashboard, click "New Screen" and enter the code
+4. Done! Your screen connects instantly
+
+Works with: Android TV, Fire TV Stick, Fire TV Cube, Android tablets, Chromecast with Google TV, and any Android 7+ device.
+
+RASPBERRY PI (Best for permanent 24/7 displays)
+1. Request the PiAds Player image from your dashboard (Screens > New Screen > Raspberry Pi)
 2. Flash the image to your SD card using Balena Etcher
 3. Insert SD card and power on your Raspberry Pi
 4. Connect to your WiFi or Ethernet
 5. The player will display a pairing code
-6. In PiAds dashboard, click "New Screen" and enter the code
-7. Your screen connects automatically!
-
-FIRE TV / FIRE TV STICK
-1. In PiAds dashboard, click "New Screen" and select Fire TV / Android
-2. The dashboard will guide you through installing the app on your device
-3. On Fire TV, go to Settings > My Fire TV > Developer Options
-4. Enable "Apps from Unknown Sources"
-5. Install the PiAds app using the Downloader app
-6. Open PiAds app - it shows a pairing code
-7. Enter the code in the dashboard and your screen connects automatically!
-
-ANDROID TV / ANDROID TABLET
-1. Download PiAds Player from Google Play: https://play.google.com/store/apps/details?id=co.piads.kiosk
-2. Open the app — it displays a pairing code
-3. In PiAds dashboard, click "New Screen" and enter the code
-4. Your screen connects automatically!
+6. Enter the code in the dashboard — your screen connects automatically!
 
 WEB PLAYER (For testing or computer displays)
-1. Click "New Screen" in dashboard
-2. Click "Need help getting a pairing code?"
-3. Click "Launch Web Player" to open player in new tab
-4. Copy the pairing code and paste it back in the dashboard
-5. Your screen connects automatically!
+1. Click "New Screen" in dashboard and select "Web Player"
+2. Click "Launch Web Player" to open the player in a new tab
+3. Copy the pairing code and paste it back in the dashboard
+4. Your screen connects automatically!
 
-Tip: Raspberry Pi is most reliable for 24/7 operation. Web Player is perfect for testing.`,
+Tip: The Google Play app works on the widest range of devices and is the easiest to set up. Raspberry Pi is best for permanent, always-on installations.`,
       },
     ],
   },
@@ -1443,6 +1426,62 @@ export default function GetStartedPage() {
               For Advertisers
             </button>
           </div>
+        </div>
+      </section>
+
+      {/* Google Play Banner */}
+      <section className="py-8 md:py-10 border-b">
+        <div className="container max-w-6xl">
+          <a
+            href="https://play.google.com/store/apps/details?id=co.piads.kiosk"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block relative overflow-hidden rounded-3xl bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 hover:from-green-500 hover:via-emerald-500 hover:to-teal-500 transition-all duration-500 shadow-xl shadow-green-900/20 hover:shadow-2xl hover:shadow-green-900/30 hover:-translate-y-1"
+          >
+            {/* Background pattern */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -translate-y-1/2 translate-x-1/3" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full translate-y-1/2 -translate-x-1/4" />
+            </div>
+
+            <div className="relative flex flex-col md:flex-row items-center gap-6 md:gap-8 p-8 md:p-10">
+              {/* Icon */}
+              <div className="flex items-center gap-5 shrink-0">
+                <div className="h-20 w-20 md:h-24 md:w-24 rounded-3xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
+                  <svg className="h-10 w-10 md:h-12 md:w-12 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 0 1 0 1.38l-2.302 2.302L15.396 13l2.302-2.492zM5.864 2.658L16.8 9.09l-2.302 2.303-8.635-8.735z"/>
+                  </svg>
+                </div>
+              </div>
+
+              {/* Text */}
+              <div className="flex-1 text-center md:text-left">
+                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 text-xs font-semibold text-white/90 mb-3">
+                  <Smartphone className="h-3.5 w-3.5" />
+                  Now on Google Play
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 font-display">
+                  PiAds Player App
+                </h2>
+                <p className="text-white/80 text-sm md:text-base max-w-lg">
+                  Download the app on your Android TV, Fire TV, or tablet. Open it, get a pairing code, and your screen is live in under 2 minutes.
+                </p>
+              </div>
+
+              {/* CTA */}
+              <div className="flex flex-col items-center gap-3 shrink-0">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                  alt="Get it on Google Play"
+                  className="h-14 md:h-16 group-hover:scale-105 transition-transform duration-300"
+                />
+                <span className="flex items-center gap-1.5 text-white/70 text-xs font-medium group-hover:text-white/90 transition-colors">
+                  Download Free
+                  <ExternalLink className="h-3 w-3" />
+                </span>
+              </div>
+            </div>
+          </a>
         </div>
       </section>
 
