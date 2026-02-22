@@ -5,13 +5,12 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Menu, X, ChevronDown, BookOpen, Tv, Building2, Mail, MapPin } from "lucide-react"
+import { Menu, X, ChevronDown, BookOpen, Tv, Building2, Mail, MapPin, ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
 
 const mainNavigation = [
-  { name: "Explore Screens", href: `${APP_URL}/discover`, external: true },
   { name: "Features", href: "/features" },
   { name: "Pricing", href: "/pricing" },
   { name: "Blog", href: "/blog" },
@@ -63,6 +62,7 @@ export function Header() {
   const isResourcesActive = resourcesNavigation.some(item => pathname === item.href)
 
   return (
+    <>
     <header className="fixed top-0 left-0 right-0 z-50 px-4 md:px-6">
       <div
         className={cn(
@@ -100,19 +100,15 @@ export function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 className={cn(
-                  "relative font-medium transition-all duration-300 rounded-full flex items-center gap-1.5",
+                  "relative font-medium transition-all duration-300 rounded-full",
                   "hover:bg-gray-100 hover:text-blue",
                   scrolled ? "px-4 py-2 text-sm" : "px-5 py-2.5 text-base",
-                  item.external
-                    ? "text-blue font-semibold"
-                    : pathname === item.href
-                      ? "text-blue"
-                      : "text-gray-700"
+                  pathname === item.href
+                    ? "text-blue"
+                    : "text-gray-700"
                 )}
               >
-                {item.external && <MapPin className="h-4 w-4" />}
                 {item.name}
               </Link>
             ))}
@@ -244,19 +240,15 @@ export function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                {...('external' in item && item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 className={cn(
-                  "text-base font-medium transition-all duration-300 py-3 px-4 rounded-xl flex items-center gap-2",
+                  "text-base font-medium transition-all duration-300 py-3 px-4 rounded-xl",
                   "hover:bg-gray-100 hover:text-blue",
-                  'external' in item && item.external
-                    ? "text-blue font-semibold"
-                    : pathname === item.href
-                      ? "text-blue bg-blue/5"
-                      : "text-gray-700"
+                  pathname === item.href
+                    ? "text-blue bg-blue/5"
+                    : "text-gray-700"
                 )}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {'external' in item && item.external && <MapPin className="h-4 w-4" />}
                 {item.name}
               </Link>
             ))}
@@ -280,5 +272,39 @@ export function Header() {
         </div>
       </div>
     </header>
+
+      {/* Explore Screens teaser banner — sits below header */}
+      <div className={cn(
+        "fixed left-0 right-0 z-40 flex justify-center transition-all duration-500 px-4",
+        scrolled ? "top-[84px]" : "top-[96px]"
+      )}>
+        <Link
+          href={`${APP_URL}/discover`}
+          className={cn(
+            "group flex items-center gap-3 px-5 py-2.5 rounded-full",
+            "bg-gradient-to-r from-blue/10 via-teal/10 to-blue/10",
+            "border border-blue/20 shadow-lg shadow-blue/5",
+            "backdrop-blur-xl",
+            "hover:border-blue/40 hover:shadow-xl hover:shadow-blue/10",
+            "hover:from-blue/15 hover:via-teal/15 hover:to-blue/15",
+            "transition-all duration-300"
+          )}
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+          </span>
+          <MapPin className="h-4 w-4 text-blue" />
+          <span className="text-sm font-medium text-gray-700">
+            Screens now live in <span className="font-bold text-gray-900">Arlington, VA</span>
+          </span>
+          <span className="text-sm text-gray-500">—</span>
+          <span className="text-sm font-semibold text-blue group-hover:underline">
+            Explore the map
+          </span>
+          <ArrowRight className="h-4 w-4 text-blue group-hover:translate-x-0.5 transition-transform" />
+        </Link>
+      </div>
+    </>
   )
 }

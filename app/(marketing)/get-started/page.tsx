@@ -129,11 +129,10 @@ FIRE TV / FIRE TV STICK
 7. Enter the code in the dashboard and your screen connects automatically!
 
 ANDROID TV / ANDROID TABLET
-1. In PiAds dashboard, click "New Screen" and select Android
-2. The dashboard will guide you through installing the app on your device
-3. Install and open the app
-4. The app displays a pairing code
-5. Enter the code in the dashboard and your screen connects automatically!
+1. Download PiAds Player from Google Play: https://play.google.com/store/apps/details?id=co.piads.kiosk
+2. Open the app — it displays a pairing code
+3. In PiAds dashboard, click "New Screen" and enter the code
+4. Your screen connects automatically!
 
 WEB PLAYER (For testing or computer displays)
 1. Click "New Screen" in dashboard
