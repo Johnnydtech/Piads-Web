@@ -275,7 +275,7 @@ export function Header() {
 
       {/* Explore Screens teaser banner — sits below header */}
       <div className={cn(
-        "fixed left-0 right-0 z-40 flex justify-center transition-all duration-500 px-4",
+        "fixed left-0 right-0 z-40 justify-center transition-all duration-500 px-4 hidden md:flex",
         scrolled ? "top-[84px]" : "top-[96px]"
       )}>
         <Link
