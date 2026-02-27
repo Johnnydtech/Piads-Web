@@ -143,7 +143,7 @@ const testimonials = [
   {
     quote: "My members love seeing our WOD and PR board on the screen. It keeps the energy high and everyone engaged.",
     author: "Coach Bobby K",
-    role: "Owner",
+    role: "Coach",
     company: "Ballston CrossFit",
     type: "venue",
   },
