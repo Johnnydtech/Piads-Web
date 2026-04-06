@@ -62,11 +62,7 @@ const rotatingHeadlines = [
   "Your Network",
 ]
 
-// CMS Screenshots for hero
-const heroScreenshots = [
-  { src: "/cms-screenshots/hero-dashboard.png", label: "Manage Screens" },
-  { src: "/cms-screenshots/marketplace-cms-new.png", label: "Browse Venues" },
-]
+const APP_STORE_URL = "https://apps.apple.com/us/app/piads/id6759892788"
 
 const stats = [
   { label: "Arlington Neighborhoods", value: 4, suffix: "+", color: "text-blue" },
@@ -167,7 +163,7 @@ const testimonials = [
 export default function HomePage() {
   const [headlineIndex, setHeadlineIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
-  const [screenshotIndex, setScreenshotIndex] = useState(0)
+  // screenshotIndex removed — replaced with iOS app video
   const [selectedRole, setSelectedRole] = useState<'venue' | 'advertiser'>('venue')
 
   // Demo section state
@@ -211,13 +207,7 @@ export default function HomePage() {
     return () => clearInterval(interval)
   }, [])
 
-  // Screenshot rotation
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setScreenshotIndex((prev) => (prev + 1) % heroScreenshots.length)
-    }, 5000)
-    return () => clearInterval(interval)
-  }, [])
+  // Screenshot rotation removed — replaced with iOS app video
 
   // Demo clock update
   useEffect(() => {
@@ -372,59 +362,105 @@ export default function HomePage() {
               </ScrollAnimate>
             </div>
 
-            {/* Right Column - Product Screenshot */}
-            <div className="relative lg:-mr-8 xl:-mr-16">
+            {/* Right Column - iOS App Video in Phone Mockup */}
+            <div className="relative flex flex-col items-center lg:scale-110 lg:origin-top">
               <ScrollAnimate animation="scale" delay={300}>
-                <div className="animate-float-slow">
-                  {/* Browser Chrome */}
-                  <div className="bg-slate-800 rounded-t-2xl px-4 py-3 flex items-center gap-2 shadow-2xl">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-400" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                      <div className="w-3 h-3 rounded-full bg-green-400" />
-                    </div>
-                    <div className="flex-1 mx-4">
-                      <div className="bg-slate-700 rounded-lg h-7 px-4 flex items-center justify-center">
-                        <span className="text-slate-400 text-sm">app.piads.co</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Screenshot */}
-                  <div className="relative bg-white rounded-b-2xl overflow-hidden shadow-2xl aspect-[1920/1080]">
-                    {heroScreenshots.map((screenshot, index) => (
-                      <div
-                        key={screenshot.src}
-                        className={`absolute inset-0 transition-opacity duration-700 ${
-                          index === screenshotIndex ? 'opacity-100' : 'opacity-0'
-                        }`}
-                      >
-                        <Image
-                          src={screenshot.src}
-                          alt={screenshot.label}
-                          fill
-                          className="object-contain"
-                          priority={index === 0}
-                        />
-                      </div>
-                    ))}
-                  </div>
+                {/* "Now Live" badge */}
+                <div className="flex justify-center mb-6">
+                  <span className="inline-flex items-center gap-2 bg-green-500 text-white font-bold text-sm px-4 py-2 rounded-full shadow-lg animate-pulse">
+                    <span className="w-2 h-2 bg-white rounded-full" />
+                    Now Live on the App Store
+                  </span>
                 </div>
 
-                {/* Screenshot indicator dots */}
-                <div className="flex justify-center gap-2 mt-4">
-                  {heroScreenshots.map((screenshot, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setScreenshotIndex(index)}
-                      className={`h-2 rounded-full transition-all duration-300 ${
-                        index === screenshotIndex
-                          ? 'bg-blue w-8'
-                          : 'bg-gray-300 w-2 hover:bg-gray-400'
-                      }`}
-                      aria-label={screenshot.label}
-                    />
-                  ))}
+                {/* iPhone 15 Pro Mockup with Video */}
+                <div className="relative mx-auto w-full" style={{ maxWidth: '90%' }}>
+                  {/* Outer bezel — titanium frame */}
+                  <div
+                    className="relative rounded-[50px] p-[3px]"
+                    style={{
+                      background: 'linear-gradient(145deg, #8a8a8e, #636366, #48484a, #636366)',
+                      boxShadow: '0 25px 60px rgba(0,0,0,0.35), 0 8px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)',
+                    }}
+                  >
+                    {/* Inner black bezel */}
+                    <div className="relative bg-black rounded-[48px] p-[5px]">
+                      {/* Dynamic Island */}
+                      <div
+                        className="absolute top-[12px] left-1/2 -translate-x-1/2 z-20 bg-black rounded-full"
+                        style={{ width: '80px', height: '24px' }}
+                      >
+                        {/* Camera lens */}
+                        <div
+                          className="absolute left-[12px] top-1/2 -translate-y-1/2 rounded-full"
+                          style={{
+                            width: '8px',
+                            height: '8px',
+                            background: 'radial-gradient(circle at 35% 35%, #1a1a2e, #0a0a0f)',
+                            boxShadow: 'inset 0 0 2px rgba(255,255,255,0.08)',
+                          }}
+                        />
+                      </div>
+
+                      {/* Screen */}
+                      <div className="relative rounded-[38px] overflow-hidden bg-black aspect-[9/19.5]">
+                        <video
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="absolute inset-0 w-full h-full object-cover"
+                        >
+                          <source src="/piads-ios-demo.mp4" type="video/mp4" />
+                        </video>
+
+                        {/* Home indicator */}
+                        <div className="absolute bottom-[6px] left-1/2 -translate-x-1/2 w-[90px] h-[3px] bg-white/30 rounded-full z-10" />
+
+                        {/* Screen edge highlight */}
+                        <div
+                          className="absolute inset-0 rounded-[38px] pointer-events-none"
+                          style={{ boxShadow: 'inset 0 0 0 0.5px rgba(255,255,255,0.1)' }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Side button — power (right side) */}
+                  <div
+                    className="absolute -right-[2px] top-[120px] w-[3px] h-[50px] rounded-r-sm"
+                    style={{ background: 'linear-gradient(to bottom, #636366, #48484a)' }}
+                  />
+                  {/* Side buttons — volume (left side) */}
+                  <div
+                    className="absolute -left-[2px] top-[100px] w-[3px] h-[28px] rounded-l-sm"
+                    style={{ background: 'linear-gradient(to bottom, #636366, #48484a)' }}
+                  />
+                  <div
+                    className="absolute -left-[2px] top-[140px] w-[3px] h-[50px] rounded-l-sm"
+                    style={{ background: 'linear-gradient(to bottom, #636366, #48484a)' }}
+                  />
+                </div>
+
+                {/* App Store Link */}
+                <div className="flex flex-col items-center mt-6 gap-2">
+                  <a
+                    href={APP_STORE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2.5 bg-black text-white px-6 py-3 rounded-xl border border-white/20 hover:bg-gray-800 hover:scale-105 transition-all duration-200"
+                  >
+                    <svg viewBox="0 0 384 512" className="h-6 w-6 fill-current flex-shrink-0">
+                      <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+                    </svg>
+                    <div className="text-left leading-tight">
+                      <div className="text-[10px] opacity-70">Download on the</div>
+                      <div className="text-lg font-semibold -mt-0.5">App Store</div>
+                    </div>
+                  </a>
+                  <p className="text-xs text-muted-foreground">
+                    Browse venues, book ads, manage campaigns
+                  </p>
                 </div>
               </ScrollAnimate>
             </div>
