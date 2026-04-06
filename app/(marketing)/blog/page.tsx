@@ -13,7 +13,7 @@ export default function BlogPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="pt-16 pb-10 md:pt-20 md:pb-12">
+      <section className="pt-28 pb-10 md:pt-36 md:pb-12">
         <div className="container max-w-4xl text-center">
           <div className="inline-flex items-center gap-2 bg-secondary px-4 py-2 rounded-full mb-6">
             <Sparkles className="h-4 w-4 text-blue" />

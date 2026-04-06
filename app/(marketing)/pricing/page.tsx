@@ -66,7 +66,7 @@ export default function PricingPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="py-24 md:py-32">
+      <section className="pt-32 pb-24 md:pt-40 md:pb-32">
         <div className="container max-w-4xl text-center">
           <div className="inline-flex items-center gap-2 bg-blue px-4 py-2 rounded-full mb-8 shadow-md">
             <Heart className="h-4 w-4 text-white" />

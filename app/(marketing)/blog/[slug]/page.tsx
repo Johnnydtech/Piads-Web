@@ -75,7 +75,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <div className="py-12 md:py-20">
+    <div className="pt-28 pb-12 md:pt-36 md:pb-20">
       <article className="container max-w-3xl">
         {/* Header */}
         <header className="mb-12">

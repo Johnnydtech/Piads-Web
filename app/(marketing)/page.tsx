@@ -252,7 +252,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col overflow-hidden">
       {/* Hero Section - 2 Column Layout */}
-      <section className="relative pt-32 md:pt-36 lg:pt-40 pb-16 md:pb-20 overflow-hidden">
+      <section className="relative pt-32 md:pt-36 lg:pt-40 pb-16 md:pb-32 overflow-hidden">
         {/* Background gradient blobs */}
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue/20 rounded-full blur-3xl animate-pulse" />
@@ -261,7 +261,7 @@ export default function HomePage() {
         </div>
 
         <div className="container max-w-7xl">
-          <div className="grid lg:grid-cols-[5fr_7fr] gap-8 lg:gap-12 items-center">
+          <div className="grid lg:grid-cols-[1fr_1fr] gap-8 lg:gap-12 items-center">
             {/* Left Column - Text & CTAs */}
             <div>
               <ScrollAnimate animation="up">
@@ -351,19 +351,38 @@ export default function HomePage() {
                   </span>
                 </div>
 
-                <Link
-                  href={`${APP_URL}/discover`}
-                  className="inline-flex items-center gap-2 mt-4 text-base text-muted-foreground hover:text-blue transition-colors group"
+                <div className="flex items-center gap-4 mt-6">
+                  <Link
+                    href={`${APP_URL}/discover`}
+                    className="inline-flex items-center gap-2 text-base text-muted-foreground hover:text-blue transition-colors group"
+                  >
+                    <MapPin className="h-4 w-4" />
+                    Or explore available screens near you
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+
+                {/* App Store Badge — Official Apple */}
+                <a
+                  href={APP_STORE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-6 hover:opacity-80 transition-opacity"
                 >
-                  <MapPin className="h-4 w-4" />
-                  Or explore available screens near you
-                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/app-store-badge.svg"
+                    alt="Download on the App Store"
+                    width={180}
+                    height={60}
+                    className="h-[60px] w-auto"
+                  />
+                </a>
               </ScrollAnimate>
             </div>
 
             {/* Right Column - iOS App Video in Phone Mockup */}
-            <div className="relative flex flex-col items-center lg:scale-110 lg:origin-top">
+            <div className="relative flex flex-col items-center">
               <ScrollAnimate animation="scale" delay={300}>
                 {/* "Now Live" badge */}
                 <div className="flex justify-center mb-6">
@@ -374,7 +393,7 @@ export default function HomePage() {
                 </div>
 
                 {/* iPhone 15 Pro Mockup with Video */}
-                <div className="relative mx-auto w-full" style={{ maxWidth: '90%' }}>
+                <div className="relative mx-auto" style={{ width: '340px' }}>
                   {/* Outer bezel — titanium frame */}
                   <div
                     className="relative rounded-[50px] p-[3px]"
@@ -385,22 +404,6 @@ export default function HomePage() {
                   >
                     {/* Inner black bezel */}
                     <div className="relative bg-black rounded-[48px] p-[5px]">
-                      {/* Dynamic Island */}
-                      <div
-                        className="absolute top-[12px] left-1/2 -translate-x-1/2 z-20 bg-black rounded-full"
-                        style={{ width: '80px', height: '24px' }}
-                      >
-                        {/* Camera lens */}
-                        <div
-                          className="absolute left-[12px] top-1/2 -translate-y-1/2 rounded-full"
-                          style={{
-                            width: '8px',
-                            height: '8px',
-                            background: 'radial-gradient(circle at 35% 35%, #1a1a2e, #0a0a0f)',
-                            boxShadow: 'inset 0 0 2px rgba(255,255,255,0.08)',
-                          }}
-                        />
-                      </div>
 
                       {/* Screen */}
                       <div className="relative rounded-[38px] overflow-hidden bg-black aspect-[9/19.5]">
@@ -442,26 +445,6 @@ export default function HomePage() {
                   />
                 </div>
 
-                {/* App Store Link */}
-                <div className="flex flex-col items-center mt-6 gap-2">
-                  <a
-                    href={APP_STORE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2.5 bg-black text-white px-6 py-3 rounded-xl border border-white/20 hover:bg-gray-800 hover:scale-105 transition-all duration-200"
-                  >
-                    <svg viewBox="0 0 384 512" className="h-6 w-6 fill-current flex-shrink-0">
-                      <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
-                    </svg>
-                    <div className="text-left leading-tight">
-                      <div className="text-[10px] opacity-70">Download on the</div>
-                      <div className="text-lg font-semibold -mt-0.5">App Store</div>
-                    </div>
-                  </a>
-                  <p className="text-xs text-muted-foreground">
-                    Browse venues, book ads, manage campaigns
-                  </p>
-                </div>
               </ScrollAnimate>
             </div>
           </div>
