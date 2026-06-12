@@ -90,7 +90,14 @@ export default function RootLayout({
                 api_host: 'https://us.i.posthog.com',
                 defaults: '2025-11-30',
                 person_profiles: 'identified_only',
+                // Consent-gated: nothing is captured until the visitor accepts
+                // via the cookie banner (posthog.opt_in_capturing()).
+                opt_out_capturing_by_default: true,
               })
+              // Returning visitors who already accepted resume capturing
+              if (localStorage.getItem('piads_consent') === 'accepted') {
+                posthog.opt_in_capturing()
+              }
             `,
           }}
         />
