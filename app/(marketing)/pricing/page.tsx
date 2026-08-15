@@ -1,64 +1,90 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Check, Building2, TrendingUp, ArrowRight, Heart, DollarSign, Users, Shield } from "lucide-react"
+import {
+  ArrowRight,
+  Check,
+  Home,
+  Megaphone,
+  QrCode,
+  CircleDollarSign,
+  Package,
+  Tablet,
+} from "lucide-react"
 
 export const metadata = {
-  title: "Pricing | One Price. 75% to You.",
-  description: "Simple pricing for community-first advertising. $10/screen for venues, keep 75% of ad revenue. Advertisers start at $50-75/week.",
+  title: "Pricing | $10/month per screen, 14-day free trial",
+  description:
+    "PiAds pricing for short-term rental hosts: 14-day free trial, then $10/month per screen — and a revenue share from local ads that can cover the fee. Local businesses advertise with quarterly radius tiers from $450.",
+  alternates: { canonical: "/pricing" },
 }
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
 
-const venueFeatures = [
-  "Unlimited content playlists",
-  "Full ad approval control",
-  "Real-time analytics",
-  "We recommend pricing (you can override)",
-  "Weekly payouts via Stripe",
-  "Local-only advertisers",
-  "Priority support",
-  "Mobile management app",
+const hostFeatures = [
+  "WiFi card with scan-to-join QR code",
+  "House rules & checkout-day-aware instructions",
+  "Local Guide with your favorite nearby spots",
+  "Host extras with booking QRs (late checkout, mid-stay clean)",
+  "Hostaway connection: greets guests by name, switches modes automatically",
+  "Idle mode between stays",
+  "Runs on your own Fire or Android tablet",
+  "Revenue share from local ads in your guide",
 ]
 
-const advertiserBenefits = [
-  "No monthly subscriptions",
-  "Book by the week",
-  "Real-time availability",
-  "Performance tracking",
-  "QR code analytics",
-  "Local venues only",
-]
-
-const daypartPricing = [
-  { name: "Breakfast", time: "7am - 11am", range: "$8 - $12", description: "Coffee shops, bakeries, gyms" },
-  { name: "Lunch", time: "11am - 3pm", range: "$12 - $18", description: "Restaurants, cafés, coworking" },
-  { name: "Evening", time: "5pm - 10pm", range: "$15 - $25", description: "Bars, gyms, entertainment" },
+const advertiserTiers = [
+  {
+    name: "Starter",
+    price: "$450",
+    plays: "~4,000 plays/qtr",
+    radius: "Up to 3 km",
+    popular: false,
+  },
+  {
+    name: "Growth",
+    price: "$1,200",
+    plays: "~12,000 plays/qtr",
+    radius: "Up to 5 km",
+    popular: true,
+  },
+  {
+    name: "Dominate",
+    price: "$2,750",
+    plays: "~30,000 plays/qtr",
+    radius: "Up to 8 km",
+    popular: false,
+  },
 ]
 
 const faqs = [
   {
-    question: "How do venues get paid?",
-    answer: "Venues keep 75% of every ad booking. Payments are processed weekly via Stripe. We handle all the billing so you just approve ads and collect revenue.",
+    question: "What hardware do I need?",
+    answer:
+      "A Fire or Android tablet you already own — the PiAds app is on the Amazon Appstore and Google Play. Managing a larger portfolio? Pre-configured tablet kits are available for larger accounts.",
   },
   {
-    question: "Why only local businesses?",
-    answer: "We believe advertising dollars should stay in the community. That's why we only allow local businesses to advertise on PiAds. No big corporations drowning out local voices.",
+    question: "How long does setup take?",
+    answer:
+      "About 10 minutes: create your property, fill in the four cards (WiFi, house rules, local guide, extras), then pair the tablet with a code.",
   },
   {
-    question: "What makes PiAds different?",
-    answer: "Most digital signage platforms treat venues as inventory for big brands. We flip that. Venues run their own content first, and open slots for local advertisers. It's community-first, not corporate-first.",
+    question: "How does the personalized greeting work?",
+    answer:
+      "The screen greets each guest by name and switches modes around the stay — welcome on arrival, checkout instructions on checkout day, idle between stays. It's automatic with a Hostaway connection, or you can add stays manually. More PMS integrations are coming.",
   },
   {
-    question: "What is a daypart?",
-    answer: "A daypart is a time block during the day: Breakfast (7-11am), Lunch (11am-3pm), or Evening (5-10pm). Advertisers book specific dayparts to reach their ideal audience.",
+    question: "How do I earn from my screen?",
+    answer:
+      "Local businesses buy ad space in your Local Guide — the \"Recommended Nearby\" cards guests see next to your own picks. You get a revenue share, which can offset or cover the $10/month screen fee.",
   },
   {
-    question: "Do I need special hardware?",
-    answer: "You need a display screen and a Raspberry Pi ($50). We provide step-by-step setup guides and the software is free. Most venues are up and running in under an hour.",
+    question: "When does billing start?",
+    answer:
+      "After your 14-day free trial. From then it's $10/month per screen — one flat fee, no tiers for hosts.",
   },
   {
-    question: "Can I reject ads I don't like?",
-    answer: "Absolutely. You have full control over what displays on your screens. Every ad campaign must be approved by you before it goes live.",
+    question: "What do guests see between stays?",
+    answer:
+      "The screen idles between stays, then switches back to welcome mode when your next guest arrives.",
   },
 ]
 
@@ -69,39 +95,41 @@ export default function PricingPage() {
       <section className="pt-32 pb-24 md:pt-40 md:pb-32">
         <div className="container max-w-4xl text-center">
           <div className="inline-flex items-center gap-2 bg-blue px-4 py-2 rounded-full mb-8 shadow-md">
-            <Heart className="h-4 w-4 text-white" />
-            <span className="text-sm font-medium text-white">Community-First Pricing</span>
+            <Home className="h-4 w-4 text-white" />
+            <span className="text-sm font-medium text-white">Host-first pricing</span>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 font-display">
-            One Price.
+            $10 a month.
             <br />
-            <span className="text-teal">75% to You.</span>
+            <span className="text-teal">Or less, once ads kick in.</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            No confusing tiers. No hidden fees. Venues pay $10/screen and keep 75% of every ad booking.
+            One flat fee per screen after a 14-day free trial — and a revenue
+            share from local ads that can pay it back.
           </p>
         </div>
       </section>
 
-      {/* Venue Pricing - Single Plan */}
+      {/* Host pricing */}
       <section className="py-24 md:py-32 bg-secondary/50">
         <div className="container max-w-5xl">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-12 h-12 rounded-2xl bg-blue flex items-center justify-center">
-              <Building2 className="h-6 w-6 text-white" />
+              <Home className="h-6 w-6 text-white" />
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold font-display">For Venues</h2>
+            <h2 className="text-2xl md:text-3xl font-bold font-display">For Hosts</h2>
           </div>
           <p className="text-muted-foreground max-w-2xl mb-12 text-lg">
-            One simple plan. Use your screens for your own content AND earn from local advertisers.
+            Everything the guest screen does — WiFi, rules, local guide,
+            bookable extras, PMS personalization — in one plan.
           </p>
 
           <div className="grid lg:grid-cols-2 gap-8">
-            {/* Main Pricing Card */}
+            {/* Main pricing card */}
             <div className="bg-blue text-white rounded-3xl p-8 relative overflow-hidden">
               <div className="absolute top-4 right-4">
                 <span className="bg-orange text-foreground text-sm font-medium px-4 py-1.5 rounded-full">
-                  Community Plan
+                  14-day free trial
                 </span>
               </div>
 
@@ -115,19 +143,21 @@ export default function PricingPage() {
               <div className="bg-white/10 rounded-2xl p-4 mb-8">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
-                    <DollarSign className="h-6 w-6" />
+                    <CircleDollarSign className="h-6 w-6" />
                   </div>
                   <div>
-                    <div className="font-semibold">Keep 75% of Ad Revenue</div>
-                    <div className="text-sm text-white/70">We only take 25% commission</div>
+                    <div className="font-semibold">Plus a revenue share on local ads</div>
+                    <div className="text-sm text-white/70">
+                      Your screen can pay for itself
+                    </div>
                   </div>
                 </div>
               </div>
 
               <ul className="space-y-3 mb-8">
-                {venueFeatures.map((feature) => (
-                  <li key={feature} className="flex items-center gap-2">
-                    <Check className="h-4 w-4 flex-shrink-0 text-white" />
+                {hostFeatures.map((feature) => (
+                  <li key={feature} className="flex items-start gap-2">
+                    <Check className="h-4 w-4 flex-shrink-0 text-white mt-1" />
                     <span className="text-white/90">{feature}</span>
                   </li>
                 ))}
@@ -137,49 +167,75 @@ export default function PricingPage() {
                 className="w-full rounded-xl h-14 bg-white text-blue hover:bg-white/90 text-lg font-semibold"
                 asChild
               >
-                <Link href={`${APP_URL}/sign-up?role=venue`}>
-                  Start Earning
+                <Link href={`${APP_URL}/sign-up`}>
+                  Start Free 14-Day Trial
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
             </div>
 
-            {/* Revenue Example */}
+            {/* Rev-share explainer + kit note */}
             <div className="space-y-6">
               <div className="bg-white rounded-3xl p-8 shadow-sm">
-                <h4 className="text-xl font-semibold font-display mb-6 flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5 text-teal" />
-                  Monthly Revenue Example
+                <h4 className="text-xl font-semibold font-display mb-4 flex items-center gap-2">
+                  <CircleDollarSign className="h-5 w-5 text-teal" />
+                  How the revenue share works
                 </h4>
+                <ol className="space-y-4">
+                  <li className="flex gap-4">
+                    <div className="w-8 h-8 rounded-full bg-teal/15 text-teal flex items-center justify-center text-sm font-bold flex-shrink-0">
+                      1
+                    </div>
+                    <p className="text-muted-foreground">
+                      Local businesses near your rental buy ad space in the
+                      Local Guide — shown as &ldquo;Recommended Nearby&rdquo;
+                      cards.
+                    </p>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="w-8 h-8 rounded-full bg-teal/15 text-teal flex items-center justify-center text-sm font-bold flex-shrink-0">
+                      2
+                    </div>
+                    <p className="text-muted-foreground">
+                      Their cards play on your screen alongside your own picks.
+                      Guests scan QR codes to act on offers.
+                    </p>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="w-8 h-8 rounded-full bg-teal/15 text-teal flex items-center justify-center text-sm font-bold flex-shrink-0">
+                      3
+                    </div>
+                    <p className="text-muted-foreground">
+                      You earn a share of that ad revenue — offsetting, and
+                      potentially covering, your $10/month fee.
+                    </p>
+                  </li>
+                </ol>
+              </div>
 
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center pb-4 border-b">
-                    <span className="text-muted-foreground">Ad revenue (4 advertisers/month)</span>
-                    <span className="font-semibold">$400</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-4 border-b">
-                    <span className="text-muted-foreground">Your share (75%)</span>
-                    <span className="font-semibold text-teal">$300</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-4 border-b">
-                    <span className="text-muted-foreground">Platform fee</span>
-                    <span className="font-semibold">-$10</span>
-                  </div>
-                  <div className="flex justify-between items-center pt-2">
-                    <span className="font-semibold">Net monthly profit</span>
-                    <span className="text-2xl font-bold text-coral">$290</span>
-                  </div>
-                </div>
+              <div className="bg-white rounded-3xl p-8 shadow-sm">
+                <h4 className="text-lg font-semibold font-display mb-3 flex items-center gap-2">
+                  <Tablet className="h-5 w-5 text-blue" />
+                  Bring your own tablet
+                </h4>
+                <p className="text-sm text-muted-foreground">
+                  The PiAds app runs on the Fire or Android tablet you already
+                  have — it&apos;s on the Amazon Appstore and Google Play.
+                  Pre-configured tablet kits are available for larger accounts.
+                </p>
               </div>
 
               <div className="bg-coral/10 border border-coral/20 rounded-2xl p-6">
                 <div className="flex items-start gap-3">
-                  <Heart className="h-5 w-5 text-coral mt-1" />
+                  <Package className="h-5 w-5 text-gray-800 mt-1" />
                   <div>
-                    <div className="font-semibold text-coral mb-1">Why We Charge $10</div>
+                    <div className="font-semibold mb-1">
+                      Annual plan with tablet kit — coming soon
+                    </div>
                     <p className="text-sm text-muted-foreground">
-                      It keeps the lights on and ensures we&apos;re accountable to venues, not advertisers.
-                      Your success is our success.
+                      Pay annually and get a pre-configured tablet shipped to
+                      your door. Join the trial now and we&apos;ll let you know
+                      when it&apos;s live.
                     </p>
                   </div>
                 </div>
@@ -189,148 +245,85 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Advertiser Pricing */}
+      {/* Advertiser tiers */}
       <section className="py-24 md:py-32">
         <div className="container max-w-5xl">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-12 h-12 rounded-2xl bg-teal flex items-center justify-center">
-              <TrendingUp className="h-6 w-6 text-white" />
+              <Megaphone className="h-6 w-6 text-white" />
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold font-display">For Advertisers</h2>
+            <h2 className="text-2xl md:text-3xl font-bold font-display">
+              For Local Advertisers
+            </h2>
           </div>
+          <p className="text-muted-foreground max-w-2xl mb-12 text-lg">
+            Quarterly radius tiers. Drop a pin, choose a radius, and your
+            business appears on every PiAds guest screen in range — measurable
+            with QR scans. First market: DC / Arlington / DMV. Plays are
+            estimates based on screens currently in range and grow as the
+            network grows.
+          </p>
 
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
-            <div>
-              <h3 className="text-3xl md:text-4xl font-bold font-display mb-4">
-                Start at <span className="text-teal">$50-75/week</span>
-              </h3>
-              <p className="text-muted-foreground mb-8 text-lg">
-                No $10K minimums like the big billboard companies. Book a week at a local gym,
-                coffee shop, or coworking space and see real results.
-              </p>
-
-              <ul className="space-y-3 mb-8">
-                {advertiserBenefits.map((benefit) => (
-                  <li key={benefit} className="flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full bg-teal/20 flex items-center justify-center">
-                      <Check className="h-3.5 w-3.5 text-teal" />
-                    </div>
-                    <span>{benefit}</span>
+          <div className="grid md:grid-cols-3 gap-6 mb-10">
+            {advertiserTiers.map((tier) => (
+              <div
+                key={tier.name}
+                className={`bg-white rounded-3xl p-8 border-2 shadow-sm relative ${
+                  tier.popular ? "border-teal ring-2 ring-teal/30" : "border-gray-200"
+                }`}
+              >
+                {tier.popular && (
+                  <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-teal text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-md whitespace-nowrap">
+                    Most Popular
+                  </span>
+                )}
+                <h3 className="text-lg font-bold font-display mb-2">{tier.name}</h3>
+                <div className="mb-4">
+                  <span className="text-4xl font-bold font-display">{tier.price}</span>
+                  <span className="text-muted-foreground">/qtr</span>
+                </div>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-teal flex-shrink-0" />
+                    {tier.plays}
                   </li>
-                ))}
-              </ul>
-
-              <div className="bg-teal/10 border border-teal/20 rounded-2xl p-6 mb-8">
-                <div className="flex items-start gap-3">
-                  <Users className="h-5 w-5 text-teal mt-1" />
-                  <div>
-                    <div className="font-semibold text-teal mb-1">Local Businesses Only</div>
-                    <p className="text-sm text-muted-foreground">
-                      We only accept local businesses. No big corporations competing for attention
-                      on your neighbor&apos;s screens.
-                    </p>
-                  </div>
-                </div>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-teal flex-shrink-0" />
+                    {tier.radius} radius
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <QrCode className="h-4 w-4 text-teal flex-shrink-0" />
+                    QR scan tracking
+                  </li>
+                </ul>
               </div>
-
-              <Button size="lg" className="h-14 px-8 text-base rounded-xl bg-teal hover:bg-teal/90" asChild>
-                <Link href={`${APP_URL}/sign-up?role=advertiser`}>
-                  Browse Local Venues
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-            </div>
-
-            <div className="bg-secondary/50 rounded-3xl p-8">
-              <h4 className="text-xl font-semibold font-display mb-6">Daypart Pricing Guide</h4>
-              <p className="text-sm text-muted-foreground mb-6">
-                Prices vary by venue and demand. Here&apos;s what to expect:
-              </p>
-
-              <div className="space-y-4">
-                {daypartPricing.map((daypart) => (
-                  <div key={daypart.name} className="bg-white rounded-2xl p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <div className="font-semibold">{daypart.name}</div>
-                        <div className="text-sm text-muted-foreground">{daypart.time}</div>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-bold text-teal text-lg">{daypart.range}</div>
-                        <div className="text-sm text-muted-foreground">per day</div>
-                      </div>
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      Popular with: {daypart.description}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 pt-6 border-t">
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">Typical weekly booking</span>
-                  <span className="text-xl font-bold text-coral">$50 - $75</span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Book 5-7 days at one daypart to get started
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
-        </div>
-      </section>
 
-      {/* Value Comparison */}
-      <section className="py-24 md:py-32 bg-secondary/50">
-        <div className="container max-w-4xl text-center">
-          <h2 className="text-3xl md:text-4xl font-bold font-display mb-12">
-            Why We&apos;re Different
-          </h2>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-2xl p-6">
-              <div className="w-12 h-12 rounded-xl bg-coral/20 flex items-center justify-center mx-auto mb-4">
-                <Heart className="h-6 w-6 text-coral" />
-              </div>
-              <h3 className="font-semibold font-display mb-2">Community-First</h3>
-              <p className="text-sm text-muted-foreground">
-                Only local businesses can advertise. Your money stays in the community.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6">
-              <div className="w-12 h-12 rounded-xl bg-blue/20 flex items-center justify-center mx-auto mb-4">
-                <DollarSign className="h-6 w-6 text-blue" />
-              </div>
-              <h3 className="font-semibold font-display mb-2">Fair Revenue</h3>
-              <p className="text-sm text-muted-foreground">
-                Venues keep 75%. Most platforms take 40-50%. We think that&apos;s wrong.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6">
-              <div className="w-12 h-12 rounded-xl bg-teal/20 flex items-center justify-center mx-auto mb-4">
-                <Shield className="h-6 w-6 text-teal" />
-              </div>
-              <h3 className="font-semibold font-display mb-2">Your Control</h3>
-              <p className="text-sm text-muted-foreground">
-                Run your own content. Approve every ad. Your screens, your rules.
-              </p>
-            </div>
+          <div className="text-center">
+            <Button
+              size="lg"
+              className="h-14 px-8 text-base rounded-xl bg-teal hover:bg-teal/90 font-bold"
+              asChild
+            >
+              <Link href="/advertisers">
+                Learn More About Local Ads
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
 
       {/* FAQs */}
-      <section className="py-24 md:py-32">
+      <section className="py-24 md:py-32 bg-secondary/50">
         <div className="container max-w-3xl">
           <h2 className="text-3xl md:text-4xl font-bold font-display text-center mb-12">
             Frequently Asked Questions
           </h2>
           <div className="space-y-6">
             {faqs.map((faq) => (
-              <div key={faq.question} className="bg-secondary/50 rounded-2xl p-6">
+              <div key={faq.question} className="bg-white rounded-2xl p-6 shadow-sm">
                 <h3 className="font-semibold font-display text-lg mb-2">{faq.question}</h3>
                 <p className="text-muted-foreground">{faq.answer}</p>
               </div>
@@ -340,25 +333,35 @@ export default function PricingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 md:py-32 bg-coral text-white">
+      <section className="py-24 md:py-32 bg-gray-900 text-white">
         <div className="container text-center max-w-3xl">
           <h2 className="text-4xl md:text-5xl font-bold font-display mb-6">
-            Join the Community
+            Try it free for 14 days
           </h2>
           <p className="text-xl text-white/80 mb-10">
-            4 venues are already keeping advertising local. Be part of something different.
+            Set up your first screen in about 10 minutes. $10/month per screen
+            after the trial.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="h-14 px-8 text-base rounded-xl" asChild>
-              <Link href={`${APP_URL}/sign-up?role=venue`}>
-                Start as Venue
-                <Building2 className="ml-2 h-5 w-5" />
+            <Button
+              size="lg"
+              className="h-14 px-8 text-base rounded-xl bg-blue hover:bg-blue/90 font-bold"
+              asChild
+            >
+              <Link href={`${APP_URL}/sign-up`}>
+                Start as a Host
+                <Home className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-xl bg-transparent border-white/30 hover:bg-white/10" asChild>
-              <Link href={`${APP_URL}/sign-up?role=advertiser`}>
-                Start as Advertiser
-                <TrendingUp className="ml-2 h-5 w-5" />
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-14 px-8 text-base rounded-xl bg-transparent border-white/30 text-white hover:bg-white/10 hover:text-white"
+              asChild
+            >
+              <Link href={`${APP_URL}/advertiser/tiers`}>
+                Advertise on PiAds
+                <Megaphone className="ml-2 h-5 w-5" />
               </Link>
             </Button>
           </div>
