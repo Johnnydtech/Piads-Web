@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
+
 const SEEN_KEY = "piads_popup_seen"
 const CONSENT_KEY = "piads_consent"
 
@@ -106,10 +108,10 @@ export function NewsletterPopup() {
           </button>
           <p className="text-xs font-bold uppercase tracking-widest text-white/70">PiAds</p>
           <h2 className="mt-1 text-2xl font-extrabold tracking-tight">
-            Turn your screens into revenue
+            Give your guests a better stay
           </h2>
           <p className="mt-1.5 text-sm text-white/80">
-            Digital signage that pays for itself — keep 75% of ad revenue from your displays.
+            WiFi, house rules, and your local favorites on one screen — free for 14 days.
           </p>
         </div>
 
@@ -122,11 +124,11 @@ export function NewsletterPopup() {
           ) : (
             <>
               <Link
-                href="/get-started"
+                href={`${APP_URL}/sign-up`}
                 onClick={dismiss}
                 className="block w-full rounded-xl bg-[#6C4BF5] px-4 py-3 text-center text-sm font-bold text-white shadow-lg shadow-[#6C4BF5]/25 transition hover:bg-[#5a3fd6]"
               >
-                Get started free →
+                Start free trial →
               </Link>
 
               <div className="my-4 flex items-center gap-3">
@@ -156,7 +158,7 @@ export function NewsletterPopup() {
                 <p className="mt-2 text-xs text-red-600">Something went wrong — please try again.</p>
               )}
               <p className="mt-3 text-center text-[11px] text-gray-400">
-                Product updates and signage tips, about once a month.
+                Product updates and hosting tips, about once a month.
               </p>
             </>
           )}

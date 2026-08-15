@@ -258,7 +258,7 @@ export default function HomePage() {
       </section>
 
       {/* How it works — 3 steps */}
-      <section className="py-24 md:py-32 relative overflow-hidden">
+      <section id="how-it-works" className="py-24 md:py-32 relative overflow-hidden scroll-mt-24">
         <div className="absolute left-0 bottom-0 opacity-[0.08] -z-10 pointer-events-none animate-drift-full-reverse">
           <Image
             src="/logo/piads_new_log_transparent.png"

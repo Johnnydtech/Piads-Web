@@ -69,7 +69,7 @@ const faqs = [
   {
     question: "How does the personalized greeting work?",
     answer:
-      "Connect your Hostaway account and the screen greets each guest by name and switches modes around the stay automatically — welcome on arrival, checkout instructions on checkout day, idle between stays. More PMS integrations are coming.",
+      "The screen greets each guest by name and switches modes around the stay — welcome on arrival, checkout instructions on checkout day, idle between stays. It's automatic with a Hostaway connection, or you can add stays manually. More PMS integrations are coming.",
   },
   {
     question: "How do I earn from my screen?",
@@ -259,7 +259,9 @@ export default function PricingPage() {
           <p className="text-muted-foreground max-w-2xl mb-12 text-lg">
             Quarterly radius tiers. Drop a pin, choose a radius, and your
             business appears on every PiAds guest screen in range — measurable
-            with QR scans. First market: DC / Arlington / DMV.
+            with QR scans. First market: DC / Arlington / DMV. Plays are
+            estimates based on screens currently in range and grow as the
+            network grows.
           </p>
 
           <div className="grid md:grid-cols-3 gap-6 mb-10">
