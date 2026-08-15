@@ -3,17 +3,14 @@ import Image from "next/image"
 
 const footerLinks = {
   product: [
-    { name: "Features", href: "/features" },
+    { name: "For Hosts", href: "/" },
+    { name: "Local Ads", href: "/advertisers" },
     { name: "Pricing", href: "/pricing" },
-    { name: "Supported Devices", href: "/devices" },
-    { name: "For Venues", href: "/features#venues" },
-    { name: "For Advertisers", href: "/features#advertisers" },
   ],
   company: [
     { name: "About", href: "/about" },
     { name: "Blog", href: "/blog" },
     { name: "Contact", href: "/contact" },
-    { name: "Help Center", href: "/get-started" },
   ],
   legal: [
     { name: "Privacy Policy", href: "/privacy" },
@@ -40,8 +37,9 @@ export function Footer() {
               />
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-              Turn your screens into revenue. The digital signage advertising
-              marketplace connecting venues with advertisers.
+              The digital concierge for short-term rentals. An always-on guest
+              screen with WiFi, house rules, and a local guide — plus local
+              ads that help it pay for itself.
             </p>
           </div>
 
