@@ -26,22 +26,22 @@ const pacifico = Pacifico({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://piads.co"),
   title: {
-    default: "PiAds - The Digital Concierge for Short-Term Rentals",
+    default: "PiAds - Community-Powered Digital Signage in Arlington, VA",
     template: "%s | PiAds",
   },
   description:
-    "Turn a spare tablet into an always-on guest screen for your Airbnb or VRBO: WiFi with scan-to-join QR, house rules, a local guide, and bookable extras. Local businesses advertise in your guide — so your screen can pay for itself.",
+    "Community-first digital signage for Arlington venues and local advertisers. Display your content, support your neighbors, and keep advertising dollars local.",
   keywords: [
-    "Airbnb guest screen",
-    "short-term rental digital concierge",
-    "vacation rental welcome screen",
-    "Airbnb WiFi QR code display",
-    "VRBO house rules display",
-    "guest guidebook tablet",
-    "short-term rental local guide",
-    "Airbnb host revenue share",
-    "local advertising short-term rentals",
-    "DMV Airbnb hosts",
+    "digital signage Arlington VA",
+    "local advertising Arlington",
+    "community digital signage",
+    "DOOH",
+    "screen advertising",
+    "venue digital signage",
+    "digital out-of-home Arlington",
+    "local business advertising",
+    "Clarendon digital signage",
+    "Columbia Pike advertising",
   ],
   alternates: {
     canonical: "/",
@@ -53,16 +53,14 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://piads.co",
     siteName: "PiAds",
-    title: "PiAds - The Digital Concierge for Short-Term Rentals",
-    description:
-      "An always-on guest screen for your Airbnb or VRBO: WiFi QR, house rules, a local guide, and bookable extras — plus local ads that help your screen pay for itself.",
+    title: "PiAds - Community-Powered Digital Signage in Arlington, VA",
+    description: "Community-first digital signage for Arlington venues and local advertisers. Neighbors supporting neighbors.",
     images: [{ url: "/og/default.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "PiAds - The Digital Concierge for Short-Term Rentals",
-    description:
-      "An always-on guest screen for your Airbnb or VRBO: WiFi QR, house rules, a local guide, and bookable extras — plus local ads that help your screen pay for itself.",
+    title: "PiAds - Community-Powered Digital Signage in Arlington, VA",
+    description: "Community-first digital signage for Arlington venues and local advertisers. Neighbors supporting neighbors.",
     images: ["/og/default.png"],
   },
   icons: {
