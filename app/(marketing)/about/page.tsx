@@ -77,14 +77,13 @@ export default function AboutPage() {
               <div className="w-16 h-16 rounded-full bg-white/20 p-0.5">
                 <Image
                   src="/founder.png"
-                  alt="Yohanes Woldegerima"
+                  alt="PiAds Founder"
                   width={64}
                   height={64}
                   className="w-full h-full rounded-full object-cover"
                 />
               </div>
               <div className="text-left">
-                <div className="font-semibold text-lg">Yohanes Woldegerima</div>
                 <div className="text-white/70">Founder, PiAds</div>
               </div>
             </div>
