@@ -1,4 +1,3 @@
-import Script from "next/script"
 import { Mail, MessageSquare, Calendar, Sparkles } from "lucide-react"
 
 export const metadata = {
@@ -79,26 +78,9 @@ export default function ContactPage() {
                 </div>
               </div>
             </div>
-
-            {/* Calendly Embed */}
-            <div className="md:col-span-2">
-              <div className="bg-white rounded-3xl p-4 md:p-8 shadow-sm overflow-hidden">
-                <div
-                  className="calendly-inline-widget"
-                  data-url="https://calendly.com/yohanes-piads/30min?hide_gdpr_banner=1&background_color=ffffff&text_color=1a1a1a&primary_color=4856c4"
-                  style={{ minWidth: '320px', height: '700px' }}
-                />
-              </div>
-            </div>
           </div>
         </div>
       </section>
-
-      {/* Calendly Script */}
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
     </div>
   )
 }
