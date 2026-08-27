@@ -1,17 +1,19 @@
 import type { Metadata } from "next"
-import { Inter, Poppins, Pacifico } from "next/font/google"
+import { Plus_Jakarta_Sans, Pacifico } from "next/font/google"
 import Script from "next/script"
 import "./globals.css"
 
-const inter = Inter({
+// AdCreative.ai-style type: one geometric sans (Euclid Circular's closest
+// Google Fonts match) for both body and display.
+const inter = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 })
 
-const poppins = Poppins({
+const poppins = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-display",
   display: "swap",
 })

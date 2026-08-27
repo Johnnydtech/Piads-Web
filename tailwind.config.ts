@@ -18,8 +18,8 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", "Inter", "system-ui", "sans-serif"],
-        display: ["var(--font-display)", "Poppins", "system-ui", "sans-serif"],
+        sans: ["var(--font-sans)", "Plus Jakarta Sans", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Plus Jakarta Sans", "system-ui", "sans-serif"],
         logo: ["var(--font-logo)", "Pacifico", "cursive"],
       },
       colors: {
@@ -57,11 +57,11 @@ const config: Config = {
           foreground: "var(--card-foreground)",
         },
         // Juuno-inspired brand colors
-        blue: "#4856c4",
-        teal: "#0b9ba5",
-        coral: "#ffc9d0",
-        orange: "#ffc886",
-        cyan: "#d4f4f9",
+        blue: "#ea2160",
+        teal: "#6d28d9",
+        coral: "#ffe1ea",
+        orange: "#ffd9a8",
+        cyan: "#f0eafb",
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -84,7 +84,9 @@ export default function HomePage() {
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 font-display">
               Your TVs. Your content.
               <br />
-              <span className="text-blue">Local ad revenue.</span>
+              <span className="bg-gradient-to-r from-blue to-teal bg-clip-text text-transparent">
+                Local ad revenue.
+              </span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
               PiAds turns the TVs already in your venue into screens you fully
