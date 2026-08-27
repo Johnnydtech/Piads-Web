@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ScrollAnimate, StaggerChildren } from "@/components/ui/scroll-animate"
+import { ProductTour } from "@/components/product-tour"
 import { CountUp } from "@/components/ui/count-up"
 import {
   Monitor,
@@ -265,6 +266,10 @@ export default function HomePage() {
             {/* Left Column - Text & CTAs */}
             <div>
               <ScrollAnimate animation="up">
+                <span className="inline-flex items-center gap-2 bg-blue/10 text-blue text-sm font-bold px-4 py-2 rounded-full mb-6">
+                  <Sparkles className="h-4 w-4" />
+                  The local-first digital signage marketplace
+                </span>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 font-display">
                   Your Screens.
                   <br />
@@ -522,6 +527,9 @@ export default function HomePage() {
           <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-secondary/30 to-transparent pointer-events-none" />
         </div>
       </section>
+
+      {/* Product Tour — real in-app walkthrough videos, AdCreative-style alternating rows */}
+      <ProductTour />
 
       {/* Founder Quote */}
       <section className="py-20 md:py-28">
