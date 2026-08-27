@@ -6,7 +6,7 @@
 // auto-advances through the steps like a guided tour.
 
 import { useEffect, useRef, useState } from "react"
-import { Monitor, ImageIcon, ListVideo, CalendarClock, Play, Pause, CheckCircle2 } from "lucide-react"
+import { Monitor, ImageIcon, ListVideo, Calendar, Play, Pause, CheckCircle2 } from "lucide-react"
 import { ScrollAnimate } from "@/components/ui/scroll-animate"
 
 const TUTORIALS_BASE =
@@ -48,7 +48,7 @@ const STEPS = [
   },
   {
     id: "schedules",
-    icon: CalendarClock,
+    icon: Calendar,
     label: "Schedule it",
     title: "Right content at the right time",
     description:
@@ -111,7 +111,7 @@ export function ProductTour() {
             onClick={() => setActive(i)}
             className={`inline-flex items-center gap-2 px-4 md:px-5 py-2.5 rounded-full text-sm md:text-base font-bold transition-all ${
               i === active
-                ? "bg-blue text-white shadow-lg scale-105"
+                ? "bg-blue text-white shadow-sm"
                 : "bg-white text-gray-600 hover:text-blue border border-gray-200 hover:border-blue/40"
             }`}
           >
@@ -128,8 +128,7 @@ export function ProductTour() {
 
       {/* Big player in browser chrome */}
       <div className="relative max-w-4xl mx-auto">
-        <div className="rounded-3xl bg-gradient-to-br from-blue/25 via-teal/15 to-coral/15 p-2 md:p-3 shadow-2xl">
-          <div className="rounded-2xl overflow-hidden bg-white shadow-lg">
+        <div className="rounded-2xl overflow-hidden bg-white border border-border shadow-lg">
             <div className="flex items-center gap-1.5 px-4 py-2.5 bg-gray-100 border-b border-gray-200">
               <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
               <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
@@ -137,7 +136,7 @@ export function ProductTour() {
               <span className="ml-3 flex-1 max-w-[260px] bg-white rounded-md px-3 py-0.5 text-[11px] text-gray-400 truncate">
                 app.piads.co/venue/{step.id}
               </span>
-              <span className="hidden sm:inline-flex bg-gray-900 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
+              <span className="hidden sm:inline-flex bg-white border border-border text-gray-500 text-[10px] font-semibold px-2.5 py-1 rounded-full">
                 Real app · not a mockup
               </span>
             </div>
@@ -167,7 +166,6 @@ export function ProductTour() {
                 </span>
               )}
             </div>
-          </div>
         </div>
 
         {/* Caption for the active step */}

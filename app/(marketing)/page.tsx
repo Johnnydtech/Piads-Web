@@ -23,21 +23,21 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
 const pillars = [
   {
     icon: Tv,
-    color: "bg-blue",
+    tint: "bg-blue/10 text-blue",
     title: "Show your own content",
     description:
       "Announcements, menus, promos, member spotlights — you decide what plays on your screens, always first.",
   },
   {
     icon: DollarSign,
-    color: "bg-teal",
+    tint: "bg-teal/10 text-teal",
     title: "Earn from local ads",
     description:
       "Open the slots you choose to nearby businesses and keep 75% of every booking. Ads only fill the gaps you allow.",
   },
   {
     icon: ShieldCheck,
-    color: "bg-coral",
+    tint: "bg-coral text-blue",
     title: "Stay in control",
     description:
       "Local businesses only — no big corporations. You approve every ad before it ever appears on your TV.",
@@ -99,7 +99,7 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <Button
                 size="lg"
-                className="h-16 px-10 text-lg rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 font-bold bg-blue hover:bg-blue/90"
+                className="font-semibold px-8"
                 asChild
               >
                 <Link href={`${APP_URL}/sign-up?role=venue`}>
@@ -110,7 +110,7 @@ export default function HomePage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="h-16 px-10 text-lg rounded-2xl font-bold"
+                className="font-semibold px-8"
                 asChild
               >
                 <a href="#product-tour">See how it works</a>
@@ -148,9 +148,9 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-6">
             {pillars.map((pillar, index) => (
               <ScrollAnimate key={pillar.title} delay={index * 100}>
-                <div className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-lg transition-shadow h-full">
-                  <div className={`w-12 h-12 ${pillar.color} rounded-2xl flex items-center justify-center mb-5`}>
-                    <pillar.icon className="h-6 w-6 text-white" />
+                <div className="bg-white rounded-2xl border border-border p-8 shadow-sm hover:shadow-md transition-shadow h-full">
+                  <div className={`w-11 h-11 ${pillar.tint} rounded-xl flex items-center justify-center mb-5`}>
+                    <pillar.icon className="h-5 w-5" />
                   </div>
                   <h3 className="text-xl font-bold font-display mb-3">{pillar.title}</h3>
                   <p className="text-base text-muted-foreground leading-relaxed">
@@ -179,7 +179,7 @@ export default function HomePage() {
             </p>
             <Button
               size="lg"
-              className="h-14 px-10 text-lg rounded-2xl font-bold bg-teal hover:bg-teal/90"
+              className="font-semibold px-8 bg-white text-gray-900 hover:bg-white/90"
               asChild
             >
               <Link href={`${APP_URL}/sign-up?role=venue`}>
@@ -202,7 +202,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((t, index) => (
               <ScrollAnimate key={t.company} delay={index * 100}>
-                <div className="bg-secondary/40 rounded-3xl p-8 h-full flex flex-col">
+                <div className="bg-white border border-border rounded-2xl p-8 h-full shadow-sm flex flex-col">
                   <Quote className="h-8 w-8 text-blue/40 mb-4" />
                   <p className="text-base text-foreground leading-relaxed mb-6 flex-1">
                     {t.quote}
@@ -230,7 +230,7 @@ export default function HomePage() {
             </p>
             <Button
               size="lg"
-              className="h-16 px-12 text-lg rounded-2xl font-bold bg-white text-blue hover:bg-white/90 shadow-xl"
+              className="font-semibold px-8 bg-white text-blue hover:bg-white/90"
               asChild
             >
               <Link href={`${APP_URL}/sign-up?role=venue`}>
