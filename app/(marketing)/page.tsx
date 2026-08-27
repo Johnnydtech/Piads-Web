@@ -131,6 +131,13 @@ export default function HomePage() {
             </div>
           </ScrollAnimate>
         </div>
+
+        {/* Walkthrough showcase — the main event, right under the headline */}
+        <div className="container mt-16 md:mt-20">
+          <ScrollAnimate animation="up" delay={250}>
+            <ProductTour />
+          </ScrollAnimate>
+        </div>
       </section>
 
       {/* What PiAds does — three pillars */}
@@ -153,9 +160,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Product tour — real in-app walkthrough videos */}
-      <ProductTour />
 
       {/* Pricing strip — one price, no tiers */}
       <section className="py-16 md:py-20 bg-gray-900 text-white">
