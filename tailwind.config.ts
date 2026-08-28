@@ -56,12 +56,12 @@ const config: Config = {
           DEFAULT: "var(--card)",
           foreground: "var(--card-foreground)",
         },
-        // Juuno-inspired brand colors
-        blue: "#4856c4",
-        teal: "#0b9ba5",
-        coral: "#ffc9d0",
-        orange: "#ffc886",
-        cyan: "#d4f4f9",
+        // PiAds warm-editorial brand colors (olive / blush / lime)
+        blue: "var(--blue)",
+        teal: "var(--teal)",
+        coral: "var(--coral)",
+        orange: "var(--orange)",
+        cyan: "var(--cyan)",
       },
       borderRadius: {
         lg: "var(--radius)",

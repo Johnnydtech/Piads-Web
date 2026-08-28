@@ -1,18 +1,12 @@
 import type { Metadata } from "next"
-import { Inter, Poppins, Pacifico } from "next/font/google"
+import { Instrument_Sans, Pacifico } from "next/font/google"
 import Script from "next/script"
 import "./globals.css"
 
-const inter = Inter({
+const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
-  display: "swap",
-})
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--font-display",
   display: "swap",
 })
 
@@ -77,7 +71,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${poppins.variable} ${pacifico.variable}`}>
+    <html lang="en" className={`${instrumentSans.variable} ${pacifico.variable}`}>
       <body className="min-h-screen bg-background font-sans antialiased">
         {children}
         <Script

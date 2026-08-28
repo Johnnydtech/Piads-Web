@@ -4,36 +4,36 @@
 
 @layer base {
   :root {
-    /* Juuno-inspired color palette */
-    --background: #ffffff;
-    --foreground: #09090b;
+    /* PiAds warm-editorial palette (matches app.piads.co rebrand) */
+    --background: #F3F1EC;
+    --foreground: #1A1A1A;
     --card: #ffffff;
-    --card-foreground: #09090b;
+    --card-foreground: #1A1A1A;
     --popover: #ffffff;
-    --popover-foreground: #09090b;
-    --primary: #4856c4;
-    --primary-foreground: #ffffff;
-    --secondary: #f4f5f8;
-    --secondary-foreground: #09090b;
-    --muted: #f4f5f8;
-    --muted-foreground: #71717a;
-    --accent: #0b9ba5;
+    --popover-foreground: #1A1A1A;
+    --primary: #1A1A1A;
+    --primary-foreground: #F3F1EC;
+    --secondary: #EAE7E0;
+    --secondary-foreground: #1A1A1A;
+    --muted: #EAE7E0;
+    --muted-foreground: #6B675E;
+    --accent: #6B7A3F;
     --accent-foreground: #ffffff;
-    --destructive: #ef4444;
+    --destructive: #B3402A;
     --destructive-foreground: #ffffff;
-    --border: #e4e4e7;
-    --input: #e4e4e7;
-    --ring: #4856c4;
+    --border: #E0DCD2;
+    --input: #E0DCD2;
+    --ring: #6B7A3F;
 
-    /* Brand colors */
-    --blue: #4856c4;
-    --teal: #0b9ba5;
-    --coral: #ffc9d0;
-    --orange: #ffc886;
-    --cyan: #d4f4f9;
+    /* Brand colors — olive/blush/lime warm-editorial system */
+    --blue: #6B7A3F;
+    --teal: #A5644E;
+    --coral: #D7F171;
+    --orange: #C9973B;
+    --cyan: #EAE7E0;
 
-    --font-sans: "Inter", system-ui, sans-serif;
-    --font-display: "Poppins", system-ui, sans-serif;
+    
+    --font-display: var(--font-sans);
     --radius: 1rem;
   }
 }
