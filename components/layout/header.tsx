@@ -18,6 +18,7 @@ const mainNavigation = [
 
 const resourcesNavigation = [
   { name: "Get Started", href: "/get-started", icon: BookOpen, description: "Learn how to use PiAds" },
+  { name: "Fire TV Player", href: "/players/fire-tv", icon: Tv, description: "Signage on the stick you own" },
   { name: "Devices", href: "/devices", icon: Tv, description: "Supported hardware" },
   { name: "About", href: "/about", icon: Building2, description: "Our story & mission" },
   { name: "Contact", href: "/contact", icon: Mail, description: "Get in touch" },

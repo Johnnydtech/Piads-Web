@@ -1,25 +1,61 @@
 import Link from "next/link"
 import Image from "next/image"
 
-const footerLinks = {
-  product: [
-    { name: "Features", href: "/features" },
-    { name: "Pricing", href: "/pricing" },
-    { name: "Supported Devices", href: "/devices" },
-    { name: "For Venues", href: "/features#venues" },
-    { name: "For Advertisers", href: "/features#advertisers" },
-  ],
-  company: [
-    { name: "About", href: "/about" },
-    { name: "Blog", href: "/blog" },
-    { name: "Contact", href: "/contact" },
-    { name: "Help Center", href: "/get-started" },
-  ],
-  legal: [
-    { name: "Privacy Policy", href: "/privacy" },
-    { name: "Terms of Service", href: "/terms" },
-  ],
-}
+// The footer is the site's internal-linking engine: every column below is an
+// SEO cluster. As new template pages ship (industry pages, alternative-to
+// pages), add their columns here so every page on the site links to them.
+const footerColumns: { heading: string; links: { name: string; href: string }[] }[] = [
+  {
+    heading: "Product",
+    links: [
+      { name: "Features", href: "/features" },
+      { name: "Pricing", href: "/pricing" },
+      { name: "For Venues", href: "/features#venues" },
+      { name: "For Advertisers", href: "/features#advertisers" },
+      { name: "Get Started", href: "/get-started" },
+    ],
+  },
+  {
+    heading: "Players & Setup",
+    links: [
+      { name: "Fire TV Stick", href: "/players/fire-tv" },
+      { name: "All Supported Devices", href: "/devices" },
+      { name: "Raspberry Pi vs Fire TV vs Android", href: "/blog/raspberry-pi-vs-fire-tv-vs-android-digital-signage" },
+      { name: "Getting Started with PiAds", href: "/blog/getting-started-with-piads" },
+    ],
+  },
+  {
+    heading: "Digital Signage For",
+    links: [
+      { name: "Coffee Shops & Cafes", href: "/blog/digital-signage-for-coffee-shops-and-cafes" },
+      { name: "Gyms & Fitness Studios", href: "/blog/digital-signage-for-gyms-and-fitness-studios" },
+      { name: "Salons & Barbershops", href: "/blog/digital-signage-for-salons-and-barbershops" },
+      { name: "Restaurants & Menus", href: "/blog/digital-menu-boards-increase-restaurant-sales" },
+      { name: "Breweries & Taprooms", href: "/blog/digital-signage-for-breweries-and-taprooms" },
+      { name: "Medical & Dental Offices", href: "/blog/digital-signage-for-dental-and-medical-offices" },
+      { name: "Auto Repair Shops", href: "/blog/digital-signage-for-auto-repair-shops" },
+    ],
+  },
+  {
+    heading: "Learn",
+    links: [
+      { name: "What Digital Signage Costs", href: "/blog/how-much-does-digital-signage-cost" },
+      { name: "Earn From Your Screens", href: "/blog/earn-money-from-your-venue-screens" },
+      { name: "Digital Signage vs Paper Signs", href: "/blog/digital-signage-vs-paper-signs" },
+      { name: "Content Ideas", href: "/blog/digital-signage-content-ideas" },
+      { name: "Blog", href: "/blog" },
+    ],
+  },
+  {
+    heading: "Company",
+    links: [
+      { name: "About", href: "/about" },
+      { name: "Contact", href: "/contact" },
+      { name: "Privacy Policy", href: "/privacy" },
+      { name: "Terms of Service", href: "/terms" },
+    ],
+  },
+]
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
 
@@ -27,7 +63,7 @@ export function Footer() {
   return (
     <footer className="bg-secondary/50">
       <div className="container py-16 md:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="inline-block mb-6">
@@ -45,56 +81,23 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Product Links */}
-          <div>
-            <h3 className="font-semibold font-display mb-5">Product</h3>
-            <ul className="space-y-3">
-              {footerLinks.product.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-blue transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company Links */}
-          <div>
-            <h3 className="font-semibold font-display mb-5">Company</h3>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-blue transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Legal Links */}
-          <div>
-            <h3 className="font-semibold font-display mb-5">Legal</h3>
-            <ul className="space-y-3">
-              {footerLinks.legal.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-blue transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {footerColumns.map((col) => (
+            <div key={col.heading}>
+              <h3 className="font-semibold font-display mb-5">{col.heading}</h3>
+              <ul className="space-y-3">
+                {col.links.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-muted-foreground hover:text-blue transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
         {/* Bottom */}
