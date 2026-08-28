@@ -23,21 +23,21 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
 const pillars = [
   {
     icon: Tv,
-    tint: "bg-blue/10 text-blue",
+    color: "bg-blue", text: "text-white",
     title: "Show your own content",
     description:
       "Announcements, menus, promos, member spotlights — you decide what plays on your screens, always first.",
   },
   {
     icon: DollarSign,
-    tint: "bg-teal/10 text-teal",
+    color: "bg-teal", text: "text-white",
     title: "Earn from local ads",
     description:
       "Open the slots you choose to nearby businesses and keep 75% of every booking. Ads only fill the gaps you allow.",
   },
   {
     icon: ShieldCheck,
-    tint: "bg-coral text-blue",
+    color: "bg-coral", text: "text-gray-900",
     title: "Stay in control",
     description:
       "Local businesses only — no big corporations. You approve every ad before it ever appears on your TV.",
@@ -84,9 +84,7 @@ export default function HomePage() {
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 font-display">
               Your TVs. Your content.
               <br />
-              <span className="bg-gradient-to-r from-blue to-teal bg-clip-text text-transparent">
-                Local ad revenue.
-              </span>
+              <span className="text-blue">Local ad revenue.</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
               PiAds turns the TVs already in your venue into screens you fully
@@ -148,12 +146,10 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-6">
             {pillars.map((pillar, index) => (
               <ScrollAnimate key={pillar.title} delay={index * 100}>
-                <div className="bg-white rounded-2xl border border-border p-8 shadow-sm hover:shadow-md transition-shadow h-full">
-                  <div className={`w-11 h-11 ${pillar.tint} rounded-xl flex items-center justify-center mb-5`}>
-                    <pillar.icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="text-xl font-bold font-display mb-3">{pillar.title}</h3>
-                  <p className="text-base text-muted-foreground leading-relaxed">
+                <div className={`${pillar.color} ${pillar.text} rounded-3xl p-10 h-full`}>
+                  <pillar.icon className="h-9 w-9 mb-5 opacity-90" />
+                  <h3 className="text-2xl font-bold font-display mb-3">{pillar.title}</h3>
+                  <p className="text-base leading-relaxed opacity-90">
                     {pillar.description}
                   </p>
                 </div>
