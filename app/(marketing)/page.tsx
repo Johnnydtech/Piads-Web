@@ -116,10 +116,10 @@ export default function HomePage() {
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-base text-muted-foreground">
-              <span className="flex items-center gap-2">
+              <Link href="/players/fire-tv" className="flex items-center gap-2 hover:text-foreground transition-colors">
                 <CheckCircle2 className="h-5 w-5 text-green-500" />
-                Works on any TV
-              </span>
+                Works on any TV — Fire TV native
+              </Link>
               <span className="flex items-center gap-2">
                 <CheckCircle2 className="h-5 w-5 text-green-500" />
                 <span><strong className="text-foreground">$10</strong>/screen/month</span>
