@@ -27,13 +27,13 @@ const footerColumns: { heading: string; links: { name: string; href: string }[] 
   {
     heading: "Digital Signage For",
     links: [
-      { name: "Coffee Shops & Cafes", href: "/blog/digital-signage-for-coffee-shops-and-cafes" },
-      { name: "Gyms & Fitness Studios", href: "/blog/digital-signage-for-gyms-and-fitness-studios" },
-      { name: "Salons & Barbershops", href: "/blog/digital-signage-for-salons-and-barbershops" },
-      { name: "Restaurants & Menus", href: "/blog/digital-menu-boards-increase-restaurant-sales" },
-      { name: "Breweries & Taprooms", href: "/blog/digital-signage-for-breweries-and-taprooms" },
-      { name: "Medical & Dental Offices", href: "/blog/digital-signage-for-dental-and-medical-offices" },
-      { name: "Auto Repair Shops", href: "/blog/digital-signage-for-auto-repair-shops" },
+      { name: "Cafes & Coffee Shops", href: "/digital-signage-for/cafes-coffee-shops" },
+      { name: "Gyms & Fitness Studios", href: "/digital-signage-for/gyms-fitness-studios" },
+      { name: "Salons & Barbershops", href: "/digital-signage-for/salons-barbershops" },
+      { name: "Restaurants & Menus", href: "/digital-signage-for/restaurants" },
+      { name: "Retail Stores", href: "/digital-signage-for/retail-stores" },
+      { name: "Medical & Dental Offices", href: "/digital-signage-for/medical-dental-offices" },
+      { name: "All Industries", href: "/digital-signage-for" },
     ],
   },
   {

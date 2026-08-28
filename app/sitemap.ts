@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next"
 import { getAllPosts } from "@/lib/mdx"
+import { INDUSTRIES } from "@/lib/industries"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://piads.co"
@@ -60,6 +61,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/digital-signage-for`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    ...INDUSTRIES.map((i) => ({
+      url: `${baseUrl}/digital-signage-for/${i.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
     {
       url: `${baseUrl}/privacy`,
       lastModified: new Date(),
