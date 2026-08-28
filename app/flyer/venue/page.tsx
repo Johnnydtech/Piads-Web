@@ -238,14 +238,14 @@ export default function VenueFlyer() {
             <div className="flex-shrink-0 flex flex-col items-center">
               <div className="bg-white p-2 rounded-lg shadow-sm">
                 <QRCodeSVG
-                  value="https://calendly.com/yohanes-piads/30min"
+                  value="https://piads.co"
                   size={80}
                   level="M"
                   fgColor="#4856c4"
                   bgColor="#ffffff"
                 />
               </div>
-              <p className="text-[9px] text-gray-500 mt-1 font-medium">Scan to book a call</p>
+              <p className="text-[9px] text-gray-500 mt-1 font-medium">Scan to learn more</p>
             </div>
 
             {/* Right: CTA Text */}
