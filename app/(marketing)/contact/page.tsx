@@ -1,8 +1,8 @@
-import { Mail, MessageSquare, Calendar, Sparkles } from "lucide-react"
+import { Mail, MessageSquare, MapPin, Sparkles } from "lucide-react"
 
 export const metadata = {
   title: "Contact",
-  description: "Get in touch with the PiAds team in Arlington, VA. Schedule a call or send us an email about digital signage for your local business.",
+  description: "Get in touch with the PiAds team in Arlington, VA. Send us an email about digital signage for your local business.",
 }
 
 export default function ContactPage() {
@@ -20,8 +20,8 @@ export default function ContactPage() {
             <span className="text-blue"> Talk</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Have questions about PiAds? Schedule a quick call with us or reach out via email.
-            We&apos;d love to hear from you.
+            Have questions about PiAds? Reach out via email — we typically
+            respond within 24 hours.
           </p>
         </div>
       </section>
@@ -29,54 +29,45 @@ export default function ContactPage() {
       {/* Contact Section */}
       <section className="py-12 md:py-20 bg-secondary/50">
         <div className="container max-w-5xl">
-          <div className="grid md:grid-cols-3 gap-12">
-            {/* Contact Info */}
-            <div className="space-y-6">
-              <div>
-                <h2 className="text-xl font-semibold font-display mb-4">Contact Info</h2>
-                <p className="text-muted-foreground">
-                  Schedule a call or send us an email. We typically respond within 24 hours.
-                </p>
+          <div className="grid md:grid-cols-3 gap-6">
+            <a
+              href="mailto:hello@piads.co"
+              className="bg-white border border-border rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="w-11 h-11 bg-blue/10 text-blue rounded-xl flex items-center justify-center mb-5">
+                <Mail className="h-5 w-5" />
               </div>
+              <h3 className="font-bold font-display mb-2">Email us</h3>
+              <p className="text-muted-foreground text-sm mb-3">
+                Questions, partnerships, press — anything goes.
+              </p>
+              <span className="text-blue font-semibold text-sm">hello@piads.co</span>
+            </a>
 
-              <div className="bg-blue rounded-2xl p-6 text-white">
-                <div className="flex items-start gap-4">
-                  <Calendar className="h-5 w-5 text-white/80 mt-0.5" />
-                  <div>
-                    <h3 className="font-medium mb-1">Schedule a Call</h3>
-                    <p className="text-white/80 text-sm">
-                      Book a 30-minute call to discuss your needs.
-                    </p>
-                  </div>
-                </div>
+            <div className="bg-white border border-border rounded-2xl p-8 shadow-sm">
+              <div className="w-11 h-11 bg-teal/10 text-teal rounded-xl flex items-center justify-center mb-5">
+                <MessageSquare className="h-5 w-5" />
               </div>
+              <h3 className="font-bold font-display mb-2">Support</h3>
+              <p className="text-muted-foreground text-sm">
+                Already a customer? Use the in-app help center for the fastest
+                response, or email{" "}
+                <a href="mailto:support@piads.co" className="text-blue font-semibold">
+                  support@piads.co
+                </a>
+                .
+              </p>
+            </div>
 
-              <div className="bg-teal rounded-2xl p-6 text-white">
-                <div className="flex items-start gap-4">
-                  <Mail className="h-5 w-5 text-white/80 mt-0.5" />
-                  <div>
-                    <h3 className="font-medium mb-1">Email</h3>
-                    <a
-                      href="mailto:hello@piads.co"
-                      className="text-white/80 hover:text-white transition-colors"
-                    >
-                      hello@piads.co
-                    </a>
-                  </div>
-                </div>
+            <div className="bg-white border border-border rounded-2xl p-8 shadow-sm">
+              <div className="w-11 h-11 bg-coral text-blue rounded-xl flex items-center justify-center mb-5">
+                <MapPin className="h-5 w-5" />
               </div>
-
-              <div className="bg-coral rounded-2xl p-6">
-                <div className="flex items-start gap-4">
-                  <MessageSquare className="h-5 w-5 text-foreground/60 mt-0.5" />
-                  <div>
-                    <h3 className="font-medium mb-1">Support</h3>
-                    <p className="text-muted-foreground text-sm">
-                      For technical support, please use the in-app help center.
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <h3 className="font-bold font-display mb-2">Where we are</h3>
+              <p className="text-muted-foreground text-sm">
+                Arlington, Virginia — serving venues across Ballston, Clarendon,
+                Columbia Pike, and Falls Church.
+              </p>
             </div>
           </div>
         </div>

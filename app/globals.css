@@ -6,34 +6,34 @@
   :root {
     /* Juuno-inspired color palette */
     --background: #ffffff;
-    --foreground: #101828;
+    --foreground: #09090b;
     --card: #ffffff;
-    --card-foreground: #101828;
+    --card-foreground: #09090b;
     --popover: #ffffff;
-    --popover-foreground: #101828;
-    --primary: #ea2160;
+    --popover-foreground: #09090b;
+    --primary: #4856c4;
     --primary-foreground: #ffffff;
-    --secondary: #f7f7fa;
-    --secondary-foreground: #101828;
-    --muted: #f7f7fa;
+    --secondary: #f4f5f8;
+    --secondary-foreground: #09090b;
+    --muted: #f4f5f8;
     --muted-foreground: #71717a;
-    --accent: #6d28d9;
+    --accent: #0b9ba5;
     --accent-foreground: #ffffff;
     --destructive: #ef4444;
     --destructive-foreground: #ffffff;
     --border: #e4e4e7;
     --input: #e4e4e7;
-    --ring: #ea2160;
+    --ring: #4856c4;
 
     /* Brand colors */
-    --blue: #ea2160;
-    --teal: #6d28d9;
-    --coral: #ffe1ea;
-    --orange: #ffd9a8;
-    --cyan: #f0eafb;
+    --blue: #4856c4;
+    --teal: #0b9ba5;
+    --coral: #ffc9d0;
+    --orange: #ffc886;
+    --cyan: #d4f4f9;
 
-    --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
-    --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-sans: "Inter", system-ui, sans-serif;
+    --font-display: "Poppins", system-ui, sans-serif;
     --radius: 1rem;
   }
 }
