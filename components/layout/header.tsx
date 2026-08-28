@@ -17,6 +17,7 @@ const mainNavigation = [
 ]
 
 const resourcesNavigation = [
+  { name: "Use Cases", href: "/digital-signage-for", icon: Building2, description: "Signage for your kind of venue" },
   { name: "Get Started", href: "/get-started", icon: BookOpen, description: "Learn how to use PiAds" },
   { name: "Fire TV Player", href: "/players/fire-tv", icon: Tv, description: "Signage on the stick you own" },
   { name: "Devices", href: "/devices", icon: Tv, description: "Supported hardware" },
