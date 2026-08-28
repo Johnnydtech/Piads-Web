@@ -338,6 +338,13 @@ export default function HomePage() {
                     <MapPinArea weight="fill" className="w-5 h-5" />
                     Local Only
                   </span>
+                  <Link
+                    href="/players/fire-tv"
+                    className="inline-flex items-center gap-2 bg-foreground text-background font-bold text-base px-5 py-2.5 rounded-full shadow-md hover:opacity-90 transition-opacity"
+                  >
+                    <Tv className="w-5 h-5" />
+                    $10/screen · Fire TV ready
+                  </Link>
                 </div>
 
                 <div className="flex items-center gap-6 text-lg text-muted-foreground">
