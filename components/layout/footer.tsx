@@ -19,6 +19,8 @@ const footerColumns: { heading: string; links: { name: string; href: string }[] 
     heading: "Players & Setup",
     links: [
       { name: "Fire TV Stick", href: "/players/fire-tv" },
+      { name: "Fire TV Setup Guide", href: "/blog/fire-tv-stick-digital-signage-setup-guide" },
+      { name: "Browser-Based Signage", href: "/blog/browser-based-digital-signage" },
       { name: "All Supported Devices", href: "/devices" },
       { name: "Raspberry Pi vs Fire TV vs Android", href: "/blog/raspberry-pi-vs-fire-tv-vs-android-digital-signage" },
       { name: "Getting Started with PiAds", href: "/blog/getting-started-with-piads" },
@@ -39,7 +41,9 @@ const footerColumns: { heading: string; links: { name: string; href: string }[] 
   {
     heading: "Learn",
     links: [
+      { name: "What Is Digital Signage?", href: "/blog/what-is-digital-signage" },
       { name: "What Digital Signage Costs", href: "/blog/how-much-does-digital-signage-cost" },
+      { name: "Canva on Your TV", href: "/blog/canva-digital-signage-display-on-tv" },
       { name: "Earn From Your Screens", href: "/blog/earn-money-from-your-venue-screens" },
       { name: "Digital Signage vs Paper Signs", href: "/blog/digital-signage-vs-paper-signs" },
       { name: "Content Ideas", href: "/blog/digital-signage-content-ideas" },
