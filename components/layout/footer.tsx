@@ -47,6 +47,17 @@ const footerColumns: { heading: string; links: { name: string; href: string }[] 
     ],
   },
   {
+    heading: "Compare",
+    links: [
+      { name: "vs Yodeck", href: "/alternative-to/yodeck-alternative" },
+      { name: "vs OptiSigns", href: "/alternative-to/optisigns-alternative" },
+      { name: "vs ScreenCloud", href: "/alternative-to/screencloud-alternative" },
+      { name: "vs Raydiant", href: "/alternative-to/raydiant-alternative" },
+      { name: "vs Juuno", href: "/alternative-to/juuno-alternative" },
+      { name: "Best Signage Software 2026", href: "/blog/best-digital-signage-software-small-business" },
+    ],
+  },
+  {
     heading: "Company",
     links: [
       { name: "About", href: "/about" },
@@ -63,7 +74,7 @@ export function Footer() {
   return (
     <footer className="bg-secondary/50">
       <div className="container py-16 md:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-10">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="inline-block mb-6">
