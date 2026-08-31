@@ -1,0 +1,79 @@
+---
+title: "Digital Signage on Android TV: Setup and Best Practices (2026)"
+description: "Turn an Android TV or tablet into a reliable digital signage player — device picks, setup steps, and settings that stop it from misbehaving."
+publishedAt: "2026-08-31"
+author: "PiAds Team"
+tags: ["android", "hardware", "setup", "digital-signage"]
+---
+
+Android TV runs on more screens than any other smart TV platform, and a lot of venues already own one — behind the counter, in a waiting room, mounted in a lobby. That makes it a tempting free digital signage player. It's a good one, with a few caveats worth knowing before you mount anything.
+
+This guide covers which Android devices actually hold up for signage duty, the setup steps, and the settings that separate a screen that runs quietly for months from one that reboots into a home screen at the worst moment.
+
+## Android TV vs. the alternatives, quickly
+
+| | Android TV / tablet | Fire TV Stick | Raspberry Pi | Browser (web player) |
+|---|---|---|---|---|
+| Cost | $0 if you own one, $50–200 new | $30–60 | $60–80 | $0 |
+| Setup | Install app from Play Store | Plug in, install app | Flash SD card | Open a URL |
+| 24/7 reliability | Good, with settings changed | Good | Excellent | Fair — needs a dedicated machine |
+| Interruptions | System updates, notifications | Rare | None | Sleep, browser closing, updates |
+| Best for | Venues that already own the hardware | Budget-friendly dedicated setup | Permanent, unattended screens | Testing, temporary, or a PC that's on anyway |
+
+Android TV's real advantage is cost: if a smart TV, streaming box, or old tablet is already sitting there, signage is a free app install away. Where it loses ground to a Pi or a dedicated Fire TV Stick is that it's still a general-purpose device — it wants to install updates, show notifications, and generally behave like a TV rather than an appliance. None of that is disqualifying; it just means a few settings need attention up front.
+
+## Which Android devices work well
+
+**Android TV boxes and smart TVs** (Sony, TCL, Hisense, Sharp, NVIDIA Shield, and similar) are the strongest option — they're built to stay powered on, run apps in the background reliably, and most support ethernet for a wired connection.
+
+**Android tablets** work too, and are the right call when a screen needs to sit at an angle on a counter or reception desk rather than mount like a TV. Older tablets that are otherwise gathering dust are fine for image-based menus and static promos; save the newer, faster ones for video-heavy content.
+
+**Generic Android streaming boxes** (the unbranded ones sold cheaply online) are the riskiest pick — inconsistent Play Store access, weak Wi-Fi radios, and spotty long-term software support. They're not automatically bad, but if a venue is buying new hardware specifically for signage, a name-brand Android TV device, a Fire TV Stick, or a [Raspberry Pi](/blog/raspberry-pi-vs-fire-tv-vs-android-digital-signage) is a safer bet than a no-name box.
+
+## Setup: from box to live screen
+
+1. **Connect the device to Wi-Fi** (or ethernet, if available — more reliable for a screen that never moves).
+2. **Install the PiAds app** from the Google Play Store on the device.
+3. **Open the app** — a 6-character pairing code appears on screen.
+4. **Pair it** in [app.piads.co](https://app.piads.co): go to Screens → Connect screen, enter the code, and name it something you'll recognize later ("Waiting room TV").
+5. **Build the first playlist.** PiAds' guided setup walks through venue details, content, and scheduling in four steps, and the screen goes live as soon as you publish.
+
+That's the whole process — no sideloading, no developer mode, no cables beyond power and (ideally) a network connection.
+
+## Settings that make Android TV behave like an appliance
+
+This is the part that actually matters for reliability. A default Android TV is optimized to be a good TV, not a good sign — a few changes fix that:
+
+- **Turn off the screensaver and sleep timer** (Settings → Device Preferences → Screensaver / Sleep). Left on, the device will eventually replace your content with a photo slideshow or go dark.
+- **Disable automatic app updates** for the PiAds app, or at least set updates to a low-traffic overnight window, so a screen never restarts into an update prompt during business hours.
+- **Turn off notifications** for anything other than the signage app — a Netflix promo banner sliding over your menu board looks unprofessional.
+- **Set the PiAds app to launch on boot**, if the device supports it, so a power blip or restart brings the screen back up without a staff member walking over to open the app manually.
+- **Use 5GHz Wi-Fi** over 2.4GHz where the router supports it — content updates land faster and video plays back more smoothly.
+- **Plug into wall power**, not a USB port on the back of the TV — some TVs cut USB power when the TV itself goes to standby, which will silently kill the signage device.
+
+Handle those six and an Android TV device runs signage about as reliably as purpose-built hardware, at a fraction of the cost.
+
+## When to skip Android TV entirely
+
+Honest trade-off: if a venue is buying new hardware anyway and wants the least fiddling, a [Fire TV Stick](/blog/fire-tv-stick-digital-signage-setup-guide) or a Raspberry Pi is a slightly simpler, more locked-down appliance experience — fewer settings to change, less chance of a system update popping up mid-shift. Android TV is the right call specifically when the hardware is already owned, or when the flexibility of a full tablet or TV interface (for interactive or touch use cases) is worth the extra setup step.
+
+## FAQ
+
+**Does PiAds have a native Android app, or is this a browser workaround?**
+Native. PiAds runs as an installed Android app on Android TV devices and tablets, alongside native support for the entire Fire TV lineup (including the new Vega OS devices), Raspberry Pi, and a browser-based [web player](/blog/browser-based-digital-signage) for zero-hardware setups. See the full lineup on the [devices page](/devices).
+
+**Can I use an old Android tablet I already own?**
+Yes — it's one of the more practical uses for a retired tablet. Stick to image-based content and static menus on older, slower devices; save video-heavy playlists for newer hardware.
+
+**Will Android system updates interrupt my signage?**
+They can, if left on default settings. Disabling auto-updates (or scheduling them overnight) and turning off the screensaver and sleep timer, as covered above, handles nearly all of it.
+
+**What does PiAds cost to run on Android TV?**
+The same as every other player: **$10 per screen per month**, every feature included, no contracts. And the screen isn't just a cost — local businesses can book ad slots on it that you approve, and you keep **75%** of every booking.
+
+**Is Android TV reliable enough for a restaurant or gym running 12+ hours a day?**
+Yes, once the settings above are applied. Venues like [gyms](/digital-signage-for/gyms-fitness-studios), [cafes](/digital-signage-for/cafes-coffee-shops), and [restaurants](/digital-signage-for/restaurants) run Android TV signage all day without issues — the device just needs to be told to stop acting like a TV and start acting like a sign.
+
+---
+
+*Already have an Android TV or tablet mounted somewhere? [Start a free PiAds trial](https://app.piads.co/sign-up?role=venue) and have it live in under 10 minutes.*
