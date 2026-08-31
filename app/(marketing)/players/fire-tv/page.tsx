@@ -20,9 +20,8 @@ export const metadata = {
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
 
-// Swap for the direct listing URL (amazon.com/dp/<ASIN>) once the current
-// Appstore review is approved — the search link works in the meantime.
-const AMAZON_APPSTORE_URL = "https://www.amazon.com/s?k=piads+player&i=mobile-apps"
+// Live Amazon Appstore listing (approved Aug 2026; APK + Vega in one listing)
+const AMAZON_APPSTORE_URL = "https://www.amazon.com/dp/B0GTRC4JTN"
 const FIRE_STICK_BUY_URL = "https://www.amazon.com/all-new-amazon-fire-tv-stick-4k-max/dp/B0BP9SNVH9"
 
 const benefits = [
