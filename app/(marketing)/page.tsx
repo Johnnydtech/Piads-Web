@@ -81,10 +81,12 @@ export default function HomePage() {
               <Sparkles className="h-4 w-4" />
               Digital signage for local venues
             </span>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 font-display">
-              Your TVs. Your content.
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 font-display leading-tight">
+              Why do ads make you mad?
               <br />
-              <span className="text-blue">Local ad revenue.</span>
+              Because you&apos;re not making a dime from them.
+              <br />
+              <span className="text-blue">What if we told you we can change that?</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
               PiAds turns the TVs already in your venue into screens you fully
