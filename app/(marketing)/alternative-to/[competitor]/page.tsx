@@ -187,8 +187,8 @@ export default function CompetitorPage({ params }: { params: { competitor: strin
             Every signage platform — {c.name} included — treats your screens as a
             cost. PiAds is the only one with a built-in local advertising
             marketplace: nearby businesses book slots on your screens, you
-            approve every ad, and you keep 75% of the revenue. For a venue with
-            real foot traffic, that regularly turns the software fee negative.
+            approve every ad, and you keep 70% of the revenue. The software is
+            $0 for partner screens, so the screen is an income line, not a cost.
           </p>
         </div>
       </section>
@@ -241,7 +241,7 @@ export default function CompetitorPage({ params }: { params: { competitor: strin
             Try the alternative that pays you back
           </h2>
           <p className="text-background/70 text-lg mb-8 max-w-xl mx-auto">
-            Free trial, no card. Pair one screen — or just the web player — and
+            Free for partner screens, no card. Pair one screen — or just the web player — and
             run it next to {c.name} for a week.
           </p>
           <Button size="lg" variant="secondary" className="rounded-xl h-13 px-7" asChild>

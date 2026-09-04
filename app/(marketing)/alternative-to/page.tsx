@@ -23,7 +23,7 @@ export default function AlternativesIndexPage() {
           <p className="text-xl text-muted-foreground">
             Every comparison below names where the other platform wins — and the
             one place none of them can follow: PiAds screens earn local ad
-            revenue, with 75% going to the venue.
+            revenue, with 70% going to the venue.
           </p>
         </div>
       </section>
