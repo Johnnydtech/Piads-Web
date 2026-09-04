@@ -9,6 +9,9 @@ import { Menu, X, ChevronDown, BookOpen, Tv, Building2, Mail, MapPin, ArrowRight
 import { cn } from "@/lib/utils"
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
+// Advertiser marketplace (public discover map). Not app.piads.co: that path
+// redirects through ads.piads.co, which ad blockers kill.
+const MARKET_URL = process.env.NEXT_PUBLIC_MARKET_URL || "https://market.piads.co"
 
 const mainNavigation = [
   { name: "Features", href: "/features" },
@@ -282,7 +285,7 @@ export function Header() {
         scrolled ? "top-[84px]" : "top-[96px]"
       )}>
         <Link
-          href={`${APP_URL}/discover`}
+          href={`${MARKET_URL}/discover`}
           className={cn(
             "group flex items-center gap-3 px-5 py-2.5 rounded-full",
             "bg-gradient-to-r from-blue/10 via-teal/10 to-blue/10",
