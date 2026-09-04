@@ -123,7 +123,7 @@ export default function HomePage() {
                 </span>
               </div>
               <div className="relative overflow-hidden rounded-b-2xl bg-gray-50">
-                <Image src="/cms-screenshots/screens-dashboard-2026.jpg" alt="PiAds screen management dashboard with a connected live screen" width={1375} height={760} priority className="h-auto w-full" />
+                <Image src="/cms-screenshots/screens-dashboard-2026.jpg" alt="PiAds screen management dashboard with a connected live screen" width={2160} height={1216} priority className="h-auto w-full" />
                 <div className="absolute bottom-3 left-3 right-3 hidden grid-cols-3 gap-3 md:grid">
                   {[
                     ["Platform cost", "$0 with ad slots"],
@@ -170,7 +170,7 @@ export default function HomePage() {
                   <p className="text-lg leading-relaxed text-gray-600">Know what is playing, what is scheduled, and which screens need attention at a glance.</p>
                 </div>
                 <div className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 shadow-[0_20px_50px_rgba(17,24,39,0.08)]">
-                  <Image src="/cms-screenshots/playlist-editor-2026.jpg" alt="PiAds playlist editor with current content controls" width={1375} height={760} className="h-auto w-full" />
+                  <Image src="/cms-screenshots/playlist-editor-2026.jpg" alt="PiAds playlist editor with current content controls" width={2160} height={1216} className="h-auto w-full" />
                 </div>
               </div>
             </ScrollAnimate>

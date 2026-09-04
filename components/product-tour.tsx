@@ -15,8 +15,8 @@ const STEPS = [
     description: "Online status, active content, device health, and screen controls stay together in one calm dashboard.",
     bullets: ["Real connected web player", "Live status and now-playing view"],
     image: "/cms-screenshots/screens-dashboard-2026.jpg",
-    width: 1375,
-    height: 760,
+    width: 2160,
+    height: 1216,
   },
   {
     id: "playlists",
@@ -26,8 +26,8 @@ const STEPS = [
     description: "Arrange content, set durations, and add everything from images and video to websites and live feeds.",
     bullets: ["Twelve built-in content types", "Drag, reorder, preview, and publish"],
     image: "/cms-screenshots/playlist-editor-2026.jpg",
-    width: 1375,
-    height: 760,
+    width: 2160,
+    height: 1216,
   },
   {
     id: "schedules",
@@ -37,8 +37,8 @@ const STEPS = [
     description: "Run an all-day playlist or schedule different content around breakfast, lunch, events, and closing time.",
     bullets: ["Simple weekly timeline", "One schedule or every screen"],
     image: "/cms-screenshots/schedules-dashboard-2026.jpg",
-    width: 1375,
-    height: 760,
+    width: 2160,
+    height: 1216,
   },
   {
     id: "live",
@@ -48,8 +48,8 @@ const STEPS = [
     description: "The same starter playlist shown in the dashboard is playing on the connected PiAds web player.",
     bullets: ["Captured from the live player", "Works on web, Fire TV, Android, and Raspberry Pi"],
     image: "/cms-screenshots/player-live-2026.jpg",
-    width: 1375,
-    height: 997,
+    width: 2160,
+    height: 1216,
   },
 ]
 
