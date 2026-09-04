@@ -9,17 +9,16 @@ import {
   CheckCircle2,
   CircleDollarSign,
   LayoutDashboard,
-  Monitor,
   MonitorSmartphone,
   PlayCircle,
   Quote,
   ShieldCheck,
-  Smartphone,
   Sparkles,
   Wallet,
 } from "lucide-react"
 
 import { ProductTour } from "@/components/product-tour"
+import { HeroDevices } from "@/components/hero-devices"
 import { Button } from "@/components/ui/button"
 import { ScrollAnimate } from "@/components/ui/scroll-animate"
 
@@ -114,44 +113,9 @@ export default function HomePage() {
         </div>
 
         <div className="container relative z-10 mt-16 max-w-7xl md:mt-20">
-          <ScrollAnimate animation="up" delay={250}>
-            {/* Two real devices, side by side: the web dashboard in a browser
-                frame and the iOS app in a phone frame. Bottom-aligned so the
-                taller phone rises above the browser instead of floating. */}
-            <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-[minmax(0,1.7fr)_minmax(0,0.65fr)] md:gap-6 lg:gap-10">
-              <div>
-                <div className="rounded-[28px] border border-gray-200 bg-white p-2.5 shadow-[0_30px_90px_rgba(17,24,39,0.14)] md:p-4">
-                  <div className="flex items-center gap-2 rounded-t-2xl border-b border-gray-100 bg-gray-50 px-4 py-3">
-                    <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
-                    <span className="mx-auto rounded-md border border-gray-200 bg-white px-8 py-1 text-[11px] text-gray-400 md:px-24">
-                      app.piads.co/venue/screens
-                    </span>
-                  </div>
-                  <div className="overflow-hidden rounded-b-2xl bg-gray-50">
-                    <Image src="/cms-screenshots/screens-dashboard-2026.jpg" alt="PiAds web dashboard with a connected live screen" width={2160} height={1216} priority className="h-auto w-full" />
-                  </div>
-                </div>
-                <div className="mt-4 flex items-center justify-center gap-2 text-sm font-medium text-gray-600">
-                  <Monitor className="h-4 w-4 text-gray-400" />
-                  Web dashboard <span className="text-gray-400">·</span> any browser
-                </div>
-              </div>
+          <HeroDevices />
 
-              <div className="mx-auto w-full max-w-[250px] md:max-w-none">
-                <div className="rounded-[2.75rem] border-[6px] border-gray-950 bg-gray-950 p-[3px] shadow-[0_30px_90px_rgba(17,24,39,0.22)]">
-                  <div className="overflow-hidden rounded-[2.25rem] bg-[#F2F1EC]">
-                    <Image src="/cms-screenshots/ios-screens-2026.jpg" alt="The PiAds iOS app showing a venue's screens on a phone" width={804} height={1748} className="h-auto w-full" />
-                  </div>
-                </div>
-                <div className="mt-4 flex items-center justify-center gap-2 text-sm font-medium text-gray-600">
-                  <Smartphone className="h-4 w-4 text-gray-400" />
-                  iOS app <span className="text-gray-400">·</span> App Store
-                </div>
-              </div>
-            </div>
-
+          <ScrollAnimate animation="up" delay={100}>
             <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
               {[
                 ["Platform cost", "$0 with ad slots"],
