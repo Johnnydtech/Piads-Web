@@ -45,6 +45,10 @@ const faqs = [
     answer: "Partner screens enable approved marketplace ad slots. Advertising funds the platform, so the signage software costs the venue $0 while the screen remains eligible and participating.",
   },
   {
+    question: "What if I don't want ads on my screens?",
+    answer: "You can still use PiAds. Screens that don't enable approved ad slots are billed at $10 per screen per month, or $100 per screen per year. Switch a screen to the Partner plan at any time and its fee drops to $0.",
+  },
+  {
     question: "How much ad space do I have to enable?",
     answer: "You choose the inventory you make available and can change it as your venue needs evolve. Your own menus, announcements, promotions, and programming stay in your control.",
   },
