@@ -251,13 +251,13 @@ export default function VenueFlyer() {
             {/* Right: CTA Text */}
             <div className="flex-1">
               <h3 className="font-display font-bold text-base text-gray-900 mb-0.5">
-                7-Day Free Trial
+                Free Partner Plan
               </h3>
-              <p className="text-[11px] text-gray-500 mb-1.5">Then just <span className="font-bold text-[#4856c4]">$10/screen per month</span>. Cancel anytime.</p>
+              <p className="text-[11px] text-gray-500 mb-1.5"><span className="font-bold text-[#4856c4]">$0 with approved ad slots</span>. Keep 70% of cleared revenue.</p>
               <div className="space-y-0.5 mb-2">
                 {[
-                  "7-day free trial, no card required",
-                  "Only $10/screen/month after trial",
+                  "Free Partner plan, no card required",
+                  "Enable only the ad slots you choose",
                   "Set up in 10 minutes",
                   "Cancel anytime, no contracts",
                 ].map((item, i) => (

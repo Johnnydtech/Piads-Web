@@ -109,7 +109,7 @@ export function NewsletterPopup() {
             Turn your screens into revenue
           </h2>
           <p className="mt-1.5 text-sm text-white/80">
-            Digital signage that pays for itself — keep 75% of ad revenue from your displays.
+            Free digital signage with approved ad slots — keep 70% of ad revenue from your displays.
           </p>
         </div>
 

@@ -31,7 +31,7 @@ const values = [
   {
     icon: Users,
     title: "Fair Revenue",
-    description: "Venues keep 75% of ad revenue. We believe in sharing success, not hoarding it.",
+    description: "Venues keep 70% of ad revenue. We believe in sharing success, not hoarding it.",
     color: "bg-orange",
   },
 ]
@@ -192,7 +192,7 @@ export default function AboutPage() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-white/60">•</span>
-                  Keep 75% of every booking with weekly payouts
+                  Keep 70% of every booking with weekly payouts
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-white/60">•</span>

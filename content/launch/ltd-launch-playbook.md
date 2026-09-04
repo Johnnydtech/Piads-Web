@@ -1,6 +1,6 @@
 # PiAds LTD Launch Playbook
 
-The 10-step LTD strategy, adapted to PiAds. Key adaptation: **lifetime applies to the signage CMS only, with hard caps per tier; the ad-marketplace revenue share stays recurring forever** — LTD venues are not a cost sink, they're permanent ad inventory earning us 25% of every booking.
+The 10-step LTD strategy, adapted to PiAds. Key adaptation: **lifetime applies to the signage CMS only, with hard caps per tier; the ad-marketplace revenue share stays recurring forever** — LTD venues are not a cost sink, they're permanent ad inventory earning us 30% of every booking.
 
 ## Steps & status
 1. **Done-before idea** — ✅ Digital signage is proven (Yodeck, OptiSigns, ScreenCloud); our angle is the local ad marketplace. OptiSigns and Fugo both ran successful AppSumo deals.

@@ -15,7 +15,7 @@ import {
 export const metadata = {
   title: "Fire TV Digital Signage",
   description:
-    "Run digital signage on the Fire TV Stick you already own. PiAds is a native Fire TV app — plug in, pair with a 6-character code, and your screen is live in minutes. From $10/screen, and your screen earns ad revenue.",
+    "Run free digital signage on the Fire TV Stick you already own. Pair in minutes, enable approved marketplace ad slots, and keep 70% of cleared ad revenue.",
 }
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
@@ -44,7 +44,7 @@ const benefits = [
   {
     icon: Sparkles,
     title: "It pays for itself",
-    description: "PiAds screens can run local ads — you keep 75% of every booking.",
+    description: "PiAds screens can run local ads — you keep 70% of every booking.",
   },
 ]
 
@@ -90,11 +90,11 @@ const faqs = [
   },
   {
     q: "How does my screen earn money?",
-    a: "Local advertisers book slots on your screen through the PiAds marketplace. Your own content always comes first — ads fill the gaps you allow — and you keep 75% of every booking.",
+    a: "Local advertisers book slots on your screen through the PiAds marketplace. Your own content always comes first — ads fill the gaps you allow — and you keep 70% of every booking.",
   },
   {
     q: "What does it cost?",
-    a: "$10 per screen per month, with no long-term contract. A single ad booking typically covers the fee several times over.",
+    a: "$0 for participating Partner screens that enable approved marketplace ad slots. You keep 70% of cleared ad revenue.",
   },
 ]
 
@@ -115,16 +115,16 @@ export default function FireTvPlayerPage() {
             PiAds runs natively on the entire Fire TV family — sticks, cubes,
             built-in TVs, and the newest Vega devices. Plug in, pair with a
             6-character code, and your screen is live in minutes. Then let it
-            earn: PiAds screens run local ads and you keep 75%.
+            earn: PiAds screens run local ads and you keep 70%.
           </p>
           <div className="flex flex-wrap gap-4">
-            <Button size="lg" className="rounded-xl h-13 px-7" asChild>
+            <Button size="lg" className="rounded-xl h-14 px-7" asChild>
               <Link href={`${APP_URL}/sign-up?role=venue`}>
                 Try PiAds Free
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" className="rounded-xl h-13 px-7" asChild>
+            <Button size="lg" variant="outline" className="rounded-xl h-14 px-7" asChild>
               <a href={FIRE_STICK_BUY_URL} target="_blank" rel="noopener noreferrer">
                 <ShoppingCart className="mr-2 h-5 w-5" />
                 Buy a Fire TV Stick 4K
@@ -220,11 +220,11 @@ export default function FireTvPlayerPage() {
             Your TV. Your content. Your revenue.
           </h2>
           <p className="text-background/70 text-lg mb-8 max-w-xl mx-auto">
-            $10 per screen per month — and with local ad bookings, the screen
-            pays for itself.
+            $0 for participating screens with approved ad slots — and your venue
+            keeps 70% of cleared revenue.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="rounded-xl h-13 px-7" asChild>
+            <Button size="lg" variant="secondary" className="rounded-xl h-14 px-7" asChild>
               <Link href={`${APP_URL}/sign-up?role=venue`}>
                 Start Free
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -233,7 +233,7 @@ export default function FireTvPlayerPage() {
             <Button
               size="lg"
               variant="outline"
-              className="rounded-xl h-13 px-7 border-background/30 text-background hover:bg-background/10"
+              className="rounded-xl h-14 px-7 border-background/30 text-background hover:bg-background/10"
               asChild
             >
               <Link href="/devices">

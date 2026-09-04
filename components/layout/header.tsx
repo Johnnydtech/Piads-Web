@@ -1,312 +1,144 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
+import { useEffect, useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { ArrowRight, ChevronDown, Menu, X } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
-import { Menu, X, ChevronDown, BookOpen, Tv, Building2, Mail, MapPin, ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
 
-const mainNavigation = [
+const navigation = [
   { name: "Features", href: "/features" },
   { name: "Pricing", href: "/pricing" },
-  { name: "Blog", href: "/blog" },
+  { name: "Devices", href: "/devices" },
+  { name: "Use cases", href: "/digital-signage-for" },
 ]
 
-const resourcesNavigation = [
-  { name: "Use Cases", href: "/digital-signage-for", icon: Building2, description: "Signage for your kind of venue" },
-  { name: "Get Started", href: "/get-started", icon: BookOpen, description: "Learn how to use PiAds" },
-  { name: "Fire TV Player", href: "/players/fire-tv", icon: Tv, description: "Signage on the stick you own" },
-  { name: "Devices", href: "/devices", icon: Tv, description: "Supported hardware" },
-  { name: "About", href: "/about", icon: Building2, description: "Our story & mission" },
-  { name: "Contact", href: "/contact", icon: Mail, description: "Get in touch" },
-]
-
-const allNavigation = [
-  ...mainNavigation,
-  ...resourcesNavigation,
-]
-
-const badgeMessages = [
-  { text: "You Keep", bold: "75%", suffix: "of Ad Revenue" },
-  { text: "Only", bold: "$10", suffix: "/screen/mo" },
+const resources = [
+  { name: "Blog", href: "/blog", description: "Ideas for better venue screens" },
+  { name: "Get started", href: "/get-started", description: "Connect and publish your first screen" },
+  { name: "About", href: "/about", description: "Why we built PiAds" },
+  { name: "Contact", href: "/contact", description: "Talk with our team" },
 ]
 
 export function Header() {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [badgeIndex, setBadgeIndex] = useState(0)
-  const [isAnimating, setIsAnimating] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
   const [resourcesOpen, setResourcesOpen] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  // Rotate badge messages
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIsAnimating(true)
-      setTimeout(() => {
-        setBadgeIndex((prev) => (prev + 1) % badgeMessages.length)
-        setIsAnimating(false)
-      }, 300)
-    }, 4000)
-    return () => clearInterval(interval)
-  }, [])
+    setMobileOpen(false)
+    setResourcesOpen(false)
+  }, [pathname])
 
-  const isResourcesActive = resourcesNavigation.some(item => pathname === item.href)
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
 
   return (
-    <>
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 md:px-6">
-      <div
-        className={cn(
-          "mx-auto transition-all duration-500 ease-out",
-          scrolled
-            ? "mt-4 max-w-4xl bg-white/60 backdrop-blur-2xl rounded-full shadow-xl shadow-black/5 border border-white/40"
-            : "mt-0 max-w-7xl"
-        )}
+    <header className="fixed inset-x-0 top-0 z-50">
+      <Link
+        href="/pricing"
+        className="flex h-9 items-center justify-center gap-2 bg-coral px-4 text-center text-xs font-semibold text-gray-950 transition-colors hover:bg-coral/90 sm:text-sm"
       >
+        Free digital signage with approved ad slots · Keep 70%
+        <ArrowRight className="h-3.5 w-3.5" />
+      </Link>
+
+      <div className="px-3 pt-2 md:px-5">
         <div
           className={cn(
-            "flex items-center justify-between transition-all duration-500",
-            scrolled ? "h-16 px-6 md:px-8" : "h-24 px-4"
+            "mx-auto border border-gray-200/80 bg-white/95 shadow-sm backdrop-blur-xl transition-all duration-300",
+            scrolled ? "max-w-6xl rounded-2xl shadow-lg shadow-gray-950/5" : "max-w-7xl rounded-2xl"
           )}
         >
-          <Link
-            href="/"
-            className="flex-shrink-0 flex items-center transition-transform duration-300 hover:scale-105"
-          >
-            <Image
-              src="/logo/piads-logo-text.png"
-              alt="PiAds"
-              width={200}
-              height={60}
-              className="h-14 w-auto"
-            />
-          </Link>
+          <div className="flex h-[72px] items-center justify-between px-4 md:px-6">
+            <Link href="/" className="flex shrink-0 items-center" aria-label="PiAds home">
+              <Image src="/logo/piads-logo-text.png" alt="PiAds" width={180} height={54} className="h-12 w-auto" priority />
+            </Link>
 
-          {/* Desktop Navigation */}
-          <nav className={cn(
-            "hidden md:flex items-center transition-all duration-500",
-            scrolled ? "gap-1" : "gap-2"
-          )}>
-            {mainNavigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={cn(
-                  "relative font-medium transition-all duration-300 rounded-full",
-                  "hover:bg-gray-100 hover:text-blue",
-                  scrolled ? "px-4 py-2 text-sm" : "px-5 py-2.5 text-base",
-                  pathname === item.href
-                    ? "text-blue"
-                    : "text-gray-700"
-                )}
-              >
-                {item.name}
-              </Link>
-            ))}
+            <nav className="hidden items-center gap-1 lg:flex" aria-label="Main navigation">
+              {navigation.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
+                    isActive(item.href) ? "bg-gray-100 text-gray-950" : "text-gray-600 hover:bg-gray-50 hover:text-gray-950"
+                  )}
+                >
+                  {item.name}
+                </Link>
+              ))}
 
-            {/* Resources Dropdown */}
-            <div
-              className="relative"
-              onMouseEnter={() => setResourcesOpen(true)}
-              onMouseLeave={() => setResourcesOpen(false)}
-            >
-              <button
-                className={cn(
-                  "relative font-medium transition-all duration-300 rounded-full flex items-center gap-1",
-                  "hover:bg-gray-100 hover:text-blue",
-                  scrolled ? "px-4 py-2 text-sm" : "px-5 py-2.5 text-base",
-                  isResourcesActive ? "text-blue" : "text-gray-700"
-                )}
-              >
-                Resources
-                <ChevronDown className={cn(
-                  "h-4 w-4 transition-transform duration-200",
-                  resourcesOpen && "rotate-180"
-                )} />
-              </button>
-
-              {/* Dropdown Menu */}
-              <div className={cn(
-                "absolute top-full left-0 pt-2 transition-all duration-200",
-                resourcesOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"
-              )}>
-                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-2 min-w-[220px]">
-                  {resourcesNavigation.map((item) => {
-                    const Icon = item.icon
-                    return (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className={cn(
-                          "flex items-start gap-3 px-3 py-2.5 rounded-xl transition-colors",
-                          "hover:bg-gray-50",
-                          pathname === item.href ? "bg-blue/5 text-blue" : "text-gray-700"
-                        )}
-                      >
-                        <Icon className="h-5 w-5 mt-0.5 text-gray-400" />
-                        <div>
-                          <p className="font-medium text-sm">{item.name}</p>
-                          <p className="text-xs text-gray-500">{item.description}</p>
-                        </div>
+              <div className="relative" onMouseEnter={() => setResourcesOpen(true)} onMouseLeave={() => setResourcesOpen(false)}>
+                <button
+                  type="button"
+                  onClick={() => setResourcesOpen((value) => !value)}
+                  className="flex items-center gap-1 rounded-lg px-4 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-950"
+                  aria-expanded={resourcesOpen}
+                >
+                  Resources
+                  <ChevronDown className={cn("h-4 w-4 transition-transform", resourcesOpen && "rotate-180")} />
+                </button>
+                <div className={cn("absolute left-0 top-full pt-2 transition-all", resourcesOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0")}>
+                  <div className="w-72 rounded-2xl border border-gray-200 bg-white p-2 shadow-xl shadow-gray-950/10">
+                    {resources.map((item) => (
+                      <Link key={item.href} href={item.href} className="block rounded-xl px-4 py-3 hover:bg-gray-50">
+                        <p className="text-sm font-semibold text-gray-950">{item.name}</p>
+                        <p className="mt-0.5 text-xs text-gray-500">{item.description}</p>
                       </Link>
-                    )
-                  })}
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          </nav>
+            </nav>
 
-          {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-3">
-            <span className={cn(
-              "bg-coral/80 text-gray-900 font-medium rounded-full transition-all duration-300 whitespace-nowrap overflow-hidden text-center w-[220px]",
-              scrolled ? "text-xs px-3 py-1" : "text-sm px-4 py-1.5"
-            )}>
-              <span className={cn(
-                "inline-block transition-all duration-300",
-                isAnimating ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
-              )}>
-                {badgeMessages[badgeIndex].text} <span className="font-bold">{badgeMessages[badgeIndex].bold}</span> {badgeMessages[badgeIndex].suffix}
-              </span>
-            </span>
-            <Button
-              variant="ghost"
-              className={cn(
-                "rounded-full transition-all duration-300 font-medium",
-                scrolled ? "h-10 px-5 text-sm" : "h-12 px-6 text-base"
-              )}
-              asChild
+            <div className="hidden items-center gap-2 md:flex">
+              <Button variant="ghost" className="h-11 rounded-xl px-5 text-gray-700" asChild>
+                <Link href={APP_URL}>Sign in</Link>
+              </Button>
+              <Button className="h-11 rounded-xl bg-gray-950 px-5 font-semibold text-white hover:bg-gray-800" asChild>
+                <Link href={`${APP_URL}/sign-up?role=venue`}>Start free</Link>
+              </Button>
+            </div>
+
+            <button
+              type="button"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl text-gray-700 hover:bg-gray-100 md:hidden"
+              onClick={() => setMobileOpen((value) => !value)}
+              aria-label="Toggle navigation"
+              aria-expanded={mobileOpen}
             >
-              <Link href={APP_URL}>Sign In</Link>
-            </Button>
-            <Button
-              className={cn(
-                "rounded-full transition-all duration-300 bg-gray-900 hover:bg-gray-800 font-medium",
-                scrolled ? "h-10 px-5 text-sm" : "h-12 px-6 text-base"
-              )}
-              asChild
-            >
-              <Link href={`${APP_URL}/sign-up`}>Try For Free</Link>
-            </Button>
+              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className={cn(
-              "md:hidden p-2 rounded-full transition-all duration-300",
-              "hover:bg-gray-100 active:scale-95",
-              mobileMenuOpen && "bg-gray-100"
-            )}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            <div className="relative w-6 h-6">
-              <Menu className={cn(
-                "h-6 w-6 absolute inset-0 transition-all duration-300",
-                mobileMenuOpen ? "opacity-0 rotate-90 scale-50" : "opacity-100 rotate-0 scale-100"
-              )} />
-              <X className={cn(
-                "h-6 w-6 absolute inset-0 transition-all duration-300",
-                mobileMenuOpen ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-50"
-              )} />
-            </div>
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <div className={cn(
-        "md:hidden overflow-hidden transition-all duration-500 ease-out mx-auto",
-        scrolled ? "max-w-4xl mt-2" : "max-w-7xl",
-        mobileMenuOpen
-          ? "max-h-[80vh] opacity-100"
-          : "max-h-0 opacity-0"
-      )}>
-        <div className={cn(
-          "bg-white/95 backdrop-blur-xl border border-gray-100",
-          scrolled ? "rounded-3xl shadow-lg" : "rounded-2xl shadow-md"
-        )}>
-          <nav className="p-4 flex flex-col gap-1">
-            {allNavigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={cn(
-                  "text-base font-medium transition-all duration-300 py-3 px-4 rounded-xl",
-                  "hover:bg-gray-100 hover:text-blue",
-                  pathname === item.href
-                    ? "text-blue bg-blue/5"
-                    : "text-gray-700"
-                )}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
-            ))}
-            <div className="flex flex-col gap-2 pt-4 mt-2 border-t border-gray-100">
-              <p className="bg-coral/80 text-gray-900 font-medium rounded-full px-5 py-2 text-center overflow-hidden">
-                <span className={cn(
-                  "inline-block transition-all duration-300",
-                  isAnimating ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
-                )}>
-                  {badgeMessages[badgeIndex].text} <span className="font-bold">{badgeMessages[badgeIndex].bold}</span> {badgeMessages[badgeIndex].suffix}
-                </span>
-              </p>
-              <Button variant="outline" className="rounded-full h-12" asChild>
-                <Link href={APP_URL}>Sign In</Link>
-              </Button>
-              <Button className="rounded-full h-12 bg-gray-900 hover:bg-gray-800" asChild>
-                <Link href={`${APP_URL}/sign-up`}>Try For Free</Link>
-              </Button>
-            </div>
-          </nav>
+          <div className={cn("overflow-hidden transition-all duration-300 md:hidden", mobileOpen ? "max-h-[620px] border-t border-gray-100 opacity-100" : "max-h-0 opacity-0")}>
+            <nav className="space-y-1 p-4" aria-label="Mobile navigation">
+              {[...navigation, ...resources].map((item) => (
+                <Link key={item.href} href={item.href} className={cn("block rounded-xl px-4 py-3 text-sm font-medium", isActive(item.href) ? "bg-blue/10 text-blue" : "text-gray-700 hover:bg-gray-50")}>
+                  {item.name}
+                </Link>
+              ))}
+              <div className="grid grid-cols-2 gap-2 border-t border-gray-100 pt-4">
+                <Button variant="outline" className="h-12 rounded-xl" asChild><Link href={APP_URL}>Sign in</Link></Button>
+                <Button className="h-12 rounded-xl bg-gray-950 hover:bg-gray-800" asChild><Link href={`${APP_URL}/sign-up?role=venue`}>Start free</Link></Button>
+              </div>
+            </nav>
+          </div>
         </div>
       </div>
     </header>
-
-      {/* Explore Screens teaser banner — sits below header */}
-      <div className={cn(
-        "fixed left-0 right-0 z-40 justify-center transition-all duration-500 px-4 hidden md:flex",
-        scrolled ? "top-[84px]" : "top-[96px]"
-      )}>
-        <Link
-          href={`${APP_URL}/discover`}
-          className={cn(
-            "group flex items-center gap-3 px-5 py-2.5 rounded-full",
-            "bg-gradient-to-r from-blue/10 via-teal/10 to-blue/10",
-            "border border-blue/20 shadow-lg shadow-blue/5",
-            "backdrop-blur-xl",
-            "hover:border-blue/40 hover:shadow-xl hover:shadow-blue/10",
-            "hover:from-blue/15 hover:via-teal/15 hover:to-blue/15",
-            "transition-all duration-300"
-          )}
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
-          </span>
-          <MapPin className="h-4 w-4 text-blue" />
-          <span className="text-sm font-medium text-gray-700">
-            Screens now live in <span className="font-bold text-gray-900">Arlington, VA</span>
-          </span>
-          <span className="text-sm text-gray-500">—</span>
-          <span className="text-sm font-semibold text-blue group-hover:underline">
-            Explore the map
-          </span>
-          <ArrowRight className="h-4 w-4 text-blue group-hover:translate-x-0.5 transition-transform" />
-        </Link>
-      </div>
-    </>
   )
 }
