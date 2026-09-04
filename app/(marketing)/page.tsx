@@ -122,21 +122,34 @@ export default function HomePage() {
                   app.piads.co/venue/screens
                 </span>
               </div>
-              <div className="relative overflow-hidden rounded-b-2xl bg-gray-50">
-                <Image src="/cms-screenshots/screens-dashboard-2026.jpg" alt="PiAds screen management dashboard with a connected live screen" width={2160} height={1216} priority className="h-auto w-full" />
-                <div className="absolute bottom-3 left-3 right-3 hidden grid-cols-3 gap-3 md:grid">
-                  {[
-                    ["Platform cost", "$0 with ad slots"],
-                    ["Your revenue share", "70%"],
-                    ["Campaign approval", "Always yours"],
-                  ].map(([label, value]) => (
-                    <div key={label} className="rounded-xl border border-white/70 bg-white/90 px-4 py-3 shadow-lg backdrop-blur">
-                      <p className="text-xs font-medium text-gray-500">{label}</p>
-                      <p className="text-lg font-bold text-gray-950">{value}</p>
-                    </div>
-                  ))}
+              {/* Split view: the dashboard on the left, the same venue in the
+                  iOS app on the right — one venue, both surfaces. */}
+              <div className="grid grid-cols-1 overflow-hidden rounded-b-2xl bg-gray-50 md:grid-cols-2">
+                {/* The dashboard is 16:9 and the phone is tall — cover-crop the
+                    dashboard from its top-left so both halves share a height
+                    instead of leaving a dead band under the desktop shot. */}
+                <div className="relative min-h-[260px] md:min-h-0 md:border-r md:border-gray-200">
+                  <Image src="/cms-screenshots/screens-dashboard-2026.jpg" alt="PiAds screen management dashboard with a connected live screen" width={2160} height={1216} priority className="h-full w-full object-cover object-left-top" />
+                </div>
+                <div className="relative flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 px-6 py-7 md:px-10">
+                  <Image src="/cms-screenshots/ios-screens-2026.jpg" alt="The PiAds iOS app showing the same venue screens on a phone" width={804} height={1748} className="h-auto w-full max-w-[240px] rounded-[2rem] shadow-[0_18px_50px_rgba(17,24,39,0.22)] md:max-w-[268px]" />
                 </div>
               </div>
+            </div>
+
+            {/* Stat cards sit below the frame — overlaid they clipped the
+                dashboard's screen card. */}
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              {[
+                ["Platform cost", "$0 with ad slots"],
+                ["Your revenue share", "70%"],
+                ["Campaign approval", "Always yours"],
+              ].map(([label, value]) => (
+                <div key={label} className="rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
+                  <p className="text-xs font-medium text-gray-500">{label}</p>
+                  <p className="text-lg font-bold text-gray-950">{value}</p>
+                </div>
+              ))}
             </div>
           </ScrollAnimate>
         </div>
