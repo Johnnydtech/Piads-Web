@@ -91,8 +91,8 @@ export function Footer() {
               />
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-              Turn your screens into revenue. The digital signage advertising
-              marketplace connecting venues with advertisers.
+              Free digital signage for partner venues. Run your own content,
+              approve local ad slots, and keep 70% of cleared revenue.
             </p>
           </div>
 

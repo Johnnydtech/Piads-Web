@@ -1,159 +1,204 @@
 "use client"
 
-// Simple, venue-first landing page. One message: turn the TVs you already
-// own into screens you control, and earn when local businesses advertise.
-// Proof = the real in-app walkthrough videos (ProductTour).
-
+import Image from "next/image"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ScrollAnimate } from "@/components/ui/scroll-animate"
-import { ProductTour } from "@/components/product-tour"
 import {
   ArrowRight,
+  BadgeCheck,
+  CalendarClock,
   CheckCircle2,
-  Tv,
-  DollarSign,
+  CircleDollarSign,
+  LayoutDashboard,
+  MonitorSmartphone,
+  PlayCircle,
+  Quote,
   ShieldCheck,
   Sparkles,
-  Quote,
+  Wallet,
 } from "lucide-react"
+
+import { ProductTour } from "@/components/product-tour"
+import { Button } from "@/components/ui/button"
+import { ScrollAnimate } from "@/components/ui/scroll-animate"
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
 
-const pillars = [
+const benefits = [
   {
-    icon: Tv,
-    color: "bg-blue", text: "text-white",
-    title: "Show your own content",
-    description:
-      "Announcements, menus, promos, member spotlights — you decide what plays on your screens, always first.",
+    icon: LayoutDashboard,
+    title: "One calm dashboard",
+    description: "See every screen, playlist, schedule, and campaign without digging through enterprise menus.",
   },
   {
-    icon: DollarSign,
-    color: "bg-teal", text: "text-white",
-    title: "Earn from local ads",
-    description:
-      "Open the slots you choose to nearby businesses and keep 75% of every booking. Ads only fill the gaps you allow.",
+    icon: CalendarClock,
+    title: "Schedule once",
+    description: "Daypart menus, promotions, announcements, and events across one screen or every location.",
   },
   {
     icon: ShieldCheck,
-    color: "bg-coral", text: "text-gray-900",
-    title: "Stay in control",
-    description:
-      "Local businesses only — no big corporations. You approve every ad before it ever appears on your TV.",
+    title: "Approve every ad",
+    description: "You choose the inventory, categories, and campaigns. Nothing runs without your approval.",
   },
 ]
 
 const testimonials = [
   {
-    quote:
-      "My members love seeing our WOD and PR board on the screen. It keeps the energy high and everyone engaged.",
+    quote: "My members love seeing our WOD and PR board on the screen. It keeps the energy high and everyone engaged.",
     author: "Coach Bobby K",
     company: "Ballston CrossFit",
   },
   {
-    quote:
-      "We display our coworking events and community highlights on the TV. Members actually stop and watch. Engagement is way up!",
+    quote: "We display our coworking events and community highlights on the TV. Members actually stop and watch. Engagement is way up!",
     author: "Hope",
     company: "Venture X Coworking",
   },
   {
-    quote:
-      "Now our customers see our discounts and services right when they walk in. It's been great for upselling repairs and accessories.",
+    quote: "Now our customers see our discounts and services right when they walk in. It has been great for upselling repairs and accessories.",
     author: "Yoseph",
     company: "Millennium Mobile",
   },
 ]
 
+const setupSteps = [
+  ["01", "Connect a screen", "Pair a TV, Fire TV, browser, Android device, or Raspberry Pi in minutes."],
+  ["02", "Publish your content", "Build playlists and schedules from images, videos, websites, and social content."],
+  ["03", "Turn on ad slots", "Choose when ads may run, approve each campaign, and keep 70% of cleared revenue."],
+]
+
 export default function HomePage() {
   return (
-    <div className="flex flex-col">
-      {/* Hero — one column, one message */}
-      <section className="relative pt-32 md:pt-40 pb-20 md:pb-28 overflow-hidden">
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute -top-40 left-1/4 w-96 h-96 bg-blue/15 rounded-full blur-3xl" />
-          <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-teal/10 rounded-full blur-3xl" />
-        </div>
+    <div className="flex flex-col bg-background">
+      <section className="relative overflow-hidden pb-20 pt-40 md:pb-28 md:pt-48">
+        <div className="absolute inset-x-0 top-0 h-[680px] bg-[radial-gradient(circle_at_50%_0%,rgba(215,241,113,0.48),transparent_60%)]" />
 
-        <div className="container max-w-4xl text-center">
+        <div className="container relative z-10 max-w-5xl text-center">
           <ScrollAnimate animation="up">
-            <span className="inline-flex items-center gap-2 bg-blue/10 text-blue text-sm font-bold px-4 py-2 rounded-full mb-6">
+            <span className="mb-7 inline-flex items-center gap-2 rounded-full border border-blue/20 bg-blue/5 px-4 py-2 text-sm font-semibold text-blue">
               <Sparkles className="h-4 w-4" />
-              Digital signage for local venues
+              Free digital signage for partner venues
             </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 font-display leading-tight">
-              Why do ads make you mad?
-              <br />
-              Because you&apos;re not making a dime from them.
-              <br />
-              <span className="text-blue">What if we told you we can change that?</span>
+            <h1 className="mx-auto mb-7 max-w-4xl font-display text-5xl font-bold leading-[0.98] tracking-[-0.045em] text-gray-950 md:text-7xl lg:text-[82px]">
+              Your screens should do more than display content.
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-              PiAds turns the TVs already in your venue into screens you fully
-              control — and pays you <strong className="text-foreground">75%</strong> when
-              local businesses advertise on them.
+            <p className="mx-auto mb-10 max-w-3xl text-xl leading-relaxed text-gray-600 md:text-2xl">
+              Manage every TV from one simple dashboard. Enable approved local ad slots,
+              use PiAds <strong className="font-semibold text-gray-950">free</strong>, and keep{" "}
+              <strong className="font-semibold text-gray-950">70% of the revenue.</strong>
             </p>
           </ScrollAnimate>
 
           <ScrollAnimate animation="up" delay={150}>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Button
-                size="lg"
-                className="font-semibold px-8"
-                asChild
-              >
+            <div className="mb-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <Button size="lg" className="h-14 rounded-xl bg-gray-950 px-8 text-base font-semibold hover:bg-gray-800" asChild>
                 <Link href={`${APP_URL}/sign-up?role=venue`}>
-                  Start free
-                  <ArrowRight className="ml-3 h-5 w-5" />
+                  Start free with ad slots
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="font-semibold px-8"
-                asChild
-              >
-                <a href="#product-tour">See how it works</a>
+              <Button size="lg" variant="outline" className="h-14 rounded-xl border-gray-300 bg-white px-8 text-base font-semibold hover:bg-gray-50" asChild>
+                <a href="#product-tour">See the platform</a>
               </Button>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-base text-muted-foreground">
-              <Link href="/players/fire-tv" className="flex items-center gap-2 hover:text-foreground transition-colors">
-                <CheckCircle2 className="h-5 w-5 text-green-500" />
-                Works on any TV — Fire TV native
-              </Link>
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-500" />
-                <span><strong className="text-foreground">$10</strong>/screen/month</span>
-              </span>
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-500" />
-                Free to try — no card needed
-              </span>
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-gray-500 md:text-base">
+              {["Use the screens you own", "No card required", "You approve every ad"].map((item) => (
+                <span key={item} className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+                  {item}
+                </span>
+              ))}
             </div>
           </ScrollAnimate>
         </div>
 
-        {/* Walkthrough showcase — the main event, right under the headline */}
-        <div className="container mt-16 md:mt-20">
+        <div className="container relative z-10 mt-16 max-w-7xl md:mt-20">
           <ScrollAnimate animation="up" delay={250}>
-            <ProductTour />
+            <div className="relative mx-auto rounded-[28px] border border-gray-200 bg-white p-2.5 shadow-[0_30px_90px_rgba(17,24,39,0.14)] md:p-4">
+              <div className="flex items-center gap-2 rounded-t-2xl border-b border-gray-100 bg-gray-50 px-4 py-3">
+                <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+                <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
+                <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
+                <span className="mx-auto rounded-md border border-gray-200 bg-white px-8 py-1 text-[11px] text-gray-400 md:px-24">
+                  app.piads.co/venue/screens
+                </span>
+              </div>
+              <div className="relative overflow-hidden rounded-b-2xl bg-gray-50">
+                <Image src="/cms-screenshots/screens-dashboard-2026.jpg" alt="PiAds screen management dashboard with a connected live screen" width={2160} height={1216} priority className="h-auto w-full" />
+                <div className="absolute bottom-3 left-3 right-3 hidden grid-cols-3 gap-3 md:grid">
+                  {[
+                    ["Platform cost", "$0 with ad slots"],
+                    ["Your revenue share", "70%"],
+                    ["Campaign approval", "Always yours"],
+                  ].map(([label, value]) => (
+                    <div key={label} className="rounded-xl border border-white/70 bg-white/90 px-4 py-3 shadow-lg backdrop-blur">
+                      <p className="text-xs font-medium text-gray-500">{label}</p>
+                      <p className="text-lg font-bold text-gray-950">{value}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </ScrollAnimate>
         </div>
       </section>
 
-      {/* What PiAds does — three pillars */}
-      <section className="py-16 md:py-24 bg-secondary/30">
-        <div className="container max-w-6xl">
-          <div className="grid md:grid-cols-3 gap-6">
-            {pillars.map((pillar, index) => (
-              <ScrollAnimate key={pillar.title} delay={index * 100}>
-                <div className={`${pillar.color} ${pillar.text} rounded-3xl p-10 h-full`}>
-                  <pillar.icon className="h-9 w-9 mb-5 opacity-90" />
-                  <h3 className="text-2xl font-bold font-display mb-3">{pillar.title}</h3>
-                  <p className="text-base leading-relaxed opacity-90">
-                    {pillar.description}
-                  </p>
+      <section className="border-y border-gray-100 bg-gray-50/70 py-8">
+        <div className="container">
+          <p className="mb-5 text-center text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">Built for the places people already gather</p>
+          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-base font-semibold text-gray-500 md:text-lg">
+            <span>Restaurants</span><span>Cafes</span><span>Gyms</span><span>Retail</span><span>Offices</span><span>Waiting rooms</span>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#EFEDE7] py-24 md:py-32">
+        <div className="container max-w-7xl">
+          <ScrollAnimate>
+            <div className="mx-auto mb-16 max-w-3xl text-center">
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-blue">Simple at every scale</p>
+              <h2 className="font-display text-4xl font-bold tracking-tight text-gray-950 md:text-6xl">Everything your screens need. Nothing they don&apos;t.</h2>
+              <p className="mt-5 text-lg leading-relaxed text-gray-600 md:text-xl">The ease of a modern SaaS tool, built around real venue workflows instead of enterprise complexity.</p>
+            </div>
+          </ScrollAnimate>
+
+          <div className="grid gap-6 lg:grid-cols-[1.55fr_0.75fr]">
+            <ScrollAnimate animation="left">
+              <div className="h-full overflow-hidden rounded-[32px] border border-gray-200 bg-white p-7 shadow-sm md:p-10">
+                <div className="mb-8 max-w-xl">
+                  <span className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-blue/10 text-blue"><MonitorSmartphone className="h-5 w-5" /></span>
+                  <h3 className="mb-3 text-3xl font-bold tracking-tight text-gray-950">Every screen, from one place</h3>
+                  <p className="text-lg leading-relaxed text-gray-600">Know what is playing, what is scheduled, and which screens need attention at a glance.</p>
+                </div>
+                <div className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 shadow-[0_20px_50px_rgba(17,24,39,0.08)]">
+                  <Image src="/cms-screenshots/playlist-editor-2026.jpg" alt="PiAds playlist editor with current content controls" width={2160} height={1216} className="h-auto w-full" />
+                </div>
+              </div>
+            </ScrollAnimate>
+
+            <ScrollAnimate animation="right" delay={120}>
+              <div className="flex h-full min-h-[520px] flex-col justify-between overflow-hidden rounded-[32px] bg-gray-950 p-8 text-white shadow-sm md:p-10">
+                <div>
+                  <span className="mb-8 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-coral"><Wallet className="h-5 w-5" /></span>
+                  <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-white/50">Partner plan</p>
+                  <p className="font-display text-7xl font-bold tracking-[-0.05em]">$0</p>
+                  <p className="mt-3 text-lg text-white/60">per partner screen</p>
+                </div>
+                <div>
+                  <div className="mb-8 h-px bg-white/10" />
+                  <p className="text-2xl font-semibold leading-snug">Enable marketplace ad slots. Keep 70% of every cleared booking.</p>
+                  <Link href="/pricing" className="mt-8 inline-flex items-center gap-2 font-semibold text-coral transition-all hover:gap-3">See how pricing works <ArrowRight className="h-4 w-4" /></Link>
+                </div>
+              </div>
+            </ScrollAnimate>
+          </div>
+
+          <div className="mt-6 grid gap-6 md:grid-cols-3">
+            {benefits.map((benefit, index) => (
+              <ScrollAnimate key={benefit.title} delay={index * 100}>
+                <div className="h-full rounded-[26px] border border-gray-200 bg-white p-8 shadow-sm transition-transform duration-300 hover:-translate-y-1">
+                  <benefit.icon className="mb-7 h-7 w-7 text-blue" />
+                  <h3 className="mb-3 text-xl font-bold text-gray-950">{benefit.title}</h3>
+                  <p className="leading-relaxed text-gray-600">{benefit.description}</p>
                 </div>
               </ScrollAnimate>
             ))}
@@ -161,54 +206,66 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Pricing strip — one price, no tiers */}
-      <section className="py-16 md:py-20 bg-gray-900 text-white">
-        <div className="container max-w-4xl text-center">
+      <section id="product-tour" className="scroll-mt-32 bg-white py-24 md:py-32">
+        <div className="container max-w-6xl">
           <ScrollAnimate>
-            <h2 className="text-3xl md:text-4xl font-bold font-display mb-4">
-              One price. No tiers, no surprises.
-            </h2>
-            <p className="text-5xl md:text-6xl font-bold font-display text-teal mb-4">
-              $10<span className="text-2xl text-gray-400 font-medium">/screen/month</span>
-            </p>
-            <p className="text-lg text-gray-300 mb-8 max-w-xl mx-auto">
-              Everything included — unlimited content, playlists, schedules, and
-              the ad marketplace. You keep 75% of every ad booking.
-            </p>
-            <Button
-              size="lg"
-              className="font-semibold px-8 bg-white text-gray-900 hover:bg-white/90"
-              asChild
-            >
-              <Link href={`${APP_URL}/sign-up?role=venue`}>
-                Try it free
-                <ArrowRight className="ml-3 h-5 w-5" />
-              </Link>
-            </Button>
+            <div className="mx-auto mb-14 max-w-3xl text-center">
+              <span className="mb-5 inline-flex items-center gap-2 rounded-full bg-blue/10 px-4 py-2 text-sm font-semibold text-blue"><PlayCircle className="h-4 w-4" /> Captured from the live product.</span>
+              <h2 className="font-display text-4xl font-bold tracking-tight text-gray-950 md:text-6xl">From blank TV to live playlist in minutes.</h2>
+              <p className="mt-5 text-lg text-gray-600 md:text-xl">Click through the connected-screen workflow captured from app.piads.co.</p>
+            </div>
           </ScrollAnimate>
+          <ProductTour />
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 md:py-28">
-        <div className="container max-w-6xl">
+      <section className="overflow-hidden bg-gray-950 py-24 text-white md:py-32">
+        <div className="container max-w-7xl">
+          <div className="grid items-center gap-16 lg:grid-cols-2">
+            <ScrollAnimate animation="left">
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-coral">A better business model</p>
+              <h2 className="font-display text-4xl font-bold tracking-tight md:text-6xl">The screen stays yours. The upside does too.</h2>
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/65 md:text-xl">Your content is always the priority. You decide how much inventory to open, review every campaign, and can pause ads whenever you need the screen back.</p>
+              <ul className="mt-9 space-y-4">
+                {["Free signage software on participating screens", "70% of cleared ad revenue goes to your venue", "Category controls and campaign-by-campaign approval", "Clear reporting for every play and payout"].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-base text-white/85"><BadgeCheck className="mt-0.5 h-5 w-5 shrink-0 text-coral" />{item}</li>
+                ))}
+              </ul>
+            </ScrollAnimate>
+
+            <ScrollAnimate animation="right" delay={120}>
+              <div className="rounded-[32px] border border-white/10 bg-white/[0.06] p-7 backdrop-blur md:p-10">
+                <div className="flex items-center justify-between border-b border-white/10 pb-6">
+                  <div><p className="text-sm text-white/50">Example cleared booking</p><p className="mt-1 text-3xl font-bold">$100.00</p></div>
+                  <CircleDollarSign className="h-10 w-10 text-coral" />
+                </div>
+                <div className="space-y-6 py-8">
+                  <div className="flex items-center justify-between"><span className="text-white/60">Your venue keeps</span><span className="text-2xl font-bold text-coral">$70</span></div>
+                  <div className="h-3 overflow-hidden rounded-full bg-white/10"><div className="h-full w-[70%] rounded-full bg-coral" /></div>
+                  <div className="flex items-center justify-between text-sm"><span className="text-white/50">Venue share · 70%</span><span className="text-white/50">PiAds · 30%</span></div>
+                </div>
+                <p className="rounded-2xl bg-white/[0.06] p-4 text-sm leading-relaxed text-white/55">Ad earnings depend on approved campaigns, audience, availability, and advertiser demand. PiAds never guarantees revenue.</p>
+              </div>
+            </ScrollAnimate>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-24 md:py-32">
+        <div className="container max-w-7xl">
           <ScrollAnimate>
-            <h2 className="text-3xl md:text-4xl font-bold font-display text-center mb-12">
-              Venues around Arlington already use it
-            </h2>
+            <div className="mx-auto mb-14 max-w-3xl text-center">
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-blue">Three steps to live</p>
+              <h2 className="font-display text-4xl font-bold tracking-tight text-gray-950 md:text-6xl">Setup without the setup call.</h2>
+            </div>
           </ScrollAnimate>
-          <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((t, index) => (
-              <ScrollAnimate key={t.company} delay={index * 100}>
-                <div className="bg-white border border-border rounded-2xl p-8 h-full shadow-sm flex flex-col">
-                  <Quote className="h-8 w-8 text-blue/40 mb-4" />
-                  <p className="text-base text-foreground leading-relaxed mb-6 flex-1">
-                    {t.quote}
-                  </p>
-                  <div>
-                    <p className="font-bold">{t.author}</p>
-                    <p className="text-sm text-muted-foreground">{t.company}</p>
-                  </div>
+          <div className="grid gap-5 md:grid-cols-3">
+            {setupSteps.map(([number, title, description], index) => (
+              <ScrollAnimate key={number} delay={index * 100}>
+                <div className="h-full rounded-[26px] border border-gray-200 p-8">
+                  <p className="mb-12 text-sm font-bold text-blue">{number}</p>
+                  <h3 className="mb-3 text-2xl font-bold text-gray-950">{title}</h3>
+                  <p className="leading-relaxed text-gray-600">{description}</p>
                 </div>
               </ScrollAnimate>
             ))}
@@ -216,32 +273,35 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-20 md:py-28 bg-blue text-white">
-        <div className="container max-w-3xl text-center">
+      <section className="bg-[#EFEDE7] py-24 md:py-32">
+        <div className="container max-w-7xl">
+          <ScrollAnimate><h2 className="mx-auto mb-14 max-w-3xl text-center font-display text-4xl font-bold tracking-tight text-gray-950 md:text-5xl">Built for busy venues, not IT departments.</h2></ScrollAnimate>
+          <div className="grid gap-6 md:grid-cols-3">
+            {testimonials.map((testimonial, index) => (
+              <ScrollAnimate key={testimonial.company} delay={index * 100}>
+                <figure className="flex h-full flex-col rounded-[26px] border border-gray-200 bg-white p-8 shadow-sm">
+                  <Quote className="mb-8 h-7 w-7 text-blue/35" />
+                  <blockquote className="flex-1 text-lg leading-relaxed text-gray-700">“{testimonial.quote}”</blockquote>
+                  <figcaption className="mt-8 border-t border-gray-100 pt-5"><p className="font-bold text-gray-950">{testimonial.author}</p><p className="text-sm text-gray-500">{testimonial.company}</p></figcaption>
+                </figure>
+              </ScrollAnimate>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-24 md:py-32">
+        <div className="container max-w-6xl">
           <ScrollAnimate>
-            <h2 className="text-4xl md:text-5xl font-bold font-display mb-4">
-              Put your TVs to work today
-            </h2>
-            <p className="text-xl text-white/80 mb-8">
-              Set up your first screen in minutes. Free to try — no card needed.
-            </p>
-            <Button
-              size="lg"
-              className="font-semibold px-8 bg-white text-blue hover:bg-white/90"
-              asChild
-            >
-              <Link href={`${APP_URL}/sign-up?role=venue`}>
-                Start free
-                <ArrowRight className="ml-3 h-5 w-5" />
-              </Link>
-            </Button>
-            <p className="mt-6 text-white/70">
-              A local business wanting to advertise on nearby screens?{" "}
-              <Link href="/contact" className="underline font-semibold hover:text-white">
-                Get in touch
-              </Link>
-            </p>
+            <div className="overflow-hidden rounded-[36px] bg-blue px-7 py-16 text-center text-white shadow-[0_30px_80px_rgba(107,122,63,0.25)] md:px-16 md:py-24">
+              <p className="mb-5 text-sm font-semibold uppercase tracking-[0.18em] text-white/60">Your TV is ready</p>
+              <h2 className="mx-auto max-w-4xl font-display text-4xl font-bold tracking-tight md:text-6xl">Start managing your screens for free.</h2>
+              <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/75 md:text-xl">Enable approved ad slots, publish your first playlist, and put your venue&apos;s screens to work.</p>
+              <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+                <Button size="lg" className="h-14 rounded-xl bg-white px-8 text-base font-semibold text-gray-950 hover:bg-white/90" asChild><Link href={`${APP_URL}/sign-up?role=venue`}>Start free <ArrowRight className="ml-2 h-5 w-5" /></Link></Button>
+                <Button size="lg" variant="outline" className="h-14 rounded-xl border-white/30 bg-transparent px-8 text-base font-semibold text-white hover:bg-white/10" asChild><Link href="/contact">Talk to us</Link></Button>
+              </div>
+            </div>
           </ScrollAnimate>
         </div>
       </section>

@@ -57,15 +57,15 @@ const included = [
 const faqs = [
   {
     q: "What does \"lifetime\" mean?",
-    a: "Pay once, use the PiAds signage CMS for the life of the product — no monthly fee for the screens included in your tier. This replaces the standard $10/screen/month subscription for those screens.",
+    a: "Pay once, use the PiAds signage CMS for the life of the product on the screens included in your tier, without needing to enable marketplace ad slots.",
   },
   {
     q: "What are the limits?",
-    a: "Each tier includes a fixed number of paired screens and media storage. You can stack tiers (buy more than one) to raise your caps, or add extra screens at the standard monthly rate.",
+    a: "Each tier includes a fixed number of paired screens and media storage. You can stack tiers to raise your caps, or use the free Partner plan for additional screens that enable approved ad slots.",
   },
   {
     q: "Is the ad marketplace included?",
-    a: "The venue side of the marketplace is included: where PiAds advertising is live in your area, you can open ad slots and you keep 75% of every booking — same split as every venue. Ad revenue availability depends on advertiser demand in your region and is not guaranteed.",
+    a: "The venue side of the marketplace is included: where PiAds advertising is live in your area, you can open ad slots and you keep 70% of every booking — same split as every venue. Ad revenue availability depends on advertiser demand in your region and is not guaranteed.",
   },
   {
     q: "Is there a refund policy?",
@@ -90,8 +90,8 @@ export default function LtdPage() {
             PiAds Lifetime Deal
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Pay once, run digital signage on the TVs you already own — forever.
-            Normally <strong className="text-foreground">$10/screen/month</strong>.
+            Pay once, run ad-free digital signage on the TVs you already own — forever.
+            No marketplace ad-slot requirement.
           </p>
         </div>
 

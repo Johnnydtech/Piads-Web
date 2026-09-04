@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    /* PiAds warm-editorial palette (matches app.piads.co rebrand) */
+    /* PiAds product palette — shared with app.piads.co */
     --background: #F3F1EC;
     --foreground: #1A1A1A;
     --card: #ffffff;
@@ -12,25 +12,25 @@
     --popover: #ffffff;
     --popover-foreground: #1A1A1A;
     --primary: #1A1A1A;
-    --primary-foreground: #F3F1EC;
+    --primary-foreground: #ffffff;
     --secondary: #EAE7E0;
     --secondary-foreground: #1A1A1A;
     --muted: #EAE7E0;
-    --muted-foreground: #6B675E;
-    --accent: #6B7A3F;
-    --accent-foreground: #ffffff;
-    --destructive: #B3402A;
+    --muted-foreground: #6F6B64;
+    --accent: #D7F171;
+    --accent-foreground: #1A1A1A;
+    --destructive: #C24E3A;
     --destructive-foreground: #ffffff;
-    --border: #E0DCD2;
-    --input: #E0DCD2;
-    --ring: #6B7A3F;
+    --border: #E4E1DA;
+    --input: #FFFFFF;
+    --ring: #1A1A1A;
 
-    /* Brand colors — olive/blush/lime warm-editorial system */
+    /* Existing utility names mapped to the live product brand */
     --blue: #6B7A3F;
     --teal: #A5644E;
     --coral: #D7F171;
-    --orange: #C9973B;
-    --cyan: #EAE7E0;
+    --orange: #F4E3C0;
+    --cyan: #DCE8D4;
 
     
     --font-display: var(--font-sans);

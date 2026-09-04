@@ -45,7 +45,7 @@ export const INDUSTRIES: Industry[] = [
     persona: "baristas and owners",
     metaTitle: "Digital Signage for Cafes & Coffee Shops",
     metaDescription:
-      "Turn the TV behind your counter into a menu board that updates in seconds — and earns from local advertisers. PiAds digital signage for cafes, from $10/screen.",
+      "Turn the TV behind your counter into a menu board that updates in seconds — and earns from local advertisers. PiAds is free for cafes that enable approved ad slots.",
     h1: "Digital signage for cafes and coffee shops",
     subhead:
       "Your menu, your specials, your Instagram — on the TV behind the counter. Updated from your phone in seconds, and earning from local advertisers between your own promos.",
@@ -69,7 +69,7 @@ export const INDUSTRIES: Industry[] = [
       },
       {
         name: "Local Ad Slots",
-        body: "The yoga studio next door and the bookshop across the street want to reach your regulars. Approve their ads, set when they run, and keep 75% of every booking — most cafes cover the subscription with a single ad.",
+        body: "The yoga studio next door and the bookshop across the street want to reach your regulars. Approve their ads, set when they run, and keep 70% of every booking — most cafes cover the subscription with a single ad.",
         screenshot: SHOTS.screens,
       },
       {
@@ -79,14 +79,14 @@ export const INDUSTRIES: Industry[] = [
       },
     ],
     earnAngle:
-      "A cafe screen has spare minutes between your own promos — and local businesses will pay for them. PiAds is the only signage platform with a built-in local advertising marketplace: you approve every ad, decide when they run, and keep 75% of the revenue. For most cafes, one ad booking a month turns the menu board from a cost into a profit line.",
+      "A cafe screen has spare minutes between your own promos — and local businesses will pay for them. PiAds is the only signage platform with a built-in local advertising marketplace: you approve every ad, decide when they run, and keep 70% of the revenue. For most cafes, one ad booking a month turns the menu board from a cost into a profit line.",
     faqs: [
       { q: "Can I show a menu that changes by time of day?", a: "Yes — build one playlist per daypart (breakfast, lunch, afternoon) and schedule them on the weekly grid. The screen switches automatically at the times you set, every day." },
       { q: "What hardware do I need?", a: "A TV and either the Fire TV Stick you may already own (PiAds is a native Fire TV app), an Android device, a Raspberry Pi, or just a browser. No proprietary player to buy." },
       { q: "How do I update the menu when a price changes?", a: "Edit the image or item in your dashboard from any device — the screen updates within seconds. Most owners do it from their phone." },
       { q: "Can I design my menu in Canva?", a: "Yes. Design in Canva (or any tool), export the image, and drop it into your playlist. TVs are 1920×1080 — use a landscape template and it fills the screen edge to edge." },
       { q: "Do I have to run ads?", a: "No. Ads are entirely optional and every ad requires your approval. Many cafes start with their own content only and open ad slots later once they see how it works." },
-      { q: "How much does it cost?", a: "$10 per screen per month, no long-term contract. With the 75% ad revenue share, a typical cafe screen earns more than it costs." },
+      { q: "How much does it cost?", a: "$0 for participating screens that enable approved marketplace ad slots. Cafes keep 70% of cleared ad revenue." },
       { q: "What happens if the Wi-Fi drops?", a: "The player keeps playing from its cache and re-syncs when the connection returns. Your menu never goes dark during service." },
       { q: "Can I show my Instagram on the screen?", a: "You can add social content and image posts into any playlist alongside your menu — a great way to show off latte art and bring the feed into the room." },
     ],
@@ -103,7 +103,7 @@ export const INDUSTRIES: Industry[] = [
     persona: "gym owners and coaches",
     metaTitle: "Digital Signage for Gyms & Fitness Studios",
     metaDescription:
-      "Class schedules, workout of the day, and member promos on every screen — managed from one dashboard. PiAds digital signage for gyms, from $10/screen, with local ad revenue.",
+      "Class schedules, workout of the day, and member promos on every screen — managed from one dashboard. PiAds is free for gyms that enable approved ad slots.",
     h1: "Digital signage for gyms and fitness studios",
     subhead:
       "Class times, the day's WOD, membership promos, and community shout-outs — on every TV in the building, managed from one dashboard, earning from local advertisers between sets.",
@@ -132,20 +132,20 @@ export const INDUSTRIES: Industry[] = [
       },
       {
         name: "Local Sponsor Slots",
-        body: "The smoothie bar, the physio clinic, the running store — businesses your members already use will pay to be on your screens. You approve everything and keep 75% of each booking.",
+        body: "The smoothie bar, the physio clinic, the running store — businesses your members already use will pay to be on your screens. You approve everything and keep 70% of each booking.",
         screenshot: SHOTS.screens,
       },
     ],
     earnAngle:
-      "Gym screens have captive, repeat attention — exactly what local advertisers want. With PiAds' built-in marketplace, the physio next door or the meal-prep service down the street books slots on your screens, you approve what runs, and 75% of the money is yours. Many gyms cover all their screens with one or two sponsors.",
+      "Gym screens have captive, repeat attention — exactly what local advertisers want. With PiAds' built-in marketplace, the physio next door or the meal-prep service down the street books slots on your screens, you approve what runs, and 70% of the money is yours. Many gyms cover all their screens with one or two sponsors.",
     faqs: [
       { q: "Can each room show different content?", a: "Yes — every screen is managed individually. Give the lobby a promo loop, the main floor the WOD, and the studio its class plan, all scheduled independently." },
       { q: "How do I update the WOD every day?", a: "Upload it from your phone or laptop — a photo, a designed image, or a slide. It's on every screen you choose within seconds." },
       { q: "What hardware works?", a: "Any TV with a Fire TV Stick (native PiAds app), Android device, Raspberry Pi, or a browser. Most gyms use the sticks already plugged into their TVs." },
       { q: "Can I schedule class-time content automatically?", a: "Yes. The weekly schedule grid runs different playlists at different times — morning classes, open-gym hours, evening promos — hands-free after you set it." },
       { q: "Do members' distractions worry you — can I keep it minimal?", a: "You control every second of the loop and every screen. Many owners run a single clean board on the floor and save promos for the lobby." },
-      { q: "How does ad revenue work?", a: "Local businesses request slots through PiAds, you approve or decline each one, and you keep 75% of the booking. Ads only run where and when you allow them." },
-      { q: "What does it cost?", a: "$10 per screen per month. A single local sponsor typically pays for every screen in the building." },
+      { q: "How does ad revenue work?", a: "Local businesses request slots through PiAds, you approve or decline each one, and you keep 70% of the booking. Ads only run where and when you allow them." },
+      { q: "What does it cost?", a: "$0 for participating screens that enable approved marketplace ad slots. Gyms keep 70% of cleared ad revenue." },
       { q: "What if the internet cuts out mid-class?", a: "Screens keep playing cached content and re-sync automatically. The WOD stays up." },
     ],
     relatedPosts: [
@@ -161,7 +161,7 @@ export const INDUSTRIES: Industry[] = [
     persona: "stylists and shop owners",
     metaTitle: "Digital Signage for Salons & Barbershops",
     metaDescription:
-      "Service menus, before-and-afters, and retail promos on your waiting-area TV — plus local ad revenue. PiAds digital signage for salons and barbershops, from $10/screen.",
+      "Service menus, before-and-afters, and retail promos on your waiting-area TV — plus local ad revenue. PiAds is free for salons that enable approved ad slots.",
     h1: "Digital signage for salons and barbershops",
     subhead:
       "Your service menu, your best work, and your retail shelf — on the screen every waiting client is already looking at. Updated in seconds, earning between appointments.",
@@ -190,19 +190,19 @@ export const INDUSTRIES: Industry[] = [
       },
       {
         name: "Neighbor Ad Slots",
-        body: "The nail studio, the boutique, the juice bar nearby — they want your chair time's attention. Approve their ads, and keep 75% of every booking. Waiting-room screens are prime local inventory.",
+        body: "The nail studio, the boutique, the juice bar nearby — they want your chair time's attention. Approve their ads, and keep 70% of every booking. Waiting-room screens are prime local inventory.",
         screenshot: SHOTS.screens,
       },
     ],
     earnAngle:
-      "A salon waiting area is one of the few places people sit and look at a screen with time to spare. PiAds turns that attention into income: local businesses book ad slots through the marketplace, you approve each one, and 75% of the revenue is yours. One booking usually covers the screen's cost for the month.",
+      "A salon waiting area is one of the few places people sit and look at a screen with time to spare. PiAds turns that attention into income: local businesses book ad slots through the marketplace, you approve each one, and 70% of the revenue is yours. One booking usually covers the screen's cost for the month.",
     faqs: [
       { q: "Can I update prices without reprinting anything?", a: "Yes — edit your menu image or item in the dashboard and the screen updates in seconds. No more laminate, no more stickers over old prices." },
       { q: "What do I need to get started?", a: "The TV in your waiting area plus a Fire TV Stick, Android device, Raspberry Pi, or a browser. If there's already a stick in the TV, you're minutes away." },
       { q: "Can I show my Instagram work?", a: "Yes — add your posts and photos into playlists alongside the menu. Before-and-after content is the strongest booking driver salons see." },
       { q: "Do ads make my shop look cluttered?", a: "You approve every single ad and control how often they appear. Most salons run 80% their own content with a couple of tasteful local spots mixed in." },
       { q: "Can I schedule seasonal promotions ahead of time?", a: "Yes — build the promo now and schedule it for the season. Holiday gift-card pushes and wedding-season packages can be set up months early." },
-      { q: "How much does it cost?", a: "$10 per screen per month with no contract — and with the 75% ad-revenue share, most shops net positive." },
+      { q: "How much does it cost?", a: "$0 for participating screens that enable approved marketplace ad slots. Shops keep 70% of cleared ad revenue." },
       { q: "Who updates it day to day?", a: "Anyone you invite — it's as simple as posting a photo. Most owners update from their phone between clients." },
       { q: "Does it work with the TV I already have?", a: "Any TV with an HDMI port works. The screen doesn't need to be 'smart' — the stick or player does the work." },
     ],
@@ -219,7 +219,7 @@ export const INDUSTRIES: Industry[] = [
     persona: "restaurant owners and managers",
     metaTitle: "Digital Menu Boards for Restaurants",
     metaDescription:
-      "Digital menu boards that switch by daypart, promote your highest-margin dishes, and earn from local advertisers. PiAds for restaurants, from $10/screen.",
+      "Digital menu boards that switch by daypart, promote your highest-margin dishes, and earn from local advertisers. PiAds is free for restaurants that enable approved ad slots.",
     h1: "Digital menu boards for restaurants",
     subhead:
       "Menus that switch from brunch to dinner on their own, specials you update from the pass, and screens that earn from local advertisers when you're closed.",
@@ -248,19 +248,19 @@ export const INDUSTRIES: Industry[] = [
       },
       {
         name: "Off-Hours Ad Revenue",
-        body: "Your screens face the street even when the kitchen's closed. Local businesses book those hours through the PiAds marketplace — you approve every ad and keep 75%.",
+        body: "Your screens face the street even when the kitchen's closed. Local businesses book those hours through the PiAds marketplace — you approve every ad and keep 70%.",
         screenshot: SHOTS.screens,
       },
     ],
     earnAngle:
-      "Restaurant screens work long hours — including hours when you're not selling. PiAds' built-in local ad marketplace fills the gaps you choose with paid spots from neighborhood businesses. You approve everything, schedule when ads may run, and keep 75% of each booking. The menu board becomes a second till.",
+      "Restaurant screens work long hours — including hours when you're not selling. PiAds' built-in local ad marketplace fills the gaps you choose with paid spots from neighborhood businesses. You approve everything, schedule when ads may run, and keep 70% of each booking. The menu board becomes a second till.",
     faqs: [
       { q: "Can menus change automatically between breakfast, lunch, and dinner?", a: "Yes — that's the core of it. One playlist per daypart, scheduled on the weekly grid; the boards switch on your clock, every day, without anyone touching them." },
       { q: "How fast can I remove a sold-out item?", a: "Seconds. Edit from any phone or laptop and every board you choose updates immediately." },
       { q: "What hardware do menu boards need?", a: "Any TV plus a Fire TV Stick (PiAds runs natively), Android device, or Raspberry Pi. For a multi-screen menu wall, Pi players give you 24/7 reliability." },
       { q: "Can I design menus in Canva?", a: "Yes — design at 1920×1080, export, and drop into the playlist. Update the design any time and the boards refresh in seconds." },
       { q: "Will ads show during dinner service?", a: "Only if you allow it. You control ad windows completely — many restaurants run ads only during off-hours or on the street-facing screen." },
-      { q: "What does it cost per board?", a: "$10 per screen per month. With ad revenue share at 75%, street-facing boards often pay for the whole system." },
+      { q: "What does it cost per board?", a: "$0 for participating screens that enable approved marketplace ad slots. Restaurants keep 70% of cleared ad revenue." },
       { q: "What if the internet goes down during service?", a: "Boards keep playing cached menus and re-sync when the connection returns. Service never sees it." },
       { q: "Can my manager update it without me?", a: "Yes — invite your team, and anyone you trust can update specials and menus from their own login." },
     ],
@@ -277,7 +277,7 @@ export const INDUSTRIES: Industry[] = [
     persona: "store owners and managers",
     metaTitle: "Digital Signage for Retail Stores",
     metaDescription:
-      "Window displays, in-store promos, and sale countdowns on screens you already own — plus local ad revenue. PiAds digital signage for small retail, from $10/screen.",
+      "Window displays, in-store promos, and sale countdowns on screens you already own — plus local ad revenue. PiAds is free for retailers that enable approved ad slots.",
     h1: "Digital signage for retail stores",
     subhead:
       "Window screens that stop foot traffic, in-store promos that move inventory, and sale changeovers done from the back office — no ladder, no vinyl, no reprints.",
@@ -306,19 +306,19 @@ export const INDUSTRIES: Industry[] = [
       },
       {
         name: "Local Ad Partnerships",
-        body: "Complementary local businesses — the tailor, the cafe next door, the framer — will pay to be on your screens. Approve what fits your brand and keep 75% of every booking.",
+        body: "Complementary local businesses — the tailor, the cafe next door, the framer — will pay to be on your screens. Approve what fits your brand and keep 70% of every booking.",
         screenshot: SHOTS.media,
       },
     ],
     earnAngle:
-      "Retail screens see real foot traffic, and PiAds is built to monetize it: the local ad marketplace lets nearby businesses book time on your screens, with every ad subject to your approval and 75% of revenue staying with you. A single window screen facing a busy sidewalk is genuinely valuable inventory.",
+      "Retail screens see real foot traffic, and PiAds is built to monetize it: the local ad marketplace lets nearby businesses book time on your screens, with every ad subject to your approval and 70% of revenue staying with you. A single window screen facing a busy sidewalk is genuinely valuable inventory.",
     faqs: [
       { q: "Can I run a screen facing the street window?", a: "Yes — a standard TV behind the glass with brightness turned up works well for most storefronts. Schedule street-facing content separately from in-store screens." },
       { q: "How do sale changeovers work?", a: "Build the sale content ahead of time and schedule it. At the start time, every screen you selected switches together — and switches back when the sale ends." },
       { q: "What hardware do I need?", a: "TVs you own plus a Fire TV Stick, Android device, Raspberry Pi, or browser per screen. No proprietary players." },
       { q: "Can head office manage multiple locations?", a: "Yes — all screens across locations live in one dashboard, each with live status, and you can update any of them from anywhere." },
       { q: "Do I need a designer?", a: "No — most stores use Canva templates or supplier-provided assets. Upload an image and it's on screen." },
-      { q: "What does it cost?", a: "$10 per screen per month, no contract. Ad revenue share (75% to you) often covers the window screen on its own." },
+      { q: "What does it cost?", a: "$0 for participating screens that enable approved marketplace ad slots. Retailers keep 70% of cleared ad revenue." },
       { q: "Can I control exactly which ads appear?", a: "Every ad requires your approval before it runs, and you choose which screens and hours are open to ads at all." },
       { q: "What happens if a screen loses connection?", a: "It keeps playing cached content and reconnects automatically — and the dashboard shows you the moment any screen goes offline." },
     ],
@@ -335,7 +335,7 @@ export const INDUSTRIES: Industry[] = [
     persona: "practice managers",
     metaTitle: "Digital Signage for Medical & Dental Waiting Rooms",
     metaDescription:
-      "Calmer waiting rooms: service education, appointment reminders, and practice news on your waiting-room TV. PiAds digital signage for medical and dental offices, from $10/screen.",
+      "Calmer waiting rooms: service education, appointment reminders, and practice news on your waiting-room TV. PiAds is free for participating practices that enable approved ad slots.",
     h1: "Digital signage for medical and dental waiting rooms",
     subhead:
       "Replace daytime TV with content that works for your practice: treatment education, insurance reminders, seasonal health pushes — and a calmer room while patients wait.",
@@ -364,19 +364,19 @@ export const INDUSTRIES: Industry[] = [
       },
       {
         name: "Trusted Local Partners",
-        body: "The pharmacy, the optician, the physical therapist nearby — practices you'd refer to anyway can book screen time you approve. You keep 75% of each booking.",
+        body: "The pharmacy, the optician, the physical therapist nearby — practices you'd refer to anyway can book screen time you approve. You keep 70% of each booking.",
         screenshot: SHOTS.screens,
       },
     ],
     earnAngle:
-      "Waiting rooms hold attention longer than almost any other venue — 15 quiet minutes on average. PiAds lets you use that time for the practice first (education, reminders, services), and optionally open approved slots to trusted local health businesses, keeping 75% of the revenue. Every ad is your call; nothing runs without approval.",
+      "Waiting rooms hold attention longer than almost any other venue — 15 quiet minutes on average. PiAds lets you use that time for the practice first (education, reminders, services), and optionally open approved slots to trusted local health businesses, keeping 70% of the revenue. Every ad is your call; nothing runs without approval.",
     faqs: [
       { q: "Is this appropriate for a healthcare setting?", a: "You control 100% of what appears. Most practices run their own education and announcements, with ads either off entirely or limited to approved local health partners." },
       { q: "Can we replace cable TV entirely?", a: "Yes — most practices do. A curated loop of practice content and calming visuals reads as more professional than daytime TV, and there's no awkward news channel in the room." },
       { q: "How hard is it for the front desk to update?", a: "As easy as posting a photo. Anyone you invite can update announcements from their computer — no IT ticket needed." },
       { q: "What hardware do we need?", a: "The waiting-room TV you have plus a Fire TV Stick, Android device, Raspberry Pi, or browser. Installation is plugging in a stick." },
       { q: "Can different rooms show different content?", a: "Yes — every screen is independent. Waiting room, hygiene bays, and checkout can each run their own loop and schedule." },
-      { q: "What does it cost?", a: "$10 per screen per month with no contract — less than a single no-show costs the practice." },
+      { q: "What does it cost?", a: "$0 for participating screens that enable approved marketplace ad slots. Practices keep 70% of cleared ad revenue." },
       { q: "Does patient privacy come into play?", a: "The screens only play content you publish — nothing patient-specific. It's one-way signage, not a patient-data system." },
       { q: "Can we schedule content by season?", a: "Yes — build seasonal campaigns in advance and schedule them for the right months. The screen follows your calendar automatically." },
     ],

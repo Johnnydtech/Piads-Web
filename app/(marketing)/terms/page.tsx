@@ -191,14 +191,14 @@ export default function TermsPage() {
                 <div className="space-y-3">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <div className="border rounded-2xl p-5 bg-gradient-to-br from-[#A68BA3]/10 to-transparent">
-                      <p className="text-3xl font-bold text-[#A68BA3]">$10</p>
-                      <p className="text-sm text-muted-foreground">/screen/month</p>
-                      <p className="text-xs text-muted-foreground mt-2">Platform fee for full access</p>
+                      <p className="text-3xl font-bold text-[#A68BA3]">$0</p>
+                      <p className="text-sm text-muted-foreground">Partner screen</p>
+                      <p className="text-xs text-muted-foreground mt-2">With approved ad slots enabled</p>
                     </div>
                     <div className="border rounded-2xl p-5 bg-gradient-to-br from-teal/10 to-transparent">
-                      <p className="text-3xl font-bold text-teal">75%</p>
+                      <p className="text-3xl font-bold text-teal">70%</p>
                       <p className="text-sm text-muted-foreground">Revenue share</p>
-                      <p className="text-xs text-muted-foreground mt-2">You keep 75% of ad revenue</p>
+                      <p className="text-xs text-muted-foreground mt-2">You keep 70% of ad revenue</p>
                     </div>
                     <div className="border rounded-2xl p-5 bg-gradient-to-br from-blue/10 to-transparent">
                       <p className="text-3xl font-bold text-blue">Weekly</p>

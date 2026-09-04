@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react"
 export const metadata = {
   title: "Digital Signage for Every Local Venue",
   description:
-    "How cafes, gyms, salons, restaurants, retail stores, and medical offices use PiAds digital signage — and earn from their screens. From $10/screen/month.",
+    "How cafes, gyms, salons, restaurants, retail stores, and medical offices use PiAds digital signage free with approved ad slots — and keep 70% of cleared ad revenue.",
   alternates: { canonical: "/digital-signage-for" },
 }
 
@@ -52,10 +52,10 @@ export default function IndustryIndexPage() {
             Don&apos;t see your venue? It still works.
           </h2>
           <p className="text-background/70 text-lg mb-8 max-w-xl mx-auto">
-            If there&apos;s a TV and people who look at it, PiAds fits — $10 per
-            screen per month, on hardware you already own.
+            If there&apos;s a TV and people who look at it, PiAds fits — free for
+            participating screens with approved ad slots, on hardware you already own.
           </p>
-          <Button size="lg" variant="secondary" className="rounded-xl h-13 px-7" asChild>
+          <Button size="lg" variant="secondary" className="rounded-xl h-14 px-7" asChild>
             <Link href={`${APP_URL}/sign-up?role=venue`}>
               Try PiAds Free
               <ArrowRight className="ml-2 h-5 w-5" />

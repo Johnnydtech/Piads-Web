@@ -361,17 +361,17 @@ Note: You can also set content guidelines in your venue profile to let advertise
       },
       {
         id: "how-payouts-work",
-        title: "How payouts work (you keep 75%)",
+        title: "How payouts work (you keep 70%)",
         description: "Get paid for every ad that runs on your screens",
         content: `REVENUE SPLIT
-• You keep: 75% of all ad revenue
-• PiAds fee: 25% (covers platform, payment processing, support)
+• You keep: 70% of all ad revenue
+• PiAds fee: 30% (covers platform, payment processing, support)
 
 EXAMPLE EARNINGS
 If an advertiser pays $100/week for your screen:
-• You receive: $75/week
-• Monthly: $300/month per screen
-• With 3 screens: $900/month potential
+• You receive: $70/week
+• Monthly: $280/month per screen
+• With 3 screens: $840/month potential
 
 SETTING UP PAYOUTS
 Step 1: Go to Settings > Payouts

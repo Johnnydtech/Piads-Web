@@ -56,7 +56,7 @@ const config: Config = {
           DEFAULT: "var(--card)",
           foreground: "var(--card-foreground)",
         },
-        // PiAds warm-editorial brand colors (olive / blush / lime)
+        // PiAds product-led SaaS brand colors
         blue: "var(--blue)",
         teal: "var(--teal)",
         coral: "var(--coral)",

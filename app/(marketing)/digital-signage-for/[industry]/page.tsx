@@ -34,7 +34,7 @@ const reassurance = [
   { icon: Clock, text: "Set up in minutes, not weeks" },
   { icon: Wrench, text: "Works with TVs you already own" },
   { icon: Palette, text: "No design skills needed" },
-  { icon: Wallet, text: "$10/screen — and it can earn that back" },
+  { icon: Wallet, text: "$0 with approved ad slots — and you keep 70%" },
 ]
 
 export default function IndustryPage({ params }: { params: { industry: string } }) {
@@ -69,13 +69,13 @@ export default function IndustryPage({ params }: { params: { industry: string } 
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl">{ind.subhead}</p>
           <div className="flex flex-wrap gap-4">
-            <Button size="lg" className="rounded-xl h-13 px-7" asChild>
+            <Button size="lg" className="rounded-xl h-14 px-7" asChild>
               <Link href={`${APP_URL}/sign-up?role=venue`}>
                 Try PiAds Free
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" className="rounded-xl h-13 px-7" asChild>
+            <Button size="lg" variant="outline" className="rounded-xl h-14 px-7" asChild>
               <Link href="/pricing">See pricing</Link>
             </Button>
           </div>
@@ -183,10 +183,10 @@ export default function IndustryPage({ params }: { params: { industry: string } 
             Screens up in minutes. Use the TV you already own.
           </h2>
           <p className="text-background/70 text-lg mb-8 max-w-xl mx-auto">
-            $10 per screen per month — with local ad revenue, it can pay for itself.
+            $0 for participating screens with approved ad slots — and your venue keeps 70% of cleared revenue.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="rounded-xl h-13 px-7" asChild>
+            <Button size="lg" variant="secondary" className="rounded-xl h-14 px-7" asChild>
               <Link href={`${APP_URL}/sign-up?role=venue`}>
                 Start Free
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -195,7 +195,7 @@ export default function IndustryPage({ params }: { params: { industry: string } 
             <Button
               size="lg"
               variant="outline"
-              className="rounded-xl h-13 px-7 border-background/30 text-background hover:bg-background/10"
+              className="rounded-xl h-14 px-7 border-background/30 text-background hover:bg-background/10"
               asChild
             >
               <Link href="/players/fire-tv">

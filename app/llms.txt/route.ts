@@ -6,11 +6,11 @@ const CONTENT = `# PiAds — Digital Signage That Pays For Itself
 > PiAds (piads.co) is digital signage software for local venues — cafes, gyms,
 > salons, restaurants, retail — with a built-in local advertising marketplace.
 > Venues show their own content on TVs they already own and earn money by
-> renting spare screen time to local advertisers, keeping 75% of every booking.
+> renting spare screen time to local advertisers, keeping 70% of every booking.
 
 ## Key Pages
 
-- Pricing — $10 per screen per month, venues keep 75% of ad revenue: https://piads.co/pricing
+- Pricing — $0 for Partner screens with approved ad slots; venues keep 70% of cleared ad revenue: https://piads.co/pricing
 - Fire TV player (native app for the entire Fire TV family, including new Vega devices): https://piads.co/players/fire-tv
 - All supported devices (Fire TV, Raspberry Pi, Android, web browser): https://piads.co/devices
 - Features: https://piads.co/features
@@ -23,9 +23,9 @@ const CONTENT = `# PiAds — Digital Signage That Pays For Itself
 PiAds is a cloud digital signage platform plus a local advertising marketplace.
 Unlike traditional signage software, where screens are purely a cost, PiAds
 screens can generate income: local businesses book ad slots on a venue's
-screens, the venue's own content always plays first, and the venue keeps 75%
-of every booking. Ads are optional — venues can run PiAds purely for their own
-menus, promotions, and announcements.
+screens, the venue's own content always plays first, and the venue keeps 70%
+of every booking. Marketplace participation is optional, but the free Partner
+plan requires approved ad slots to be enabled.
 
 ## Core Features
 
@@ -36,7 +36,7 @@ menus, promotions, and announcements.
 - Scheduling: weekly schedule grid with time blocks per screen group —
   breakfast menu in the morning, happy-hour promos in the evening.
 - Advertising marketplace: local advertisers discover and book venue screens;
-  venues approve what runs and keep 75% of revenue.
+  venues approve what runs and keep 70% of revenue.
 - Guided setup: a four-step onboarding takes a new venue from sign-up to
   content playing live, including a built-in web player for testing without
   hardware.
@@ -53,10 +53,9 @@ menus, promotions, and announcements.
 
 ## Pricing
 
-- $10 per screen per month. No long-term contracts, no per-feature gating.
-- Venues keep 75% of all ad revenue booked on their screens; PiAds takes 25%.
-- Typical example: four local ad bookings a month at $100 each = $300 to the
-  venue after revenue share, against a $10 platform fee.
+- $0 per participating Partner screen with approved marketplace ad slots enabled.
+- Venues keep 70% of all ad revenue booked on their screens; PiAds takes 30%.
+- Example: a cleared $100 booking pays $70 to the venue and $30 to PiAds.
 
 ## Target Audience
 
@@ -70,7 +69,7 @@ advertisers who want their message on real screens in real neighborhoods.
 1. Sign up free at https://app.piads.co/sign-up
 2. Create your venue and pair a screen (Fire TV app, Android, Raspberry Pi, or the web player)
 3. Upload content — a starter playlist and schedule are created for you
-4. Optionally open your screens to local advertisers and start earning
+4. Enable approved marketplace ad slots to use the Partner plan free and start earning
 
 ---
 Based on piads.co content as of ${new Date().toISOString().slice(0, 10)}.

@@ -1,182 +1,118 @@
 "use client"
 
-// Walkthrough showcase — the centerpiece of the landing page. One large
-// video player in browser chrome with step tabs (Screens → Media →
-// Playlists → Schedules). Plays the real in-app How-To recordings and
-// auto-advances through the steps like a guided tour.
+import { useState } from "react"
+import Image from "next/image"
+import { Calendar, CheckCircle2, ListVideo, Monitor, Tv } from "lucide-react"
 
-import { useEffect, useRef, useState } from "react"
-import { Monitor, ImageIcon, ListVideo, Calendar, Play, Pause, CheckCircle2 } from "lucide-react"
 import { ScrollAnimate } from "@/components/ui/scroll-animate"
-
-const TUTORIALS_BASE =
-  "https://svujlvlusjpuldrbtzzp.supabase.co/storage/v1/object/public/venue-content/tutorials"
 
 const STEPS = [
   {
     id: "screens",
     icon: Monitor,
-    label: "Connect a screen",
-    title: "Pair any TV in under a minute",
-    description:
-      "Enter the pairing code shown on your TV (or the free web player) and watch it come online.",
-    bullets: ["Works with the TV you already own", "Web, Fire TV, Android, or Raspberry Pi"],
-    videoUrl: `${TUTORIALS_BASE}/howto-screens.mp4`,
-    posterUrl: `${TUTORIALS_BASE}/howto-screens-poster.jpg`,
-  },
-  {
-    id: "media",
-    icon: ImageIcon,
-    label: "Upload media",
-    title: "Drop in your images and videos",
-    description:
-      "Drag-and-drop uploads land in one library, ready to use the moment they arrive.",
-    bullets: ["Usable immediately — optimization runs behind the scenes", "Reuse everything across playlists"],
-    videoUrl: `${TUTORIALS_BASE}/howto-media.mp4`,
-    posterUrl: `${TUTORIALS_BASE}/howto-media-poster.jpg`,
+    label: "Screens",
+    title: "See every screen at a glance",
+    description: "Online status, active content, device health, and screen controls stay together in one calm dashboard.",
+    bullets: ["Real connected web player", "Live status and now-playing view"],
+    image: "/cms-screenshots/screens-dashboard-2026.jpg",
+    width: 2160,
+    height: 1216,
   },
   {
     id: "playlists",
     icon: ListVideo,
-    label: "Build a playlist",
-    title: "Stack content into loops",
-    description:
-      "Mix images, video, YouTube, websites, and social embeds. Set durations and save.",
-    bullets: ["Your content always plays first", "Ads only fill the gaps you open"],
-    videoUrl: `${TUTORIALS_BASE}/howto-playlists.mp4`,
-    posterUrl: `${TUTORIALS_BASE}/howto-playlists-poster.jpg`,
+    label: "Playlists",
+    title: "Build the loop visually",
+    description: "Arrange content, set durations, and add everything from images and video to websites and live feeds.",
+    bullets: ["Twelve built-in content types", "Drag, reorder, preview, and publish"],
+    image: "/cms-screenshots/playlist-editor-2026.jpg",
+    width: 2160,
+    height: 1216,
   },
   {
     id: "schedules",
     icon: Calendar,
-    label: "Schedule it",
-    title: "Right content at the right time",
-    description:
-      "Drag a block on the weekly grid, pick a playlist, and your screens switch automatically.",
-    bullets: ["Breakfast, lunch, and evening dayparts", "Set it once — it runs itself"],
-    videoUrl: `${TUTORIALS_BASE}/howto-schedules.mp4`,
-    posterUrl: `${TUTORIALS_BASE}/howto-schedules-poster.jpg`,
+    label: "Schedules",
+    title: "Put the right content on at the right time",
+    description: "Run an all-day playlist or schedule different content around breakfast, lunch, events, and closing time.",
+    bullets: ["Simple weekly timeline", "One schedule or every screen"],
+    image: "/cms-screenshots/schedules-dashboard-2026.jpg",
+    width: 2160,
+    height: 1216,
+  },
+  {
+    id: "live",
+    icon: Tv,
+    label: "Live output",
+    title: "What you publish appears on the screen",
+    description: "The same starter playlist shown in the dashboard is playing on the connected PiAds web player.",
+    bullets: ["Captured from the live player", "Works on web, Fire TV, Android, and Raspberry Pi"],
+    image: "/cms-screenshots/player-live-2026.jpg",
+    width: 2160,
+    height: 1216,
   },
 ]
 
 export function ProductTour() {
   const [active, setActive] = useState(0)
-  const [playing, setPlaying] = useState(false)
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const sectionRef = useRef<HTMLDivElement>(null)
   const step = STEPS[active]
 
-  // Start the tour when scrolled into view; pause out of view.
-  useEffect(() => {
-    const el = sectionRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const video = videoRef.current
-        if (!video) return
-        if (entry.isIntersecting) {
-          video.play().then(() => setPlaying(true)).catch(() => {})
-        } else {
-          video.pause()
-          setPlaying(false)
-        }
-      },
-      { threshold: 0.3 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  // Switching steps loads and plays the new video.
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-    video.load()
-    video.play().then(() => setPlaying(true)).catch(() => setPlaying(false))
-  }, [active])
-
-  const togglePlay = () => {
-    const video = videoRef.current
-    if (!video) return
-    if (video.paused) { video.play(); setPlaying(true) } else { video.pause(); setPlaying(false) }
-  }
-
   return (
-    <div ref={sectionRef} id="product-tour" className="scroll-mt-24">
-      {/* Step tabs */}
-      <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-6">
-        {STEPS.map((s, i) => (
+    <div id="product-tour" className="scroll-mt-24">
+      <div className="mb-6 flex flex-wrap justify-center gap-2 md:gap-3">
+        {STEPS.map((item, index) => (
           <button
-            key={s.id}
-            onClick={() => setActive(i)}
-            className={`inline-flex items-center gap-2 px-4 md:px-5 py-2.5 rounded-full text-sm md:text-base font-bold transition-all ${
-              i === active
-                ? "bg-blue text-white shadow-sm"
-                : "bg-white text-gray-600 hover:text-blue border border-gray-200 hover:border-blue/40"
+            key={item.id}
+            type="button"
+            onClick={() => setActive(index)}
+            className={`inline-flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-bold transition-all md:px-5 md:text-base ${
+              index === active
+                ? "border-gray-950 bg-gray-950 text-white shadow-sm"
+                : "border-gray-200 bg-white text-gray-600 hover:border-blue/50 hover:text-blue"
             }`}
           >
-            <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
-              i === active ? "bg-white/20" : "bg-gray-100"
-            }`}>
-              {i + 1}
+            <span className={`flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold ${index === active ? "bg-coral text-gray-950" : "bg-gray-100"}`}>
+              {index + 1}
             </span>
-            <s.icon className="h-4 w-4" />
-            {s.label}
+            <item.icon className="h-4 w-4" />
+            {item.label}
           </button>
         ))}
       </div>
 
-      {/* Big player in browser chrome */}
-      <div className="relative max-w-4xl mx-auto">
-        <div className="rounded-2xl overflow-hidden bg-white border border-border shadow-lg">
-            <div className="flex items-center gap-1.5 px-4 py-2.5 bg-gray-100 border-b border-gray-200">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
-              <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-              <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
-              <span className="ml-3 flex-1 max-w-[260px] bg-white rounded-md px-3 py-0.5 text-[11px] text-gray-400 truncate">
-                app.piads.co/venue/{step.id}
-              </span>
-              <span className="hidden sm:inline-flex bg-white border border-border text-gray-500 text-[10px] font-semibold px-2.5 py-1 rounded-full">
-                Real app · not a mockup
-              </span>
-            </div>
-            <div className="relative aspect-video bg-gray-950 cursor-pointer" onClick={togglePlay}>
-              <video
-                key={step.id}
-                ref={videoRef}
-                muted
-                playsInline
-                preload="metadata"
-                poster={step.posterUrl}
-                className="w-full h-full object-cover"
-                onEnded={() => setActive((active + 1) % STEPS.length)}
-              >
-                <source src={step.videoUrl} type="video/mp4" />
-              </video>
-              {!playing && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                  <span className="w-20 h-20 rounded-full bg-white/95 shadow-xl flex items-center justify-center">
-                    <Play className="h-8 w-8 text-blue ml-1" fill="currentColor" />
-                  </span>
-                </div>
-              )}
-              {playing && (
-                <span className="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                  <Pause className="h-4 w-4 text-white" />
-                </span>
-              )}
-            </div>
+      <div className="relative mx-auto max-w-6xl">
+        <div className="overflow-hidden rounded-[26px] border border-border bg-white shadow-[0_24px_70px_rgba(26,26,26,0.14)]">
+          <div className="flex items-center gap-1.5 border-b border-gray-200 bg-[#EAE7E0] px-4 py-2.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#C98A72]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#F4E3C0]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#A3B18A]" />
+            <span className="ml-3 max-w-[320px] flex-1 truncate rounded-md bg-white px-3 py-1 text-[11px] text-gray-400">
+              app.piads.co/venue/{step.id}
+            </span>
+            <span className="hidden rounded-full border border-border bg-white px-2.5 py-1 text-[10px] font-semibold text-gray-500 sm:inline-flex">
+              Captured from the live app
+            </span>
+          </div>
+          <div className="flex aspect-[16/8.3] items-start justify-center overflow-hidden bg-[#F3F1EC]">
+            <Image
+              key={step.id}
+              src={step.image}
+              alt={`${step.title} in PiAds`}
+              width={step.width}
+              height={step.height}
+              className="h-full w-full object-contain object-top"
+            />
+          </div>
         </div>
 
-        {/* Caption for the active step */}
         <ScrollAnimate key={step.id}>
-          <div className="text-center mt-6 max-w-2xl mx-auto">
-            <h3 className="text-2xl md:text-3xl font-bold font-display mb-2">{step.title}</h3>
-            <p className="text-lg text-muted-foreground mb-3">{step.description}</p>
-            <div className="flex flex-wrap justify-center gap-x-6 gap-y-1.5">
+          <div className="mx-auto mt-7 max-w-2xl text-center">
+            <h3 className="mb-2 font-display text-2xl font-bold md:text-3xl">{step.title}</h3>
+            <p className="mb-4 text-lg text-muted-foreground">{step.description}</p>
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
               {step.bullets.map((bullet) => (
-                <span key={bullet} className="inline-flex items-center gap-2 text-sm md:text-base text-foreground">
-                  <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />
+                <span key={bullet} className="inline-flex items-center gap-2 text-sm text-foreground md:text-base">
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-blue" />
                   {bullet}
                 </span>
               ))}

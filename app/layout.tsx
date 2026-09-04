@@ -20,11 +20,11 @@ const pacifico = Pacifico({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://piads.co"),
   title: {
-    default: "PiAds - Community-Powered Digital Signage in Arlington, VA",
+    default: "PiAds - Free Digital Signage That Pays You",
     template: "%s | PiAds",
   },
   description:
-    "Community-first digital signage for Arlington venues and local advertisers. Display your content, support your neighbors, and keep advertising dollars local.",
+    "Manage every venue screen from one simple dashboard. Enable approved local ad slots, use PiAds free, and keep 70% of cleared ad revenue.",
   keywords: [
     "digital signage Arlington VA",
     "local advertising Arlington",
@@ -47,15 +47,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://piads.co",
     siteName: "PiAds",
-    title: "PiAds - Community-Powered Digital Signage in Arlington, VA",
-    description: "Community-first digital signage for Arlington venues and local advertisers. Neighbors supporting neighbors.",
-    images: [{ url: "/og/default.png", width: 1200, height: 630 }],
+    title: "PiAds - Free Digital Signage That Pays You",
+    description: "Enable approved local ad slots, use PiAds free, and keep 70% of cleared ad revenue.",
+    images: [{ url: "/og.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "PiAds - Community-Powered Digital Signage in Arlington, VA",
-    description: "Community-first digital signage for Arlington venues and local advertisers. Neighbors supporting neighbors.",
-    images: ["/og/default.png"],
+    title: "PiAds - Free Digital Signage That Pays You",
+    description: "Enable approved local ad slots, use PiAds free, and keep 70% of cleared ad revenue.",
+    images: ["/og.png"],
   },
   icons: {
     icon: "/logo/favicon.ico",
