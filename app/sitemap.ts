@@ -2,99 +2,104 @@ import { MetadataRoute } from "next"
 import { getAllPosts } from "@/lib/mdx"
 import { INDUSTRIES } from "@/lib/industries"
 import { COMPETITORS } from "@/lib/competitors"
+import { SITE_URL } from "@/lib/site"
+
+// Bump when a static page materially changes. A fresh Date() on every build
+// told Google everything changed daily, which it learns to ignore.
+const STATIC_UPDATED = new Date("2026-09-04")
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://piads.co"
+  const baseUrl = SITE_URL
   const posts = getAllPosts()
 
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: STATIC_UPDATED,
       changeFrequency: "weekly",
       priority: 1,
     },
     {
       url: `${baseUrl}/features`,
-      lastModified: new Date(),
+      lastModified: STATIC_UPDATED,
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/pricing`,
-      lastModified: new Date(),
+      lastModified: STATIC_UPDATED,
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: STATIC_UPDATED,
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/get-started`,
-      lastModified: new Date(),
+      lastModified: STATIC_UPDATED,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: new Date(),
+      lastModified: STATIC_UPDATED,
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date(),
+      lastModified: STATIC_UPDATED,
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${baseUrl}/devices`,
-      lastModified: new Date(),
+      lastModified: STATIC_UPDATED,
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${baseUrl}/players/fire-tv`,
-      lastModified: new Date(),
+      lastModified: STATIC_UPDATED,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/digital-signage-for`,
-      lastModified: new Date(),
+      lastModified: STATIC_UPDATED,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/alternative-to`,
-      lastModified: new Date(),
+      lastModified: STATIC_UPDATED,
       changeFrequency: "monthly" as const,
       priority: 0.8,
     },
     ...COMPETITORS.map((c) => ({
       url: `${baseUrl}/alternative-to/${c.slug}`,
-      lastModified: new Date(),
+      lastModified: STATIC_UPDATED,
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
     ...INDUSTRIES.map((i) => ({
       url: `${baseUrl}/digital-signage-for/${i.slug}`,
-      lastModified: new Date(),
+      lastModified: STATIC_UPDATED,
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
     {
       url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
+      lastModified: STATIC_UPDATED,
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: new Date(),
+      lastModified: STATIC_UPDATED,
       changeFrequency: "yearly",
       priority: 0.3,
     },

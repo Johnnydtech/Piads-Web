@@ -3,6 +3,7 @@ import { Sparkles } from "lucide-react"
 import { BlogGrid } from "@/components/blog-grid"
 
 export const metadata = {
+  alternates: { canonical: "/blog" },
   title: "Blog",
   description: "Tips, tutorials, and insights about digital signage advertising from the PiAds team.",
 }

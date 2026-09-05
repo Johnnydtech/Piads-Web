@@ -8,6 +8,7 @@ import { CheckCircle2, ArrowRight } from "lucide-react"
 // come from env (Stripe payment links); until set, buttons fall back to email.
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/ltd" },
   title: "PiAds Lifetime Deal",
   description: "Lifetime access to the PiAds digital signage CMS. Limited private offer.",
   robots: { index: false, follow: false },

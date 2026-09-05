@@ -13,6 +13,7 @@ import {
 } from "lucide-react"
 
 export const metadata = {
+  alternates: { canonical: "/players/fire-tv" },
   title: "Fire TV Digital Signage",
   description:
     "Run free digital signage on the Fire TV Stick you already own. Pair in minutes, enable approved marketplace ad slots, and keep 70% of cleared ad revenue.",

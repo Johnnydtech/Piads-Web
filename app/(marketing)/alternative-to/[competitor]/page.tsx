@@ -1,3 +1,4 @@
+import { JsonLd, graph, faqPage, breadcrumbs } from "@/components/seo/json-ld"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -43,6 +44,7 @@ export default function CompetitorPage({ params }: { params: { competitor: strin
 
   return (
     <div className="pt-24">
+      <JsonLd data={graph(faqPage(c.faqs.map((f) => ({ question: f.q, answer: f.a }))), breadcrumbs([{ name: "Home", path: "/" }, { name: "Alternatives", path: "/alternative-to" }, { name: c.name, path: `/alternative-to/${c.slug}` }]))} />
       {/* Hero */}
       <section className="container py-16 md:py-20">
         <div className="max-w-3xl">

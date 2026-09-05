@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Instrument_Sans, Pacifico } from "next/font/google"
 import Script from "next/script"
 import "./globals.css"
+import { SITE_URL } from "@/lib/site"
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -18,7 +19,7 @@ const pacifico = Pacifico({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://piads.co"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "PiAds - Free Digital Signage That Pays You",
     template: "%s | PiAds",
@@ -26,26 +27,22 @@ export const metadata: Metadata = {
   description:
     "Manage every venue screen from one simple dashboard. Enable approved local ad slots, use PiAds free, and keep 70% of cleared ad revenue.",
   keywords: [
-    "digital signage Arlington VA",
-    "local advertising Arlington",
-    "community digital signage",
-    "DOOH",
-    "screen advertising",
+    "free digital signage",
+    "free digital signage software",
+    "digital signage ad revenue",
+    "digital signage that pays you",
+    "earn money from venue screens",
+    "local advertising marketplace",
+    "Fire TV digital signage",
     "venue digital signage",
-    "digital out-of-home Arlington",
-    "local business advertising",
-    "Clarendon digital signage",
-    "Columbia Pike advertising",
+    "DOOH",
   ],
-  alternates: {
-    canonical: "/",
-  },
   authors: [{ name: "PiAds Team" }],
   creator: "PiAds",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://piads.co",
+    url: SITE_URL,
     siteName: "PiAds",
     title: "PiAds - Free Digital Signage That Pays You",
     description: "Enable approved local ad slots, use PiAds free, and keep 70% of cleared ad revenue.",

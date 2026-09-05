@@ -1,6 +1,7 @@
 import { Shield, Lock, Eye, Share2, Database, UserCheck, Baby, ExternalLink, Mail } from "lucide-react"
 
 export const metadata = {
+  alternates: { canonical: "/privacy" },
   title: "Privacy Policy | PiAds",
   description: "Learn how PiAds collects, uses, and protects your personal information.",
 }

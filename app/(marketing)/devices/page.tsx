@@ -4,6 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 
 export const metadata = {
+  alternates: { canonical: "/devices" },
   title: "Supported Devices | PiAds",
   description: "View all supported devices for PiAds digital signage. Compatible with Raspberry Pi, Fire TV, Android devices, and web browsers.",
 }

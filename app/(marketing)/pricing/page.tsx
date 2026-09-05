@@ -1,3 +1,4 @@
+import { JsonLd, graph, faqPage, breadcrumbs } from "@/components/seo/json-ld"
 import Link from "next/link"
 import {
   ArrowRight,
@@ -13,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button"
 
 export const metadata = {
+  alternates: { canonical: "/pricing" },
   title: "Pricing | Free Digital Signage for Partner Venues",
   description: "Enable approved marketplace ad slots, use PiAds digital signage free, and keep 70% of cleared ad revenue.",
 }
@@ -73,6 +75,7 @@ const faqs = [
 export default function PricingPage() {
   return (
     <div className="bg-background">
+      <JsonLd data={graph(faqPage(faqs), breadcrumbs([{ name: "Home", path: "/" }, { name: "Pricing", path: "/pricing" }]))} />
       <section className="relative overflow-hidden pb-20 pt-44 text-center md:pb-28 md:pt-52">
         <div className="absolute inset-x-0 top-0 h-[620px] bg-[radial-gradient(circle_at_50%_0%,rgba(215,241,113,0.48),transparent_60%)]" />
         <div className="container relative max-w-4xl">

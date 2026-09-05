@@ -1,6 +1,7 @@
 import { Mail, MessageSquare, MapPin, Sparkles } from "lucide-react"
 
 export const metadata = {
+  alternates: { canonical: "/contact" },
   title: "Contact",
   description: "Get in touch with the PiAds team in Arlington, VA. Send us an email about digital signage for your local business.",
 }

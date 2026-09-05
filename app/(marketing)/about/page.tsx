@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Heart, Users, Shield, Handshake, Building2, TrendingUp } from "lucide-react"
 
 export const metadata = {
+  alternates: { canonical: "/about" },
   title: "About | Keeping Advertising Local",
   description: "Learn why we built PiAds - a community-first platform where local businesses advertise to each other, and big corporations aren't welcome.",
 }

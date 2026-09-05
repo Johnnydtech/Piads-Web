@@ -1,6 +1,7 @@
 import { FileText, Users, Building2, Megaphone, CreditCard, ShieldCheck, Scale, FileWarning, Mail } from "lucide-react"
 
 export const metadata = {
+  alternates: { canonical: "/terms" },
   title: "Terms of Service | PiAds",
   description: "Read the terms and conditions for using the PiAds digital signage advertising platform.",
 }

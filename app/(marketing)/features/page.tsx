@@ -18,8 +18,9 @@ import {
 } from "lucide-react"
 
 export const metadata = {
-  title: "Features",
-  description: "Digital signage tools for Arlington venues and local advertisers. Easy screen management, content scheduling, ad approval, and real-time analytics.",
+  alternates: { canonical: "/features" },
+  title: "Digital Signage Features for Venues and Local Advertisers",
+  description: "Screen management, playlists, weekly scheduling, live screen health, and a local ad marketplace with campaign-by-campaign approval. Free for partner screens; venues keep 70%.",
 }
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
@@ -113,7 +114,7 @@ export default function FeaturesPage() {
             <span className="text-sm font-medium">Features</span>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 font-display">
-            Powerful Tools for
+            Powerful Tools for{" "}
             <br />
             <span className="text-blue">Venues & Advertisers</span>
           </h1>

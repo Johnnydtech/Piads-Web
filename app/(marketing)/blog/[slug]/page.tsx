@@ -1,3 +1,4 @@
+import { JsonLd, graph, blogPosting, breadcrumbs } from "@/components/seo/json-ld"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { MDXRemote } from "next-mdx-remote/rsc"
@@ -25,10 +26,12 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
   return {
     title: post.title,
     description: post.description,
+    alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.description,
       type: "article",
+      url: `/blog/${post.slug}`,
       publishedTime: post.publishedAt,
       images: post.image ? [post.image] : ["/og/default.png"],
     },
@@ -76,6 +79,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <div className="pt-28 pb-12 md:pt-36 md:pb-20">
+      <JsonLd data={graph(blogPosting(post), breadcrumbs([{ name: "Home", path: "/" }, { name: "Blog", path: "/blog" }, { name: post.title, path: `/blog/${post.slug}` }]))} />
       <article className="container max-w-3xl">
         {/* Header */}
         <header className="mb-12">

@@ -10,13 +10,13 @@ const CONTENT = `# PiAds — Digital Signage That Pays For Itself
 
 ## Key Pages
 
-- Pricing — $0 for Partner screens with approved ad slots; venues keep 70% of cleared ad revenue: https://piads.co/pricing
-- Fire TV player (native app for the entire Fire TV family, including new Vega devices): https://piads.co/players/fire-tv
-- All supported devices (Fire TV, Raspberry Pi, Android, web browser): https://piads.co/devices
-- Features: https://piads.co/features
-- What digital signage costs: https://piads.co/blog/how-much-does-digital-signage-cost
-- How venues earn from their screens: https://piads.co/blog/earn-money-from-your-venue-screens
-- Getting started guide: https://piads.co/get-started
+- Pricing — $0 for Partner screens with approved ad slots; venues keep 70% of cleared ad revenue: https://www.piads.co/pricing
+- Fire TV player (native app for the entire Fire TV family, including new Vega devices): https://www.piads.co/players/fire-tv
+- All supported devices (Fire TV, Raspberry Pi, Android, web browser): https://www.piads.co/devices
+- Features: https://www.piads.co/features
+- What digital signage costs: https://www.piads.co/blog/how-much-does-digital-signage-cost
+- How venues earn from their screens: https://www.piads.co/blog/earn-money-from-your-venue-screens
+- Getting started guide: https://www.piads.co/get-started
 
 ## What is PiAds?
 
