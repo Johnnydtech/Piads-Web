@@ -26,6 +26,10 @@ import {
 import { cn } from "@/lib/utils"
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
+// Store listings — keep in step with players/fire-tv and the homepage hero.
+const AMAZON_APPSTORE_URL = "https://www.amazon.com/dp/B0GTRC4JTN"
+const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=co.piads.kiosk"
+const APP_STORE_URL = "https://apps.apple.com/us/app/piads/id6759892788"
 
 // Guide data structure
 const venueGuides = [
@@ -41,8 +45,8 @@ const venueGuides = [
         id: "create-venue-account",
         title: "Create your venue account",
         description: "Sign up and create your first venue",
-        content: `Step 1: Go to app.piads.co
-Click "Get Started" on the homepage.
+        content: `Step 1: Go to app.piads.co/sign-up?role=venue
+Or click "Start free" anywhere on piads.co. No card is required.
 
 Step 2: Choose your role
 Select "I'm a Venue" - this sets up your account for screen management and earning from ads.
@@ -64,36 +68,42 @@ After creating your venue, you'll see options to:
 • Create a playlist
 • Upload media
 
-Tip: We recommend connecting your first screen next!`,
+Tip: We recommend connecting your first screen next!
+
+WHAT IT COSTS
+PiAds is free for partner screens - screens that enable approved local ad slots. Screens that never enable ad slots are $10 per screen per month or $100 per year. See "Plans and billing" under Earning with Ads.`,
       },
       {
         id: "add-first-screen",
         title: "Connect your first screen",
-        description: "Download the app, open it, and pair in 2 minutes",
-        content: `The fastest way to get started is with the PiAds Player app from Google Play.
+        description: "Install the player app, enter the pairing code, done — about 2 minutes",
+        content: `PiAds has a native player app for the devices most venues already own. Pick the one behind your TV.
 
-Step 1: Download the PiAds Player app
-Open Google Play on your Android TV, Fire TV, or Android device and search for "PiAds Player", or visit:
-https://play.google.com/store/apps/details?id=co.piads.kiosk
+FIRE TV / FIRE TV STICK
+Search "PiAds" in the Amazon Appstore on the device, or open ${AMAZON_APPSTORE_URL}. Works on Fire TV Sticks, Cubes, Fire TV Edition TVs, and the new Vega OS devices.
 
-Step 2: Open the app
-Launch PiAds Player. It will display a 6-digit pairing code on screen.
+ANDROID TV / GOOGLE TV / ANDROID TABLETS
+Install "PiAds Player" from Google Play: ${GOOGLE_PLAY_URL}
 
-Step 3: Add a new screen in PiAds
-In your PiAds dashboard (app.piads.co), go to Screens and click "New Screen".
+NO DEVICE YET
+In the dashboard, click "New Screen" and choose "Web Player" to open a browser-based player on any computer or smart TV browser. Good for testing before you buy anything.
 
-Step 4: Enter the pairing code
-Type the 6-digit code from your device into the pairing code field. Give your screen a name (e.g., "Front Counter TV").
+Step 1: Open the player app
+It shows a 6-character pairing code on the TV.
 
-Step 5: Click "Connect"
-Your screen pairs instantly! You'll see it appear on the Screens page.
+Step 2: Add a screen in PiAds
+In your dashboard (app.piads.co) go to Screens and click "Connect screen".
 
-Step 6: Activate your screen
-Click on your new screen to open the Editor. Toggle the switch at the top to activate it. Your screen is now live!
+Step 3: Enter the pairing code
+Type the code from the TV and give the screen a name (e.g., "Front Counter TV").
 
-Next: Attach media or a playlist to display content.
+Step 4: Connect and activate
+The screen pairs instantly and appears on your Screens page. Open it and toggle it active. You'll see a live "Online" badge and a preview of what's playing.
 
-No Android device? You can also use the Web Player — click "New Screen" and select "Web Player" to open a browser-based player.`,
+Next: attach a playlist or media so it has something to show.
+
+MANAGE FROM YOUR PHONE
+The free PiAds iOS app (${APP_STORE_URL}) shows every screen's status, lets you change what's playing, approve ads, and pause a screen from anywhere.`,
       },
       {
         id: "device-setup",
@@ -289,7 +299,9 @@ Pro tip: Mix content types to keep your display interesting and engaging!`,
         id: "enable-ads",
         title: "Enable ads on your screens",
         description: "Create an ad schedule to start earning from local advertisers",
-        content: `To enable ads, you create a schedule with the "Enable Ads" option turned on.
+        content: `Enabling approved ad slots is what makes a screen a partner screen - and partner screens use PiAds for $0. You choose the dayparts, set the price, and approve every ad before it plays.
+
+To enable ads, you create a schedule with the "Enable Ads" option turned on.
 
 Step 1: Go to Schedules
 From your dashboard sidebar, click "Schedules".
@@ -394,15 +406,43 @@ Go to Dashboard > Revenue to see:
 
 Note: Stripe connection is optional but required to receive payouts. You can run the platform without it if you just want to manage your own content.`,
       },
+      {
+        id: "plans-and-billing",
+        title: "Plans and billing: Partner plan vs $10 per screen",
+        description: "Why partner screens are free, what ad-free screens cost, and how to switch",
+        content: `THE TWO STATES A SCREEN CAN BE IN
+• Partner screen: has approved ad slots enabled. Software is $0. You keep 70% of every cleared booking.
+• Ad-free screen: no ad slots. $10 per screen per month, or $100 per screen per year.
+
+You can mix them - a menu board that never shows ads at $10/month next to a partner screen in the lobby at $0.
+
+HOW TO MAKE A SCREEN FREE
+Step 1: Create a schedule with "Enable Ads" turned on (see "Enable ads on your screens")
+Step 2: Choose the dayparts you're willing to sell and set a price for each
+Step 3: Assign the schedule to the screen
+
+Your own content keeps playing first. Ads fill only the slots you opened, and nothing runs until you approve it.
+
+STARTING OUT
+New venues start on a free trial with one screen and no card. Before it ends, either enable approved ad slots (the screen stays free) or add a card under Settings > Billing.
+
+WHERE TO SEE IT
+Settings > Billing shows each screen's plan, the next invoice for any ad-free screens, and your payouts.
+
+FAQ
+• Can I turn ads off later? Yes. Disable the ad schedule and the screen moves to the $10/month plan at the next billing cycle.
+• Is there a limit on free screens? No. Every partner screen is $0.
+• Do I have to accept every ad? No. Approve or decline each campaign; you can also block categories.`,
+      },
     ],
   },
   {
     id: "venue-advanced",
     category: "Advanced Features",
     icon: Settings,
-    color: "bg-purple-500",
-    colorLight: "bg-purple-500/10",
-    textColor: "text-purple-600",
+    color: "bg-gray-800",
+    colorLight: "bg-gray-800/10",
+    textColor: "text-gray-800",
     items: [
       {
         id: "screen-zones",
@@ -600,8 +640,8 @@ const advertiserGuides = [
         id: "create-advertiser-account",
         title: "Create your advertiser account",
         description: "Join as a local business and start advertising",
-        content: `Step 1: Go to app.piads.co
-Click "Get Started" on the homepage.
+        content: `Step 1: Go to app.piads.co/sign-up?role=advertiser
+Or click "Advertise" on piads.co.
 
 Step 2: Choose your role
 Select "I'm an Advertiser" - this sets up your account for booking ads on local venue screens.
@@ -902,9 +942,9 @@ If not, simplify your design!`,
     id: "advertiser-managing",
     category: "Managing Campaigns",
     icon: Settings,
-    color: "bg-purple-500",
-    colorLight: "bg-purple-500/10",
-    textColor: "text-purple-600",
+    color: "bg-gray-800",
+    colorLight: "bg-gray-800/10",
+    textColor: "text-gray-800",
     items: [
       {
         id: "track-campaigns",
@@ -1376,7 +1416,7 @@ export default function GetStartedPage() {
             <div>
               <h1 className="text-3xl md:text-4xl font-bold font-display">Get Started</h1>
               <p className="text-muted-foreground text-sm mt-1">
-                Everything you need to know about PiAds
+                Set up a screen, open ad slots, get paid. Step-by-step guides for venues and advertisers.
               </p>
             </div>
           </div>
@@ -1429,59 +1469,42 @@ export default function GetStartedPage() {
         </div>
       </section>
 
-      {/* Google Play Banner */}
+      {/* Player + companion apps */}
       <section className="py-8 md:py-10 border-b">
         <div className="container max-w-6xl">
-          <a
-            href="https://play.google.com/store/apps/details?id=co.piads.kiosk"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group block relative overflow-hidden rounded-3xl bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 hover:from-green-500 hover:via-emerald-500 hover:to-teal-500 transition-all duration-500 shadow-xl shadow-green-900/20 hover:shadow-2xl hover:shadow-green-900/30 hover:-translate-y-1"
-          >
-            {/* Background pattern */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -translate-y-1/2 translate-x-1/3" />
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full translate-y-1/2 -translate-x-1/4" />
+          <div className="rounded-3xl bg-gray-950 p-6 text-white md:p-8">
+            <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">Get the apps</p>
+                <h2 className="mt-1 font-display text-2xl font-bold md:text-3xl">One player app for the TV, one app for your pocket.</h2>
+              </div>
+              <p className="max-w-md text-sm text-white/70">Install on the stick already behind your TV, pair with a 6-character code, and manage everything from the web or the iOS app. Free for partner screens.</p>
             </div>
-
-            <div className="relative flex flex-col md:flex-row items-center gap-6 md:gap-8 p-8 md:p-10">
-              {/* Icon */}
-              <div className="flex items-center gap-5 shrink-0">
-                <div className="h-20 w-20 md:h-24 md:w-24 rounded-3xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
-                  <svg className="h-10 w-10 md:h-12 md:w-12 text-white" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 0 1 0 1.38l-2.302 2.302L15.396 13l2.302-2.492zM5.864 2.658L16.8 9.09l-2.302 2.303-8.635-8.735z"/>
-                  </svg>
-                </div>
-              </div>
-
-              {/* Text */}
-              <div className="flex-1 text-center md:text-left">
-                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 text-xs font-semibold text-white/90 mb-3">
-                  <Smartphone className="h-3.5 w-3.5" />
-                  Now on Google Play
-                </div>
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 font-display">
-                  PiAds Player App
-                </h2>
-                <p className="text-white/80 text-sm md:text-base max-w-lg">
-                  Download the app on your Android TV, Fire TV, or tablet. Open it, get a pairing code, and your screen is live in under 2 minutes.
-                </p>
-              </div>
-
-              {/* CTA */}
-              <div className="flex flex-col items-center gap-3 shrink-0">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
-                  alt="Get it on Google Play"
-                  className="h-14 md:h-16 group-hover:scale-105 transition-transform duration-300"
-                />
-                <span className="flex items-center gap-1.5 text-white/70 text-xs font-medium group-hover:text-white/90 transition-colors">
-                  Download Free
-                  <ExternalLink className="h-3 w-3" />
-                </span>
-              </div>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { href: AMAZON_APPSTORE_URL, icon: Tv, kicker: "Fire TV · Amazon Appstore", title: "PiAds for Fire TV", text: "Sticks, Cubes, Fire TV Edition, Vega OS" },
+                { href: GOOGLE_PLAY_URL, icon: Play, kicker: "Android TV · Google Play", title: "PiAds Player", text: "Android TV, Google TV, tablets" },
+                { href: APP_STORE_URL, icon: Smartphone, kicker: "iPhone · App Store", title: "PiAds for iOS", text: "Status, approvals, and what's playing" },
+                { href: `${APP_URL}/sign-up?role=venue`, icon: Monitor, kicker: "No hardware · Web player", title: "Try it in a browser", text: "Pair a browser tab as a screen in a minute" },
+              ].map((a) => (
+                <a
+                  key={a.title}
+                  href={a.href}
+                  target={a.href.startsWith("http") && !a.href.startsWith(APP_URL) ? "_blank" : undefined}
+                  rel="noopener noreferrer"
+                  className="group rounded-2xl border border-white/10 bg-white/5 p-5 transition-colors hover:border-white/30 hover:bg-white/10"
+                >
+                  <a.icon className="h-6 w-6 text-coral" />
+                  <p className="mt-4 text-[11px] font-semibold uppercase tracking-wide text-white/50">{a.kicker}</p>
+                  <p className="mt-1 font-semibold">{a.title}</p>
+                  <p className="mt-1 text-sm text-white/70">{a.text}</p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-white/80 group-hover:text-white">
+                    Open <ExternalLink className="h-3.5 w-3.5" />
+                  </span>
+                </a>
+              ))}
             </div>
-          </a>
+          </div>
         </div>
       </section>
 
@@ -1572,12 +1595,12 @@ export default function GetStartedPage() {
                 </h3>
                 <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                   {activeTab === "venues"
-                    ? "Turn your screens into a revenue stream. Setup takes just 5 minutes."
+                    ? "Free for partner screens, and you keep 70% of every ad booking. Setup takes about five minutes."
                     : "Reach local customers where they already spend time. Start with just $50/week."}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Button size="lg" className="bg-blue hover:bg-blue/90 rounded-full" asChild>
-                    <Link href={`${APP_URL}/sign-up`}>
+                    <Link href={`${APP_URL}/sign-up?role=${activeTab === "venues" ? "venue" : "advertiser"}`}>
                       {activeTab === "venues" ? "Add Your Venue" : "Start Advertising"}
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
