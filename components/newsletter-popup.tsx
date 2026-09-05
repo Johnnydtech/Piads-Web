@@ -96,7 +96,7 @@ export function NewsletterPopup() {
 
       <div className="relative w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl">
         {/* Brand header */}
-        <div className="relative bg-gradient-to-br from-[#7a5cff] to-[#5234c9] px-7 pb-7 pt-8 text-white">
+        <div className="relative bg-gray-950 px-7 pb-7 pt-8 text-white">
           <button
             onClick={dismiss}
             aria-label="Close"
