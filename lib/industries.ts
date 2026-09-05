@@ -6,7 +6,8 @@
 export interface UseCase {
   name: string
   body: string
-  screenshot: string // /screenshots/*.png
+  screenshot: string // /use-cases/<slug>/*.jpg (fal-generated venue photo) or /screenshots/*.png (dashboard)
+  alt?: string // photo alt text; dashboard screenshots fall back to "<name> — PiAds dashboard"
 }
 
 export interface Faq {
@@ -24,6 +25,8 @@ export interface Industry {
   h1: string
   subhead: string
   teaser: string // index card copy
+  heroImage: string // /use-cases/<slug>/wide.jpg — wide venue photo used in the hero and index card
+  heroAlt: string
   useCases: UseCase[]
   earnAngle: string // the screens-that-earn paragraph, industry-specific
   faqs: Faq[]
@@ -36,6 +39,10 @@ const SHOTS = {
   schedule: "/screenshots/schedule-grid.png",
   media: "/screenshots/media-library.png",
 }
+
+// fal-generated venue photography (see ~/Desktop/Piads-videos/src/site-images.ts).
+// Three per industry: wide (environmental), closeup (screen with legible content), detail (a second moment).
+const img = (slug: string, kind: "wide" | "closeup" | "detail") => `/use-cases/${slug}/${kind}.jpg`
 
 export const INDUSTRIES: Industry[] = [
   {
@@ -51,26 +58,32 @@ export const INDUSTRIES: Industry[] = [
       "Your menu, your specials, your Instagram — on the TV behind the counter. Updated from your phone in seconds, and earning from local advertisers between your own promos.",
     teaser:
       "Menu boards that update in seconds, daily specials without the whiteboard, and a screen that earns while it pours.",
+    heroImage: img("cafes-coffee-shops", "wide"),
+    heroAlt: "A wall-mounted TV above a coffee shop espresso bar showing the day's specials while a barista pours",
     useCases: [
       {
         name: "Daily Specials Board",
         body: "Type today's special once and it's on screen before the espresso machine warms up. No more whiteboard handwriting at 6am — swap items, prices, and photos from your phone or laptop.",
-        screenshot: SHOTS.media,
+        screenshot: img("cafes-coffee-shops", "wide"),
+        alt: "Coffee shop counter with a PiAds menu board above the espresso machine",
       },
       {
         name: "Time-Based Menu Switcher",
         body: "Breakfast menu until 11, lunch until 3, pastry-case push in the afternoon lull. Set the schedule once and the screen changes itself every day — you never touch it again.",
-        screenshot: SHOTS.schedule,
+        screenshot: img("cafes-coffee-shops", "closeup"),
+        alt: "Close-up of a cafe screen showing this week's drinks, prices, and a happy-hour badge",
       },
       {
         name: "Counter Promo Loop",
         body: "Loyalty program, seasonal drinks, retail beans, gift cards — build a playlist of the things you want ordered more, and let it rotate all day with per-item timing you control.",
-        screenshot: SHOTS.playlists,
+        screenshot: img("cafes-coffee-shops", "detail"),
+        alt: "Cafe owner updating the menu board from a phone behind the counter",
       },
       {
         name: "Local Ad Slots",
         body: "The yoga studio next door and the bookshop across the street want to reach your regulars. Approve their ads, set when they run, and keep 70% of every booking — most cafes cover the subscription with a single ad.",
-        screenshot: SHOTS.screens,
+        screenshot: img("cafes-coffee-shops", "closeup"),
+        alt: "Cafe screen with a local yoga studio ad card in the bottom strip",
       },
       {
         name: "Every Screen, One Dashboard",
@@ -109,21 +122,26 @@ export const INDUSTRIES: Industry[] = [
       "Class times, the day's WOD, membership promos, and community shout-outs — on every TV in the building, managed from one dashboard, earning from local advertisers between sets.",
     teaser:
       "WOD boards, class timetables, and member promos across every screen — plus ad revenue from local businesses your members already shop at.",
+    heroImage: img("gyms-fitness-studios", "wide"),
+    heroAlt: "A gym lobby TV showing today's class schedule as members check in",
     useCases: [
       {
         name: "Workout-of-the-Day Board",
         body: "Post the WOD to every screen at once from your phone — before you even get to the gym. Members walk in, see the work, and start warming up instead of crowding the whiteboard.",
-        screenshot: SHOTS.media,
+        screenshot: img("gyms-fitness-studios", "wide"),
+        alt: "Boutique gym lobby with a PiAds screen showing the class schedule",
       },
       {
         name: "Class Timetable Display",
         body: "Today's classes, times, and coaches on the lobby screen, updating automatically from your weekly schedule. Cancel or move a class and the screen reflects it in seconds.",
-        screenshot: SHOTS.schedule,
+        screenshot: img("gyms-fitness-studios", "closeup"),
+        alt: "Close-up of a gym screen with today's classes and a bring-a-friend promo",
       },
       {
         name: "Membership Promo Rotator",
         body: "New-member offers, PT packages, retail supplements, referral bonuses — a rotating loop of the things that grow revenue, running between your schedules without a designer on staff.",
-        screenshot: SHOTS.playlists,
+        screenshot: img("gyms-fitness-studios", "detail"),
+        alt: "Coach posting the workout of the day to the gym screens from a phone",
       },
       {
         name: "Multi-Zone Screen Manager",
@@ -133,7 +151,8 @@ export const INDUSTRIES: Industry[] = [
       {
         name: "Local Sponsor Slots",
         body: "The smoothie bar, the physio clinic, the running store — businesses your members already use will pay to be on your screens. You approve everything and keep 70% of each booking.",
-        screenshot: SHOTS.screens,
+        screenshot: img("gyms-fitness-studios", "closeup"),
+        alt: "Gym screen with a local smoothie bar sponsor slot",
       },
     ],
     earnAngle:
@@ -167,31 +186,38 @@ export const INDUSTRIES: Industry[] = [
       "Your service menu, your best work, and your retail shelf — on the screen every waiting client is already looking at. Updated in seconds, earning between appointments.",
     teaser:
       "Service menus, before-and-after showcases, and retail promos on the waiting-area TV — the screen your clients already stare at.",
+    heroImage: img("salons-barbershops", "wide"),
+    heroAlt: "A salon reception TV showing the service menu and a seasonal promo",
     useCases: [
       {
         name: "Service Menu Board",
         body: "Cuts, color, treatments, prices — a clean menu on screen instead of a laminated sheet. Change a price or add a seasonal service from your phone between clients.",
-        screenshot: SHOTS.media,
+        screenshot: img("salons-barbershops", "wide"),
+        alt: "Hair salon with a PiAds screen near the reception desk",
       },
       {
         name: "Before & After Showcase",
         body: "Your best fades, balayage, and transformations rotating on the waiting-area screen. Clients book bigger services when they can see the work — no printed portfolio needed.",
-        screenshot: SHOTS.playlists,
+        screenshot: img("salons-barbershops", "closeup"),
+        alt: "Close-up of a salon screen with the service menu and prices",
       },
       {
         name: "Retail Shelf Promoter",
         body: "The products on your shelf sell better when the screen explains them. Rotate product spotlights and bundle offers during waiting time — the highest-margin minutes in your day.",
-        screenshot: SHOTS.playlists,
+        screenshot: img("salons-barbershops", "detail"),
+        alt: "Stylist showing a client a before-and-after on the waiting-area screen",
       },
       {
         name: "Slow-Day Scheduler",
         body: "Tuesday-special pricing on Tuesdays, bridal packages before wedding season, gift cards in December. Schedule promos by day and time once — the screen runs the calendar for you.",
-        screenshot: SHOTS.schedule,
+        screenshot: img("salons-barbershops", "detail"),
+        alt: "Salon waiting area screen rotating seasonal promotions",
       },
       {
         name: "Neighbor Ad Slots",
         body: "The nail studio, the boutique, the juice bar nearby — they want your chair time's attention. Approve their ads, and keep 70% of every booking. Waiting-room screens are prime local inventory.",
-        screenshot: SHOTS.screens,
+        screenshot: img("salons-barbershops", "closeup"),
+        alt: "Salon screen with a neighboring nail studio ad card",
       },
     ],
     earnAngle:
@@ -225,21 +251,26 @@ export const INDUSTRIES: Industry[] = [
       "Menus that switch from brunch to dinner on their own, specials you update from the pass, and screens that earn from local advertisers when you're closed.",
     teaser:
       "Menu boards that change by daypart, 86'd items gone in seconds, and high-margin dishes front and center.",
+    heroImage: img("restaurants", "wide"),
+    heroAlt: "A restaurant menu board above the pass showing tonight's specials",
     useCases: [
       {
         name: "Daypart Menu Switcher",
         body: "Brunch until 2, happy hour at 4, dinner at 5:30. Build each menu once, schedule it on the weekly grid, and the boards change themselves — every day, on the dot.",
-        screenshot: SHOTS.schedule,
+        screenshot: img("restaurants", "wide"),
+        alt: "Neighborhood restaurant with PiAds digital menu boards over the counter",
       },
       {
         name: "86 Board",
         body: "Sold out of the special? Pull it from the screen in seconds from the phone in your apron pocket — before the next table orders it and gets disappointed.",
-        screenshot: SHOTS.media,
+        screenshot: img("restaurants", "closeup"),
+        alt: "Close-up of a digital menu board with tonight's specials and a Taco Tuesday badge",
       },
       {
         name: "High-Margin Spotlight",
         body: "The dishes you want ordered more get the biggest, brightest slots. Rotate appetizers, cocktails, and desserts with per-item timing — a quiet upsell running all service.",
-        screenshot: SHOTS.playlists,
+        screenshot: img("restaurants", "detail"),
+        alt: "Line cook pulling a sold-out item from the menu board with a phone",
       },
       {
         name: "Multi-Screen Line-Up",
@@ -249,7 +280,8 @@ export const INDUSTRIES: Industry[] = [
       {
         name: "Off-Hours Ad Revenue",
         body: "Your screens face the street even when the kitchen's closed. Local businesses book those hours through the PiAds marketplace — you approve every ad and keep 70%.",
-        screenshot: SHOTS.screens,
+        screenshot: img("restaurants", "closeup"),
+        alt: "Restaurant menu board with a local brewery ad card",
       },
     ],
     earnAngle:
@@ -283,21 +315,26 @@ export const INDUSTRIES: Industry[] = [
       "Window screens that stop foot traffic, in-store promos that move inventory, and sale changeovers done from the back office — no ladder, no vinyl, no reprints.",
     teaser:
       "Window displays that stop foot traffic and promo screens that move inventory — updated from the back office in seconds.",
+    heroImage: img("retail-stores", "wide"),
+    heroAlt: "A boutique storefront window screen showing new arrivals to passing foot traffic",
     useCases: [
       {
         name: "Window Traffic-Stopper",
         body: "A bright, moving window display outperforms any poster. Run new arrivals, offers, and brand video facing the street — and change the whole window from your desk in seconds.",
-        screenshot: SHOTS.screens,
+        screenshot: img("retail-stores", "wide"),
+        alt: "Boutique retail store with a PiAds window display facing the street",
       },
       {
         name: "Sale Changeover Button",
         body: "When the sale starts, every screen in the store switches at once — schedule it in advance and the Friday 9am changeover happens without a single ladder or printed sign.",
-        screenshot: SHOTS.schedule,
+        screenshot: img("retail-stores", "closeup"),
+        alt: "Close-up of a retail screen showing a weekend sale and new arrivals",
       },
       {
         name: "New-Arrivals Loop",
         body: "This week's products, styled and rotating near the entrance. Keep the loop fresh with per-item timing, and retire items as they sell through — all from one media library.",
-        screenshot: SHOTS.playlists,
+        screenshot: img("retail-stores", "detail"),
+        alt: "Store manager scheduling a sale changeover from the back office",
       },
       {
         name: "Aisle-End Promoter",
@@ -307,7 +344,8 @@ export const INDUSTRIES: Industry[] = [
       {
         name: "Local Ad Partnerships",
         body: "Complementary local businesses — the tailor, the cafe next door, the framer — will pay to be on your screens. Approve what fits your brand and keep 70% of every booking.",
-        screenshot: SHOTS.media,
+        screenshot: img("retail-stores", "closeup"),
+        alt: "Retail screen with a complementary local business ad card",
       },
     ],
     earnAngle:
@@ -341,21 +379,26 @@ export const INDUSTRIES: Industry[] = [
       "Replace daytime TV with content that works for your practice: treatment education, insurance reminders, seasonal health pushes — and a calmer room while patients wait.",
     teaser:
       "Waiting-room screens that educate patients, promote treatments, and calm the room — instead of cable news.",
+    heroImage: img("medical-dental-offices", "wide"),
+    heroAlt: "A dental waiting-room TV showing treatment education and practice news",
     useCases: [
       {
         name: "Treatment Education Loop",
         body: "Whitening, aligners, preventive care, new services — patients decide on treatments while they wait. A rotating education loop answers questions before they reach the front desk.",
-        screenshot: SHOTS.playlists,
+        screenshot: img("medical-dental-offices", "wide"),
+        alt: "Dental office waiting room with a calm PiAds screen on the wall",
       },
       {
         name: "Practice News Board",
         body: "New providers, changed hours, flu-shot season, insurance updates — the announcements your front desk repeats all day, on screen where every patient sees them.",
-        screenshot: SHOTS.media,
+        screenshot: img("medical-dental-offices", "closeup"),
+        alt: "Close-up of a waiting-room screen with a now-seeing notice, a health tip, and a whitening special",
       },
       {
         name: "Seasonal Health Scheduler",
         body: "Allergy season content in spring, back-to-school checkups in August, benefits-deadline reminders in December. Schedule the year once; the screen follows the calendar.",
-        screenshot: SHOTS.schedule,
+        screenshot: img("medical-dental-offices", "detail"),
+        alt: "Front desk staff updating the practice news board from a laptop",
       },
       {
         name: "Multi-Room Manager",
@@ -365,7 +408,8 @@ export const INDUSTRIES: Industry[] = [
       {
         name: "Trusted Local Partners",
         body: "The pharmacy, the optician, the physical therapist nearby — practices you'd refer to anyway can book screen time you approve. You keep 70% of each booking.",
-        screenshot: SHOTS.screens,
+        screenshot: img("medical-dental-offices", "closeup"),
+        alt: "Waiting-room screen with a trusted local pharmacy partner card",
       },
     ],
     earnAngle:
@@ -384,6 +428,70 @@ export const INDUSTRIES: Industry[] = [
       { title: "Digital Signage for Dental and Medical Offices", slug: "digital-signage-for-dental-and-medical-offices" },
       { title: "Digital Signage Content Ideas", slug: "digital-signage-content-ideas" },
       { title: "Digital Signage vs Paper Signs", slug: "digital-signage-vs-paper-signs" },
+    ],
+  },
+  {
+    slug: "short-term-rentals",
+    name: "Short-Term Rentals & Airbnbs",
+    shortName: "short-term rentals",
+    persona: "hosts and property managers",
+    metaTitle: "Digital Signage for Airbnbs & Short-Term Rentals",
+    metaDescription:
+      "Turn the living-room TV into a guest welcome screen: Wi-Fi QR code, house rules, checkout time, and local recommendations — updated per booking, earning from nearby businesses. Free for hosts that enable approved ad slots.",
+    h1: "Digital signage for Airbnbs and short-term rentals",
+    subhead:
+      "The TV your guests turn on first becomes the welcome screen: their names, the Wi-Fi QR code, house rules, checkout time, and the best spots nearby — updated for every booking from your phone, and earning from local restaurants and tours between stays.",
+    teaser:
+      "A welcome screen on the living-room TV: Wi-Fi QR code, house rules, and local picks for every guest — plus revenue from the businesses you already recommend.",
+    heroImage: img("short-term-rentals", "wide"),
+    heroAlt: "Guests arriving at a short-term rental greeted by a welcome screen on the living-room TV",
+    useCases: [
+      {
+        name: "Guest Welcome Screen",
+        body: "Guests walk in, the TV says hello by name, and the Wi-Fi QR code is right there — no laminated card, no 'what's the password' text at 11pm. Update the names from your phone before each check-in, or reuse a standing template.",
+        screenshot: img("short-term-rentals", "wide"),
+        alt: "Guests arriving at a short-term rental greeted by a welcome screen on the living-room TV",
+      },
+      {
+        name: "Wi-Fi & House Rules Card",
+        body: "Scan-to-join Wi-Fi, quiet hours, trash day, checkout time, and how the thermostat works — the questions that generate 80% of your messages, answered on the screen before anyone asks.",
+        screenshot: img("short-term-rentals", "closeup"),
+        alt: "Close-up of a rental welcome screen with a Wi-Fi QR code, checkout time, and local recommendations",
+      },
+      {
+        name: "Local Picks Rotator",
+        body: "Your favorite taco spot, the coffee place that opens early, the kayak rental down the road. A rotating loop of recommendations makes the stay better — and the five-star review more likely.",
+        screenshot: img("short-term-rentals", "detail"),
+        alt: "Host updating a rental's welcome screen from a phone before check-in",
+      },
+      {
+        name: "Turnover Scheduler",
+        body: "Checkout reminders on the last morning, a welcome loop on arrival day, a 'thanks for staying' note at the end. Tie content to the booking calendar once and every turnover runs itself.",
+        screenshot: SHOTS.schedule,
+      },
+      {
+        name: "Recommended-Business Slots",
+        body: "The restaurants and tours you already recommend will pay to be on your screen. Approve each one, decide when they show, and keep 70% of every booking — across every property you manage.",
+        screenshot: img("short-term-rentals", "closeup"),
+        alt: "Rental welcome screen with local restaurant, coffee, and tour recommendation tiles",
+      },
+    ],
+    earnAngle:
+      "A rental TV is the most-trusted screen a guest sees all trip — they act on what it recommends. PiAds turns that into income: local restaurants, tours, and rentals book slots through the marketplace, you approve each one, and 70% of the revenue is yours. For managers with several units, one sponsor across all properties adds up fast.",
+    faqs: [
+      { q: "Can the welcome screen change for each guest?", a: "Yes — update names and dates from your phone before check-in, or run a standing welcome template that doesn't need touching. Many hosts do a 30-second edit on turnover day." },
+      { q: "How do guests join the Wi-Fi?", a: "Put a Wi-Fi QR code on the welcome screen. Guests scan it with their phone camera and connect without typing a password. Generate the code once and it lives in your media library." },
+      { q: "What hardware do I need?", a: "The TV already in the unit plus a Fire TV Stick (PiAds runs natively), an Android TV, a Raspberry Pi, or a browser. Most rentals already have a stick plugged in." },
+      { q: "Can guests still watch Netflix?", a: "Yes. PiAds runs as an app on the stick — guests switch to it or back to their streaming apps like any other input. Many hosts set the welcome screen as the default on power-on." },
+      { q: "I manage multiple properties — can I see them all?", a: "Every unit's screen lives in one dashboard with live online status. Update one property or push a change to all of them at once." },
+      { q: "Will ads bother my guests?", a: "You approve every ad and choose when they appear. Most hosts run their own content 90% of the time with a couple of genuinely useful local partners mixed in — the same places they'd recommend anyway." },
+      { q: "What does it cost?", a: "$0 for participating screens that enable approved marketplace ad slots. Hosts keep 70% of cleared ad revenue." },
+      { q: "What if the unit's Wi-Fi drops?", a: "The player keeps showing cached content and re-syncs when the connection returns. The Wi-Fi card stays on screen — which is exactly when guests need it." },
+    ],
+    relatedPosts: [
+      { title: "Digital Signage for Short-Term Rentals", slug: "digital-signage-for-short-term-rentals" },
+      { title: "Earn Money From Your Venue Screens", slug: "earn-money-from-your-venue-screens" },
+      { title: "Content Scheduling for Venue Screens", slug: "content-scheduling-for-venue-screens" },
     ],
   },
 ]

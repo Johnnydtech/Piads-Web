@@ -59,6 +59,7 @@ export default function IndustryPage({ params }: { params: { industry: string } 
 
       {/* Hero */}
       <section className="container py-16 md:py-20">
+        <div className="grid lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-14 items-center">
         <div className="max-w-3xl">
           <span className="inline-flex items-center gap-2 bg-accent/10 text-accent text-sm font-medium px-4 py-1.5 rounded-full mb-6">
             <Tv className="h-4 w-4" />
@@ -80,6 +81,17 @@ export default function IndustryPage({ params }: { params: { industry: string } 
             </Button>
           </div>
         </div>
+        <div className="rounded-3xl overflow-hidden border shadow-sm">
+          <Image
+            src={ind.heroImage}
+            alt={ind.heroAlt}
+            width={1600}
+            height={900}
+            priority
+            className="w-full h-auto"
+          />
+        </div>
+        </div>
       </section>
 
       {/* Use-case blocks */}
@@ -99,8 +111,8 @@ export default function IndustryPage({ params }: { params: { industry: string } 
               <div className="rounded-3xl overflow-hidden border shadow-sm bg-white">
                 <Image
                   src={uc.screenshot}
-                  alt={`${uc.name} — PiAds dashboard`}
-                  width={1440}
+                  alt={uc.alt ?? `${uc.name} — PiAds dashboard`}
+                  width={uc.alt ? 1600 : 1440}
                   height={900}
                   className="w-full h-auto"
                 />

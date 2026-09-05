@@ -35,6 +35,7 @@ const footerColumns: { heading: string; links: { name: string; href: string }[] 
       { name: "Restaurants & Menus", href: "/digital-signage-for/restaurants" },
       { name: "Retail Stores", href: "/digital-signage-for/retail-stores" },
       { name: "Medical & Dental Offices", href: "/digital-signage-for/medical-dental-offices" },
+      { name: "Short-Term Rentals & Airbnbs", href: "/digital-signage-for/short-term-rentals" },
       { name: "All Industries", href: "/digital-signage-for" },
     ],
   },

@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { INDUSTRIES } from "@/lib/industries"
 import { ArrowRight } from "lucide-react"
@@ -6,7 +7,7 @@ import { ArrowRight } from "lucide-react"
 export const metadata = {
   title: "Digital Signage for Every Local Venue",
   description:
-    "How cafes, gyms, salons, restaurants, retail stores, and medical offices use PiAds digital signage free with approved ad slots — and keep 70% of cleared ad revenue.",
+    "How cafes, gyms, salons, restaurants, retail stores, medical offices, and short-term rentals use PiAds digital signage free with approved ad slots — and keep 70% of cleared ad revenue.",
   alternates: { canonical: "/digital-signage-for" },
 }
 
@@ -34,8 +35,16 @@ export default function IndustryIndexPage() {
             <Link
               key={ind.slug}
               href={`/digital-signage-for/${ind.slug}`}
-              className="bg-white rounded-3xl border p-8 shadow-sm hover:shadow-md transition-shadow group"
+              className="bg-white rounded-3xl border overflow-hidden shadow-sm hover:shadow-md transition-shadow group"
             >
+              <Image
+                src={ind.heroImage}
+                alt={ind.heroAlt}
+                width={1600}
+                height={900}
+                className="w-full h-auto aspect-[16/9] object-cover"
+              />
+              <div className="p-8">
               <h2 className="text-xl font-bold font-display mb-2 group-hover:text-accent transition-colors">
                 {ind.name}
               </h2>
@@ -43,6 +52,7 @@ export default function IndustryIndexPage() {
               <span className="text-sm font-medium text-accent">
                 Read more <ArrowRight className="inline h-4 w-4" />
               </span>
+              </div>
             </Link>
           ))}
         </div>
