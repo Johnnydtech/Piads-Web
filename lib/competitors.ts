@@ -35,6 +35,9 @@ export interface Competitor {
   costNote: string
   faqs: AltFaq[]
   pricingAsOf: string
+  /** Overrides the default "no one else pays you" wedge — required for
+   *  ad-funded competitors (Trillboards, Loop TV), where that claim is false. */
+  wedge?: { title: string; body: string }
 }
 
 const SHARED_COST_NOTE =
@@ -280,6 +283,110 @@ export const COMPETITORS: Competitor[] = [
       { q: "Do I have to run ads on PiAds?", a: "No. Every ad needs your approval, and you can run your own content only — those screens are billed at $10 per screen per month. Enable approved ad slots and the screen is free, plus you keep 70% of what it earns." },
     ],
     pricingAsOf: "August 2026",
+  },
+  {
+    slug: "trillboards-alternative",
+    name: "Trillboards",
+    metaTitle: "Trillboards Alternative: Local Advertisers You Approve, 70% to You",
+    metaDescription:
+      "PiAds vs Trillboards: both are free, ad-funded signage. The difference is who advertises and who decides — programmatic fill with category blocking, or local businesses you approve one by one with a published 70% split.",
+    heroAdjectives: "where you approve every ad — and the split is published",
+    heroSub:
+      "Trillboards and PiAds both make signage free by selling your screen time. Trillboards fills it from a programmatic exchange with category controls; PiAds sells it to local businesses you approve campaign by campaign, and pays a fixed 70%.",
+    attack:
+      "Trillboards is the most direct comparison to PiAds: free CMS, free device management, ad revenue instead of a subscription. Where it differs is the ad supply. Trillboards plugs your screen into an open programmatic exchange — hundreds of demand partners bidding for impressions — and your control is category-level: block alcohol, block gambling, allow-list verticals. You don't see or approve the individual creative before it airs, and the venue's share of each dollar isn't published. PiAds sells your slots to businesses near you, each campaign waits for your approval, and the split is a fixed 70% on every cleared booking. If you want your screen to feel like part of the neighborhood rather than a programmatic endpoint, that's the line.",
+    concede:
+      "Credit where due: Trillboards' 'triple-free' bundle (CMS, device management, curated content) is generous, programmatic demand can fill slots in places local advertisers haven't discovered yet, and their earnings claims for high-traffic venues are attractive if they hold. For an airport lounge or a chain with real programmatic scale, it may out-earn a local marketplace.",
+    theirWeaknesses: [
+      "Programmatic fill — you block categories, you don't approve the specific ads your customers will see",
+      "The venue's revenue share isn't published; earnings depend on exchange CPMs and fill rate",
+      "Advertisers are whoever bids on the exchange, not businesses in your neighborhood",
+      "Launched March 2026; the ad-funded free model has a mixed track record (Framen pivoted to paid)",
+    ],
+    ourWeaknesses: [
+      "PiAds has no programmatic demand — if no local business books your screen, it earns nothing that month",
+      "Trillboards' curated content library is bigger; PiAds expects you to bring your own menus, promos, and media",
+      "The PiAds marketplace is strongest in the US metros where we have advertisers today",
+    ],
+    compareRows: [
+      { label: "Software cost", them: "$0, ad-funded", piads: "$0 for partner screens with approved ad slots; $10/mo if ad-free" },
+      { label: "Who advertises", them: "Programmatic exchange — hundreds of demand partners", piads: "Local businesses near your venue" },
+      { label: "Your control", them: "Category blocking and allow-lists", piads: "Approve or decline every campaign, plus category controls" },
+      { label: "Revenue share", them: "Not published", piads: "70% of every cleared booking, published" },
+      { label: "Hardware", them: "Android TV incl. Fire TV Stick, smart TVs, Chromecast", piads: "Native Fire TV app, Android TV, Raspberry Pi, browser — plus a free iOS app" },
+      { label: "Screen health", them: "Device management included", piads: "Live online/offline, last-seen, last frame" },
+    ],
+    costRows: [
+      { screens: 1, them: "$0 (ad-funded)", piads: "$0" },
+      { screens: 5, them: "$0 (ad-funded)", piads: "$0" },
+      { screens: 20, them: "$0 (ad-funded)", piads: "$0" },
+    ],
+    costNote:
+      "Both platforms are free to run on partner screens; the comparison is what plays and what you keep. Trillboards does not publish the venue's share of ad revenue; its site cites typical earnings of $100–$300 per screen per month for medium-traffic venues and $400–$600 for high-traffic ones (their figures, September 2026). PiAds pays 70% of each cleared booking.",
+    faqs: [
+      { q: "How is PiAds different from Trillboards?", a: "Both are free, ad-funded signage. Trillboards sells your screen time on a programmatic exchange and gives you category-level controls. PiAds sells it to local businesses, every campaign needs your approval before it plays, and the split is a published 70% to the venue." },
+      { q: "Which earns more?", a: "It depends on your venue. Programmatic demand can fill a screen anywhere; local demand depends on businesses near you booking. PiAds doesn't promise a monthly figure — you set slot prices, approve bookings, and keep 70% of what clears." },
+      { q: "Can I see the ads before they run?", a: "On PiAds, yes — every creative waits for your approval. On Trillboards you control which categories can run, not the individual ads." },
+      { q: "Do I need new hardware?", a: "No. Both run on a Fire TV Stick or Android TV device you own. PiAds also runs on Raspberry Pi and in any browser, and has a native iOS app for managing screens from your phone." },
+      { q: "Can I use PiAds without ads?", a: "Yes — ad-free screens are $10 per screen per month or $100 per year. Enable approved ad slots and the screen becomes free." },
+    ],
+    pricingAsOf: "September 2026",
+    wedge: {
+      title: "The difference is who's on your screen",
+      body: "Both platforms pay you. On Trillboards the buyer is an exchange bidding on impressions; on PiAds it's the gym, dentist, or shop down the street booking a daypart you priced and approved. Your content plays first, every campaign needs your sign-off, and 70% of each cleared booking is yours. The software is $0 for partner screens on both — so choose on control, not price.",
+    },
+  },
+  {
+    slug: "loop-tv-alternative",
+    name: "Loop TV",
+    metaTitle: "Loop TV Alternative for Venues: Your Content First, Local Ads You Approve",
+    metaDescription:
+      "Loop TV gives you a free player and music-video channels with your promos as banners. PiAds makes your own content the program, sells the gaps to local businesses you approve, and pays 70% — free for partner screens.",
+    heroAdjectives: "where your content is the program, not the banner",
+    heroSub:
+      "Loop TV is ad-supported entertainment for businesses: a free Loop Player, 150+ music video and branded channels, and your specials as banners around it. PiAds is signage first — your menus and promos are the show — with local advertisers you approve filling the gaps, and 70% of every booking to you.",
+    attack:
+      "Loop TV solves a real problem — something watchable on the bar TV without a cable bill — and it does it well. But it's an entertainment channel that lets you decorate the edges, not signage. Your specials run as banners around Loop's programming, the ads come from Loop's managed network, and the venue reward is modest: Loop's program paid about $20 a month for running the player 240 hours. PiAds inverts it. Your content fills the screen; ad slots open only where you allow them; the advertisers are local businesses that booked your screen and waited for your approval; and the split is 70% of each cleared booking. If the TV is there to sell your stuff and pay you for the gaps, that's the model.",
+    concede:
+      "Being fair: if what you actually want is licensed music videos and branded entertainment playing all day with zero effort, Loop TV is built for exactly that, the player is free, and PiAds doesn't offer an entertainment library. Plenty of bars want a channel, not a menu board.",
+    theirWeaknesses: [
+      "Entertainment-first: your promos are banners around Loop's channels, not the program",
+      "Ads come from Loop's managed network — you don't choose or approve the advertisers",
+      "Venue earnings are a small fixed reward (about $20/month for 240 player-hours in Loop's program), not a share of what your screen sells for",
+      "Requires the Loop Player box rather than the stick already behind your TV",
+    ],
+    ourWeaknesses: [
+      "PiAds has no licensed music-video or entertainment channels — you supply the content",
+      "No programmatic or network ad fill: if no local business books, the screen earns nothing that month",
+      "The PiAds marketplace is strongest in the US metros where we have advertisers today",
+    ],
+    compareRows: [
+      { label: "What's on screen", them: "Loop's music video / branded channels; your promos as banners", piads: "Your playlists and schedules; ads only in slots you open" },
+      { label: "Who advertises", them: "Loop's managed ad network", piads: "Local businesses near your venue" },
+      { label: "Your control", them: "Choose channels; upload banners", piads: "Approve or decline every campaign; set dayparts and prices" },
+      { label: "What you earn", them: "Rewards program — about $20/mo for 240 player-hours", piads: "70% of every cleared booking" },
+      { label: "Software cost", them: "$0 with the free Loop Player", piads: "$0 for partner screens; $10/mo if ad-free" },
+      { label: "Hardware", them: "Loop Player box", piads: "Fire TV Stick, Android TV, Raspberry Pi, or browser you own" },
+    ],
+    costRows: [
+      { screens: 1, them: "$0 + Loop Player", piads: "$0" },
+      { screens: 5, them: "$0 + 5 Loop Players", piads: "$0" },
+      { screens: 20, them: "$0 + 20 Loop Players", piads: "$0" },
+    ],
+    costNote:
+      "Both are free to run. Loop TV supplies a free Loop Player to registered businesses open to the public; its business rewards program has paid about $20 per month per player at 240 hours of runtime (as reported at launch). PiAds runs on hardware you already own and pays 70% of each cleared local booking.",
+    faqs: [
+      { q: "How is PiAds different from Loop TV?", a: "Loop TV is ad-supported entertainment: free player, music-video channels, your promos as banners, ads from Loop's network, and a small monthly reward. PiAds is signage: your content is the program, local businesses book the slots you open, you approve each campaign, and you keep 70% of every cleared booking." },
+      { q: "Can I run both?", a: "On different TVs, yes — some venues keep Loop on the bar TV for entertainment and run PiAds on the menu board and entrance screen where their own content and local ads belong." },
+      { q: "Does PiAds have music videos or channels?", a: "No. PiAds plays what you upload and schedule — menus, promos, announcements, video — plus approved local ads. If you need a licensed entertainment feed, that's Loop's product." },
+      { q: "Do I need Loop's box for PiAds?", a: "No. PiAds runs natively on the Fire TV Stick or Android TV device already behind your TV, on Raspberry Pi, or in a browser. There's also a free iOS app for managing screens." },
+      { q: "Is PiAds free like Loop?", a: "Yes for partner screens that enable approved ad slots. Screens without ad slots are $10 per screen per month or $100 per year." },
+    ],
+    pricingAsOf: "September 2026",
+    wedge: {
+      title: "Banner around their show, or your show with local ads",
+      body: "Loop pays you a small reward for hosting its channel; PiAds pays you 70% of what local businesses pay to be on your screen. On PiAds your menus and promos are the program, ad slots open only where you allow them, every campaign waits for your approval, and the software is $0 for partner screens. Keep Loop for the bar TV if you like the channels — put PiAds where the screen is supposed to sell.",
+    },
   },
 ]
 

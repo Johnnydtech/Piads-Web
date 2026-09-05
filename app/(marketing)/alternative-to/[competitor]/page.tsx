@@ -182,15 +182,19 @@ export default function CompetitorPage({ params }: { params: { competitor: strin
           <div className="flex items-center gap-3 mb-4">
             <Sparkles className="h-6 w-6" />
             <h2 className="text-2xl md:text-3xl font-bold font-display">
-              The comparison {c.name} can&apos;t enter
+              {c.wedge?.title ?? <>The comparison {c.name} can&apos;t enter</>}
             </h2>
           </div>
           <p className="text-white/85 text-lg">
-            Every signage platform — {c.name} included — treats your screens as a
-            cost. PiAds is the only one with a built-in local advertising
-            marketplace: nearby businesses book slots on your screens, you
-            approve every ad, and you keep 70% of the revenue. The software is
-            $0 for partner screens, so the screen is an income line, not a cost.
+            {c.wedge?.body ?? (
+              <>
+                Every signage platform — {c.name} included — treats your screens as a
+                cost. PiAds is the only one with a built-in local advertising
+                marketplace: nearby businesses book slots on your screens, you
+                approve every ad, and you keep 70% of the revenue. The software is
+                $0 for partner screens, so the screen is an income line, not a cost.
+              </>
+            )}
           </p>
         </div>
       </section>

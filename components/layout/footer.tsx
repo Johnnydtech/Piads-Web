@@ -60,6 +60,8 @@ const footerColumns: { heading: string; links: { name: string; href: string }[] 
       { name: "vs ScreenCloud", href: "/alternative-to/screencloud-alternative" },
       { name: "vs Raydiant", href: "/alternative-to/raydiant-alternative" },
       { name: "vs Juuno", href: "/alternative-to/juuno-alternative" },
+      { name: "vs Trillboards", href: "/alternative-to/trillboards-alternative" },
+      { name: "vs Loop TV", href: "/alternative-to/loop-tv-alternative" },
       { name: "Best Signage Software 2026", href: "/blog/best-digital-signage-software-small-business" },
     ],
   },
