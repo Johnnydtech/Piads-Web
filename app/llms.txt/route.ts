@@ -10,6 +10,8 @@ const CONTENT = `# PiAds — Digital Signage That Pays For Itself
 
 ## Key Pages
 
+- Free digital signage (how the free plan works, free tiers compared): https://www.piads.co/free-digital-signage
+- Digital signage ad revenue (how venues earn, the 70% split, approval): https://www.piads.co/digital-signage-ad-revenue
 - Pricing — $0 for Partner screens with approved ad slots; venues keep 70% of cleared ad revenue: https://www.piads.co/pricing
 - Fire TV player (native app for the entire Fire TV family, including new Vega devices): https://www.piads.co/players/fire-tv
 - All supported devices (Fire TV, Raspberry Pi, Android, web browser): https://www.piads.co/devices

@@ -44,7 +44,7 @@ const advertiserFeatures = [
 const faqs = [
   {
     question: "What makes the Partner plan free?",
-    answer: "Partner screens enable approved marketplace ad slots. Advertising funds the platform, so the signage software costs the venue $0 while the screen remains eligible and participating.",
+    answer: "Partner screens enable approved marketplace ad slots. Advertising funds the platform, so the signage software costs the venue $0 while the screen remains eligible and participating. See how the free plan compares to other free tiers at piads.co/free-digital-signage.",
   },
   {
     question: "What if I don't want ads on my screens?",

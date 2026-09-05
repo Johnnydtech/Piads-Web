@@ -124,7 +124,7 @@ export function NewsletterPopup() {
               <Link
                 href="/get-started"
                 onClick={dismiss}
-                className="block w-full rounded-xl bg-[#6C4BF5] px-4 py-3 text-center text-sm font-bold text-white shadow-lg shadow-[#6C4BF5]/25 transition hover:bg-[#5a3fd6]"
+                className="block w-full rounded-xl bg-gray-950 px-4 py-3 text-center text-sm font-bold text-white shadow-lg shadow-gray-950/25 transition hover:bg-gray-800"
               >
                 Get started free →
               </Link>
@@ -142,7 +142,7 @@ export function NewsletterPopup() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@business.com"
-                  className="min-w-0 flex-1 rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-[#6C4BF5] focus:outline-none focus:ring-2 focus:ring-[#6C4BF5]/20"
+                  className="min-w-0 flex-1 rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-950 focus:outline-none focus:ring-2 focus:ring-gray-950/20"
                 />
                 <button
                   type="submit"

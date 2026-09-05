@@ -32,6 +32,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/free-digital-signage`,
+      lastModified: STATIC_UPDATED,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/digital-signage-ad-revenue`,
+      lastModified: STATIC_UPDATED,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/blog`,
       lastModified: STATIC_UPDATED,
       changeFrequency: "weekly",

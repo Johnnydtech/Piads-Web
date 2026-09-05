@@ -41,6 +41,8 @@ const footerColumns: { heading: string; links: { name: string; href: string }[] 
   {
     heading: "Learn",
     links: [
+      { name: "Free Digital Signage", href: "/free-digital-signage" },
+      { name: "Earn Ad Revenue From Screens", href: "/digital-signage-ad-revenue" },
       { name: "What Is Digital Signage?", href: "/blog/what-is-digital-signage" },
       { name: "What Digital Signage Costs", href: "/blog/how-much-does-digital-signage-cost" },
       { name: "Canva on Your TV", href: "/blog/canva-digital-signage-display-on-tv" },

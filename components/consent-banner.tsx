@@ -57,7 +57,7 @@ export function ConsentBanner() {
       <p className="mt-1 text-sm text-gray-600">
         We use analytics cookies to understand how visitors use PiAds and improve the product.
         See our{" "}
-        <Link href="/privacy" className="font-medium text-[#6C4BF5] hover:underline">
+        <Link href="/privacy" className="font-medium text-blue hover:underline">
           privacy policy
         </Link>
         .
@@ -65,7 +65,7 @@ export function ConsentBanner() {
       <div className="mt-4 flex gap-2">
         <button
           onClick={() => decide(true)}
-          className="flex-1 rounded-xl bg-[#6C4BF5] px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-[#6C4BF5]/25 transition hover:bg-[#5a3fd6]"
+          className="flex-1 rounded-xl bg-gray-950 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-gray-800"
         >
           Accept
         </button>
