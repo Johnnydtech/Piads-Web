@@ -388,6 +388,158 @@ export const COMPETITORS: Competitor[] = [
       body: "Loop pays you a small reward for hosting its channel; PiAds pays you 70% of what local businesses pay to be on your screen. On PiAds your menus and promos are the program, ad slots open only where you allow them, every campaign waits for your approval, and the software is $0 for partner screens. Keep Loop for the bar TV if you like the channels — put PiAds where the screen is supposed to sell.",
     },
   },
+  {
+    slug: "atmosphere-tv-alternative",
+    name: "Atmosphere TV",
+    metaTitle: "Atmosphere TV Alternative: Your Content First, and the Screen Pays You",
+    metaDescription:
+      "Atmosphere TV gives venues a free box and dozens of ad-supported channels, with your promos slotted into its ad breaks. PiAds makes your content the program, sells the gaps to local businesses you approve, and pays 70%. Free for partner screens.",
+    heroAdjectives: "where the ads pay you, not just the streaming bill",
+    heroSub:
+      "Atmosphere TV is free ad-supported entertainment for businesses: a plug-in device, dozens of silent channels, and your own promos inserted at the start of its ad breaks. PiAds is signage that earns — your menus and promos run all day, local advertisers you approve fill the slots you open, and 70% of every cleared booking is yours.",
+    attack:
+      "Atmosphere is genuinely good at what it is: the largest business streaming platform, 50,000+ venues, dozens of audio-optional channels, a free device, and free digital signage so your happy-hour slide plays between clips. The catch is the economics. Ads on Atmosphere are sold by Atmosphere; the venue's reward is the free service itself, earned by keeping the device on at least 40 hours a month. You host the audience, they keep the ad revenue. PiAds flips that: your content is what's on, the ad slots are yours to price and approve, and the venue keeps 70% of every booking. Both are free to run — one pays you back.",
+    concede:
+      "In fairness: if the TV's job is ambient entertainment — nature clips, sports highlights, trivia — with zero effort and no cable bill, Atmosphere is the category leader and PiAds does not offer an entertainment library. Many bars and waiting rooms want exactly that.",
+    theirWeaknesses: [
+      "Entertainment-first: your promos are inserted into Atmosphere's ad breaks, not the main program",
+      "Ads are sold by Atmosphere's network — you don't choose the advertisers or approve the creatives",
+      "No revenue share to the venue; the 'rebate' is the free service, conditional on 40+ hours a month",
+      "Requires Atmosphere's device rather than the Fire TV Stick already behind your TV",
+    ],
+    ourWeaknesses: [
+      "PiAds has no licensed entertainment channels — you supply the content",
+      "No network ad fill: if no local business books your screen, it earns nothing that month",
+      "The PiAds marketplace is strongest in the US metros where we have advertisers today",
+    ],
+    compareRows: [
+      { label: "What's on screen", them: "Atmosphere's channels; your promos in its ad breaks", piads: "Your playlists and schedules; ads only in slots you open" },
+      { label: "Who advertises", them: "Atmosphere's ad network", piads: "Local businesses near your venue" },
+      { label: "Your control", them: "Choose channels; upload promos with schedules", piads: "Approve or decline every campaign; set dayparts and prices" },
+      { label: "What you earn", them: "Free service (device must run 40+ hrs/month)", piads: "70% of every cleared booking" },
+      { label: "Software cost", them: "$0 with Atmosphere device", piads: "$0 for partner screens; $10/mo if ad-free" },
+      { label: "Hardware", them: "Atmosphere device (HDMI)", piads: "Fire TV Stick, Android TV, Raspberry Pi, or browser you own" },
+    ],
+    costRows: [
+      { screens: 1, them: "$0 + Atmosphere device", piads: "$0" },
+      { screens: 5, them: "$0 + 5 devices", piads: "$0" },
+      { screens: 20, them: "$0 + 20 devices", piads: "$0" },
+    ],
+    costNote:
+      "Both are free to run. Atmosphere supplies its device and keeps the service free as long as it plays at least 40 hours a month per device; ad revenue stays with Atmosphere. PiAds runs on hardware you already own and pays 70% of each cleared local booking.",
+    faqs: [
+      { q: "How is PiAds different from Atmosphere TV?", a: "Atmosphere is free ad-supported entertainment: their channels, their advertisers, your promos in the breaks, and free service as the reward. PiAds is signage that earns: your content is the program, local businesses book the slots you open, you approve each campaign, and you keep 70% of every cleared booking." },
+      { q: "Does Atmosphere pay venues?", a: "Not in cash. The venue's benefit is the free service and device, conditional on running the device at least 40 hours a month. On PiAds the venue is paid 70% of each cleared booking." },
+      { q: "Can I run both?", a: "Yes, on different TVs — Atmosphere on the entertainment screen, PiAds on the menu board, entrance, or waiting-room screen where your own content and local ads belong." },
+      { q: "Do I need Atmosphere's box for PiAds?", a: "No. PiAds runs natively on the Fire TV Stick or Android TV device you already own, on Raspberry Pi, or in a browser, and has a free iOS app for managing screens." },
+      { q: "Is PiAds free like Atmosphere?", a: "Yes for partner screens that enable approved ad slots. Screens without ad slots are $10 per screen per month or $100 per year." },
+    ],
+    pricingAsOf: "September 2026",
+    wedge: {
+      title: "Same free screen. Different direction of money.",
+      body: "On Atmosphere your audience earns ad revenue for Atmosphere and you get the service free. On PiAds your audience earns ad revenue for you — 70% of every cleared booking from local businesses you approved, on a screen that's showing your own content the rest of the time. The software is $0 for partner screens on both, so choose by where the money goes.",
+    },
+  },
+  {
+    slug: "upshow-alternative",
+    name: "UPshow (EverPass)",
+    metaTitle: "UPshow Alternative for Venues: Free Signage That Pays You 70%",
+    metaDescription:
+      "UPshow is now part of EverPass Media, a paid sports-and-entertainment platform for bars and restaurants. PiAds is free signage for partner screens where local advertisers you approve pay you 70%. Your content first, no sports license required.",
+    heroAdjectives: "that costs $0 and pays you back",
+    heroSub:
+      "UPshow was acquired by EverPass Media in July 2024 and now leads with commercial sports streaming — NFL Sunday Ticket, ESPN+ for Business — plus entertainment channels, signage, and promotions on quote-based pricing. PiAds is the opposite bet: free signage for partner screens, your content first, and 70% of every local ad booking to you.",
+    attack:
+      "UPshow built a strong on-premise entertainment and promotions product, then became the technology inside EverPass, whose center of gravity is licensed sports for bars, restaurants, casinos, and healthcare. That's a real product with real value — if your customers come for the game, a Sunday Ticket license matters more than a menu board. But it's something you pay for, priced by quote, on their hardware, and the screen never earns anything back. PiAds is for the other screens and the other venues: menus, promos, and announcements that are yours, ad slots you open and price, local advertisers you approve, 70% of each cleared booking to you, and $0 software for partner screens on the Fire TV Stick already behind the TV.",
+    concede:
+      "Being honest: if you need licensed live sports in a bar, EverPass/UPshow is one of the few legitimate ways to get it, and its engagement features (trivia, social walls, gamified promos) are more developed than PiAds' signage-first toolkit. PiAds does not stream sports and never will.",
+    theirWeaknesses: [
+      "Paid, quote-based pricing — historically from around $50–$99+ per month per location before the EverPass sports bundle",
+      "Sports-and-entertainment first; your own content is the promotion layer, not the program",
+      "Your screen is a cost line: no ad marketplace, no revenue share to the venue",
+      "Platform in transition since the 2024 acquisition — back-of-house tools were spun out, sports licensing leads the roadmap",
+    ],
+    ourWeaknesses: [
+      "PiAds has no live sports or licensed entertainment channels",
+      "UPshow's engagement layer (trivia, social feeds, gamified promos) is richer than PiAds' signage toolkit",
+      "No network ad fill: if no local business books your screen, it earns nothing that month",
+    ],
+    compareRows: [
+      { label: "What's on screen", them: "Licensed sports + entertainment channels; your promos layered on", piads: "Your playlists and schedules; ads only in slots you open" },
+      { label: "Pricing", them: "Quote-based, paid subscription", piads: "$0 for partner screens; $10/mo if ad-free" },
+      { label: "Earn from your screens", them: "No", piads: "Local ad marketplace — you keep 70%" },
+      { label: "Ad control", them: "Not applicable — no third-party ads sold for you", piads: "Approve or decline every campaign; set dayparts and prices" },
+      { label: "Hardware", them: "Their device", piads: "Fire TV Stick, Android TV, Raspberry Pi, or browser you own" },
+      { label: "Best for", them: "Sports bars needing licensed games", piads: "Menu boards, promos, and screens that should pay for themselves" },
+    ],
+    costRows: [
+      { screens: 1, them: "Quote (paid)", piads: "$0" },
+      { screens: 5, them: "Quote (paid)", piads: "$0" },
+      { screens: 20, them: "Quote (paid)", piads: "$0" },
+    ],
+    costNote:
+      "EverPass/UPshow pricing is quote-based; third-party listings put legacy UPshow entry plans around $50–$99+ per month per location, and sports licenses are priced by establishment classification. PiAds is $0 for partner screens that enable approved ad slots and pays 70% of each cleared local booking.",
+    faqs: [
+      { q: "What happened to UPshow?", a: "EverPass Media acquired UPshow on July 2, 2024. The UPshow platform now powers EverPass, which leads with commercial sports streaming such as NFL Sunday Ticket alongside entertainment channels, digital signage, and promotions." },
+      { q: "How is PiAds different from UPshow / EverPass?", a: "EverPass is paid sports-and-entertainment TV for venues with signage layered on. PiAds is free signage for partner screens where your content is the program, local businesses book the ad slots you open, you approve each one, and you keep 70%." },
+      { q: "Can PiAds show live sports?", a: "No. PiAds plays what you upload and schedule plus approved local ads. If your venue needs licensed games, keep a sports platform on that TV and run PiAds on the menu board and other screens." },
+      { q: "Do I need special hardware?", a: "No. PiAds runs natively on the Fire TV Stick or Android TV device you already own, on Raspberry Pi, or in any browser, with a free iOS app for management." },
+      { q: "Is PiAds really free?", a: "Yes for partner screens that enable approved ad slots. Screens without ad slots are $10 per screen per month or $100 per year." },
+    ],
+    pricingAsOf: "September 2026",
+  },
+  {
+    slug: "framen-alternative",
+    name: "FRAMEN",
+    metaTitle: "FRAMEN Alternative in the US: Local Advertisers You Approve, 70% Published",
+    metaDescription:
+      "FRAMEN is ad-funded signage for gyms, hotels, and coworking with a free tier, €5 and €30 per-screen plans, and brand-partner campaigns. PiAds is US-local: free for partner screens, every ad approved by you, 70% of each booking published.",
+    heroAdjectives: "built for US local venues — with a published 70% split",
+    heroSub:
+      "FRAMEN runs an 18,000-screen ad-funded network across 20+ countries: a free CMS, paid Premium and Enterprise tiers, and brand-partner campaigns that pay the venue. PiAds does the same job for US neighborhoods — free for partner screens, local advertisers instead of brand networks, every campaign approved by you, and a fixed 70% to the venue.",
+    attack:
+      "FRAMEN proved the ad-funded signage model at scale, mostly in Europe: free CMS, network campaigns from brand partners, hardware bundles for bigger operators. Two things to know before you compare. The venue's share of campaign revenue isn't published, and the free tier is the entry point to €5 and €30 per-screen plans that unlock 'full ads activity control' and better revenue. PiAds keeps one plan and one number: partner screens are $0 with every feature, every campaign waits for your approval, and 70% of each cleared booking is yours. The advertisers are the businesses near you, not brand campaigns routed across a continent.",
+    concede:
+      "Credit where due: FRAMEN's network reach (18,000+ screens, 20+ countries), its Enterprise bundle with a 43-inch display and installation, and its brand-partner demand are real advantages for hotel chains and multi-country operators. For a European venue, it is the more established choice.",
+    theirWeaknesses: [
+      "Venue revenue share isn't published; the Free tier gets 'starter' revenue and 'full ads activity control' sits in paid tiers",
+      "Advertisers are network brand campaigns, not businesses in your neighborhood",
+      "Free is the entry to €5/screen Premium and €30/screen Enterprise",
+      "Euro-centric footprint; limited local advertiser density for a US cafe or gym",
+    ],
+    ourWeaknesses: [
+      "PiAds has no brand-network demand — if no local business books your screen, it earns nothing that month",
+      "No hardware bundle: PiAds runs on hardware you already own; we don't ship displays",
+      "The PiAds marketplace is strongest in the US metros where we have advertisers today",
+    ],
+    compareRows: [
+      { label: "Software cost", them: "Free tier; Premium €5/screen/mo; Enterprise €30/screen/mo with display", piads: "$0 for partner screens with every feature; $10/mo if ad-free" },
+      { label: "Who advertises", them: "Brand-partner campaigns across the network", piads: "Local businesses near your venue" },
+      { label: "Your control", them: "'Full ads activity control' in paid tiers", piads: "Approve or decline every campaign on every screen, free" },
+      { label: "Revenue share", them: "Not published; higher on paid tiers", piads: "70% of every cleared booking, published" },
+      { label: "Hardware", them: "Bring your own, or Enterprise bundle (43\" display + FRAMEN Box)", piads: "Fire TV Stick, Android TV, Raspberry Pi, or browser you own" },
+      { label: "Footprint", them: "18,000+ screens, 20+ countries", piads: "US local venues" },
+    ],
+    costRows: [
+      { screens: 1, them: "€0 / €5 / €30", piads: "$0" },
+      { screens: 5, them: "€0 / €25 / €150", piads: "$0" },
+      { screens: 20, them: "€0 / €100 / €600", piads: "$0" },
+    ],
+    costNote:
+      "FRAMEN list prices per screen per month as published September 2026 (Free / Premium €5 / Enterprise €30 including display and installation); venue revenue share not published. PiAds is $0 for partner screens that enable approved ad slots and pays 70% of each cleared local booking.",
+    faqs: [
+      { q: "How is PiAds different from FRAMEN?", a: "Both are ad-funded signage. FRAMEN runs brand-partner campaigns across an international network with tiered plans and an unpublished share; PiAds sells your slots to local businesses, every campaign needs your approval, and the venue keeps a published 70% — on one free plan for partner screens." },
+      { q: "Is PiAds available in Europe?", a: "PiAds is built for US local venues today; the marketplace has advertisers in US metros. If you're in Europe, FRAMEN's network is the more established option." },
+      { q: "Does PiAds have paid tiers?", a: "Only one distinction: partner screens with approved ad slots are $0 with every feature; screens without ad slots are $10 per screen per month or $100 per year. There's no tier that unlocks ad control or a better share." },
+      { q: "Do I need to buy hardware?", a: "No. PiAds runs natively on the Fire TV Stick or Android TV device you own, on Raspberry Pi, or in a browser, with a free iOS app for management." },
+      { q: "Can I see the ads before they run?", a: "Yes — every creative waits for your approval on every screen, on the free plan." },
+    ],
+    pricingAsOf: "September 2026",
+    wedge: {
+      title: "Ad-funded signage, with the split written down",
+      body: "FRAMEN and PiAds both make the screen pay for the software. The difference is who buys and what you keep: on PiAds the buyer is a business near you, every campaign waits for your approval, and 70% of each cleared booking is yours — published, on the free plan, with no tier to unlock it.",
+    },
+  },
 ]
 
 export function competitorBySlug(slug: string): Competitor | undefined {
