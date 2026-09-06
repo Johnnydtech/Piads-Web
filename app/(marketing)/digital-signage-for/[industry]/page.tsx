@@ -111,8 +111,8 @@ export default function IndustryPage({ params }: { params: { industry: string } 
               <div className="rounded-3xl overflow-hidden border shadow-sm bg-white">
                 <Image
                   src={uc.screenshot}
-                  alt={uc.alt ?? `${uc.name} — PiAds dashboard`}
-                  width={uc.alt ? 1600 : 1440}
+                  alt={uc.alt}
+                  width={1600}
                   height={900}
                   className="w-full h-auto"
                 />
