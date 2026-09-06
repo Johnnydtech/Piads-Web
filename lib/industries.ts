@@ -28,6 +28,9 @@ export interface Industry {
   heroImage: string // /use-cases/<slug>/wide.jpg — wide venue photo used in the hero and index card
   heroAlt: string
   useCases: UseCase[]
+  /** Ordered setup steps, rendered as a numbered "How it works" band. Optional:
+   *  only industries with a documented end-to-end flow define it. */
+  setupSteps?: { title: string; body: string }[]
   earnAngle: string // the screens-that-earn paragraph, industry-specific
   faqs: Faq[]
   relatedPosts: { title: string; slug: string }[]
@@ -463,8 +466,8 @@ export const INDUSTRIES: Industry[] = [
         alt: "Rental screen rotating the host's favorite nearby spots",
       },
       {
-        name: "Turnover Scheduler",
-        body: "Checkout reminders on the last morning, a welcome loop on arrival day, a 'thanks for staying' note at the end. Tie content to the booking calendar once and every turnover runs itself.",
+        name: "Turnover Refresh",
+        body: "New guest name, new dates, new checkout time — edit the welcome screen on the Guests page and it changes on the TV as soon as you save. A turnover takes about as long as reading the booking.",
         screenshot: img("short-term-rentals", "detail"),
         alt: "Host updating the welcome screen from a phone on turnover day",
       },
@@ -473,6 +476,20 @@ export const INDUSTRIES: Industry[] = [
         body: "The restaurants and tours you already recommend will pay to be on your screen. Approve each one, decide when they show, and keep 70% of every booking — across every property you manage.",
         screenshot: img("short-term-rentals", "sponsor"),
         alt: "Rental screen running an approved local kayak tour offer for guests",
+      },
+    ],
+    setupSteps: [
+      {
+        title: "Put PiAds on your TV",
+        body: "Install the PiAds Player on a Fire TV Stick, an Android TV or Google TV, or open it in the TV's browser. The TV shows a short code — type it into the Guests page and the screen is yours.",
+      },
+      {
+        title: "Set up the welcome screen",
+        body: "Fill in the guest's name, your welcome message, the Wi-Fi details, checkout time, house notes, and local picks chosen from real Google listings. A live preview shows the TV as you type. Save and it's up.",
+      },
+      {
+        title: "Collect guest emails",
+        body: "The TV shows a QR code. Guests scan it, give a name and email, and then see the Wi-Fi and house guide. You get an email for each new guest and can export the whole list as CSV. PiAds never emails them — that's yours.",
       },
     ],
     earnAngle:

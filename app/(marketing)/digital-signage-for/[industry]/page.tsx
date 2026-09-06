@@ -94,6 +94,26 @@ export default function IndustryPage({ params }: { params: { industry: string } 
         </div>
       </section>
 
+      {/* Setup steps — only for industries with a documented end-to-end flow */}
+      {ind.setupSteps && (
+        <section className="container pb-16 md:pb-20">
+          <h2 className="text-2xl md:text-3xl font-bold font-display mb-8 text-center">
+            How it works
+          </h2>
+          <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
+            {ind.setupSteps.map((step, i) => (
+              <div key={step.title} className="bg-white rounded-2xl border p-6 shadow-sm">
+                <span className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-accent/10 text-accent font-bold font-display mb-4">
+                  {i + 1}
+                </span>
+                <h3 className="font-semibold font-display mb-2">{step.title}</h3>
+                <p className="text-sm text-muted-foreground">{step.body}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Use-case blocks */}
       <section className="bg-secondary/50 py-16 md:py-20">
         <div className="container space-y-16 md:space-y-24">
