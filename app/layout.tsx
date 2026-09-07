@@ -1,22 +1,30 @@
-import type { Metadata } from "next"
-import { Instrument_Sans, Pacifico } from "next/font/google"
-import Script from "next/script"
-import "./globals.css"
-import { SITE_URL } from "@/lib/site"
+import type { Metadata } from "next";
+import { Instrument_Sans, Pacifico, Instrument_Serif } from "next/font/google";
+import Script from "next/script";
+import "./globals.css";
+import { SITE_URL } from "@/lib/site";
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
   display: "swap",
-})
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-editorial",
+  display: "swap",
+});
 
 const pacifico = Pacifico({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-logo",
   display: "swap",
-})
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -45,13 +53,15 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: "PiAds",
     title: "PiAds - Free Digital Signage That Pays You",
-    description: "Enable approved local ad slots, use PiAds free, and keep 70% of cleared ad revenue.",
+    description:
+      "Enable approved local ad slots, use PiAds free, and keep 70% of cleared ad revenue.",
     images: [{ url: "/og.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "PiAds - Free Digital Signage That Pays You",
-    description: "Enable approved local ad slots, use PiAds free, and keep 70% of cleared ad revenue.",
+    description:
+      "Enable approved local ad slots, use PiAds free, and keep 70% of cleared ad revenue.",
     images: ["/og.png"],
   },
   icons: {
@@ -60,15 +70,18 @@ export const metadata: Metadata = {
     apple: "/logo/apple-touch-icon.png",
   },
   manifest: "/logo/site.webmanifest",
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${instrumentSans.variable} ${pacifico.variable}`}>
+    <html
+      lang="en"
+      className={`${instrumentSans.variable} ${pacifico.variable} ${instrumentSerif.variable}`}
+    >
       <body className="min-h-screen bg-background font-sans antialiased">
         {children}
         <Script
@@ -94,5 +107,5 @@ export default function RootLayout({
         />
       </body>
     </html>
-  )
+  );
 }

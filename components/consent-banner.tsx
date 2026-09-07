@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import Link from "next/link"
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
 declare global {
   interface Window {
     posthog?: {
-      opt_in_capturing: () => void
-      opt_out_capturing: () => void
-      capture: (event: string, props?: Record<string, unknown>) => void
-    }
+      opt_in_capturing: () => void;
+      opt_out_capturing: () => void;
+      capture: (event: string, props?: Record<string, unknown>) => void;
+    };
   }
 }
 
-const CONSENT_KEY = "piads_consent"
+const CONSENT_KEY = "piads_consent";
 
 /**
  * Analytics consent banner. PostHog initializes with
@@ -21,31 +21,35 @@ const CONSENT_KEY = "piads_consent"
  * accepts here. The choice persists in localStorage; the banner only shows
  * while no choice has been made.
  */
-export function ConsentBanner() {
-  const [visible, setVisible] = useState(false)
+export function ConsentBanner({
+  privacyHref = "/privacy",
+}: {
+  privacyHref?: string;
+}) {
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (!localStorage.getItem(CONSENT_KEY)) {
       // Small delay so it doesn't compete with the page paint
-      const t = setTimeout(() => setVisible(true), 1200)
-      return () => clearTimeout(t)
+      const t = setTimeout(() => setVisible(true), 1200);
+      return () => clearTimeout(t);
     }
-  }, [])
+  }, []);
 
   const decide = (accepted: boolean) => {
-    localStorage.setItem(CONSENT_KEY, accepted ? "accepted" : "declined")
+    localStorage.setItem(CONSENT_KEY, accepted ? "accepted" : "declined");
     if (accepted) {
-      window.posthog?.opt_in_capturing()
-      window.posthog?.capture("consent_accepted")
+      window.posthog?.opt_in_capturing();
+      window.posthog?.capture("consent_accepted");
     } else {
-      window.posthog?.opt_out_capturing()
+      window.posthog?.opt_out_capturing();
     }
-    setVisible(false)
+    setVisible(false);
     // Let the newsletter popup know a decision was made
-    window.dispatchEvent(new Event("piads-consent-decided"))
-  }
+    window.dispatchEvent(new Event("piads-consent-decided"));
+  };
 
-  if (!visible) return null
+  if (!visible) return null;
 
   return (
     <div
@@ -53,11 +57,16 @@ export function ConsentBanner() {
       aria-label="Cookie consent"
       className="fixed bottom-4 left-4 right-4 sm:right-auto sm:max-w-md z-[90] rounded-2xl bg-white p-5 shadow-2xl ring-1 ring-black/10"
     >
-      <p className="text-sm font-semibold text-gray-900">We value your privacy</p>
+      <p className="text-sm font-semibold text-gray-900">
+        We value your privacy
+      </p>
       <p className="mt-1 text-sm text-gray-600">
-        We use analytics cookies to understand how visitors use PiAds and improve the product.
-        See our{" "}
-        <Link href="/privacy" className="font-medium text-blue hover:underline">
+        We use analytics cookies to understand how visitors use PiAds and
+        improve the product. See our{" "}
+        <Link
+          href={privacyHref}
+          className="font-medium text-blue hover:underline"
+        >
           privacy policy
         </Link>
         .
@@ -77,5 +86,5 @@ export function ConsentBanner() {
         </button>
       </div>
     </div>
-  )
+  );
 }

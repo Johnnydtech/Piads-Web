@@ -1,301 +1,842 @@
-"use client"
+"use client";
 
-
-import Image from "next/image"
-import Link from "next/link"
+import { useEffect, useRef, useState } from "react";
 import {
-  ArrowRight,
-  BadgeCheck,
-  CalendarClock,
-  CheckCircle2,
-  CircleDollarSign,
-  LayoutDashboard,
-  MonitorSmartphone,
-  PlayCircle,
-  Quote,
+  ArrowUpRight,
+  Check,
+  ChevronDown,
+  Menu,
+  X,
+  Wifi,
+  MapPin,
+  Clock3,
+  Monitor,
+  Smartphone,
+  Play,
+  Home,
   ShieldCheck,
-  Sparkles,
-  Wallet,
-} from "lucide-react"
+  Coffee,
+  Sun,
+  MoveUpRight,
+  Plus,
+  Minus,
+} from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
+import styles from "./stays.module.css";
 
-import { ProductTour } from "@/components/product-tour"
-import { HeroDevices } from "@/components/hero-devices"
-import { Button } from "@/components/ui/button"
-import { ScrollAnimate } from "@/components/ui/scroll-animate"
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co";
+const SIGN_UP = `${APP_URL}/sign-up?role=venue`;
+const PHOTO = "/stays/coastal-retreat.webp";
+const sections = [
+  { label: "The experience", href: "#experience" },
+  { label: "How it works", href: "#how-it-works" },
+  { label: "For every host", href: "#for-hosts" },
+  { label: "Pricing", href: "#pricing" },
+];
+const tabs = ["Welcome", "House guide", "Local favorites"] as const;
+type ScreenTab = (typeof tabs)[number];
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
+const faqs = [
+  [
+    "Will it work with the TV I already have?",
+    "PiAds works with Fire TV Stick, Android TV, Google TV, Raspberry Pi, and supported browsers. Connect your device, open the player, and enter the pairing code in your PiAds dashboard. You can check the full device list before getting started.",
+  ],
+  [
+    "Can my guests still watch their favorite shows?",
+    "Yes. PiAds runs as an app on your device. Guests can switch to their usual streaming apps whenever they like. Their own streaming subscriptions and the device’s normal controls still apply.",
+  ],
+  [
+    "Do I have to update it for every booking?",
+    "You can save a standing welcome screen or personalize names, dates, and house details from your phone before each arrival. Changes appear on your connected screen when you save. Booking details are managed by you.",
+  ],
+  [
+    "Can I manage more than one property?",
+    "Yes. Your screens live together in one dashboard, with online status and content controls. Give each property its own welcome and local recommendations, and manage your portfolio from the same account.",
+  ],
+  [
+    "How does the free plan work?",
+    "Participating screens that enable approved marketplace ad slots can use PiAds for $0. You choose the ad inventory and approve each campaign, and keep 70% of cleared ad revenue. Earnings depend on campaigns, availability, and advertiser demand; revenue is not guaranteed. See the full pricing page for current plan details.",
+  ],
+  [
+    "What happens if the internet drops?",
+    "The player can continue showing cached content and sync again when connectivity returns. New changes and online content need a connection, so keep important house information in your saved screen content.",
+  ],
+];
 
-const benefits = [
-  {
-    icon: LayoutDashboard,
-    title: "One calm dashboard",
-    description: "See every screen, playlist, schedule, and campaign without digging through enterprise menus.",
-  },
-  {
-    icon: CalendarClock,
-    title: "Schedule once",
-    description: "Daypart menus, promotions, announcements, and events across one screen or every location.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Approve every ad",
-    description: "You choose the inventory, categories, and campaigns. Nothing runs without your approval.",
-  },
-]
-
-const testimonials = [
-  {
-    quote: "My members love seeing our WOD and PR board on the screen. It keeps the energy high and everyone engaged.",
-    author: "Coach Bobby K",
-    company: "Ballston CrossFit",
-  },
-  {
-    quote: "We display our coworking events and community highlights on the TV. Members actually stop and watch. Engagement is way up!",
-    author: "Hope",
-    company: "Venture X Coworking",
-  },
-  {
-    quote: "Now our customers see our discounts and services right when they walk in. It has been great for upselling repairs and accessories.",
-    author: "Yoseph",
-    company: "Millennium Mobile",
-  },
-]
-
-const setupSteps = [
-  ["01", "Connect a screen", "Pair a TV, Fire TV, browser, Android device, or Raspberry Pi in minutes."],
-  ["02", "Publish your content", "Build playlists and schedules from images, videos, websites, and social content."],
-  ["03", "Turn on ad slots", "Choose when ads may run, approve each campaign, and keep 70% of cleared revenue."],
-]
+function Brand({ light = false }: { light?: boolean }) {
+  return (
+    <a
+      className={`${styles.brand} ${light ? styles.brandLight : ""}`}
+      href="#top"
+      aria-label="PiAds home"
+    >
+      <span className={styles.brandMark} aria-hidden="true">
+        <Monitor size={23} strokeWidth={2.5} />
+      </span>
+      piads<span className={styles.brandDot}>®</span>
+    </a>
+  );
+}
 
 export function HomeContent() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [tab, setTab] = useState<ScreenTab>("Welcome");
+  const [guest, setGuest] = useState("Maya & Jordan");
+  const [property, setProperty] = useState("The Coastal House");
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  useEffect(() => {
+    const close = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", close);
+    return () => window.removeEventListener("keydown", close);
+  }, []);
+
+  const changeTab = (index: number) => {
+    setTab(tabs[index]);
+    tabRefs.current[index]?.focus();
+  };
+
   return (
-    <div className="flex flex-col bg-background">
-      <section className="relative overflow-hidden pb-20 pt-40 md:pb-28 md:pt-48">
-        <div className="absolute inset-x-0 top-0 h-[680px] bg-[radial-gradient(circle_at_50%_0%,rgba(215,241,113,0.48),transparent_60%)]" />
+    <div className={styles.site} id="top">
+      <a className={styles.skipLink} href="#experience">
+        Skip to the guest experience
+      </a>
+      <div className={styles.announcement}>
+        <span>A warmer welcome. A smarter screen.</span>
+        <a href="#pricing">
+          Free with approved ad slots <ArrowUpRight size={13} />
+        </a>
+      </div>
+      <header className={styles.header}>
+        <Brand />
+        <nav className={styles.desktopNav} aria-label="Main navigation">
+          {sections.map((item) => (
+            <a key={item.href} href={item.href}>
+              {item.label}
+            </a>
+          ))}
+        </nav>
+        <div className={styles.headerActions}>
+          <a className={styles.signIn} href={APP_URL}>
+            Log in <ArrowUpRight size={14} />
+          </a>
+          <a className={styles.buttonSmall} href={SIGN_UP}>
+            Start free <ArrowUpRight size={16} />
+          </a>
+          <button
+            type="button"
+            className={styles.menuToggle}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            aria-controls="stays-mobile-menu"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
+        {menuOpen && (
+          <nav
+            id="stays-mobile-menu"
+            className={styles.mobileNav}
+            aria-label="Mobile navigation"
+          >
+            {sections.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+              >
+                {item.label}
+                <ArrowUpRight size={18} />
+              </a>
+            ))}
+          </nav>
+        )}
+      </header>
 
-        <div className="container relative z-10 max-w-5xl text-center">
-          <ScrollAnimate animation="up">
-            <span className="mb-7 inline-flex items-center gap-2 rounded-full border border-blue/20 bg-blue/5 px-4 py-2 text-sm font-semibold text-blue">
-              <Sparkles className="h-4 w-4" />
-              Free digital signage for partner venues
+      <section className={styles.hero} aria-labelledby="hero-title">
+        {/* A photographic setting; all interface text remains accessible HTML. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className={styles.heroPhoto}
+          src={PHOTO}
+          alt="Sunlit coastal holiday home with an open terrace overlooking the sea"
+          fetchPriority="high"
+          width="1672"
+          height="941"
+        />
+        <div className={styles.heroShade} />
+        <div className={styles.heroContent}>
+          <p className={styles.eyebrow}>
+            <span className={styles.liveDot} /> MADE FOR SHORT-TERM RENTALS
+          </p>
+          <h1 id="hero-title">
+            A better stay
+            <br />
+            starts with <em>hello.</em>
+          </h1>
+          <p className={styles.heroDescription}>
+            Turn your rental’s TV into a personal welcome, a local guide, and
+            your most thoughtful hosting touch.
+          </p>
+          <div className={styles.heroButtons}>
+            <a className={styles.buttonLime} href={SIGN_UP}>
+              Create your first welcome <ArrowUpRight size={19} />
+            </a>
+            <a className={styles.heroDemo} href="#experience">
+              <span>
+                <Play size={13} fill="currentColor" />
+              </span>
+              See it in action
+            </a>
+          </div>
+          <p className={styles.heroNote}>
+            <Check size={14} /> Your TV. Your content. No card required.
+          </p>
+        </div>
+        <a
+          className={styles.arrivalCard}
+          href="#experience"
+          aria-label="Explore the welcome screen demo"
+        >
+          <div className={styles.arrivalTop}>
+            <span>
+              <span className={styles.liveDot} /> A LITTLE PREVIEW
             </span>
-            <h1 className="mx-auto mb-7 max-w-4xl font-display text-5xl font-bold leading-[0.98] tracking-[-0.045em] text-gray-950 md:text-7xl lg:text-[82px]">
-              Your screens should do more than display content.
-            </h1>
-            <p className="mx-auto mb-10 max-w-3xl text-xl leading-relaxed text-gray-600 md:text-2xl">
-              Manage every TV from one simple dashboard. Enable approved local ad slots,
-              use PiAds <strong className="font-semibold text-gray-950">free</strong>, and keep{" "}
-              <strong className="font-semibold text-gray-950">70% of the revenue.</strong>
-            </p>
-          </ScrollAnimate>
-
-          <ScrollAnimate animation="up" delay={150}>
-            <div className="mb-8 flex flex-col justify-center gap-3 sm:flex-row">
-              <Button size="lg" className="h-14 rounded-xl bg-gray-950 px-8 text-base font-semibold hover:bg-gray-800" asChild>
-                <Link href={`${APP_URL}/sign-up?role=venue`}>
-                  Start free with ad slots
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="h-14 rounded-xl border-gray-300 bg-white px-8 text-base font-semibold hover:bg-gray-50" asChild>
-                <a href="#product-tour">See the platform</a>
-              </Button>
+            <ArrowUpRight size={18} />
+          </div>
+          <p>
+            Make yourself
+            <br />
+            <em>right at home.</em>
+          </p>
+          <div className={styles.arrivalBottom}>
+            <div>
+              <Wifi size={18} />
+              <span>
+                Wi-Fi, house notes
+                <br />& your local favorites
+              </span>
             </div>
+            <div className={styles.miniQr}>
+              <QRCodeSVG
+                value="https://www.piads.co/digital-signage-for/short-term-rentals"
+                size={45}
+                fgColor="#183d32"
+                title="Learn about PiAds for short-term rentals"
+              />
+            </div>
+          </div>
+        </a>
+        <div className={styles.heroCaption}>
+          <MapPin size={13} /> A better guest experience, wherever you host.
+        </div>
+        <a
+          href="#experience"
+          className={styles.scrollCue}
+          aria-label="Scroll to explore"
+        >
+          <span>SCROLL TO EXPLORE</span>
+          <ChevronDown size={18} />
+        </a>
+      </section>
 
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-gray-500 md:text-base">
-              {["Use the screens you own", "No card required", "You approve every ad"].map((item) => (
-                <span key={item} className="flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-emerald-500" />
-                  {item}
+      <div className={styles.compatibility}>
+        <span>
+          Great hospitality.
+          <br />
+          <strong>On the TV you already own.</strong>
+        </span>
+        <div>
+          <Monitor size={23} /> Fire TV
+        </div>
+        <div>
+          <Play size={21} /> Android TV
+        </div>
+        <div>
+          <Monitor size={23} /> Google TV
+        </div>
+        <div>
+          <span className={styles.piSymbol}>π</span> Raspberry Pi
+        </div>
+        <a href="https://www.piads.co/devices">
+          And your browser <ArrowUpRight size={16} />
+        </a>
+      </div>
+
+      <section
+        className={`${styles.section} ${styles.experience}`}
+        id="experience"
+        aria-labelledby="experience-title"
+      >
+        <div className={styles.sectionHeading}>
+          <div>
+            <p className={styles.kicker}>01 / THE GUEST EXPERIENCE</p>
+            <h2 id="experience-title">
+              The little things.
+              <br />
+              <em>All taken care of.</em>
+            </h2>
+          </div>
+          <p>
+            A warm hello. The Wi-Fi password. That coffee spot only locals know.
+            Everything guests need, right where they’ll see it.
+          </p>
+        </div>
+        <div className={styles.experienceLayout}>
+          <div className={styles.experienceControls}>
+            <div
+              className={styles.tabList}
+              role="tablist"
+              aria-label="Explore guest screen content"
+              aria-orientation="vertical"
+            >
+              {tabs.map((item, index) => {
+                const Icon = [Home, Wifi, MapPin][index];
+                return (
+                  <button
+                    key={item}
+                    ref={(el) => {
+                      tabRefs.current[index] = el;
+                    }}
+                    id={`guest-tab-${index}`}
+                    type="button"
+                    role="tab"
+                    aria-selected={tab === item}
+                    aria-controls="guest-screen"
+                    tabIndex={tab === item ? 0 : -1}
+                    className={`${styles.experienceTab} ${tab === item ? styles.tabActive : ""}`}
+                    onClick={() => setTab(item)}
+                    onKeyDown={(event) => {
+                      if (
+                        ["ArrowDown", "ArrowUp", "Home", "End"].includes(
+                          event.key,
+                        )
+                      ) {
+                        event.preventDefault();
+                        changeTab(
+                          event.key === "Home"
+                            ? 0
+                            : event.key === "End"
+                              ? 2
+                              : (index + (event.key === "ArrowDown" ? 1 : 2)) %
+                                3,
+                        );
+                      }
+                    }}
+                  >
+                    <Icon size={20} />
+                    <span>
+                      <strong>{item}</strong>
+                      <small>
+                        {
+                          [
+                            "A first impression that feels personal.",
+                            "The answers, before they ask.",
+                            "Your neighborhood. Their next discovery.",
+                          ][index]
+                        }
+                      </small>
+                    </span>
+                    <ArrowUpRight size={17} />
+                  </button>
+                );
+              })}
+            </div>
+            <div className={styles.personalize}>
+              <span className={styles.tryLabel}>
+                <span className={styles.liveDot} /> TRY YOUR OWN WELCOME
+              </span>
+              <label htmlFor="guest-name">Guest names</label>
+              <input
+                id="guest-name"
+                value={guest}
+                maxLength={32}
+                onChange={(event) => setGuest(event.target.value)}
+                placeholder="Maya & Jordan"
+              />
+              <label htmlFor="property-name">Property name</label>
+              <input
+                id="property-name"
+                value={property}
+                maxLength={32}
+                onChange={(event) => setProperty(event.target.value)}
+                placeholder="The Coastal House"
+              />
+              <p>Your edits appear in the example screen.</p>
+            </div>
+          </div>
+          <div className={styles.demoWrap}>
+            <div className={styles.demoToolbar}>
+              <span>
+                <span className={styles.liveDot} />{" "}
+                {property.trim() || "Your property"}
+              </span>
+              <span>
+                INTERACTIVE DEMO <Monitor size={15} />
+              </span>
+            </div>
+            <div
+              className={styles.guestScreen}
+              id="guest-screen"
+              role="tabpanel"
+              aria-labelledby={`guest-tab-${tabs.indexOf(tab)}`}
+              tabIndex={0}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={PHOTO}
+                alt="Coastal retreat backdrop"
+                width="1672"
+                height="941"
+                className={styles.screenPhoto}
+              />
+              <div className={styles.screenShade} />
+              <div className={styles.screenHeader}>
+                <span>{property.trim() || "Your property"}</span>
+                <span>
+                  <Sun size={16} /> MAKE YOURSELF AT HOME
                 </span>
-              ))}
-            </div>
-          </ScrollAnimate>
-        </div>
-
-        <div className="container relative z-10 mt-16 max-w-7xl md:mt-20">
-          <HeroDevices />
-
-          <ScrollAnimate animation="up" delay={100}>
-            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
-              {[
-                ["Platform cost", "$0 with ad slots"],
-                ["Your revenue share", "70%"],
-                ["Campaign approval", "Always yours"],
-              ].map(([label, value]) => (
-                <div key={label} className="rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
-                  <p className="text-xs font-medium text-gray-500">{label}</p>
-                  <p className="text-lg font-bold text-gray-950">{value}</p>
-                </div>
-              ))}
-            </div>
-          </ScrollAnimate>
-        </div>
-      </section>
-
-      <section className="border-y border-gray-100 bg-gray-50/70 py-8">
-        <div className="container">
-          <p className="mb-5 text-center text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">Built for the places people already gather</p>
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-base font-semibold text-gray-500 md:text-lg">
-            <span>Restaurants</span><span>Cafes</span><span>Gyms</span><span>Retail</span><span>Offices</span><span>Waiting rooms</span>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-[#EFEDE7] py-24 md:py-32">
-        <div className="container max-w-7xl">
-          <ScrollAnimate>
-            <div className="mx-auto mb-16 max-w-3xl text-center">
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-blue">Simple at every scale</p>
-              <h2 className="font-display text-4xl font-bold tracking-tight text-gray-950 md:text-6xl">Everything your screens need. Nothing they don&apos;t.</h2>
-              <p className="mt-5 text-lg leading-relaxed text-gray-600 md:text-xl">The ease of a modern SaaS tool, built around real venue workflows instead of enterprise complexity.</p>
-            </div>
-          </ScrollAnimate>
-
-          <div className="grid gap-6 lg:grid-cols-[1.55fr_0.75fr]">
-            <ScrollAnimate animation="left">
-              <div className="h-full overflow-hidden rounded-[32px] border border-gray-200 bg-white p-7 shadow-sm md:p-10">
-                <div className="mb-8 max-w-xl">
-                  <span className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-blue/10 text-blue"><MonitorSmartphone className="h-5 w-5" /></span>
-                  <h3 className="mb-3 text-3xl font-bold tracking-tight text-gray-950">Every screen, from one place</h3>
-                  <p className="text-lg leading-relaxed text-gray-600">Know what is playing, what is scheduled, and which screens need attention at a glance.</p>
-                </div>
-                <div className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 shadow-[0_20px_50px_rgba(17,24,39,0.08)]">
-                  <Image src="/cms-screenshots/playlist-editor-2026.jpg" alt="PiAds playlist editor with current content controls" width={2160} height={1216} className="h-auto w-full" />
-                </div>
               </div>
-            </ScrollAnimate>
-
-            <ScrollAnimate animation="right" delay={120}>
-              <div className="flex h-full min-h-[520px] flex-col justify-between overflow-hidden rounded-[32px] bg-gray-950 p-8 text-white shadow-sm md:p-10">
-                <div>
-                  <span className="mb-8 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-coral"><Wallet className="h-5 w-5" /></span>
-                  <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-white/50">Partner plan</p>
-                  <p className="font-display text-7xl font-bold tracking-[-0.05em]">$0</p>
-                  <p className="mt-3 text-lg text-white/60">per partner screen</p>
-                </div>
-                <div>
-                  <div className="mb-8 h-px bg-white/10" />
-                  <p className="text-2xl font-semibold leading-snug">Enable marketplace ad slots. Keep 70% of every cleared booking.</p>
-                  <Link href="/pricing" className="mt-8 inline-flex items-center gap-2 font-semibold text-coral transition-all hover:gap-3">See how pricing works <ArrowRight className="h-4 w-4" /></Link>
-                </div>
+              <div className={styles.screenContent} key={tab}>
+                {tab === "Welcome" && (
+                  <>
+                    <span className={styles.screenEyebrow}>
+                      YOUR STAY STARTS HERE
+                    </span>
+                    <h3>
+                      Welcome,
+                      <br />
+                      <em>{guest.trim() || "lovely guests"}.</em>
+                    </h3>
+                    <p>
+                      Drop your bags. Take a breath.
+                      <br />
+                      We’re so happy you’re here.
+                    </p>
+                    <div className={styles.screenPills}>
+                      <span>
+                        <Wifi size={15} /> Wi-Fi ready
+                      </span>
+                      <span>
+                        <Clock3 size={15} /> Check-out at 11 AM
+                      </span>
+                    </div>
+                  </>
+                )}
+                {tab === "House guide" && (
+                  <>
+                    <span className={styles.screenEyebrow}>
+                      SETTLE RIGHT IN
+                    </span>
+                    <h3>
+                      A few little
+                      <br />
+                      <em>things to know.</em>
+                    </h3>
+                    <div className={styles.houseNotes}>
+                      <div>
+                        <Wifi size={20} />
+                        <span>
+                          Wi-Fi network<strong>CoastalHouse_Guest</strong>
+                        </span>
+                      </div>
+                      <div>
+                        <Clock3 size={20} />
+                        <span>
+                          Check-out
+                          <strong>11:00 AM · Leave keys on the table</strong>
+                        </span>
+                      </div>
+                      <div>
+                        <Home size={20} />
+                        <span>
+                          Quiet hours<strong>10:00 PM – 8:00 AM</strong>
+                        </span>
+                      </div>
+                    </div>
+                  </>
+                )}
+                {tab === "Local favorites" && (
+                  <>
+                    <span className={styles.screenEyebrow}>
+                      A LITTLE LOCAL KNOWLEDGE
+                    </span>
+                    <h3>
+                      Go where
+                      <br />
+                      <em>the locals go.</em>
+                    </h3>
+                    <div className={styles.localPicks}>
+                      <div>
+                        <Coffee size={22} />
+                        <span>
+                          Morning coffee
+                          <strong>The little café on the corner</strong>
+                          <small>5-minute walk · Host’s pick</small>
+                        </span>
+                      </div>
+                      <div>
+                        <Sun size={22} />
+                        <span>
+                          Your sunset spot<strong>The west-facing beach</strong>
+                          <small>12-minute walk · Bring a blanket</small>
+                        </span>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
-            </ScrollAnimate>
-          </div>
-
-          <div className="mt-6 grid gap-6 md:grid-cols-3">
-            {benefits.map((benefit, index) => (
-              <ScrollAnimate key={benefit.title} delay={index * 100}>
-                <div className="h-full rounded-[26px] border border-gray-200 bg-white p-8 shadow-sm transition-transform duration-300 hover:-translate-y-1">
-                  <benefit.icon className="mb-7 h-7 w-7 text-blue" />
-                  <h3 className="mb-3 text-xl font-bold text-gray-950">{benefit.title}</h3>
-                  <p className="leading-relaxed text-gray-600">{benefit.description}</p>
-                </div>
-              </ScrollAnimate>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="product-tour" className="scroll-mt-32 bg-white py-24 md:py-32">
-        <div className="container max-w-6xl">
-          <ScrollAnimate>
-            <div className="mx-auto mb-14 max-w-3xl text-center">
-              <span className="mb-5 inline-flex items-center gap-2 rounded-full bg-blue/10 px-4 py-2 text-sm font-semibold text-blue"><PlayCircle className="h-4 w-4" /> Captured from the live product.</span>
-              <h2 className="font-display text-4xl font-bold tracking-tight text-gray-950 md:text-6xl">From blank TV to live playlist in minutes.</h2>
-              <p className="mt-5 text-lg text-gray-600 md:text-xl">Click through the connected-screen workflow captured from app.piads.co.</p>
-            </div>
-          </ScrollAnimate>
-          <ProductTour />
-        </div>
-      </section>
-
-      <section className="overflow-hidden bg-gray-950 py-24 text-white md:py-32">
-        <div className="container max-w-7xl">
-          <div className="grid items-center gap-16 lg:grid-cols-2">
-            <ScrollAnimate animation="left">
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-coral">A better business model</p>
-              <h2 className="font-display text-4xl font-bold tracking-tight md:text-6xl">The screen stays yours. The upside does too.</h2>
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/65 md:text-xl">Your content is always the priority. You decide how much inventory to open, review every campaign, and can pause ads whenever you need the screen back.</p>
-              <ul className="mt-9 space-y-4">
-                {["Free signage software on participating screens", "70% of cleared ad revenue goes to your venue", "Category controls and campaign-by-campaign approval", "Clear reporting for every play and payout"].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-base text-white/85"><BadgeCheck className="mt-0.5 h-5 w-5 shrink-0 text-coral" />{item}</li>
-                ))}
-              </ul>
-            </ScrollAnimate>
-
-            <ScrollAnimate animation="right" delay={120}>
-              <div className="rounded-[32px] border border-white/10 bg-white/[0.06] p-7 backdrop-blur md:p-10">
-                <div className="flex items-center justify-between border-b border-white/10 pb-6">
-                  <div><p className="text-sm text-white/50">Example cleared booking</p><p className="mt-1 text-3xl font-bold">$100.00</p></div>
-                  <CircleDollarSign className="h-10 w-10 text-coral" />
-                </div>
-                <div className="space-y-6 py-8">
-                  <div className="flex items-center justify-between"><span className="text-white/60">Your venue keeps</span><span className="text-2xl font-bold text-coral">$70</span></div>
-                  <div className="h-3 overflow-hidden rounded-full bg-white/10"><div className="h-full w-[70%] rounded-full bg-coral" /></div>
-                  <div className="flex items-center justify-between text-sm"><span className="text-white/50">Venue share · 70%</span><span className="text-white/50">PiAds · 30%</span></div>
-                </div>
-                <p className="rounded-2xl bg-white/[0.06] p-4 text-sm leading-relaxed text-white/55">Ad earnings depend on approved campaigns, audience, availability, and advertiser demand. PiAds never guarantees revenue.</p>
+              <div className={styles.screenBottom}>
+                <span>CURATED BY YOUR HOST</span>
+                <span>
+                  Powered by <strong>piads</strong>
+                </span>
               </div>
-            </ScrollAnimate>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white py-24 md:py-32">
-        <div className="container max-w-7xl">
-          <ScrollAnimate>
-            <div className="mx-auto mb-14 max-w-3xl text-center">
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-blue">Three steps to live</p>
-              <h2 className="font-display text-4xl font-bold tracking-tight text-gray-950 md:text-6xl">Setup without the setup call.</h2>
+              {tab === "Welcome" && (
+                <a
+                  className={styles.screenQr}
+                  href="https://www.piads.co/digital-signage-for/short-term-rentals"
+                  aria-label="Learn how the PiAds guest guide works"
+                >
+                  <QRCodeSVG
+                    value="https://www.piads.co/digital-signage-for/short-term-rentals"
+                    size={62}
+                    fgColor="#173d32"
+                    title="PiAds guest guide information"
+                  />
+                  <span>Explore PiAds</span>
+                </a>
+              )}
             </div>
-          </ScrollAnimate>
-          <div className="grid gap-5 md:grid-cols-3">
-            {setupSteps.map(([number, title, description], index) => (
-              <ScrollAnimate key={number} delay={index * 100}>
-                <div className="h-full rounded-[26px] border border-gray-200 p-8">
-                  <p className="mb-12 text-sm font-bold text-blue">{number}</p>
-                  <h3 className="mb-3 text-2xl font-bold text-gray-950">{title}</h3>
-                  <p className="leading-relaxed text-gray-600">{description}</p>
-                </div>
-              </ScrollAnimate>
-            ))}
+            <div className={styles.demoFootnote}>
+              <span>
+                Example guest screen · Your names, your place, your style.
+              </span>
+              <span>
+                <Smartphone size={14} /> Update from anywhere
+              </span>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-[#EFEDE7] py-24 md:py-32">
-        <div className="container max-w-7xl">
-          <ScrollAnimate><h2 className="mx-auto mb-14 max-w-3xl text-center font-display text-4xl font-bold tracking-tight text-gray-950 md:text-5xl">Built for busy venues, not IT departments.</h2></ScrollAnimate>
-          <div className="grid gap-6 md:grid-cols-3">
-            {testimonials.map((testimonial, index) => (
-              <ScrollAnimate key={testimonial.company} delay={index * 100}>
-                <figure className="flex h-full flex-col rounded-[26px] border border-gray-200 bg-white p-8 shadow-sm">
-                  <Quote className="mb-8 h-7 w-7 text-blue/35" />
-                  <blockquote className="flex-1 text-lg leading-relaxed text-gray-700">“{testimonial.quote}”</blockquote>
-                  <figcaption className="mt-8 border-t border-gray-100 pt-5"><p className="font-bold text-gray-950">{testimonial.author}</p><p className="text-sm text-gray-500">{testimonial.company}</p></figcaption>
-                </figure>
-              </ScrollAnimate>
-            ))}
-          </div>
+      <section
+        className={styles.hostingSection}
+        id="for-hosts"
+        aria-labelledby="hosting-title"
+      >
+        <div className={styles.hostingIntro}>
+          <p className={styles.kicker}>MADE FOR THE WAY YOU HOST</p>
+          <h2 id="hosting-title">
+            Less managing.
+            <br />
+            <em>More hosting.</em>
+          </h2>
+          <p>
+            One welcoming cabin or a whole collection of stays. Give every
+            property the personal touch, without being everywhere at once.
+          </p>
+          <a className={styles.textLink} href={SIGN_UP}>
+            Meet your new hosting sidekick <ArrowUpRight size={19} />
+          </a>
+        </div>
+        <div className={styles.hostingGrid}>
+          <article>
+            <span className={styles.featureIcon}>
+              <Smartphone />
+            </span>
+            <h3>
+              A fresh welcome.
+              <br />
+              Before every arrival.
+            </h3>
+            <p>
+              Change guest names and house details from your phone. Save, and
+              your connected screen updates.
+            </p>
+            <div className={styles.updateChip}>
+              <Check size={15} />
+              <span>New guests. Same thoughtful welcome.</span>
+            </div>
+          </article>
+          <article>
+            <span className={styles.featureIcon}>
+              <Monitor />
+            </span>
+            <h3>
+              Every property.
+              <br />
+              One place.
+            </h3>
+            <p>
+              Manage screens, playlists, and schedules from a single dashboard,
+              wherever your next check-in takes you.
+            </p>
+            <div className={styles.propertyRows}>
+              <div>
+                <span>
+                  <span className={styles.liveDot} /> The Coastal House
+                </span>
+                <small>Online</small>
+              </div>
+              <div>
+                <span>
+                  <span className={styles.liveDot} /> The Woodland Cabin
+                </span>
+                <small>Online</small>
+              </div>
+              <span className={styles.exampleLabel}>Example properties</span>
+            </div>
+          </article>
+          <article className={styles.wideFeature}>
+            <ShieldCheck size={26} />
+            <div>
+              <h3>Your space. Your standards.</h3>
+              <p>
+                You choose the content and approve every ad. Guests can switch
+                to their favorite streaming apps whenever they’re ready.
+              </p>
+            </div>
+          </article>
         </div>
       </section>
 
-      <section className="bg-white py-24 md:py-32">
-        <div className="container max-w-6xl">
-          <ScrollAnimate>
-            <div className="overflow-hidden rounded-[36px] bg-blue px-7 py-16 text-center text-white shadow-[0_30px_80px_rgba(107,122,63,0.25)] md:px-16 md:py-24">
-              <p className="mb-5 text-sm font-semibold uppercase tracking-[0.18em] text-white/60">Your TV is ready</p>
-              <h2 className="mx-auto max-w-4xl font-display text-4xl font-bold tracking-tight md:text-6xl">Start managing your screens for free.</h2>
-              <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/75 md:text-xl">Enable approved ad slots, publish your first playlist, and put your venue&apos;s screens to work.</p>
-              <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-                <Button size="lg" className="h-14 rounded-xl bg-white px-8 text-base font-semibold text-gray-950 hover:bg-white/90" asChild><Link href={`${APP_URL}/sign-up?role=venue`}>Start free <ArrowRight className="ml-2 h-5 w-5" /></Link></Button>
-                <Button size="lg" variant="outline" className="h-14 rounded-xl border-white/30 bg-transparent px-8 text-base font-semibold text-white hover:bg-white/10" asChild><Link href="/contact">Talk to us</Link></Button>
+      <section
+        className={`${styles.section} ${styles.setup}`}
+        id="how-it-works"
+        aria-labelledby="setup-title"
+      >
+        <div className={styles.sectionHeading}>
+          <div>
+            <p className={styles.kicker}>02 / FROM TV TO THOUGHTFUL</p>
+            <h2 id="setup-title">
+              Ready before
+              <br />
+              <em>they check in.</em>
+            </h2>
+          </div>
+          <a
+            className={styles.buttonOutline}
+            href="https://www.piads.co/get-started"
+          >
+            See the setup guide <ArrowUpRight size={18} />
+          </a>
+        </div>
+        <div className={styles.steps}>
+          {[
+            {
+              icon: Monitor,
+              title: "Connect your TV",
+              text: "Open PiAds on a supported device. Enter the pairing code, and your screen is ready.",
+            },
+            {
+              icon: Home,
+              title: "Make it feel like you",
+              text: "Add your welcome, Wi-Fi, house notes, and favorite local spots. Give every stay its own personality.",
+            },
+            {
+              icon: Check,
+              title: "Put your welcome to work",
+              text: "Publish to your screen. Refresh it for new guests, and add approved local offers when you choose.",
+            },
+          ].map((step, index) => (
+            <article key={step.title}>
+              <div className={styles.stepTop}>
+                <span>0{index + 1}</span>
+                <step.icon size={25} />
+              </div>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section
+        className={styles.revenue}
+        id="pricing"
+        aria-labelledby="revenue-title"
+      >
+        <div className={styles.revenueCopy}>
+          <p className={styles.kicker}>03 / A LITTLE EXTRA FROM EVERY SCREEN</p>
+          <h2 id="revenue-title">
+            Good for your guests.
+            <br />
+            <em>Good for your business.</em>
+          </h2>
+          <p>
+            Introduce guests to local businesses you’re happy to recommend.
+            Enable approved marketplace ad slots, use PiAds free, and keep 70%
+            of cleared ad revenue.
+          </p>
+          <a className={styles.buttonLime} href={SIGN_UP}>
+            Put your screen to work <ArrowUpRight size={19} />
+          </a>
+          <a
+            className={styles.revenueDetails}
+            href="https://www.piads.co/pricing"
+          >
+            Explore all pricing options <ArrowUpRight size={15} />
+          </a>
+        </div>
+        <div className={styles.revenueCard}>
+          <div className={styles.revenueCardTop}>
+            <span>THE PARTNER PLAN</span>
+            <ShieldCheck size={21} />
+          </div>
+          <div className={styles.price}>
+            $0<span>/ participating screen</span>
+          </div>
+          <p>With approved marketplace ad slots.</p>
+          <div className={styles.revenueSplit}>
+            <span>You keep</span>
+            <strong>
+              70<em>%</em>
+            </strong>
+          </div>
+          <div className={styles.splitBar}>
+            <span />
+            <span />
+          </div>
+          <div className={styles.splitLabels}>
+            <span>
+              <i /> Your venue · 70%
+            </span>
+            <span>
+              <i /> PiAds · 30%
+            </span>
+          </div>
+          <ul>
+            <li>
+              <Check size={17} /> You approve every campaign
+            </li>
+            <li>
+              <Check size={17} /> You choose when ads run
+            </li>
+            <li>
+              <Check size={17} /> Your own content stays the priority
+            </li>
+          </ul>
+          <small>
+            Revenue depends on approved campaigns, availability, and advertiser
+            demand. Earnings aren’t guaranteed.
+          </small>
+        </div>
+      </section>
+
+      <section
+        className={`${styles.section} ${styles.faq}`}
+        aria-labelledby="faq-title"
+      >
+        <div>
+          <p className={styles.kicker}>A FEW THINGS YOU MIGHT BE WONDERING</p>
+          <h2 id="faq-title">
+            Good questions.
+            <br />
+            <em>Straight answers.</em>
+          </h2>
+          <a className={styles.textLink} href="https://www.piads.co/contact">
+            Talk to a real person <ArrowUpRight size={18} />
+          </a>
+        </div>
+        <div className={styles.faqItems}>
+          {faqs.map(([question, answer], index) => (
+            <div className={styles.faqItem} key={question}>
+              <h3>
+                <button
+                  type="button"
+                  id={`question-${index}`}
+                  aria-expanded={openFaq === index}
+                  aria-controls={`answer-${index}`}
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                >
+                  {question}
+                  {openFaq === index ? <Minus size={19} /> : <Plus size={19} />}
+                </button>
+              </h3>
+              <div
+                id={`answer-${index}`}
+                role="region"
+                aria-labelledby={`question-${index}`}
+                hidden={openFaq !== index}
+              >
+                <p>{answer}</p>
+                {index === 0 && (
+                  <a href="https://www.piads.co/devices">
+                    See supported devices <ArrowUpRight size={14} />
+                  </a>
+                )}
+                {index === 4 && (
+                  <a href="https://www.piads.co/pricing">
+                    View pricing <ArrowUpRight size={14} />
+                  </a>
+                )}
               </div>
             </div>
-          </ScrollAnimate>
+          ))}
         </div>
       </section>
+
+      <section className={styles.finalCta}>
+        <span className={styles.ctaIcon}>
+          <Monitor size={28} />
+        </span>
+        <p className={styles.kicker}>THE NEXT CHECK-IN COULD FEEL DIFFERENT</p>
+        <h2>
+          They’ll remember
+          <br />
+          <em>how you made them feel.</em>
+        </h2>
+        <a className={styles.buttonDark} href={SIGN_UP}>
+          Make your first welcome <ArrowUpRight size={19} />
+        </a>
+        <p className={styles.ctaNote}>Start with the TV you already have.</p>
+      </section>
+      <footer className={styles.footer}>
+        <div className={styles.footerTop}>
+          <div>
+            <Brand light />
+            <p>
+              A little screen.
+              <br />A more memorable stay.
+            </p>
+          </div>
+          <div>
+            <span>EXPLORE PIADS</span>
+            <a href="https://www.piads.co/features">The platform</a>
+            <a href="https://www.piads.co/devices">Supported devices</a>
+            <a href="https://www.piads.co/pricing">Plans & pricing</a>
+          </div>
+          <div>
+            <span>MORE WAYS TO CONNECT</span>
+            <a href="https://www.piads.co/digital-signage-for">
+              For other spaces
+            </a>
+            <a href="https://www.piads.co/features#advertisers">
+              For advertisers
+            </a>
+            <a href="https://www.piads.co/contact">Get in touch</a>
+          </div>
+          <a className={styles.footerBack} href="#top">
+            BACK TO TOP <MoveUpRight size={20} />
+          </a>
+        </div>
+        <div className={styles.footerBottom}>
+          <span>
+            © {new Date().getFullYear()} PiAds. Make every screen matter.
+          </span>
+          <div>
+            <a href="https://www.piads.co/privacy">Privacy</a>
+            <a href="https://www.piads.co/terms">Terms</a>
+            <span>
+              Made for a warmer welcome <Sun size={14} />
+            </span>
+          </div>
+        </div>
+      </footer>
     </div>
-  )
+  );
 }

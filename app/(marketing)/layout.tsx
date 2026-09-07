@@ -1,20 +1,9 @@
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
-import { ConsentBanner } from "@/components/consent-banner"
-import { NewsletterPopup } from "@/components/newsletter-popup"
+import { MarketingChrome } from "@/components/layout/marketing-chrome";
 
 export default function MarketingLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  return (
-    <>
-      <Header />
-      <main className="min-h-screen">{children}</main>
-      <Footer />
-      <ConsentBanner />
-      <NewsletterPopup />
-    </>
-  )
+  return <MarketingChrome>{children}</MarketingChrome>;
 }
