@@ -79,7 +79,7 @@ export const COMPETITORS: Competitor[] = [
       { label: "Typical hardware", them: "Raspberry Pi player (imaged & maintained by you)", piads: "Fire TV Stick you may already own — native app" },
       { label: "Price per screen", them: "Tiered — climbs with the plan", piads: "$0 with approved ad slots, everything included" },
       { label: "Earn from your screens", them: "No", piads: "Local ad marketplace — you keep 70%" },
-      { label: "Setup", them: "Image SD card, mount Pi, register", piads: "Install app, enter 6-character code" },
+      { label: "Setup", them: "Image SD card, mount Pi, register", piads: "Install app, enter the code from the TV" },
       { label: "Screen health", them: "Basic status", piads: "Live online/offline, last-seen, last frame" },
     ],
     costRows: [
@@ -171,7 +171,7 @@ export const COMPETITORS: Competitor[] = [
       { label: "Built for", them: "Enterprise & employee communications", piads: "Local venues — customer-facing screens" },
       { label: "Price per screen", them: "~$20+/mo", piads: "$0 with approved ad slots" },
       { label: "Earn from your screens", them: "No", piads: "Local ad marketplace — you keep 70%" },
-      { label: "Setup", them: "Solid, IT-friendly", piads: "6-character pairing code, guided onboarding" },
+      { label: "Setup", them: "Solid, IT-friendly", piads: "Pairing code from the TV, guided onboarding" },
       { label: "Fire TV", them: "Supported", piads: "Native app incl. new Vega devices" },
     ],
     costRows: [

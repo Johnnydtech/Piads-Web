@@ -31,7 +31,7 @@ plan requires approved ad slots to be enabled.
 
 ## Core Features
 
-- Screen management: pair any TV with a 6-character code; manage every screen
+- Screen management: pair any TV with a short code shown on screen (format ABC-123-XY); manage every screen
   from one web dashboard; live online/offline status and screen previews.
 - Content: images, videos, menus; playlists with per-item durations; drag and
   drop editing; automatic content optimization; uploads up to 100MB per video.

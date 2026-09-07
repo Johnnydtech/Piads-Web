@@ -57,7 +57,7 @@ const steps = [
   {
     n: "2",
     title: "Install the PiAds app",
-    body: "Search “PiAds” in the Amazon Appstore on the device. Open it and a 6-character pairing code appears on screen.",
+    body: "Search “PiAds” in the Amazon Appstore on the device. Open it and a pairing code like ABC-123-XY appears on screen.",
   },
   {
     n: "3",
@@ -114,7 +114,7 @@ export default function FireTvPlayerPage() {
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl">
             PiAds runs natively on the entire Fire TV family — sticks, cubes,
             built-in TVs, and the newest Vega devices. Plug in, pair with a
-            6-character code, and your screen is live in minutes. Then let it
+            code from the TV, and your screen is live in minutes. Then let it
             earn: PiAds screens run local ads and you keep 70%.
           </p>
           <div className="flex flex-wrap gap-4">

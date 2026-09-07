@@ -89,7 +89,7 @@ NO DEVICE YET
 In the dashboard, click "New Screen" and choose "Web Player" to open a browser-based player on any computer or smart TV browser. Good for testing before you buy anything.
 
 Step 1: Open the player app
-It shows a 6-character pairing code on the TV.
+It shows a pairing code on the TV — eight characters, displayed as ABC-123-XY.
 
 Step 2: Add a screen in PiAds
 In your dashboard (app.piads.co) go to Screens and click "Connect screen".
@@ -114,7 +114,7 @@ The free PiAds iOS app (${APP_STORE_URL}) shows every screen's status, lets you 
 ANDROID TV / FIRE TV / ANDROID TABLET (Recommended)
 1. Download "PiAds Player" from Google Play:
    https://play.google.com/store/apps/details?id=co.piads.kiosk
-2. Open the app — a 6-digit pairing code appears
+2. Open the app — a pairing code appears (ABC-123-XY)
 3. In PiAds dashboard, click "New Screen" and enter the code
 4. Done! Your screen connects instantly
 
@@ -1478,7 +1478,7 @@ export default function GetStartedPage() {
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">Get the apps</p>
                 <h2 className="mt-1 font-display text-2xl font-bold md:text-3xl">One player app for the TV, one app for your pocket.</h2>
               </div>
-              <p className="max-w-md text-sm text-white/70">Install on the stick already behind your TV, pair with a 6-character code, and manage everything from the web or the iOS app. Free for partner screens.</p>
+              <p className="max-w-md text-sm text-white/70">Install on the stick already behind your TV, pair with the code on screen, and manage everything from the web or the iOS app. Free for partner screens.</p>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {[
