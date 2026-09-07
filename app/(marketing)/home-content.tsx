@@ -3,6 +3,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { trackCta } from "@/lib/analytics"
 import {
   ArrowRight,
   BadgeCheck,
@@ -92,13 +93,13 @@ export function HomeContent() {
           <ScrollAnimate animation="up" delay={150}>
             <div className="mb-8 flex flex-col justify-center gap-3 sm:flex-row">
               <Button size="lg" className="h-14 rounded-xl bg-gray-950 px-8 text-base font-semibold hover:bg-gray-800" asChild>
-                <Link href={`${APP_URL}/sign-up?role=venue`}>
+                <Link href={`${APP_URL}/sign-up?role=venue`} onClick={() => trackCta("Start free with ad slots", "hero")}>
                   Start free with ad slots
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" className="h-14 rounded-xl border-gray-300 bg-white px-8 text-base font-semibold hover:bg-gray-50" asChild>
-                <a href="#product-tour">See the platform</a>
+                <a href="#product-tour" onClick={() => trackCta("See the platform", "hero")}>See the platform</a>
               </Button>
             </div>
 

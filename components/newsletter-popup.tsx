@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
+import { track } from "@/lib/analytics"
 
 const SEEN_KEY = "piads_popup_seen"
 const CONSENT_KEY = "piads_consent"
@@ -61,6 +62,7 @@ export function NewsletterPopup() {
 
   const dismiss = () => {
     localStorage.setItem(SEEN_KEY, "1")
+    track("newsletter_popup_dismissed")
     setVisible(false)
   }
 
@@ -76,7 +78,7 @@ export function NewsletterPopup() {
       })
       if (!res.ok) throw new Error()
       setStatus("done")
-      window.posthog?.capture("newsletter_signup", { page: window.location.pathname })
+      track("newsletter_signup")
       setTimeout(dismiss, 2200)
     } catch {
       setStatus("error")

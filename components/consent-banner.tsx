@@ -2,16 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-
-declare global {
-  interface Window {
-    posthog?: {
-      opt_in_capturing: () => void
-      opt_out_capturing: () => void
-      capture: (event: string, props?: Record<string, unknown>) => void
-    }
-  }
-}
+import "@/lib/analytics" // Window.posthog type lives there
 
 const CONSENT_KEY = "piads_consent"
 
@@ -35,10 +26,10 @@ export function ConsentBanner() {
   const decide = (accepted: boolean) => {
     localStorage.setItem(CONSENT_KEY, accepted ? "accepted" : "declined")
     if (accepted) {
-      window.posthog?.opt_in_capturing()
-      window.posthog?.capture("consent_accepted")
+      window.posthog?.opt_in_capturing?.()
+      window.posthog?.capture?.("consent_accepted")
     } else {
-      window.posthog?.opt_out_capturing()
+      window.posthog?.opt_out_capturing?.()
     }
     setVisible(false)
     // Let the newsletter popup know a decision was made

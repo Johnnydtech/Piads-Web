@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { trackCta } from "@/lib/analytics"
 import { usePathname } from "next/navigation"
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react"
 
@@ -106,10 +107,10 @@ export function Header() {
 
             <div className="hidden items-center gap-2 md:flex">
               <Button variant="ghost" className="h-11 rounded-xl px-5 text-gray-700" asChild>
-                <Link href={APP_URL}>Sign in</Link>
+                <Link href={APP_URL} onClick={() => trackCta("Sign in", "header")}>Sign in</Link>
               </Button>
               <Button className="h-11 rounded-xl bg-gray-950 px-5 font-semibold text-white hover:bg-gray-800" asChild>
-                <Link href={`${APP_URL}/sign-up?role=venue`}>Start free</Link>
+                <Link href={`${APP_URL}/sign-up?role=venue`} onClick={() => trackCta("Start free", "header")}>Start free</Link>
               </Button>
             </div>
 
@@ -132,8 +133,8 @@ export function Header() {
                 </Link>
               ))}
               <div className="grid grid-cols-2 gap-2 border-t border-gray-100 pt-4">
-                <Button variant="outline" className="h-12 rounded-xl" asChild><Link href={APP_URL}>Sign in</Link></Button>
-                <Button className="h-12 rounded-xl bg-gray-950 hover:bg-gray-800" asChild><Link href={`${APP_URL}/sign-up?role=venue`}>Start free</Link></Button>
+                <Button variant="outline" className="h-12 rounded-xl" asChild><Link href={APP_URL} onClick={() => trackCta("Sign in", "header")}>Sign in</Link></Button>
+                <Button className="h-12 rounded-xl bg-gray-950 hover:bg-gray-800" asChild><Link href={`${APP_URL}/sign-up?role=venue`} onClick={() => trackCta("Start free", "header")}>Start free</Link></Button>
               </div>
             </nav>
           </div>
