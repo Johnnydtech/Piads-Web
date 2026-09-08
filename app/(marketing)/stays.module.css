@@ -174,6 +174,7 @@
   padding: 8px;
 }
 .hero {
+  --coastal-pan: 0;
   position: relative;
   min-height: 650px;
   height: min(710px, calc(100svh - 142px));
@@ -183,6 +184,16 @@
   overflow: hidden;
   background: #243d33;
   color: #fff;
+}
+.heroMedia {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  transform: scale(calc(1 + var(--coastal-pan) * 0.13))
+    translateX(calc(var(--coastal-pan) * -5.5%));
+  transform-origin: 64% 52%;
+  will-change: transform;
 }
 .heroPhoto {
   position: absolute;
@@ -2273,6 +2284,9 @@
     transition: none !important;
     scroll-behavior: auto !important;
   }
+  .heroMedia {
+    transform: none !important;
+  }
 }
 
 .heroVideo {
@@ -2283,27 +2297,6 @@
   object-fit: cover;
   object-position: center 52%;
   z-index: 0;
-}
-.videoControl {
-  position: absolute;
-  right: 28px;
-  top: 24px;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  border: 1px solid #ffffff55;
-  border-radius: 6px;
-  background: #122e2873;
-  color: white;
-  backdrop-filter: blur(10px);
-  padding: 9px 12px;
-  min-height: 36px;
-  font-size: 0.75rem !important;
-  cursor: pointer;
-}
-.videoControl:hover {
-  background: #122e28bb;
 }
 .spaceLinks {
   display: grid;
@@ -2333,16 +2326,6 @@
 @media (max-width: 600px) {
   .heroVideo {
     object-position: 63% center;
-  }
-  .videoControl {
-    top: auto;
-    bottom: 48px;
-    left: 19px;
-    right: auto;
-    padding: 8px;
-  }
-  .videoControl > span {
-    display: none;
   }
   .spaceLinks {
     grid-template-columns: 1fr;

@@ -1,12 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Pause, Play } from "lucide-react";
 import styles from "@/app/(marketing)/stays.module.css";
 
 export function CoastalHeroMedia() {
   const video = useRef<HTMLVideoElement>(null);
-  const [paused, setPaused] = useState(false);
-  const [playing, setPlaying] = useState(false);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
@@ -20,14 +17,13 @@ export function CoastalHeroMedia() {
     let inView = true;
     const update = () => {
       if (
-        paused ||
         preference.matches ||
         connection?.saveData ||
         document.hidden ||
         !inView
       )
         player.pause();
-      else void player.play().catch(() => setPlaying(false));
+      else void player.play().catch(() => undefined);
     };
     const observer = new IntersectionObserver(([entry]) => {
       inView = entry.isIntersecting;
@@ -43,9 +39,35 @@ export function CoastalHeroMedia() {
       preference.removeEventListener("change", update);
       player.pause();
     };
-  }, [paused, failed]);
+  }, [failed]);
+
+  useEffect(() => {
+    const player = video.current;
+    const hero = player?.closest("section") as HTMLElement | null;
+    if (!hero) return;
+    let frame = 0;
+    const updatePan = () => {
+      frame = 0;
+      const rect = hero.getBoundingClientRect();
+      const progress = Math.min(1, Math.max(0, -rect.top / (rect.height * 0.72)));
+      hero.style.setProperty("--coastal-pan", progress.toFixed(3));
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(updatePan);
+    };
+    updatePan();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      hero.style.removeProperty("--coastal-pan");
+    };
+  }, [failed]);
+
   return (
-    <>
+    <div className={styles.heroMedia}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         className={styles.heroPhoto}
@@ -66,33 +88,11 @@ export function CoastalHeroMedia() {
           playsInline
           preload="auto"
           poster="/stays/coastal-retreat.webp"
-          onPlay={() => setPlaying(true)}
-          onPause={() => setPlaying(false)}
           onError={() => setFailed(true)}
         >
           <source src="/stays/coastal-retreat.mp4" type="video/mp4" />
         </video>
       )}
-      {!failed && (
-        <button
-          type="button"
-          className={styles.videoControl}
-          aria-label={
-            playing ? "Pause background video" : "Play background video"
-          }
-          onClick={() => {
-            if (playing) {
-              setPaused(true);
-            } else {
-              setPaused(false);
-              void video.current?.play().catch(() => setPlaying(false));
-            }
-          }}
-        >
-          {playing ? <Pause size={14} /> : <Play size={14} />}
-          <span>{playing ? "Pause motion" : "Play motion"}</span>
-        </button>
-      )}
-    </>
+    </div>
   );
 }
