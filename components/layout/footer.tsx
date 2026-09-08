@@ -1,3 +1,5 @@
+
+import { SignupLink } from "@/components/signup-link";
 import Link from "next/link";
 import { ArrowUpRight, Sun } from "lucide-react";
 import { Brand } from "./brand";
@@ -17,12 +19,12 @@ export function Footer() {
             For hosts, property managers, and places people gather.
           </p>
         </div>
-        <Link
-          href={`${APP_URL}/sign-up?role=venue`}
+        <SignupLink
+          href={`${APP_URL}/sign-up?role=venue_owner`}
           className={styles.footerCta}
         >
           Make every screen matter <ArrowUpRight size={20} />
-        </Link>
+        </SignupLink>
       </div>
       <div className={styles.footerColumns}>
         {footerColumns.map((column) => (

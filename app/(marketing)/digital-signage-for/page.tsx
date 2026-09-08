@@ -1,3 +1,5 @@
+
+import { SignupLink } from "@/components/signup-link";
 import Link from "next/link";
 import Image from "next/image";
 import { INDUSTRIES } from "@/lib/industries";
@@ -74,9 +76,9 @@ export default function IndustryIndexPage() {
               local ads you approve.
             </p>
           </div>
-          <Link href={`${APP_URL}/sign-up?role=venue`}>
+          <SignupLink href={`${APP_URL}/sign-up?role=venue_owner`}>
             Find your starting point <ArrowUpRight size={18} />
-          </Link>
+          </SignupLink>
         </div>
       </section>
     </div>

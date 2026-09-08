@@ -1,3 +1,5 @@
+
+import { SignupLink } from "@/components/signup-link";
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
@@ -176,10 +178,10 @@ export default function FeaturesPage() {
 
           <div className="mt-12">
             <Button size="lg" className="h-14 px-8 text-base rounded-xl" asChild>
-              <Link href={`${APP_URL}/sign-up?role=venue`}>
+              <SignupLink href={`${APP_URL}/sign-up?role=venue_owner`}>
                 Start as Venue Owner
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+              </SignupLink>
             </Button>
           </div>
         </div>

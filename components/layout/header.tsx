@@ -1,5 +1,7 @@
 "use client";
 
+import { SignupLink } from "@/components/signup-link";
+
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -156,9 +158,9 @@ export function Header() {
           <Link className={styles.login} href={APP_URL} onClick={() => trackCta("Log in", "header")}>
             Log in <ArrowUpRight size={14} />
           </Link>
-          <Link className={styles.start} href={`${APP_URL}/sign-up?role=venue`} onClick={() => trackCta("Start free", "header")}>
+          <SignupLink className={styles.start} href={`${APP_URL}/sign-up?role=venue_owner`} onClick={() => trackCta("Start free", "header")}>
             Start free <ArrowUpRight size={16} />
-          </Link>
+          </SignupLink>
           <button
             className={styles.menuToggle}
             type="button"

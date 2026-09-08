@@ -1,3 +1,5 @@
+
+import { SignupLink } from "@/components/signup-link";
 import type { Metadata } from "next"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -62,7 +64,7 @@ export default function AdRevenuePage() {
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <Button size="lg" className="h-14 rounded-xl bg-gray-950 px-8 text-base font-semibold hover:bg-gray-800" asChild>
-              <Link href={`${APP_URL}/sign-up?role=venue`}>Start earning — free <ArrowRight className="ml-2 h-5 w-5" /></Link>
+              <SignupLink href={`${APP_URL}/sign-up?role=venue_owner`}>Start earning — free <ArrowRight className="ml-2 h-5 w-5" /></SignupLink>
             </Button>
             <Button size="lg" variant="outline" className="h-14 rounded-xl px-8 text-base font-semibold" asChild>
               <Link href="/pricing">See the 70% math</Link>
@@ -171,7 +173,7 @@ export default function AdRevenuePage() {
           <h2 className="font-display text-4xl font-bold tracking-tight md:text-6xl">Your screens. Your rules. Your 70%.</h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-white/75 md:text-xl">Pair one screen free, open a daypart, and approve your first local advertiser.</p>
           <Button size="lg" className="mt-9 h-14 rounded-xl bg-white px-8 text-base font-semibold text-gray-950 hover:bg-white/90" asChild>
-            <Link href={`${APP_URL}/sign-up?role=venue`}>Start free <ArrowRight className="ml-2 h-5 w-5" /></Link>
+            <SignupLink href={`${APP_URL}/sign-up?role=venue_owner`}>Start free <ArrowRight className="ml-2 h-5 w-5" /></SignupLink>
           </Button>
         </div>
       </section>

@@ -1,5 +1,7 @@
 "use client"
 
+import { SignupLink } from "@/components/signup-link";
+
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { ArrowRight, X } from "lucide-react"
@@ -46,13 +48,13 @@ export function StickyCta() {
           <p className="truncate text-sm font-semibold text-white">Free for partner screens</p>
           <p className="truncate text-xs text-white/60">No card. Keep 70% of ad revenue.</p>
         </div>
-        <Link
-          href={`${APP_URL}/sign-up?role=venue`}
+        <SignupLink
+          href={`${APP_URL}/sign-up?role=venue_owner`}
           onClick={() => trackCta("Start free", "sticky_mobile")}
           className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-gray-950"
         >
           Start free <ArrowRight className="h-4 w-4" />
-        </Link>
+        </SignupLink>
         <button
           type="button"
           aria-label="Dismiss"

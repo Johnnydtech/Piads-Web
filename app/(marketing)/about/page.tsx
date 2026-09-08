@@ -1,3 +1,5 @@
+
+import { SignupLink } from "@/components/signup-link";
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Heart, Users, Shield, Handshake, Building2, TrendingUp } from "lucide-react"
@@ -264,10 +266,10 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" variant="secondary" className="h-14 px-8 text-base rounded-xl" asChild>
-              <Link href={`${APP_URL}/sign-up?role=venue`}>
+              <SignupLink href={`${APP_URL}/sign-up?role=venue_owner`}>
                 Start as Venue
                 <Building2 className="ml-2 h-5 w-5" />
-              </Link>
+              </SignupLink>
             </Button>
             <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-xl bg-transparent border-white/30 hover:bg-white/10" asChild>
               <Link href={`${APP_URL}/sign-up?role=advertiser`}>

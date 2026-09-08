@@ -1,3 +1,5 @@
+
+import { SignupLink } from "@/components/signup-link";
 import { JsonLd, graph, faqPage, breadcrumbs } from "@/components/seo/json-ld"
 import Link from "next/link"
 import {
@@ -102,7 +104,7 @@ export default function PricingPage() {
                 </div>
                 <p className="mt-8 max-w-md text-xl leading-relaxed text-white/80">The complete signage platform, funded by ad slots you control.</p>
                 <Button className="mt-10 h-14 w-full rounded-xl bg-white text-base font-semibold text-gray-950 hover:bg-white/90" asChild>
-                  <Link href={`${APP_URL}/sign-up?role=venue`}>Start free <ArrowRight className="ml-2 h-5 w-5" /></Link>
+                  <SignupLink href={`${APP_URL}/sign-up?role=venue_owner`}>Start free <ArrowRight className="ml-2 h-5 w-5" /></SignupLink>
                 </Button>
                 <p className="mt-4 text-center text-sm text-white/45">No card required · Cancel participation anytime</p>
               </div>
@@ -192,7 +194,7 @@ export default function PricingPage() {
             <ShieldCheck className="mx-auto mb-7 h-9 w-9 text-white/70" />
             <h2 className="font-display text-4xl font-bold tracking-tight md:text-6xl">Free software. Your screen. Your call.</h2>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/75 md:text-xl">Launch your first screen, choose your ad availability, and keep 70% when an approved campaign runs.</p>
-            <Button size="lg" className="mt-9 h-14 rounded-xl bg-white px-8 text-base font-semibold text-gray-950 hover:bg-white/90" asChild><Link href={`${APP_URL}/sign-up?role=venue`}>Start free <ArrowRight className="ml-2 h-5 w-5" /></Link></Button>
+            <Button size="lg" className="mt-9 h-14 rounded-xl bg-white px-8 text-base font-semibold text-gray-950 hover:bg-white/90" asChild><SignupLink href={`${APP_URL}/sign-up?role=venue_owner`}>Start free <ArrowRight className="ml-2 h-5 w-5" /></SignupLink></Button>
           </div>
         </div>
       </section>

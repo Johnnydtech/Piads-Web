@@ -1,3 +1,5 @@
+
+import { SignupLink } from "@/components/signup-link";
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
@@ -119,10 +121,10 @@ export default function FireTvPlayerPage() {
           </p>
           <div className="flex flex-wrap gap-4">
             <Button size="lg" className="rounded-xl h-14 px-7" asChild>
-              <Link href={`${APP_URL}/sign-up?role=venue`}>
+              <SignupLink href={`${APP_URL}/sign-up?role=venue_owner`}>
                 Try PiAds Free
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+              </SignupLink>
             </Button>
             <Button size="lg" variant="outline" className="rounded-xl h-14 px-7" asChild>
               <a href={FIRE_STICK_BUY_URL} target="_blank" rel="noopener noreferrer">
@@ -225,10 +227,10 @@ export default function FireTvPlayerPage() {
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Button size="lg" variant="secondary" className="rounded-xl h-14 px-7" asChild>
-              <Link href={`${APP_URL}/sign-up?role=venue`}>
+              <SignupLink href={`${APP_URL}/sign-up?role=venue_owner`}>
                 Start Free
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+              </SignupLink>
             </Button>
             <Button
               size="lg"

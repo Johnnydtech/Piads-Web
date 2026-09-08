@@ -1,3 +1,5 @@
+
+import { SignupLink } from "@/components/signup-link";
 import Link from "next/link";
 import { COMPETITORS } from "@/lib/competitors";
 import { ArrowUpRight } from "lucide-react";
@@ -55,9 +57,9 @@ export default function AlternativesIndexPage() {
               dashboard, pair a screen, and see how it fits the way you work.
             </p>
           </div>
-          <Link href={`${APP_URL}/sign-up?role=venue`}>
+          <SignupLink href={`${APP_URL}/sign-up?role=venue_owner`}>
             Start free <ArrowUpRight size={18} />
-          </Link>
+          </SignupLink>
         </div>
       </section>
     </div>

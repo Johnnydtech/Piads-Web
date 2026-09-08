@@ -1,3 +1,5 @@
+
+import { SignupLink } from "@/components/signup-link";
 import { JsonLd, graph, faqPage, breadcrumbs } from "@/components/seo/json-ld";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -97,10 +99,10 @@ export default function CompetitorPage({
           </p>
           <div className="flex flex-wrap gap-4">
             <Button size="lg" className="rounded-xl h-13 px-7" asChild>
-              <Link href={`${APP_URL}/sign-up?role=venue`}>
+              <SignupLink href={`${APP_URL}/sign-up?role=venue_owner`}>
                 Try PiAds Free
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+              </SignupLink>
             </Button>
             <Button
               size="lg"
@@ -319,10 +321,10 @@ export default function CompetitorPage({
             className="rounded-xl h-13 px-7"
             asChild
           >
-            <Link href={`${APP_URL}/sign-up?role=venue`}>
+            <SignupLink href={`${APP_URL}/sign-up?role=venue_owner`}>
               Start Free
               <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
+            </SignupLink>
           </Button>
         </div>
       </section>

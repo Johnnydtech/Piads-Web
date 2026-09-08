@@ -26,7 +26,7 @@ import { PortfolioSection } from "@/components/portfolio-section";
 import { INDUSTRIES } from "@/lib/industries";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co";
-const SIGN_UP = `${APP_URL}/sign-up?role=venue`;
+const SIGN_UP = `${APP_URL}/sign-up?role=venue_owner`;
 const PHOTO = "/stays/coastal-retreat.webp";
 const tabs = ["Welcome", "House guide", "Local favorites"] as const;
 type ScreenTab = (typeof tabs)[number];

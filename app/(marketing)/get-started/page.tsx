@@ -45,7 +45,7 @@ const venueGuides = [
         id: "create-venue-account",
         title: "Create your venue account",
         description: "Sign up and create your first venue",
-        content: `Step 1: Go to app.piads.co/sign-up?role=venue
+        content: `Step 1: Go to app.piads.co/sign-up?role=venue_owner
 Or click "Start free" anywhere on piads.co. No card is required.
 
 Step 2: Choose your role
@@ -1485,7 +1485,7 @@ export default function GetStartedPage() {
                 { href: AMAZON_APPSTORE_URL, icon: Tv, kicker: "Fire TV · Amazon Appstore", title: "PiAds for Fire TV", text: "Sticks, Cubes, Fire TV Edition, Vega OS" },
                 { href: GOOGLE_PLAY_URL, icon: Play, kicker: "Android TV · Google Play", title: "PiAds Player", text: "Android TV, Google TV, tablets" },
                 { href: APP_STORE_URL, icon: Smartphone, kicker: "iPhone · App Store", title: "PiAds for iOS", text: "Status, approvals, and what's playing" },
-                { href: `${APP_URL}/sign-up?role=venue`, icon: Monitor, kicker: "No hardware · Web player", title: "Try it in a browser", text: "Pair a browser tab as a screen in a minute" },
+                { href: `${APP_URL}/sign-up?role=venue_owner`, icon: Monitor, kicker: "No hardware · Web player", title: "Try it in a browser", text: "Pair a browser tab as a screen in a minute" },
               ].map((a) => (
                 <a
                   key={a.title}

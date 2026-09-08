@@ -1,8 +1,11 @@
+
+import { SignupLink } from "@/components/signup-link";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { PortfolioSection } from "@/components/portfolio-section";
+import { industrySignup } from "@/lib/signup-links";
 import { INDUSTRIES, industryBySlug } from "@/lib/industries";
 import {
   ArrowRight,
@@ -86,10 +89,10 @@ export default function IndustryPage({
             </p>
             <div className="flex flex-wrap gap-4">
               <Button size="lg" className="rounded-xl h-14 px-7" asChild>
-                <Link href={`${APP_URL}/sign-up?role=venue`}>
-                  Try PiAds Free
+                <SignupLink href={`${APP_URL}/sign-up?role=venue_owner`}>
+                  {industrySignup(ind.slug)?.label ?? "Try PiAds free"}
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
+                </SignupLink>
               </Button>
               <Button
                 size="lg"
@@ -257,10 +260,10 @@ export default function IndustryPage({
               className="rounded-xl h-14 px-7"
               asChild
             >
-              <Link href={`${APP_URL}/sign-up?role=venue`}>
-                Start Free
+              <SignupLink href={`${APP_URL}/sign-up?role=venue_owner`}>
+                {industrySignup(ind.slug)?.label ?? "Start free"}
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+              </SignupLink>
             </Button>
             <Button
               size="lg"
