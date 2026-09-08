@@ -50,9 +50,11 @@ const mdxComponents = {
     <h3 className="text-xl md:text-2xl font-semibold font-display mb-3 mt-8" {...props} />
   ),
   p: (props: any) => <p className="mb-4 leading-relaxed text-lg" {...props} />,
-  a: (props: any) => (
-    <a className="text-blue hover:underline" {...props} />
-  ),
+  a: ({ href, ...props }: React.ComponentProps<"a">) => {
+    // Keep first-party links in the current PiAds site, including private review.
+    const localHref = href?.replace(/^https?:\/\/(?:www\.)?piads\.co(?=[/?#]|$)/, "");
+    return <a className="text-blue hover:underline" {...props} href={localHref === "" ? "/" : localHref} />;
+  },
   ul: (props: any) => <ul className="mb-4 pl-6 list-disc" {...props} />,
   ol: (props: any) => <ol className="mb-4 pl-6 list-decimal" {...props} />,
   li: (props: any) => <li className="mb-2 text-lg" {...props} />,
