@@ -191,11 +191,13 @@
   object-fit: cover;
   object-position: center 52%;
   inset: 0;
+  z-index: 0;
   animation: heroAppear 1.2s ease-out both;
 }
 .heroShade {
   position: absolute;
   inset: 0;
+  z-index: 1;
   background:
     linear-gradient(
       90deg,
@@ -207,7 +209,7 @@
 }
 .heroContent {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   padding: 75px 4.8% 115px;
   max-width: 850px;
   animation: riseIn 0.7s ease-out both;
@@ -2280,6 +2282,7 @@
   height: 100%;
   object-fit: cover;
   object-position: center 52%;
+  z-index: 0;
 }
 .videoControl {
   position: absolute;

@@ -3,7 +3,6 @@ import { usePathname } from "next/navigation";
 import { Header } from "./header";
 import { Footer } from "./footer";
 import { ConsentBanner } from "@/components/consent-banner";
-import { NewsletterPopup } from "@/components/newsletter-popup";
 
 export function MarketingChrome({ children }: { children: React.ReactNode }) {
   const isHome = usePathname() === "/";
@@ -18,7 +17,6 @@ export function MarketingChrome({ children }: { children: React.ReactNode }) {
       </main>
       <Footer />
       <ConsentBanner />
-      {!isHome && <NewsletterPopup />}
     </>
   );
 }

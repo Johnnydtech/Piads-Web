@@ -5,27 +5,28 @@ import styles from "@/app/(marketing)/stays.module.css";
 
 export function CoastalHeroMedia() {
   const video = useRef<HTMLVideoElement>(null);
-  const [motionAllowed, setMotionAllowed] = useState(false);
   const [paused, setPaused] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [failed, setFailed] = useState(false);
+
   useEffect(() => {
+    const player = video.current;
+    if (!player) return;
+    player.muted = true;
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
     const connection = (
       navigator as Navigator & { connection?: { saveData?: boolean } }
     ).connection;
-    const update = () =>
-      setMotionAllowed(!preference.matches && !connection?.saveData);
-    update();
-    preference.addEventListener("change", update);
-    return () => preference.removeEventListener("change", update);
-  }, []);
-  useEffect(() => {
-    const player = video.current;
-    if (!player || !motionAllowed || failed) return;
     let inView = true;
     const update = () => {
-      if (paused || document.hidden || !inView) player.pause();
+      if (
+        paused ||
+        preference.matches ||
+        connection?.saveData ||
+        document.hidden ||
+        !inView
+      )
+        player.pause();
       else void player.play().catch(() => setPlaying(false));
     };
     const observer = new IntersectionObserver(([entry]) => {
@@ -34,13 +35,15 @@ export function CoastalHeroMedia() {
     });
     observer.observe(player);
     document.addEventListener("visibilitychange", update);
+    preference.addEventListener("change", update);
     update();
     return () => {
       observer.disconnect();
       document.removeEventListener("visibilitychange", update);
+      preference.removeEventListener("change", update);
       player.pause();
     };
-  }, [motionAllowed, paused, failed]);
+  }, [paused, failed]);
   return (
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -52,15 +55,16 @@ export function CoastalHeroMedia() {
         height={941}
         fetchPriority="high"
       />
-      {motionAllowed && !failed && (
+      {!failed && (
         <video
           ref={video}
           className={styles.heroVideo}
           aria-hidden="true"
+          autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           poster="/stays/coastal-retreat.webp"
           onPlay={() => setPlaying(true)}
           onPause={() => setPlaying(false)}
@@ -69,7 +73,7 @@ export function CoastalHeroMedia() {
           <source src="/stays/coastal-retreat.mp4" type="video/mp4" />
         </video>
       )}
-      {motionAllowed && !failed && (
+      {!failed && (
         <button
           type="button"
           className={styles.videoControl}
