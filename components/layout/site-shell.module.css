@@ -43,11 +43,13 @@
 }
 .brand img {
   position: absolute;
-  width: 185px;
-  height: 123px;
+  /* Fit the supplied asset's full wordmark, including its trailing flourish. */
+  width: 137.142857%;
+  height: auto;
   max-width: none;
-  left: -22px;
-  top: -33px;
+  left: -25%;
+  top: 50%;
+  transform: translateY(-44.921875%);
   object-fit: contain;
 }
 .brandLight img {
@@ -400,12 +402,6 @@
   .brand {
     width: 113px;
     height: 48px;
-  }
-  .brand img {
-    width: 160px;
-    height: 107px;
-    left: -22px;
-    top: -28px;
   }
   .actions {
     gap: 7px;
