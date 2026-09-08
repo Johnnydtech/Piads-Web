@@ -7,6 +7,7 @@ import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import { Brand } from "./brand";
 import { footerColumns } from "@/lib/navigation";
 import styles from "./site-shell.module.css";
+import { trackCta } from "@/lib/analytics";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co";
 const groups = [
@@ -152,10 +153,10 @@ export function Header() {
           </Link>
         </nav>
         <div className={styles.actions}>
-          <Link className={styles.login} href={APP_URL}>
+          <Link className={styles.login} href={APP_URL} onClick={() => trackCta("Log in", "header")}>
             Log in <ArrowUpRight size={14} />
           </Link>
-          <Link className={styles.start} href={`${APP_URL}/sign-up?role=venue`}>
+          <Link className={styles.start} href={`${APP_URL}/sign-up?role=venue`} onClick={() => trackCta("Start free", "header")}>
             Start free <ArrowUpRight size={16} />
           </Link>
           <button

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { trackCta } from "@/lib/analytics";
 import {
   ArrowUpRight,
   Check,
@@ -87,10 +88,10 @@ export function HomeContent() {
             your most thoughtful hosting touch. One stay or a whole portfolio.
           </p>
           <div className={styles.heroButtons}>
-            <a className={styles.buttonLime} href={SIGN_UP}>
+            <a className={styles.buttonLime} href={SIGN_UP} onClick={() => trackCta("Create your first welcome", "hero")}>
               Create your first welcome <ArrowUpRight size={19} />
             </a>
-            <a className={styles.heroDemo} href="#experience">
+            <a className={styles.heroDemo} href="#experience" onClick={() => trackCta("See it in action", "hero")}>
               <span>
                 <Play size={13} fill="currentColor" />
               </span>

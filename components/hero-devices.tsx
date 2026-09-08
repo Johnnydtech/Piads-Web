@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { trackCta } from "@/lib/analytics"
 import { Apple, ArrowRight, Monitor, Smartphone } from "lucide-react"
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
@@ -110,7 +111,7 @@ export function HeroDevices() {
                 <Monitor className="h-4 w-4 text-gray-400" />
                 Web dashboard <span className="text-gray-400">·</span> any browser
               </span>
-              <Link href={APP_URL} className="inline-flex items-center gap-1.5 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-950 transition-colors hover:border-gray-950">
+              <Link href={APP_URL} onClick={() => trackCta("Open the dashboard", "hero_devices")} className="inline-flex items-center gap-1.5 rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-950 transition-colors hover:border-gray-950">
                 Open the dashboard <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -130,6 +131,7 @@ export function HeroDevices() {
             </span>
             <a
               href={APP_STORE_URL}
+              onClick={() => trackCta("App Store", "hero_devices")}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-full bg-gray-950 px-4 py-2 text-sm font-semibold text-white shadow-md transition-colors hover:bg-gray-800"
