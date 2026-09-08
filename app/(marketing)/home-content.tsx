@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   ArrowUpRight,
   Check,
   ChevronDown,
-  Menu,
-  X,
   Wifi,
   MapPin,
   Clock3,
@@ -17,22 +15,18 @@ import {
   ShieldCheck,
   Coffee,
   Sun,
-  MoveUpRight,
   Plus,
   Minus,
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import styles from "./stays.module.css";
+import { CoastalHeroMedia } from "@/components/coastal-hero-media";
+import { PortfolioSection } from "@/components/portfolio-section";
+import { INDUSTRIES } from "@/lib/industries";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co";
 const SIGN_UP = `${APP_URL}/sign-up?role=venue`;
 const PHOTO = "/stays/coastal-retreat.webp";
-const sections = [
-  { label: "The experience", href: "#experience" },
-  { label: "How it works", href: "#how-it-works" },
-  { label: "For every host", href: "#for-hosts" },
-  { label: "Pricing", href: "#pricing" },
-];
 const tabs = ["Welcome", "House guide", "Local favorites"] as const;
 type ScreenTab = (typeof tabs)[number];
 
@@ -63,36 +57,12 @@ const faqs = [
   ],
 ];
 
-function Brand({ light = false }: { light?: boolean }) {
-  return (
-    <a
-      className={`${styles.brand} ${light ? styles.brandLight : ""}`}
-      href="#top"
-      aria-label="PiAds home"
-    >
-      <span className={styles.brandMark} aria-hidden="true">
-        <Monitor size={23} strokeWidth={2.5} />
-      </span>
-      piads<span className={styles.brandDot}>®</span>
-    </a>
-  );
-}
-
 export function HomeContent() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [tab, setTab] = useState<ScreenTab>("Welcome");
   const [guest, setGuest] = useState("Maya & Jordan");
   const [property, setProperty] = useState("The Coastal House");
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  useEffect(() => {
-    const close = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMenuOpen(false);
-    };
-    window.addEventListener("keydown", close);
-    return () => window.removeEventListener("keydown", close);
-  }, []);
-
   const changeTab = (index: number) => {
     setTab(tabs[index]);
     tabRefs.current[index]?.focus();
@@ -100,77 +70,12 @@ export function HomeContent() {
 
   return (
     <div className={styles.site} id="top">
-      <a className={styles.skipLink} href="#experience">
-        Skip to the guest experience
-      </a>
-      <div className={styles.announcement}>
-        <span>A warmer welcome. A smarter screen.</span>
-        <a href="#pricing">
-          Free with approved ad slots <ArrowUpRight size={13} />
-        </a>
-      </div>
-      <header className={styles.header}>
-        <Brand />
-        <nav className={styles.desktopNav} aria-label="Main navigation">
-          {sections.map((item) => (
-            <a key={item.href} href={item.href}>
-              {item.label}
-            </a>
-          ))}
-        </nav>
-        <div className={styles.headerActions}>
-          <a className={styles.signIn} href={APP_URL}>
-            Log in <ArrowUpRight size={14} />
-          </a>
-          <a className={styles.buttonSmall} href={SIGN_UP}>
-            Start free <ArrowUpRight size={16} />
-          </a>
-          <button
-            type="button"
-            className={styles.menuToggle}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            aria-controls="stays-mobile-menu"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            {menuOpen ? <X /> : <Menu />}
-          </button>
-        </div>
-        {menuOpen && (
-          <nav
-            id="stays-mobile-menu"
-            className={styles.mobileNav}
-            aria-label="Mobile navigation"
-          >
-            {sections.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-              >
-                {item.label}
-                <ArrowUpRight size={18} />
-              </a>
-            ))}
-          </nav>
-        )}
-      </header>
-
       <section className={styles.hero} aria-labelledby="hero-title">
-        {/* A photographic setting; all interface text remains accessible HTML. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className={styles.heroPhoto}
-          src={PHOTO}
-          alt="Sunlit coastal holiday home with an open terrace overlooking the sea"
-          fetchPriority="high"
-          width="1672"
-          height="941"
-        />
+        <CoastalHeroMedia />
         <div className={styles.heroShade} />
         <div className={styles.heroContent}>
           <p className={styles.eyebrow}>
-            <span className={styles.liveDot} /> MADE FOR SHORT-TERM RENTALS
+            <span className={styles.liveDot} /> FOR HOSTS & PROPERTY MANAGERS
           </p>
           <h1 id="hero-title">
             A better stay
@@ -178,8 +83,8 @@ export function HomeContent() {
             starts with <em>hello.</em>
           </h1>
           <p className={styles.heroDescription}>
-            Turn your rental’s TV into a personal welcome, a local guide, and
-            your most thoughtful hosting touch.
+            Turn every property’s TV into a personal welcome, a local guide, and
+            your most thoughtful hosting touch. One stay or a whole portfolio.
           </p>
           <div className={styles.heroButtons}>
             <a className={styles.buttonLime} href={SIGN_UP}>
@@ -261,7 +166,7 @@ export function HomeContent() {
         <div>
           <span className={styles.piSymbol}>π</span> Raspberry Pi
         </div>
-        <a href="https://www.piads.co/devices">
+        <a href="/devices">
           And your browser <ArrowUpRight size={16} />
         </a>
       </div>
@@ -498,7 +403,7 @@ export function HomeContent() {
               {tab === "Welcome" && (
                 <a
                   className={styles.screenQr}
-                  href="https://www.piads.co/digital-signage-for/short-term-rentals"
+                  href="/digital-signage-for/short-term-rentals"
                   aria-label="Learn how the PiAds guest guide works"
                 >
                   <QRCodeSVG
@@ -523,6 +428,7 @@ export function HomeContent() {
         </div>
       </section>
 
+      <PortfolioSection />
       <section
         className={styles.hostingSection}
         id="for-hosts"
@@ -618,10 +524,7 @@ export function HomeContent() {
               <em>they check in.</em>
             </h2>
           </div>
-          <a
-            className={styles.buttonOutline}
-            href="https://www.piads.co/get-started"
-          >
+          <a className={styles.buttonOutline} href="/get-started">
             See the setup guide <ArrowUpRight size={18} />
           </a>
         </div>
@@ -675,10 +578,7 @@ export function HomeContent() {
           <a className={styles.buttonLime} href={SIGN_UP}>
             Put your screen to work <ArrowUpRight size={19} />
           </a>
-          <a
-            className={styles.revenueDetails}
-            href="https://www.piads.co/pricing"
-          >
+          <a className={styles.revenueDetails} href="/pricing">
             Explore all pricing options <ArrowUpRight size={15} />
           </a>
         </div>
@@ -738,7 +638,7 @@ export function HomeContent() {
             <br />
             <em>Straight answers.</em>
           </h2>
-          <a className={styles.textLink} href="https://www.piads.co/contact">
+          <a className={styles.textLink} href="/contact">
             Talk to a real person <ArrowUpRight size={18} />
           </a>
         </div>
@@ -765,12 +665,12 @@ export function HomeContent() {
               >
                 <p>{answer}</p>
                 {index === 0 && (
-                  <a href="https://www.piads.co/devices">
+                  <a href="/devices">
                     See supported devices <ArrowUpRight size={14} />
                   </a>
                 )}
                 {index === 4 && (
-                  <a href="https://www.piads.co/pricing">
+                  <a href="/pricing">
                     View pricing <ArrowUpRight size={14} />
                   </a>
                 )}
@@ -780,6 +680,37 @@ export function HomeContent() {
         </div>
       </section>
 
+      <section
+        className={`${styles.section} ${styles.allSpaces}`}
+        aria-labelledby="all-spaces-title"
+      >
+        <div className={styles.sectionHeading}>
+          <div>
+            <p className={styles.kicker}>
+              MORE SPACES. THE SAME PERSONAL TOUCH.
+            </p>
+            <h2 id="all-spaces-title">
+              Wherever people gather,
+              <br />
+              <em>make your screen matter.</em>
+            </h2>
+          </div>
+          <a className={styles.buttonOutline} href="/digital-signage-for">
+            Explore all use cases <ArrowUpRight size={18} />
+          </a>
+        </div>
+        <div className={styles.spaceLinks}>
+          {INDUSTRIES.map((ind) => (
+            <a href={`/digital-signage-for/${ind.slug}`} key={ind.slug}>
+              <span>{ind.name}</span>
+              <ArrowUpRight size={18} />
+            </a>
+          ))}
+        </div>
+        <a className={styles.textLink} href="/alternative-to">
+          See how PiAds compares <ArrowUpRight size={18} />
+        </a>
+      </section>
       <section className={styles.finalCta}>
         <span className={styles.ctaIcon}>
           <Monitor size={28} />
@@ -795,48 +726,6 @@ export function HomeContent() {
         </a>
         <p className={styles.ctaNote}>Start with the TV you already have.</p>
       </section>
-      <footer className={styles.footer}>
-        <div className={styles.footerTop}>
-          <div>
-            <Brand light />
-            <p>
-              A little screen.
-              <br />A more memorable stay.
-            </p>
-          </div>
-          <div>
-            <span>EXPLORE PIADS</span>
-            <a href="https://www.piads.co/features">The platform</a>
-            <a href="https://www.piads.co/devices">Supported devices</a>
-            <a href="https://www.piads.co/pricing">Plans & pricing</a>
-          </div>
-          <div>
-            <span>MORE WAYS TO CONNECT</span>
-            <a href="https://www.piads.co/digital-signage-for">
-              For other spaces
-            </a>
-            <a href="https://www.piads.co/features#advertisers">
-              For advertisers
-            </a>
-            <a href="https://www.piads.co/contact">Get in touch</a>
-          </div>
-          <a className={styles.footerBack} href="#top">
-            BACK TO TOP <MoveUpRight size={20} />
-          </a>
-        </div>
-        <div className={styles.footerBottom}>
-          <span>
-            © {new Date().getFullYear()} PiAds. Make every screen matter.
-          </span>
-          <div>
-            <a href="https://www.piads.co/privacy">Privacy</a>
-            <a href="https://www.piads.co/terms">Terms</a>
-            <span>
-              Made for a warmer welcome <Sun size={14} />
-            </span>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

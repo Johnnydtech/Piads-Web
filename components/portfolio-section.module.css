@@ -1,0 +1,351 @@
+.section {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 90px 30px 105px;
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  align-items: center;
+  gap: 60px;
+  color: #183d32;
+  font-family: var(--font-sans), sans-serif;
+  scroll-margin-top: 35px;
+}
+.eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.13em;
+  margin-bottom: 24px !important;
+}
+.copy h2 {
+  font-size: clamp(2.7rem, 4.1vw, 4rem);
+  line-height: 1.07;
+  letter-spacing: -0.05em;
+  font-weight: 500;
+}
+.copy h2 em {
+  font-family: var(--font-editorial), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}
+.copy > p:not(.eyebrow) {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #64715e;
+  max-width: 420px;
+  margin-top: 23px;
+}
+.copy ul {
+  list-style: none;
+  padding: 0;
+  margin: 23px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+.copy li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.copy li svg {
+  flex-shrink: 0;
+  margin-top: 4px;
+  color: #6c8a46;
+}
+.copy > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 22px;
+  border-bottom: 1px solid #a8b994;
+  padding-bottom: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.portfolio {
+  border: 1px solid #d4dfc8;
+  border-radius: 13px;
+  background: #eef3e6;
+  overflow: hidden;
+  box-shadow: 0 12px 45px #223f1810;
+  min-width: 0;
+}
+.toolbar {
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  border-bottom: 1px solid #dce5d4;
+  font-size: 0.875rem;
+}
+.toolbar > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.toolbar small {
+  font-size: 0.75rem;
+  color: #6b7c5e;
+  letter-spacing: 0.03em;
+}
+.layout {
+  padding: 15px;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 14px;
+}
+.properties {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.properties button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid transparent;
+  background: none;
+  padding: 15px 10px;
+  text-align: left;
+  border-radius: 7px;
+  cursor: pointer;
+  color: #3d5735;
+  font: inherit;
+}
+.properties button > span {
+  flex: 1;
+}
+.properties button > svg {
+  flex-shrink: 0;
+}
+.properties strong {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.properties small {
+  font-size: 0.75rem;
+  color: #6b805b;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+}
+.properties i,
+.propertyTop i {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: #8bb449;
+  border-radius: 50%;
+}
+.properties button > svg:last-child {
+  opacity: 0;
+}
+.properties button.selected {
+  background: #fcfdf8;
+  border-color: #dbe4d1;
+  box-shadow: 0 3px 8px #28461408;
+}
+.properties button.selected > svg:last-child {
+  opacity: 1;
+}
+.properties button:focus-visible {
+  outline: 3px solid #8fa74e;
+  outline-offset: 2px;
+}
+.property {
+  background: #fcfdf8;
+  padding: 23px 21px;
+  border: 1px solid #dbe4d1;
+  border-radius: 8px;
+  min-width: 0;
+}
+.propertyTop {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: #768769;
+}
+.propertyTop > span:first-child {
+  letter-spacing: 0.1em;
+}
+.propertyTop > span:last-child {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.property h3 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  margin-top: 23px;
+}
+.property > p {
+  font-size: 0.75rem;
+  color: #78836e;
+  margin-top: 7px;
+}
+.welcome {
+  border-block: 1px solid #dbe4d1;
+  padding: 22px 0;
+  margin-top: 21px;
+}
+.welcome > span {
+  font-size: 0.75rem;
+  color: #697b5d;
+}
+.welcome strong {
+  font-family: var(--font-editorial), Georgia, serif;
+  font-size: 1.9rem;
+  line-height: 1.2;
+  font-weight: 400;
+  display: block;
+  margin-top: 6px;
+}
+.welcome p {
+  font-size: 0.8125rem;
+  color: #6b7d5e;
+  line-height: 1.7;
+  margin-top: 13px;
+}
+.propertyBottom {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.75rem;
+  margin-top: 18px;
+  overflow-wrap: anywhere;
+}
+.propertyBottom svg {
+  flex-shrink: 0;
+}
+.propertyBottom > svg:last-child {
+  margin-left: auto;
+  color: #79944e;
+}
+.caption {
+  font-size: 0.75rem;
+  color: #718064;
+  padding: 0 20px 17px;
+  line-height: 1.6;
+}
+@media (max-width: 1100px) {
+  .section {
+    gap: 35px;
+  }
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .properties {
+    flex-direction: row;
+  }
+  .properties button {
+    padding: 11px 9px;
+    flex: 1;
+  }
+  .properties button > svg {
+    display: none;
+  }
+  .properties strong {
+    font-size: 0.75rem;
+  }
+  .propertyTop {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .property h3 {
+    margin-top: 19px;
+  }
+  .welcome {
+    padding-block: 17px;
+    margin-top: 15px;
+  }
+  .property {
+    padding: 20px;
+  }
+  .copy h2 {
+    font-size: 3rem;
+  }
+}
+@media (max-width: 800px) {
+  .section {
+    grid-template-columns: 1fr;
+    padding: 60px 30px 70px;
+    gap: 33px;
+  }
+  .copy > p:not(.eyebrow) {
+    max-width: none;
+  }
+  .layout {
+    grid-template-columns: 0.85fr 1.15fr;
+  }
+  .properties {
+    flex-direction: column;
+  }
+  .properties button {
+    flex: 0;
+  }
+  .properties button > svg {
+    display: block;
+  }
+  .properties strong {
+    font-size: 0.875rem;
+  }
+  .propertyTop {
+    flex-direction: column;
+  }
+}
+@media (max-width: 540px) {
+  .section {
+    padding: 48px 23px 65px;
+  }
+  .copy h2 {
+    font-size: 3rem;
+  }
+  .eyebrow {
+    font-size: 0.75rem;
+  }
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .properties {
+    flex-direction: row;
+    gap: 3px;
+  }
+  .properties button {
+    padding: 10px 7px;
+    flex: 1;
+  }
+  .properties button > svg {
+    display: none;
+  }
+  .properties strong {
+    font-size: 0.75rem;
+  }
+  .toolbar {
+    padding: 16px 15px;
+  }
+  .toolbar small {
+    font-size: 0.75rem;
+    max-width: 105px;
+    text-align: right;
+  }
+  .portfolio {
+    margin-inline: -5px;
+  }
+  .propertyTop {
+    flex-direction: row;
+    font-size: 0.75rem;
+  }
+  .copy ul {
+    font-size: 0.875rem;
+  }
+  .caption {
+    padding-inline: 15px;
+  }
+}

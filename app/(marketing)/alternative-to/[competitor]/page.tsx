@@ -1,8 +1,8 @@
-import { JsonLd, graph, faqPage, breadcrumbs } from "@/components/seo/json-ld"
-import Link from "next/link"
-import { notFound } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { COMPETITORS, competitorBySlug } from "@/lib/competitors"
+import { JsonLd, graph, faqPage, breadcrumbs } from "@/components/seo/json-ld";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { COMPETITORS, competitorBySlug } from "@/lib/competitors";
 import {
   ArrowRight,
   Check,
@@ -11,51 +11,90 @@ import {
   Sparkles,
   ListChecks,
   ThumbsUp,
-} from "lucide-react"
+} from "lucide-react";
 
 export function generateStaticParams() {
-  return COMPETITORS.map((c) => ({ competitor: c.slug }))
+  return COMPETITORS.map((c) => ({ competitor: c.slug }));
 }
 
-export function generateMetadata({ params }: { params: { competitor: string } }) {
-  const c = competitorBySlug(params.competitor)
-  if (!c) return {}
+export function generateMetadata({
+  params,
+}: {
+  params: { competitor: string };
+}) {
+  const c = competitorBySlug(params.competitor);
+  if (!c) return {};
   return {
     title: c.metaTitle,
     description: c.metaDescription,
     alternates: { canonical: `/alternative-to/${c.slug}` },
-  }
+  };
 }
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co";
 
 const migration = [
-  { n: "1", text: "Sign up free — no card. The guided setup creates your venue in a minute." },
-  { n: "2", text: "Pair ONE screen (or just the built-in web player — no hardware needed to test)." },
-  { n: "3", text: "Re-upload your media and let onboarding build your first playlist and schedule." },
+  {
+    n: "1",
+    text: "Sign up free — no card. The guided setup creates your venue in a minute.",
+  },
+  {
+    n: "2",
+    text: "Pair ONE screen (or just the built-in web player — no hardware needed to test).",
+  },
+  {
+    n: "3",
+    text: "Re-upload your media and let onboarding build your first playlist and schedule.",
+  },
   { n: "4", text: "Run both platforms side by side for a week." },
-  { n: "5", text: "Move your remaining screens — pairing each takes about a minute." },
-  { n: "6", text: "Cancel the old subscription. Optionally open ad slots and start earning." },
-]
+  {
+    n: "5",
+    text: "Move your remaining screens — pairing each takes about a minute.",
+  },
+  {
+    n: "6",
+    text: "Cancel the old subscription. Optionally open ad slots and start earning.",
+  },
+];
 
-export default function CompetitorPage({ params }: { params: { competitor: string } }) {
-  const c = competitorBySlug(params.competitor)
-  if (!c) notFound()
+export default function CompetitorPage({
+  params,
+}: {
+  params: { competitor: string };
+}) {
+  const c = competitorBySlug(params.competitor);
+  if (!c) notFound();
 
   return (
     <div className="pt-24">
-      <JsonLd data={graph(faqPage(c.faqs.map((f) => ({ question: f.q, answer: f.a }))), breadcrumbs([{ name: "Home", path: "/" }, { name: "Alternatives", path: "/alternative-to" }, { name: c.name, path: `/alternative-to/${c.slug}` }]))} />
+      <JsonLd
+        data={graph(
+          faqPage(c.faqs.map((f) => ({ question: f.q, answer: f.a }))),
+          breadcrumbs([
+            { name: "Home", path: "/" },
+            { name: "Alternatives", path: "/alternative-to" },
+            { name: c.name, path: `/alternative-to/${c.slug}` },
+          ]),
+        )}
+      />
       {/* Hero */}
-      <section className="container py-16 md:py-20">
+      <section className="container py-16 md:py-20 detail-hero">
+        <nav className="detail-crumbs" aria-label="Breadcrumb">
+          <Link href="/alternative-to">ALL COMPARISONS</Link>
+          <span>/</span>
+          <span>{c.name}</span>
+        </nav>
         <div className="max-w-3xl">
-          <span className="inline-flex items-center gap-2 bg-accent/10 text-accent text-sm font-medium px-4 py-1.5 rounded-full mb-6">
+          <span className="hero-label inline-flex items-center gap-2 bg-accent/10 text-accent text-sm font-medium px-4 py-1.5 rounded-full mb-6">
             <Scale className="h-4 w-4" />
             {c.name} vs PiAds
           </span>
           <h1 className="text-4xl md:text-6xl font-bold font-display mb-6 leading-tight">
             A {c.name} alternative {c.heroAdjectives}
           </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl">{c.heroSub}</p>
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl">
+            {c.heroSub}
+          </p>
           <div className="flex flex-wrap gap-4">
             <Button size="lg" className="rounded-xl h-13 px-7" asChild>
               <Link href={`${APP_URL}/sign-up?role=venue`}>
@@ -63,7 +102,12 @@ export default function CompetitorPage({ params }: { params: { competitor: strin
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" className="rounded-xl h-13 px-7" asChild>
+            <Button
+              size="lg"
+              variant="outline"
+              className="rounded-xl h-13 px-7"
+              asChild
+            >
               <Link href="/pricing">See pricing</Link>
             </Button>
           </div>
@@ -94,7 +138,9 @@ export default function CompetitorPage({ params }: { params: { competitor: strin
               <tr className="border-b bg-secondary/50">
                 <th className="text-left font-semibold p-4"></th>
                 <th className="text-left font-semibold p-4">{c.name}</th>
-                <th className="text-left font-semibold p-4 text-accent">PiAds</th>
+                <th className="text-left font-semibold p-4 text-accent">
+                  PiAds
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -121,8 +167,12 @@ export default function CompetitorPage({ params }: { params: { competitor: strin
               <thead>
                 <tr className="border-b bg-secondary/50">
                   <th className="text-left font-semibold p-4">Screens</th>
-                  <th className="text-left font-semibold p-4">{c.name} / month</th>
-                  <th className="text-left font-semibold p-4 text-accent">PiAds / month</th>
+                  <th className="text-left font-semibold p-4">
+                    {c.name} / month
+                  </th>
+                  <th className="text-left font-semibold p-4 text-accent">
+                    PiAds / month
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -152,7 +202,10 @@ export default function CompetitorPage({ params }: { params: { competitor: strin
             </h3>
             <ul className="space-y-3">
               {c.theirWeaknesses.map((w) => (
-                <li key={w} className="text-sm text-muted-foreground flex gap-2">
+                <li
+                  key={w}
+                  className="text-sm text-muted-foreground flex gap-2"
+                >
                   <span className="text-destructive mt-0.5">•</span>
                   {w}
                 </li>
@@ -166,7 +219,10 @@ export default function CompetitorPage({ params }: { params: { competitor: strin
             </h3>
             <ul className="space-y-3">
               {c.ourWeaknesses.map((w) => (
-                <li key={w} className="text-sm text-muted-foreground flex gap-2">
+                <li
+                  key={w}
+                  className="text-sm text-muted-foreground flex gap-2"
+                >
                   <span className="text-accent mt-0.5">•</span>
                   {w}
                 </li>
@@ -188,11 +244,12 @@ export default function CompetitorPage({ params }: { params: { competitor: strin
           <p className="text-white/85 text-lg">
             {c.wedge?.body ?? (
               <>
-                Every signage platform — {c.name} included — treats your screens as a
-                cost. PiAds is the only one with a built-in local advertising
-                marketplace: nearby businesses book slots on your screens, you
-                approve every ad, and you keep 70% of the revenue. The software is
-                $0 for partner screens, so the screen is an income line, not a cost.
+                Every signage platform — {c.name} included — treats your screens
+                as a cost. PiAds is the only one with a built-in local
+                advertising marketplace: nearby businesses book slots on your
+                screens, you approve every ad, and you keep 70% of the revenue.
+                The software is $0 for partner screens, so the screen is an
+                income line, not a cost.
               </>
             )}
           </p>
@@ -212,7 +269,10 @@ export default function CompetitorPage({ params }: { params: { competitor: strin
           </p>
           <div className="space-y-4">
             {migration.map((s) => (
-              <div key={s.n} className="flex gap-4 bg-white rounded-2xl border p-5 shadow-sm">
+              <div
+                key={s.n}
+                className="flex gap-4 bg-white rounded-2xl border p-5 shadow-sm"
+              >
                 <div className="flex-shrink-0 w-8 h-8 rounded-full bg-foreground text-background flex items-center justify-center text-sm font-semibold">
                   {s.n}
                 </div>
@@ -231,7 +291,10 @@ export default function CompetitorPage({ params }: { params: { competitor: strin
           </h2>
           <div className="space-y-5">
             {c.faqs.map((f) => (
-              <div key={f.q} className="bg-white rounded-2xl border p-6 shadow-sm">
+              <div
+                key={f.q}
+                className="bg-white rounded-2xl border p-6 shadow-sm"
+              >
                 <h3 className="font-semibold font-display mb-2">{f.q}</h3>
                 <p className="text-sm text-muted-foreground">{f.a}</p>
               </div>
@@ -247,10 +310,15 @@ export default function CompetitorPage({ params }: { params: { competitor: strin
             Try the alternative that pays you back
           </h2>
           <p className="text-background/70 text-lg mb-8 max-w-xl mx-auto">
-            Free for partner screens, no card. Pair one screen — or just the web player — and
-            run it next to {c.name} for a week.
+            Free for partner screens, no card. Pair one screen — or just the web
+            player — and run it next to {c.name} for a week.
           </p>
-          <Button size="lg" variant="secondary" className="rounded-xl h-13 px-7" asChild>
+          <Button
+            size="lg"
+            variant="secondary"
+            className="rounded-xl h-13 px-7"
+            asChild
+          >
             <Link href={`${APP_URL}/sign-up?role=venue`}>
               Start Free
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -259,5 +327,5 @@ export default function CompetitorPage({ params }: { params: { competitor: strin
         </div>
       </section>
     </div>
-  )
+  );
 }

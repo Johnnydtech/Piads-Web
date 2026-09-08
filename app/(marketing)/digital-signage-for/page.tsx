@@ -1,78 +1,84 @@
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { INDUSTRIES } from "@/lib/industries"
-import { ArrowRight } from "lucide-react"
+import Link from "next/link";
+import Image from "next/image";
+import { INDUSTRIES } from "@/lib/industries";
+import { ArrowUpRight } from "lucide-react";
 
 export const metadata = {
   title: "Digital Signage for Every Local Venue",
   description:
-    "How cafes, gyms, salons, restaurants, retail stores, medical offices, and short-term rentals use PiAds digital signage free with approved ad slots — and keep 70% of cleared ad revenue.",
+    "Digital signage for short-term rentals, property managers, cafes, gyms, salons, restaurants, retail, and medical offices. Free with approved ad slots.",
   alternates: { canonical: "/digital-signage-for" },
-}
-
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
-
+};
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co";
 export default function IndustryIndexPage() {
+  const industries = [...INDUSTRIES].sort(
+    (a, b) =>
+      Number(b.slug === "short-term-rentals") -
+      Number(a.slug === "short-term-rentals"),
+  );
   return (
-    <div className="pt-24">
-      <section className="container py-16 md:py-20">
-        <div className="max-w-3xl">
-          <h1 className="text-4xl md:text-6xl font-bold font-display mb-6 leading-tight">
-            Digital signage for every local venue
-          </h1>
-          <p className="text-xl text-muted-foreground">
-            The screens are different, but the story is the same: your content
-            first, updated in seconds, on hardware you already own — and earning
-            from local advertisers when you allow it.
-          </p>
-        </div>
+    <div>
+      <section className="catalog-intro">
+        <p className="eyebrow">PIADS / SPACES & PEOPLE</p>
+        <h1>
+          Different spaces.
+          <br />
+          <em>The same thoughtful touch.</em>
+        </h1>
+        <p>
+          From a collection of vacation homes to the neighborhood coffee shop.
+          Keep your content personal, your screens connected, and your local
+          community close.
+        </p>
       </section>
-
-      <section className="container pb-16 md:pb-24">
-        <div className="grid md:grid-cols-2 gap-6">
-          {INDUSTRIES.map((ind) => (
+      <section className="container">
+        <div className="use-case-grid">
+          {industries.map((ind, index) => (
             <Link
               key={ind.slug}
               href={`/digital-signage-for/${ind.slug}`}
-              className="bg-white rounded-3xl border overflow-hidden shadow-sm hover:shadow-md transition-shadow group"
+              className={`use-case-card ${index === 0 ? "use-case-featured" : ""}`}
             >
-              <Image
-                src={ind.heroImage}
-                alt={ind.heroAlt}
-                width={1600}
-                height={900}
-                className="w-full h-auto aspect-[16/9] object-cover"
-              />
-              <div className="p-8">
-              <h2 className="text-xl font-bold font-display mb-2 group-hover:text-accent transition-colors">
-                {ind.name}
-              </h2>
-              <p className="text-muted-foreground text-sm mb-4">{ind.teaser}</p>
-              <span className="text-sm font-medium text-accent">
-                Read more <ArrowRight className="inline h-4 w-4" />
-              </span>
+              <div className="case-photo">
+                <Image
+                  src={
+                    index === 0 ? "/stays/coastal-retreat.webp" : ind.heroImage
+                  }
+                  alt={ind.heroAlt}
+                  width={1600}
+                  height={900}
+                  priority={index === 0}
+                />
+              </div>
+              <div className="case-caption">
+                <p className="eyebrow">
+                  {index === 0
+                    ? "FOR HOSTS & PROPERTY MANAGERS"
+                    : `SPACE 0${index + 1}`}
+                </p>
+                <h2>{ind.name}</h2>
+                <p>{ind.teaser}</p>
+                <span>
+                  Explore the possibilities <ArrowUpRight size={19} />
+                </span>
               </div>
             </Link>
           ))}
         </div>
-
-        <div className="mt-14 bg-foreground text-background rounded-3xl p-10 md:p-14 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold font-display mb-4">
-            Don&apos;t see your venue? It still works.
-          </h2>
-          <p className="text-background/70 text-lg mb-8 max-w-xl mx-auto">
-            If there&apos;s a TV and people who look at it, PiAds fits — free for
-            participating screens with approved ad slots, on hardware you already own.
-          </p>
-          <Button size="lg" variant="secondary" className="rounded-xl h-14 px-7" asChild>
-            <Link href={`${APP_URL}/sign-up?role=venue`}>
-              Try PiAds Free
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
+        <div className="catalog-cta">
+          <div>
+            <h2>Your space belongs here.</h2>
+            <p>
+              If there’s a TV and people who look at it, PiAds fits. Use the
+              hardware you already own, show your own content, and choose the
+              local ads you approve.
+            </p>
+          </div>
+          <Link href={`${APP_URL}/sign-up?role=venue`}>
+            Find your starting point <ArrowUpRight size={18} />
+          </Link>
         </div>
       </section>
     </div>
-  )
+  );
 }

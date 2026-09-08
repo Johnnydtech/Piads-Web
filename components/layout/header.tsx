@@ -1,144 +1,212 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { ArrowRight, ChevronDown, Menu, X } from "lucide-react"
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
+import { Brand } from "./brand";
+import { footerColumns } from "@/lib/navigation";
+import styles from "./site-shell.module.css";
 
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
-
-const navigation = [
-  { name: "Features", href: "/features" },
-  { name: "Pricing", href: "/pricing" },
-  { name: "Devices", href: "/devices" },
-  { name: "Use cases", href: "/digital-signage-for" },
-]
-
-const resources = [
-  { name: "Blog", href: "/blog", description: "Ideas for better venue screens" },
-  { name: "Get started", href: "/get-started", description: "Connect and publish your first screen" },
-  { name: "About", href: "/about", description: "Why we built PiAds" },
-  { name: "Contact", href: "/contact", description: "Talk with our team" },
-]
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co";
+const groups = [
+  {
+    label: "Platform",
+    intro: "Every screen. More possibilities.",
+    links: [
+      ...footerColumns[0].links.filter((link) => link.name !== "Pricing"),
+      ...footerColumns[1].links.slice(0, 4),
+    ],
+  },
+  {
+    label: "Use cases",
+    intro: "A personal touch, in every space.",
+    links: [
+      {
+        name: "For property managers",
+        href: "/digital-signage-for/short-term-rentals#property-managers",
+      },
+      ...footerColumns[2].links,
+    ],
+  },
+  {
+    label: "Compare",
+    intro: "Find the right fit for your screens.",
+    links: [
+      { name: "All comparisons", href: "/alternative-to" },
+      ...footerColumns[4].links,
+    ],
+  },
+  {
+    label: "Resources",
+    intro: "A little know-how goes a long way.",
+    links: [...footerColumns[3].links, ...footerColumns[5].links.slice(0, 2)],
+  },
+];
 
 export function Header() {
-  const pathname = usePathname()
-  const [scrolled, setScrolled] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [resourcesOpen, setResourcesOpen] = useState(false)
-
+  const pathname = usePathname();
+  const [active, setActive] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const header = useRef<HTMLElement>(null);
+  const triggers = useRef<Record<string, HTMLButtonElement | null>>({});
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
-    onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
-
+    setActive(null);
+    setMobileOpen(false);
+  }, [pathname]);
   useEffect(() => {
-    setMobileOpen(false)
-    setResourcesOpen(false)
-  }, [pathname])
-
-  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
-
+    const close = (event: PointerEvent) => {
+      if (!header.current?.contains(event.target as Node)) {
+        setActive(null);
+        setMobileOpen(false);
+      }
+    };
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        if (active) triggers.current[active]?.focus();
+        setActive(null);
+        setMobileOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", close);
+    document.addEventListener("keydown", escape);
+    return () => {
+      document.removeEventListener("pointerdown", close);
+      document.removeEventListener("keydown", escape);
+    };
+  }, [active]);
+  const close = () => {
+    setActive(null);
+    setMobileOpen(false);
+  };
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      <Link
-        href="/pricing"
-        className="flex h-9 items-center justify-center gap-2 bg-coral px-4 text-center text-xs font-semibold text-gray-950 transition-colors hover:bg-coral/90 sm:text-sm"
-      >
-        Free digital signage with approved ad slots · Keep 70%
-        <ArrowRight className="h-3.5 w-3.5" />
-      </Link>
-
-      <div className="px-3 pt-2 md:px-5">
-        <div
-          className={cn(
-            "mx-auto border border-gray-200/80 bg-white/95 shadow-sm backdrop-blur-xl transition-all duration-300",
-            scrolled ? "max-w-6xl rounded-2xl shadow-lg shadow-gray-950/5" : "max-w-7xl rounded-2xl"
-          )}
-        >
-          <div className="flex h-[72px] items-center justify-between px-4 md:px-6">
-            <Link href="/" className="flex shrink-0 items-center" aria-label="PiAds home">
-              <Image src="/logo/piads-logo-text.png" alt="PiAds" width={180} height={54} className="h-12 w-auto" priority />
-            </Link>
-
-            <nav className="hidden items-center gap-1 lg:flex" aria-label="Main navigation">
-              {navigation.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
-                    isActive(item.href) ? "bg-gray-100 text-gray-950" : "text-gray-600 hover:bg-gray-50 hover:text-gray-950"
-                  )}
+    <header
+      className={styles.header}
+      ref={header}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node))
+          setActive(null);
+      }}
+    >
+      <a className={styles.skip} href="#main-content">
+        Skip to content
+      </a>
+      <div className={styles.announcement}>
+        <span>One property or a whole portfolio.</span>
+        <Link href="/pricing">
+          Free with approved ad slots <ArrowUpRight size={13} />
+        </Link>
+      </div>
+      <div className={styles.headerRow}>
+        <Brand />
+        <nav className={styles.desktopNav} aria-label="Main navigation">
+          {groups.map((group) => (
+            <div key={group.label}>
+              <button
+                type="button"
+                ref={(el) => {
+                  triggers.current[group.label] = el;
+                }}
+                aria-expanded={active === group.label}
+                aria-controls={`navigation-${group.label}`}
+                onClick={() =>
+                  setActive(active === group.label ? null : group.label)
+                }
+              >
+                {group.label}
+                <ChevronDown size={13} />
+              </button>
+              {active === group.label && (
+                <div
+                  id={`navigation-${group.label}`}
+                  className={styles.dropdown}
                 >
-                  {item.name}
-                </Link>
-              ))}
-
-              <div className="relative" onMouseEnter={() => setResourcesOpen(true)} onMouseLeave={() => setResourcesOpen(false)}>
-                <button
-                  type="button"
-                  onClick={() => setResourcesOpen((value) => !value)}
-                  className="flex items-center gap-1 rounded-lg px-4 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-950"
-                  aria-expanded={resourcesOpen}
-                >
-                  Resources
-                  <ChevronDown className={cn("h-4 w-4 transition-transform", resourcesOpen && "rotate-180")} />
-                </button>
-                <div className={cn("absolute left-0 top-full pt-2 transition-all", resourcesOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0")}>
-                  <div className="w-72 rounded-2xl border border-gray-200 bg-white p-2 shadow-xl shadow-gray-950/10">
-                    {resources.map((item) => (
-                      <Link key={item.href} href={item.href} className="block rounded-xl px-4 py-3 hover:bg-gray-50">
-                        <p className="text-sm font-semibold text-gray-950">{item.name}</p>
-                        <p className="mt-0.5 text-xs text-gray-500">{item.description}</p>
+                  <div className={styles.dropdownIntro}>
+                    <span>EXPLORE PIADS</span>
+                    <p>{group.intro}</p>
+                    <Link href="/get-started" onClick={close}>
+                      Find your starting point <ArrowUpRight size={16} />
+                    </Link>
+                  </div>
+                  <div className={styles.dropdownLinks}>
+                    {group.links.map((link) => (
+                      <Link
+                        key={`${link.href}-${link.name}`}
+                        href={link.href}
+                        onClick={close}
+                      >
+                        {link.name}
+                        <ArrowUpRight size={14} />
                       </Link>
                     ))}
                   </div>
                 </div>
-              </div>
-            </nav>
-
-            <div className="hidden items-center gap-2 md:flex">
-              <Button variant="ghost" className="h-11 rounded-xl px-5 text-gray-700" asChild>
-                <Link href={APP_URL}>Sign in</Link>
-              </Button>
-              <Button className="h-11 rounded-xl bg-gray-950 px-5 font-semibold text-white hover:bg-gray-800" asChild>
-                <Link href={`${APP_URL}/sign-up?role=venue`}>Start free</Link>
-              </Button>
+              )}
             </div>
-
-            <button
-              type="button"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-xl text-gray-700 hover:bg-gray-100 md:hidden"
-              onClick={() => setMobileOpen((value) => !value)}
-              aria-label="Toggle navigation"
-              aria-expanded={mobileOpen}
-            >
-              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
-          </div>
-
-          <div className={cn("overflow-hidden transition-all duration-300 md:hidden", mobileOpen ? "max-h-[620px] border-t border-gray-100 opacity-100" : "max-h-0 opacity-0")}>
-            <nav className="space-y-1 p-4" aria-label="Mobile navigation">
-              {[...navigation, ...resources].map((item) => (
-                <Link key={item.href} href={item.href} className={cn("block rounded-xl px-4 py-3 text-sm font-medium", isActive(item.href) ? "bg-blue/10 text-blue" : "text-gray-700 hover:bg-gray-50")}>
-                  {item.name}
-                </Link>
-              ))}
-              <div className="grid grid-cols-2 gap-2 border-t border-gray-100 pt-4">
-                <Button variant="outline" className="h-12 rounded-xl" asChild><Link href={APP_URL}>Sign in</Link></Button>
-                <Button className="h-12 rounded-xl bg-gray-950 hover:bg-gray-800" asChild><Link href={`${APP_URL}/sign-up?role=venue`}>Start free</Link></Button>
-              </div>
-            </nav>
-          </div>
+          ))}
+          <Link
+            href="/pricing"
+            aria-current={pathname === "/pricing" ? "page" : undefined}
+          >
+            Pricing
+          </Link>
+        </nav>
+        <div className={styles.actions}>
+          <Link className={styles.login} href={APP_URL}>
+            Log in <ArrowUpRight size={14} />
+          </Link>
+          <Link className={styles.start} href={`${APP_URL}/sign-up?role=venue`}>
+            Start free <ArrowUpRight size={16} />
+          </Link>
+          <button
+            className={styles.menuToggle}
+            type="button"
+            aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-navigation"
+            onClick={() => {
+              setMobileOpen(!mobileOpen);
+              setActive(null);
+            }}
+          >
+            {mobileOpen ? <X /> : <Menu />}
+          </button>
         </div>
       </div>
+      {mobileOpen && (
+        <nav
+          id="mobile-navigation"
+          className={styles.mobileNav}
+          aria-label="Mobile navigation"
+        >
+          {groups.map((group) => (
+            <details key={group.label}>
+              <summary>
+                {group.label}
+                <ChevronDown size={17} />
+              </summary>
+              <div>
+                {group.links.map((link) => (
+                  <Link
+                    key={`${link.href}-${link.name}`}
+                    href={link.href}
+                    onClick={close}
+                  >
+                    {link.name}
+                    <ArrowUpRight size={14} />
+                  </Link>
+                ))}
+              </div>
+            </details>
+          ))}
+          <Link href="/pricing" onClick={close}>
+            Pricing <ArrowUpRight size={16} />
+          </Link>
+          <Link href={APP_URL}>
+            Log in <ArrowUpRight size={16} />
+          </Link>
+        </nav>
+      )}
     </header>
-  )
+  );
 }

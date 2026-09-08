@@ -1,39 +1,44 @@
-# PiAds hospitality landing page
+# PiAds complete marketing redesign
 
-The homepage is redesigned around short-term rental hosts and property managers.
-All other marketing pages and server APIs are preserved in the normal build.
+The homepage leads with short-term rentals, explicitly addressing individual
+hosts and property managers. All use cases, comparison guides, blog posts,
+product pages, device/setup guides, legal pages, and printable flyers remain in
+the original Next.js application.
 
-## Development
+## Design and media
 
-Use the existing npm dependencies and `npm run dev`. To run beside another PiAds
-checkout, use `npm run dev -- --port 3017`.
+- The shared navigation and footer use the supplied PiAds wordmark.
+- The new forest-green, lime, and editorial typography system applies throughout
+  the marketing routes. Use-case and comparison indexes have dedicated layouts.
+- The homepage and rental page include a portfolio section with example property
+  selection. Guest names and status in this demo are illustrative local state.
+- Coastal hero video was generated through fal.ai from the approved hero image.
+  The MP4 is muted, looping, and optimized for streaming. A pause/play control is
+  provided; reduced-motion and data-saving users receive the original image.
+- Existing social-preview imagery and content data are preserved.
+- No PMS integration, automated booking sync, revenue, or performance claims are
+  introduced by the property-manager section.
 
-## Production integration
+## Development and production
 
-`npm run build` builds the complete original Next.js application with the new
-homepage. The homepage uses the existing application sign-up URL. No production
-repository or piads.co deployment is changed by this review checkout.
+Use `npm run dev`. An isolated local preview can use
+`PIADS_BUILD_DIR=.next-development npm run dev -- --port 3017`.
+`npm run build` builds the entire normal Next.js application and its original APIs.
+No production piads.co deployment is changed by this review checkout.
 
-## Private review build
+## Private full-site review
 
-`npm run build:preview` builds a static, homepage-only review version in `out/`.
-The `preview.tsx` entry points reuse the production homepage, root layout, fonts,
-metadata, and consent component. Links to other pages point to the existing live
-PiAds site. This build deliberately exposes no API endpoints or newsletter form.
-The normal build ignores these preview entry points.
+`npm run build:preview` creates temporary page/layout aliases, exports all pages
+from the original sources, removes the aliases, and stages the site in `dist/`.
+All internal navigation stays within the review site.
 
-The local `.openai/hosting.json` identifies the private Sites review destination.
-Do not use the static review build to replace the full piads.co application.
+The small ESM Worker in `hosting/review-worker.mjs` serves exported assets and
+forwards existing contact/newsletter submissions only to their matching PiAds
+production API. Viewer credentials are not forwarded. These features depend on
+the existing production endpoint behavior; this redesign does not replace the
+existing email provider integration. The Worker also preserves the legacy guide
+redirects and serves the original machine-readable feeds through PiAds.
 
-## Content and assets
-
-- Welcome screen tabs and editable names are illustrative, local page state.
-  They do not publish to real property screens or collect guest data.
-- QR codes resolve to the real PiAds short-term rental information page and are
-  labeled accordingly. They do not pretend to join a real Wi-Fi network.
-- Product facts and pricing are based on the supplied project and live PiAds
-  pages. Revenue is contingent on approved campaigns and advertiser demand.
-- The coastal hero is original AI-generated imagery, optimized to WebP.
-- Existing social preview imagery and all non-home marketing routes are retained.
-- Keyboard tab navigation, mobile navigation, FAQ disclosure, visible focus
-  styles, reduced-motion behavior, and responsive layouts are included.
+Run `node --test hosting/review-worker.test.mjs` for forwarding, validation,
+upstream failure, static-asset delegation, and redirect checks. Outbound
+submissions are mocked in these tests; no real emails or subscriptions are sent.

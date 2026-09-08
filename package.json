@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build:preview": "PIADS_STATIC_PREVIEW=1 PIADS_BUILD_DIR=out next build"
+    "build:preview": "node scripts/build-review.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

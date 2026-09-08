@@ -1,8 +1,9 @@
-import Link from "next/link"
-import Image from "next/image"
-import { notFound } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { INDUSTRIES, industryBySlug } from "@/lib/industries"
+import Link from "next/link";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { PortfolioSection } from "@/components/portfolio-section";
+import { INDUSTRIES, industryBySlug } from "@/lib/industries";
 import {
   ArrowRight,
   Check,
@@ -12,34 +13,38 @@ import {
   Palette,
   Wallet,
   Tv,
-} from "lucide-react"
+} from "lucide-react";
 
 export function generateStaticParams() {
-  return INDUSTRIES.map((i) => ({ industry: i.slug }))
+  return INDUSTRIES.map((i) => ({ industry: i.slug }));
 }
 
 export function generateMetadata({ params }: { params: { industry: string } }) {
-  const ind = industryBySlug(params.industry)
-  if (!ind) return {}
+  const ind = industryBySlug(params.industry);
+  if (!ind) return {};
   return {
     title: ind.metaTitle,
     description: ind.metaDescription,
     alternates: { canonical: `/digital-signage-for/${ind.slug}` },
-  }
+  };
 }
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co";
 
 const reassurance = [
   { icon: Clock, text: "Set up in minutes, not weeks" },
   { icon: Wrench, text: "Works with TVs you already own" },
   { icon: Palette, text: "No design skills needed" },
   { icon: Wallet, text: "$0 with approved ad slots — and you keep 70%" },
-]
+];
 
-export default function IndustryPage({ params }: { params: { industry: string } }) {
-  const ind = industryBySlug(params.industry)
-  if (!ind) notFound()
+export default function IndustryPage({
+  params,
+}: {
+  params: { industry: string };
+}) {
+  const ind = industryBySlug(params.industry);
+  if (!ind) notFound();
 
   // FAQ rich-result schema. Static, first-party data only (lib/industries.ts),
   // serialized with JSON.stringify — no user or remote input reaches this.
@@ -51,46 +56,61 @@ export default function IndustryPage({ params }: { params: { industry: string } 
       name: f.q,
       acceptedAnswer: { "@type": "Answer", text: f.a },
     })),
-  })
+  });
 
   return (
     <div className="pt-24">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqJsonLd }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: faqJsonLd }}
+      />
 
       {/* Hero */}
-      <section className="container py-16 md:py-20">
+      <section className="container py-16 md:py-20 detail-hero">
+        <nav className="detail-crumbs" aria-label="Breadcrumb">
+          <Link href="/digital-signage-for">ALL USE CASES</Link>
+          <span>/</span>
+          <span>{ind.shortName}</span>
+        </nav>
         <div className="grid lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-14 items-center">
-        <div className="max-w-3xl">
-          <span className="inline-flex items-center gap-2 bg-accent/10 text-accent text-sm font-medium px-4 py-1.5 rounded-full mb-6">
-            <Tv className="h-4 w-4" />
-            Digital signage for {ind.shortName}
-          </span>
-          <h1 className="text-4xl md:text-6xl font-bold font-display mb-6 leading-tight">
-            {ind.h1}
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl">{ind.subhead}</p>
-          <div className="flex flex-wrap gap-4">
-            <Button size="lg" className="rounded-xl h-14 px-7" asChild>
-              <Link href={`${APP_URL}/sign-up?role=venue`}>
-                Try PiAds Free
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" className="rounded-xl h-14 px-7" asChild>
-              <Link href="/pricing">See pricing</Link>
-            </Button>
+          <div className="max-w-3xl">
+            <span className="hero-label inline-flex items-center gap-2 bg-accent/10 text-accent text-sm font-medium px-4 py-1.5 rounded-full mb-6">
+              <Tv className="h-4 w-4" />
+              Digital signage for {ind.shortName}
+            </span>
+            <h1 className="text-4xl md:text-6xl font-bold font-display mb-6 leading-tight">
+              {ind.h1}
+            </h1>
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl">
+              {ind.subhead}
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Button size="lg" className="rounded-xl h-14 px-7" asChild>
+                <Link href={`${APP_URL}/sign-up?role=venue`}>
+                  Try PiAds Free
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="rounded-xl h-14 px-7"
+                asChild
+              >
+                <Link href="/pricing">See pricing</Link>
+              </Button>
+            </div>
           </div>
-        </div>
-        <div className="rounded-3xl overflow-hidden border shadow-sm">
-          <Image
-            src={ind.heroImage}
-            alt={ind.heroAlt}
-            width={1600}
-            height={900}
-            priority
-            className="w-full h-auto"
-          />
-        </div>
+          <div className="rounded-3xl overflow-hidden border shadow-sm">
+            <Image
+              src={ind.heroImage}
+              alt={ind.heroAlt}
+              width={1600}
+              height={900}
+              priority
+              className="w-full h-auto"
+            />
+          </div>
         </div>
       </section>
 
@@ -102,17 +122,24 @@ export default function IndustryPage({ params }: { params: { industry: string } 
           </h2>
           <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
             {ind.setupSteps.map((step, i) => (
-              <div key={step.title} className="bg-white rounded-2xl border p-6 shadow-sm">
+              <div
+                key={step.title}
+                className="bg-white rounded-2xl border p-6 shadow-sm"
+              >
                 <span className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-accent/10 text-accent font-bold font-display mb-4">
                   {i + 1}
                 </span>
-                <h3 className="font-semibold font-display mb-2">{step.title}</h3>
+                <h3 className="font-semibold font-display mb-2">
+                  {step.title}
+                </h3>
                 <p className="text-sm text-muted-foreground">{step.body}</p>
               </div>
             ))}
           </div>
         </section>
       )}
+
+      {ind.slug === "short-term-rentals" && <PortfolioSection />}
 
       {/* Use-case blocks */}
       <section className="bg-secondary/50 py-16 md:py-20">
@@ -125,7 +152,9 @@ export default function IndustryPage({ params }: { params: { industry: string } 
               }`}
             >
               <div>
-                <h2 className="text-2xl md:text-3xl font-bold font-display mb-3">{uc.name}</h2>
+                <h2 className="text-2xl md:text-3xl font-bold font-display mb-3">
+                  {uc.name}
+                </h2>
                 <p className="text-muted-foreground text-lg">{uc.body}</p>
               </div>
               <div className="rounded-3xl overflow-hidden border shadow-sm bg-white">
@@ -162,7 +191,10 @@ export default function IndustryPage({ params }: { params: { industry: string } 
         </h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl mx-auto">
           {reassurance.map((r) => (
-            <div key={r.text} className="bg-white rounded-2xl border p-5 flex items-start gap-3 shadow-sm">
+            <div
+              key={r.text}
+              className="bg-white rounded-2xl border p-5 flex items-start gap-3 shadow-sm"
+            >
               <r.icon className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
               <span className="text-sm font-medium">{r.text}</span>
             </div>
@@ -215,10 +247,16 @@ export default function IndustryPage({ params }: { params: { industry: string } 
             Screens up in minutes. Use the TV you already own.
           </h2>
           <p className="text-background/70 text-lg mb-8 max-w-xl mx-auto">
-            $0 for participating screens with approved ad slots — and your venue keeps 70% of cleared revenue.
+            $0 for participating screens with approved ad slots — and your venue
+            keeps 70% of cleared revenue.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="rounded-xl h-14 px-7" asChild>
+            <Button
+              size="lg"
+              variant="secondary"
+              className="rounded-xl h-14 px-7"
+              asChild
+            >
               <Link href={`${APP_URL}/sign-up?role=venue`}>
                 Start Free
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -239,5 +277,5 @@ export default function IndustryPage({ params }: { params: { industry: string } 
         </div>
       </section>
     </div>
-  )
+  );
 }

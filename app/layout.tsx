@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Instrument_Sans, Pacifico, Instrument_Serif } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import "./marketing-theme.css";
 import { SITE_URL } from "@/lib/site";
 
 const instrumentSans = Instrument_Sans({

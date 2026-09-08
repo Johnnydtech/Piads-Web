@@ -39,3 +39,6 @@ tsconfig.tsbuildinfo
 .next-preview/
 
 .next-development/
+
+# Temporary entry points for the complete static review build
+app/**/*.preview.tsx
