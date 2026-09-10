@@ -45,8 +45,8 @@ const venueGuides = [
         id: "create-venue-account",
         title: "Create your venue account",
         description: "Sign up and create your first venue",
-        content: `Step 1: Go to app.piads.co/sign-up?role=venue_owner
-Or click "Start free" anywhere on piads.co. No card is required.
+        content: `Step 1: Create your account
+Use the button above to open signup in a new tab. No card is required.
 
 Step 2: Choose your role
 Select "I'm a Venue" - this sets up your account for screen management and earning from ads.
@@ -640,8 +640,8 @@ const advertiserGuides = [
         id: "create-advertiser-account",
         title: "Create your advertiser account",
         description: "Join as a local business and start advertising",
-        content: `Step 1: Go to app.piads.co/sign-up?role=advertiser
-Or click "Advertise" on piads.co.
+        content: `Step 1: Create your account
+Use the button above to open signup in a new tab.
 
 Step 2: Choose your role
 Select "I'm an Advertiser" - this sets up your account for booking ads on local venue screens.
@@ -1329,6 +1329,9 @@ function GuideItem({ item, color, colorLight, textColor }: {
   textColor: string
 }) {
   const [isOpen, setIsOpen] = useState(false)
+  const signupRole = item.id === "create-venue-account"
+    ? "venue_owner"
+    : item.id === "create-advertiser-account" ? "advertiser" : null
 
   return (
     <div id={item.id} className="border rounded-2xl overflow-hidden scroll-mt-32">
@@ -1364,7 +1367,20 @@ function GuideItem({ item, color, colorLight, textColor }: {
                 const isCapsHeader = /^[A-Z][A-Z\s\/]+(\s*\(.*\))?$/.test(trimmed) && trimmed.length > 3
 
                 if (isStepHeader) {
-                  return <div key={i} className="font-semibold text-foreground mt-3 first:mt-0">{line}</div>
+                  return (
+                    <div key={i} className="font-semibold text-foreground mt-3 first:mt-0">
+                      {line}
+                      {i === 0 && signupRole && (
+                        <Button className="mt-3 mb-2 flex w-full sm:w-fit rounded-full bg-blue hover:bg-blue/90" asChild>
+                          <a href={`${APP_URL}/sign-up?role=${signupRole}`} target="_blank" rel="noopener noreferrer">
+                            Create your account
+                            <ExternalLink className="ml-2 h-4 w-4" aria-hidden="true" />
+                            <span className="sr-only"> (opens in a new tab)</span>
+                          </a>
+                        </Button>
+                      )}
+                    </div>
+                  )
                 }
                 if (isCapsHeader) {
                   return <div key={i} className="font-semibold text-foreground mt-4 first:mt-0">{line}</div>
@@ -1600,7 +1616,7 @@ export default function GetStartedPage() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Button size="lg" className="bg-blue hover:bg-blue/90 rounded-full" asChild>
-                    <Link href={`${APP_URL}/sign-up?role=${activeTab === "venues" ? "venue" : "advertiser"}`}>
+                    <Link href={`${APP_URL}/sign-up?role=${activeTab === "venues" ? "venue_owner" : "advertiser"}`}>
                       {activeTab === "venues" ? "Add Your Venue" : "Start Advertising"}
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
