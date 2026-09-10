@@ -1,0 +1,118 @@
+---
+title: "How Does Digital Signage Work?"
+description: "A plain-English explanation of how digital signage works: the screen, the media player, the software, and how content actually gets from your phone to the TV."
+publishedAt: "2026-09-10"
+author: "PiAds Team"
+tags: ["digital-signage", "how-it-works", "digital-signage-player", "digital-signage-hardware"]
+faqs:
+  - question: "How does digital signage work?"
+    answer: "Digital signage works with three parts. A media player plugged into a screen runs signage software and asks a cloud server what it should be showing. The server replies with a playlist and the files to download. The player caches those files locally and plays them in a loop, checking back every few minutes for changes. When you update content in the dashboard, the next check-in picks it up, so the screen changes without anyone touching the TV."
+  - question: "Does digital signage need internet?"
+    answer: "It needs internet to receive updates, but not to keep playing. Because the player caches content locally, a screen keeps running its last playlist through a wifi outage and syncs again when the connection returns. Only new content requires a live connection."
+  - question: "Do I need a special TV for digital signage?"
+    answer: "No. Any TV with an HDMI port works. A commercial display is worth it for long daily hours or bright, sunlit rooms, but a standard consumer TV plus a $30 media player is how most small businesses start."
+---
+
+Digital signage sounds more complicated than it is. Underneath the marketing, every system on the market works the same way, whether it is one screen in a barbershop or ten thousand in an airport.
+
+Here is what actually happens between you tapping "save" and the TV changing.
+
+## The Three Parts
+
+**1. The screen.** A TV or commercial display. It only shows a picture; it has no idea what signage is.
+
+**2. The media player.** A small computer plugged into the HDMI port: a Fire TV Stick, an Android TV box, a Raspberry Pi, an Apple TV, or a browser on any device. This is what actually runs the show.
+
+**3. The software.** Two halves. A player app on the device, and a cloud dashboard where you decide what plays.
+
+Some commercial displays have a player built in, called system-on-chip. The logic is identical, the computer is just inside the panel.
+
+## What Actually Happens, Step by Step
+
+### Step 1: You pair the screen
+
+You install the player app and it displays a short pairing code. You type that code into your dashboard. That links the physical device to a screen record in your account, so the server knows which content belongs to which TV.
+
+This is a one-time step and usually takes about two minutes.
+
+### Step 2: You build a playlist
+
+In the dashboard you upload images and video, arrange them in order, set how long each one shows, and optionally schedule them: breakfast items until 11am, happy hour after 4pm, a promotion that expires on the 30th.
+
+### Step 3: The player asks what to show
+
+Here is the part most people picture wrongly. The server does not push content to your TV. **The player asks.**
+
+Every few minutes the player calls home and effectively says: "I am screen 12, what should I be playing?" The server replies with a manifest, a list of what to play, in what order, for how long, along with links to the files.
+
+Polling like this is why signage works reliably on ordinary business wifi. The player only makes outbound requests, so there is nothing to open on your firewall and no static IP to configure.
+
+### Step 4: The player downloads and caches
+
+The player downloads the files and stores them locally. This matters more than it sounds: playback runs from local storage, not from the network.
+
+That is why a screen keeps playing during a wifi outage. It is not streaming; it is playing files it already has.
+
+### Step 5: It loops, and checks back
+
+The player runs the playlist end to end, then starts again. Every few minutes it checks whether the manifest changed. If you edited something, the next check-in picks it up and the screen updates itself, typically within a few minutes.
+
+Nobody walks to the TV. That is the entire point of digital signage over a USB stick.
+
+### Step 6: It reports back
+
+Most players also send a heartbeat, a small "I am alive" message with status details. That is what powers the online and offline indicators in your dashboard, and it is how good software can email you when a screen stops checking in.
+
+## What Happens When Things Go Wrong
+
+**Wifi drops.** The screen keeps playing its cached loop. When the connection returns, it syncs.
+
+**Power cut.** The player reboots and starts the app automatically, then pulls a fresh playlist before showing anything. This is why a screen is current again within moments of coming back on, even if you changed something while it was off.
+
+**A file fails to download.** A well-built player skips it and keeps the loop running rather than showing an error on your wall.
+
+**The screen is switched off overnight.** Nothing updates while the device is unpowered, but it catches up the moment it wakes. If the player is on wall power rather than the TV's USB port, it stays connected and updates overnight instead.
+
+## What About Scheduling and Dayparting?
+
+Scheduling happens on the server. The manifest the player receives already accounts for the current time, so the player itself stays simple: it just plays what it was told.
+
+That is how one venue can run a breakfast menu, a lunch menu, and a late-night loop on the same screen without anyone being there at the switchover.
+
+## The Hardware, Concretely
+
+| Piece | Typical choice | Cost |
+|---|---|---|
+| Screen | Any TV with HDMI | $0 reused, $250 to $500 new |
+| Player | Fire TV Stick | ~$30 |
+| Mount | Fixed wall mount | $20 to $40 |
+| Network | Existing wifi | $0 |
+| Software | Cloud dashboard | $0 to $30/mo per screen |
+
+With PiAds, partner screens that enable approved ad slots are free and the venue keeps 70% of cleared ad revenue. Ad-free screens are $10 per screen per month or $100 per year.
+
+## Why This Design Matters To You
+
+Three practical consequences fall out of how signage works:
+
+1. **You can use cheap hardware.** The player only downloads files and plays them. That is not demanding work, which is why a $30 stick is genuinely enough.
+2. **Your content survives your internet.** Local caching means an outage is invisible to customers.
+3. **You are never locked to one screen.** Because the player is generic, moving platforms means installing a different app, not replacing hardware.
+
+## FAQ
+
+### How does digital signage work?
+
+A media player attached to a TV runs signage software, asks a cloud server what to play, downloads and caches those files, and loops them, re-checking every few minutes so your edits appear automatically.
+
+### Does digital signage need internet?
+
+Only to receive updates. Content is cached locally, so screens keep playing through an outage.
+
+### Do I need a special TV for digital signage?
+
+No. Any HDMI TV works. Commercial displays are for long hours and bright rooms.
+
+---
+
+**Want to see it work?** [Pair your first screen free](https://app.piads.co/sign-up). It takes about two minutes.

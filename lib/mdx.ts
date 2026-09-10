@@ -14,6 +14,8 @@ export interface PostMeta {
   image?: string
   tags?: string[]
   readingTime: string
+  /** Optional Q&A pairs, emitted as FAQPage structured data on the post. */
+  faqs?: { question: string; answer: string }[]
 }
 
 export interface Post extends PostMeta {
@@ -45,6 +47,7 @@ export function getAllPosts(): PostMeta[] {
         image: data.image,
         tags: data.tags || [],
         readingTime: readingTime(content).text,
+        faqs: data.faqs || [],
       }
     })
     .sort(
@@ -72,6 +75,7 @@ export function getPostBySlug(slug: string): Post | null {
     image: data.image,
     tags: data.tags || [],
     readingTime: readingTime(content).text,
+    faqs: data.faqs || [],
     content,
   }
 }

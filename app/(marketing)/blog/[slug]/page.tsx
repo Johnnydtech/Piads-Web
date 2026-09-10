@@ -1,4 +1,4 @@
-import { JsonLd, graph, blogPosting, breadcrumbs } from "@/components/seo/json-ld"
+import { JsonLd, graph, blogPosting, breadcrumbs, faqPage } from "@/components/seo/json-ld"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { MDXRemote } from "next-mdx-remote/rsc"
@@ -81,7 +81,15 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <div className="pt-28 pb-12 md:pt-36 md:pb-20">
-      <JsonLd data={graph(blogPosting(post), breadcrumbs([{ name: "Home", path: "/" }, { name: "Blog", path: "/blog" }, { name: post.title, path: `/blog/${post.slug}` }]))} />
+      <JsonLd
+        data={graph(
+          blogPosting(post),
+          breadcrumbs([{ name: "Home", path: "/" }, { name: "Blog", path: "/blog" }, { name: post.title, path: `/blog/${post.slug}` }]),
+          // Posts that answer a question outright declare the Q&A in frontmatter,
+          // so the answer is machine-readable rather than only prose in the body.
+          ...(post.faqs && post.faqs.length ? [faqPage(post.faqs)] : [])
+        )}
+      />
       <article className="container max-w-3xl">
         {/* Header */}
         <header className="mb-12">
