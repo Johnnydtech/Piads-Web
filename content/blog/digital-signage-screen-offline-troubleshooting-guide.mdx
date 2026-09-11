@@ -1,0 +1,80 @@
+---
+title: "Digital Signage Screen Offline? A Troubleshooting Guide for Venue Owners (2026)"
+description: "Why your digital signage screen shows offline, the six most common causes, a step-by-step fix order, and how to stop it from happening again."
+publishedAt: "2026-09-11"
+author: "PiAds Team"
+tags: ["troubleshooting", "how-to", "hardware", "digital-signage"]
+---
+
+A customer mentions your TV has been stuck on the same frozen slide for two days. Or worse — nobody mentions it, and you only notice when you walk past and see a dark screen. Either way, an offline signage screen isn't just an eyesore. It's a lobby, counter, or waiting room actively advertising that nobody's paying attention.
+
+The good news: almost every "offline" screen comes down to one of a handful of causes, and most fix themselves in under five minutes once you know where to look.
+
+## The six most common causes
+
+| Cause | How common | Typical fix time |
+|---|---|---|
+| Wi-Fi dropped or router rebooted | Very common | 1–2 minutes |
+| Power interruption (outlet, power strip, cleaning crew unplugged it) | Very common | 1 minute |
+| Player app crashed or froze | Common | 2–5 minutes |
+| TV went into standby / lost HDMI signal | Common | 1 minute |
+| Pairing expired or screen was unpaired | Occasional | 5 minutes |
+| ISP or building network outage | Rare | Out of your hands |
+
+Notice what's *not* on this list: the signage software itself rarely "breaks." Almost every real-world outage is a network, power, or TV-settings problem — which is exactly why the fix is usually fast once you diagnose it correctly.
+
+## Step 1: Confirm it's actually offline
+
+Before touching anything, check your dashboard rather than assuming. A screen that's merely stuck on old content looks identical to a customer as one that's genuinely disconnected, but the fix is different. This is where live screen health matters: PiAds shows every paired screen as online or offline in real time, with a last-seen timestamp, so you know in seconds whether you're dealing with a connectivity drop or a content problem — instead of driving to the venue to find out.
+
+If the dashboard says **online** but the TV looks wrong, it's a display or content issue (wrong playlist scheduled, HDMI input on the wrong source). If it says **offline**, move to Step 2.
+
+## Step 2: Work through the fix order
+
+Don't randomly restart things — work in this order, cheapest and fastest first:
+
+1. **Check power.** Is the stick or player device actually powered? A loose outlet or a cleaning crew unplugging a strip overnight is the single most common cause of a "broken" screen.
+2. **Check the TV, not just the player.** Many "offline" reports are actually a TV that went into standby or lost its HDMI input after a power blip. Turn the TV on and confirm it's on the right input before assuming the signage box is at fault.
+3. **Check Wi-Fi.** Restart the router if other devices on the same network are also struggling. A signage player that loses its connection will normally reconnect automatically within a minute or two once Wi-Fi is back.
+4. **Restart the player device.** Unplug the Fire TV Stick, Android box, or Raspberry Pi for 10 seconds and plug it back in. This clears a frozen app faster than trying to navigate a stuck interface.
+5. **Re-check pairing.** If the screen was unplugged for an extended period, moved to a new network, or manually unpaired, you may need to re-enter the six-character pairing code from your dashboard. This takes under a minute and doesn't touch your existing playlists or schedule.
+6. **Rule out an outage upstream.** If your phone's own Wi-Fi is down too, this isn't a signage problem — it's an ISP or building issue, and it resolves on its own.
+
+For a full first-time setup rather than a troubleshoot, see the [Fire TV Stick signage setup guide](/blog/fire-tv-stick-digital-signage-setup-guide).
+
+## Why this is worth taking seriously
+
+An offline screen is more than a cosmetic problem. If you're running local ads in your approved slots, downtime is lost impressions for an advertiser who's paying to be seen — and on PiAds, venues keep 75% of every ad booking, so a dark screen is quietly costing you money on top of looking bad. At $10 per screen per month with every feature included, the software cost of running signage well is small; the bigger cost is a screen nobody notices is broken for a week.
+
+## Preventing repeat outages
+
+A few habits eliminate most recurring offline reports:
+
+- **Plug into mains power, not a TV's USB port.** USB ports don't always supply enough power for a 4K stick, which shows up as random reboots.
+- **Use a dedicated 5GHz network or SSID** for signage devices if your Wi-Fi gets congested during busy hours — signage traffic is light, but a saturated 2.4GHz band with dozens of phones on it isn't reliable.
+- **Disable TV sleep and screensaver settings** so the TV itself never quietly stands by mid-shift.
+- **Avoid shared power strips** that get switched off nightly by staff closing up — label the outlet or use a dedicated strip.
+- **Check the dashboard weekly**, not just when a customer complains. Catching a screen that's been offline since 3am beats finding out at 6pm.
+
+If a specific device keeps dropping regardless of network and power fixes, it may be worth comparing player hardware — see how [Raspberry Pi, Fire TV, and Android](/blog/raspberry-pi-vs-fire-tv-vs-android-digital-signage) stack up for reliability, or browse the full list of [supported devices](/devices). Fire TV remains the most dependable everyday option for most venues — see [PiAds for Fire TV](/players/fire-tv).
+
+## FAQ
+
+**Why does my screen show offline but the TV still displays content?**
+The player caches your last content and keeps looping it during a brief disconnect, then re-syncs automatically once the connection returns. The screen isn't broken — it's just running on cached content until it reconnects.
+
+**How long can a screen stay offline before content stops playing?**
+There's no hard limit for cached playback, but a long outage (days, not minutes) means the screen won't receive new uploads or schedule changes until it reconnects.
+
+**Do I need to re-pair the screen every time it disconnects?**
+No. Re-pairing is only needed if the screen was manually unpaired, factory reset, or moved to a network where the original pairing was lost. A normal Wi-Fi drop reconnects on its own.
+
+**Is a Raspberry Pi more or less reliable than a Fire TV Stick for staying online?**
+Both are reliable once set up correctly. Fire TV Sticks win on convenience and cost; a hardwired Raspberry Pi with an ethernet connection can be slightly more resilient in venues with weak Wi-Fi, at the cost of more setup effort.
+
+**What if the screen has been offline for hours and none of the fixes work?**
+That's the point to check for a hardware fault — try the pairing code on a different device (even the free [browser-based player](/blog/browser-based-digital-signage)) to confirm whether the problem is the venue's network or the player unit itself.
+
+---
+
+*Keep every screen online and earning. [Start free with PiAds](https://app.piads.co/sign-up?role=venue) — $10/screen/month, no contract.*
