@@ -18,7 +18,21 @@ export const ORGANIZATION = {
   name: "PiAds",
   url: SITE_URL,
   logo: `${SITE_URL}/logo/apple-touch-icon.png`,
-  sameAs: ["https://apps.apple.com/us/app/piads/id6759892788", "https://play.google.com/store/apps/details?id=co.piads.kiosk"],
+  sameAs: [
+    "https://apps.apple.com/us/app/piads/id6759892788",
+    "https://play.google.com/store/apps/details?id=co.piads.kiosk",
+    "https://www.instagram.com/piads.co/",
+    "https://www.tiktok.com/@piadstv",
+    "https://www.facebook.com/profile.php?id=61594186383552",
+  ],
+}
+
+export const WEBSITE = {
+  "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
+  name: "PiAds",
+  url: SITE_URL,
+  publisher: { "@id": `${SITE_URL}/#organization` },
 }
 
 export const SOFTWARE_APPLICATION = {
@@ -29,7 +43,7 @@ export const SOFTWARE_APPLICATION = {
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web, Fire TV, Android TV, Raspberry Pi, iOS",
   description:
-    "Digital signage for local venues with a built-in local advertising marketplace. Free for partner screens that enable approved ad slots; venues keep 70% of cleared ad revenue.",
+    "Digital signage and guest welcome screens for vacation rentals, property managers, and local businesses. Manage welcome messages, house guides, local recommendations, and business content from one dashboard, with an optional local advertising marketplace.",
   offers: [
     { "@type": "Offer", name: "Partner plan", price: "0", priceCurrency: "USD", description: "Free for screens that enable approved ad slots. Venue keeps 70% of cleared ad revenue." },
     { "@type": "Offer", name: "Ad-free screen", price: "10", priceCurrency: "USD", description: "$10 per screen per month, or $100 per screen per year, for screens without ad slots." },

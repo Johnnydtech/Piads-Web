@@ -84,8 +84,9 @@ export function HomeContent() {
             starts with <em>hello.</em>
           </h1>
           <p className={styles.heroDescription}>
-            Turn every property’s TV into a personal welcome, a local guide, and
-            your most thoughtful hosting touch. One stay or a whole portfolio.
+            PiAds turns your TVs into digital guest welcome screens, with house
+            guides and local recommendations. Manage one stay or a whole
+            portfolio from one simple dashboard.
           </p>
           <div className={styles.heroButtons}>
             <a className={styles.buttonLime} href={SIGN_UP} onClick={() => trackCta("Create your first welcome", "hero")}>

@@ -5,23 +5,32 @@ import {
   graph,
   ORGANIZATION,
   SOFTWARE_APPLICATION,
+  WEBSITE,
 } from "@/components/seo/json-ld";
+import { SITE_URL } from "@/lib/site";
+
+const title = "PiAds | Digital Signage & Guest Welcome Screens";
+const description =
+  "PiAds turns TVs into digital signage and guest welcome screens. Share house guides, local recommendations, and business content from one simple dashboard.";
 
 // Server wrapper: the homepage body is a client component (scroll-driven hero),
 // and client components cannot export metadata. Canonical + JSON-LD live here.
 export const metadata: Metadata = {
-  title: { absolute: "PiAds — A Better Stay Starts With Hello" },
-  description:
-    "Turn your short-term rental TV into a personal welcome, house guide, and local recommendations. Free with approved ad slots. Keep 70% of cleared ad revenue.",
+  title: { absolute: title },
+  description,
   openGraph: {
-    title: "PiAds — A Better Stay Starts With Hello",
-    description:
-      "A personal welcome, a local guide, and your most thoughtful hosting touch. On the TV you already own.",
+    type: "website",
+    url: SITE_URL,
+    siteName: "PiAds",
+    title,
+    description,
+    images: [{ url: "/og.png", width: 1200, height: 630 }],
   },
   twitter: {
-    title: "PiAds — A Better Stay Starts With Hello",
-    description:
-      "A personal welcome, a local guide, and your most thoughtful hosting touch.",
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/og.png"],
   },
   alternates: { canonical: "/" },
 };
@@ -29,7 +38,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <JsonLd data={graph(ORGANIZATION, SOFTWARE_APPLICATION)} />
+      <JsonLd data={graph(WEBSITE, ORGANIZATION, SOFTWARE_APPLICATION)} />
       <HomeContent />
     </>
   );
