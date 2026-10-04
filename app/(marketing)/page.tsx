@@ -6,7 +6,9 @@ import {
   ORGANIZATION,
   SOFTWARE_APPLICATION,
   WEBSITE,
+  faqPage,
 } from "@/components/seo/json-ld";
+import { PRODUCT_FAQS } from "@/lib/product-answers";
 import { SITE_URL } from "@/lib/site";
 
 const title = "PiAds | Digital Signage & Guest Welcome Screens";
@@ -38,7 +40,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <JsonLd data={graph(WEBSITE, ORGANIZATION, SOFTWARE_APPLICATION)} />
+      <JsonLd data={graph(WEBSITE, ORGANIZATION, SOFTWARE_APPLICATION, faqPage(PRODUCT_FAQS))} />
       <HomeContent />
     </>
   );

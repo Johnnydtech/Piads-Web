@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/site"
+import { PRODUCT_SUMMARY } from "@/lib/product-answers"
 
 /** Renders a JSON-LD block. Pass a single schema object or an array. */
 export function JsonLd({ data }: { data: object | object[] }) {
@@ -42,10 +43,9 @@ export const SOFTWARE_APPLICATION = {
   url: SITE_URL,
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web, Fire TV, Android TV, Raspberry Pi, iOS",
-  description:
-    "Digital signage and guest welcome screens for vacation rentals, property managers, and local businesses. Manage welcome messages, house guides, local recommendations, and business content from one dashboard, with an optional local advertising marketplace.",
+  description: PRODUCT_SUMMARY,
   offers: [
-    { "@type": "Offer", name: "Partner plan", price: "0", priceCurrency: "USD", description: "Free for screens that enable approved ad slots. Venue keeps 70% of cleared ad revenue." },
+    { "@type": "Offer", name: "Partner plan", price: "0", priceCurrency: "USD", description: "Free for screens with qualifying marketplace ad slots. Venue keeps 70% of cleared ad revenue." },
     { "@type": "Offer", name: "Ad-free screen", price: "10", priceCurrency: "USD", description: "$10 per screen per month, or $100 per screen per year, for screens without ad slots." },
   ],
   publisher: { "@id": `${SITE_URL}/#organization` },

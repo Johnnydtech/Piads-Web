@@ -24,6 +24,7 @@ import {
   Smartphone,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { PLAN_ANSWER } from "@/lib/product-answers"
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
 // Store listings — keep in step with players/fire-tv and the homepage hero.
@@ -46,95 +47,67 @@ const venueGuides = [
         title: "Create your venue account",
         description: "Sign up and create your first venue",
         content: `Step 1: Create your account
-Use the button above to open signup in a new tab. No card is required.
+Use the signup button above. Create an account with your email or Google and verify your email if prompted. No card is required to try PiAds.
 
-Step 2: Choose your role
-Select "I'm a Venue" - this sets up your account for screen management and earning from ads.
+Step 2: Tell us about your space
+Enter your space name, type, and address. PiAds prepares your first venue, Main screen, and starter playlist. Rental spaces get guest welcome content you can personalize.
 
-Step 3: Sign up
-• Enter your email address
-• Create a password (or sign up with Google)
-• Verify your email if prompted
+Step 3: Preview and customize
+The Screens page shows your prepared screen as Ready to connect. Follow the first-visit tour. Choose Play preview to see your content inside the dashboard; use Assign content or Layout to make changes.
 
-Step 4: Create your venue
-After signing in, you'll be prompted to create your first venue:
-• Business name (e.g., "Joe's Coffee Shop")
-• Address (helps advertisers find you)
-• Venue type (cafe, restaurant, gym, salon, etc.)
-
-Step 5: Choose your next step
-After creating your venue, you'll see options to:
-• Connect a screen
-• Create a playlist
-• Upload media
-
-Tip: We recommend connecting your first screen next!
+Step 4: Connect to your TV
+Choose Connect to TV for the prepared screen. Open a compatible PiAds player on the TV and enter the pairing code shown there. You do not need to create a second screen for the same TV.
 
 WHAT IT COSTS
-PiAds is free for partner screens - screens that enable approved local ad slots. Screens that never enable ad slots are $10 per screen per month or $100 per year. See "Plans and billing" under Earning with Ads.`,
+${PLAN_ANSWER}`,
       },
       {
         id: "add-first-screen",
         title: "Connect your first screen",
         description: "Install the player app, enter the pairing code, done — about 2 minutes",
-        content: `PiAds has a native player app for the devices most venues already own. Pick the one behind your TV.
+        content: `Choose a compatible player for your TV. Check the current app-store listing before buying hardware.
 
-FIRE TV / FIRE TV STICK
-Search "PiAds" in the Amazon Appstore on the device, or open ${AMAZON_APPSTORE_URL}. Works on Fire TV Sticks, Cubes, Fire TV Edition TVs, and the new Vega OS devices.
+FIRE TV
+Install PiAds from the Amazon Appstore on a compatible Fire TV device: ${AMAZON_APPSTORE_URL}
 
-ANDROID TV / GOOGLE TV / ANDROID TABLETS
-Install "PiAds Player" from Google Play: ${GOOGLE_PLAY_URL}
+ANDROID TV / GOOGLE TV
+Install PiAds Player from Google Play: ${GOOGLE_PLAY_URL}
 
-NO DEVICE YET
-In the dashboard, click "New Screen" and choose "Web Player" to open a browser-based player on any computer or smart TV browser. Good for testing before you buy anything.
+TRY IT IN THE DASHBOARD
+Choose Play preview on your screen card to preview its content inside PiAds. A preview does not pair the computer as a physical screen.
 
-Step 1: Open the player app
-It shows a pairing code on the TV — eight characters, displayed as ABC-123-XY.
+PAIR YOUR TV
+1. Open the player on your TV to display its pairing code.
+2. On Screens, choose Connect to TV for your prepared screen.
+3. Enter the code and complete the connection.
+4. Confirm the screen is online and check playback on the actual TV. Your prepared playlist is already assigned; use Assign content to change it.
 
-Step 2: Add a screen in PiAds
-In your dashboard (app.piads.co) go to Screens and click "Connect screen".
-
-Step 3: Enter the pairing code
-Type the code from the TV and give the screen a name (e.g., "Front Counter TV").
-
-Step 4: Connect and activate
-The screen pairs instantly and appears on your Screens page. Open it and toggle it active. You'll see a live "Online" badge and a preview of what's playing.
-
-Next: attach a playlist or media so it has something to show.
+MOVING FROM A BROWSER TO A TV
+If you paired a browser for testing, use the screen’s menu to unpair that player, then pair the TV using its new code. Keep your existing screen and content.
 
 MANAGE FROM YOUR PHONE
-The free PiAds iOS app (${APP_STORE_URL}) shows every screen's status, lets you change what's playing, approve ads, and pause a screen from anywhere.`,
+The PiAds iPhone and iPad app (${APP_STORE_URL}) lets you manage screens, content, playlists, and schedules.`,
       },
       {
         id: "device-setup",
         title: "All supported player devices",
         description: "Android TV, Fire TV, Raspberry Pi, and Web Player",
-        content: `PiAds supports multiple device types. The Google Play app is the easiest way to get started.
+        content: `FIRE TV
+Install PiAds from the Amazon Appstore: ${AMAZON_APPSTORE_URL}. Use the listing to check device compatibility.
 
-ANDROID TV / FIRE TV / ANDROID TABLET (Recommended)
-1. Download "PiAds Player" from Google Play:
-   https://play.google.com/store/apps/details?id=co.piads.kiosk
-2. Open the app — a pairing code appears (ABC-123-XY)
-3. In PiAds dashboard, click "New Screen" and enter the code
-4. Done! Your screen connects instantly
+ANDROID TV / GOOGLE TV / ANDROID
+Install PiAds Player from Google Play: ${GOOGLE_PLAY_URL}. Availability depends on the device.
 
-Works with: Android TV, Fire TV Stick, Fire TV Cube, Android tablets, Chromecast with Google TV, and any Android 7+ device.
+RASPBERRY PI
+Contact PiAds for the appropriate player image and supported board before installing. Follow the supplied setup instructions, then pair using the code on the display.
 
-RASPBERRY PI (Best for permanent 24/7 displays)
-1. Request the PiAds Player image from your dashboard (Screens > New Screen > Raspberry Pi)
-2. Flash the image to your SD card using Balena Etcher
-3. Insert SD card and power on your Raspberry Pi
-4. Connect to your WiFi or Ethernet
-5. The player will display a pairing code
-6. Enter the code in the dashboard — your screen connects automatically!
+WEB BROWSER
+For a quick content check, choose Play preview on your screen card. To use a browser as a connected player, choose the browser player option in the screen connection flow and pair it using its code. Keep the player open and the device awake.
 
-WEB PLAYER (For testing or computer displays)
-1. Click "New Screen" in dashboard and select "Web Player"
-2. Click "Launch Web Player" to open the player in a new tab
-3. Copy the pairing code and paste it back in the dashboard
-4. Your screen connects automatically!
+IPHONE AND IPAD
+Use the PiAds management app to control screens and content. A compatible player connected to the TV handles playback.
 
-Tip: The Google Play app works on the widest range of devices and is the easiest to set up. Raspberry Pi is best for permanent, always-on installations.`,
+For current options and limitations, see piads.co/devices. Resolution, offline support, and video playback depend on the device and content.`,
       },
     ],
   },

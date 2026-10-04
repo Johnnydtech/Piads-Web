@@ -1,3 +1,4 @@
+import { PLAN_ANSWER, REVENUE_ANSWER } from "@/lib/product-answers"
 
 import { SignupLink } from "@/components/signup-link";
 import { JsonLd, graph, faqPage, breadcrumbs } from "@/components/seo/json-ld"
@@ -28,7 +29,7 @@ const venueFeatures = [
   "Scheduling and dayparts",
   "Screen health and remote management",
   "Marketplace access",
-  "Campaign-by-campaign approval",
+  "Manual approval or optional Instant Book",
   "Ad category controls",
   "Proof-of-play reporting",
   "Clear payout reporting",
@@ -44,13 +45,14 @@ const advertiserFeatures = [
 ]
 
 const faqs = [
+  { question: "Can I try PiAds without ads?", answer: PLAN_ANSWER },
   {
     question: "What makes the Partner plan free?",
     answer: "Partner screens enable approved marketplace ad slots. Advertising funds the platform, so the signage software costs the venue $0 while the screen remains eligible and participating. See how the free plan compares to other free tiers at piads.co/free-digital-signage.",
   },
   {
     question: "What if I don't want ads on my screens?",
-    answer: "You can still use PiAds. Screens that don't enable approved ad slots are billed at $10 per screen per month, or $100 per screen per year. Switch a screen to the Partner plan at any time and its fee drops to $0.",
+    answer: "You can still use PiAds. Screens that don't enable approved ad slots are billed at $10 per screen per month, or $100 per screen per year. Screens become eligible for the free Partner plan when they offer qualifying ad slots; check your dashboard for billing status.",
   },
   {
     question: "How much ad space do I have to enable?",
@@ -58,11 +60,11 @@ const faqs = [
   },
   {
     question: "Can I reject an ad?",
-    answer: "Yes. Every campaign requires your approval before it can play. You can also control categories and decline ads that do not fit your venue.",
+    answer: "Yes. Review bookings yourself and decline those that do not fit your venue, or enable optional Instant Book for automatic approval. You control your ad availability and content guidelines.",
   },
   {
     question: "How does the 70% share work?",
-    answer: "For a cleared $100 ad booking, your venue receives $70 and PiAds retains $30 for marketplace operations, payments, support, and the signage platform.",
+    answer: REVENUE_ANSWER,
   },
   {
     question: "Is ad revenue guaranteed?",
@@ -84,8 +86,8 @@ export default function PricingPage() {
           <span className="mb-7 inline-flex items-center gap-2 rounded-full border border-blue/20 bg-blue/5 px-4 py-2 text-sm font-semibold text-blue">
             <HandCoins className="h-4 w-4" /> Pricing that works for your venue
           </span>
-          <h1 className="font-display text-5xl font-bold leading-[1] tracking-[-0.045em] text-gray-950 md:text-7xl">Your signage is free when your screen earns.</h1>
-          <p className="mx-auto mt-7 max-w-2xl text-xl leading-relaxed text-gray-600">Enable approved local ad slots, pay $0 for PiAds, and keep 70% of cleared advertising revenue.</p>
+          <h1 className="font-display text-5xl font-bold leading-[1] tracking-[-0.045em] text-gray-950 md:text-7xl">Try it free. Choose how your screens work.</h1>
+          <p className="mx-auto mt-7 max-w-2xl text-xl leading-relaxed text-gray-600">{PLAN_ANSWER}</p>
         </div>
       </section>
 
@@ -106,7 +108,7 @@ export default function PricingPage() {
                 <Button className="mt-10 h-14 w-full rounded-xl bg-white text-base font-semibold text-gray-950 hover:bg-white/90" asChild>
                   <SignupLink href={`${APP_URL}/sign-up?role=venue_owner`}>Start free <ArrowRight className="ml-2 h-5 w-5" /></SignupLink>
                 </Button>
-                <p className="mt-4 text-center text-sm text-white/45">No card required · Cancel participation anytime</p>
+                <p className="mt-4 text-center text-sm text-white/45">No card required to try · Ad-free plans available</p>
               </div>
 
               <div className="bg-white/[0.04] p-8 md:p-12">
@@ -119,7 +121,7 @@ export default function PricingPage() {
                 <div className="mt-10 rounded-2xl border border-white/10 bg-white/[0.06] p-6">
                   <div className="flex items-center justify-between gap-5">
                     <div><p className="text-sm text-white/50">Venue revenue share</p><p className="mt-1 text-4xl font-bold text-coral">70%</p></div>
-                    <p className="max-w-xs text-right text-sm leading-relaxed text-white/55">You approve the campaign. Your venue receives the majority of every cleared booking.</p>
+                    <p className="max-w-xs text-right text-sm leading-relaxed text-white/55">Your venue receives 70% of cleared ad revenue. Bookings and earnings depend on demand and delivery.</p>
                   </div>
                 </div>
               </div>
@@ -136,7 +138,7 @@ export default function PricingPage() {
               <h2 className="font-display text-4xl font-bold tracking-tight text-gray-950 md:text-5xl">You keep the bigger piece.</h2>
               <p className="mt-5 text-lg leading-relaxed text-gray-600">PiAds funds the signage platform through its share of marketplace bookings. Your venue keeps 70% because your location, audience, and screen make the campaign valuable.</p>
               <div className="mt-8 space-y-4">
-                {["Your content stays first", "You choose when ad slots exist", "You approve every campaign", "You see each play and payout"].map((item) => (
+                {["You manage your own content", "You choose when ad slots exist", "Choose manual or automatic approval", "Track recorded plays and payouts"].map((item) => (
                   <div key={item} className="flex items-center gap-3 font-medium text-gray-800"><BadgeCheck className="h-5 w-5 text-blue" />{item}</div>
                 ))}
               </div>

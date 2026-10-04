@@ -1,3 +1,4 @@
+import { PLAN_ANSWER, APPROVAL_ANSWER, REVENUE_ANSWER } from "@/lib/product-answers"
 
 import { SignupLink } from "@/components/signup-link";
 import Link from "next/link"
@@ -31,7 +32,7 @@ const benefits = [
   {
     icon: DollarSign,
     title: "Low cost",
-    description: "A $30–60 stick you may already own — no $200+ proprietary signage player.",
+    description: "Use a compatible Fire TV device you already own. Check current device pricing if you need hardware.",
   },
   {
     icon: Zap,
@@ -45,8 +46,8 @@ const benefits = [
   },
   {
     icon: Sparkles,
-    title: "It pays for itself",
-    description: "PiAds screens can run local ads — you keep 70% of every booking.",
+    title: "Optional ad revenue",
+    description: "Offer qualifying ad slots and keep 70% of cleared ad revenue. Bookings and income are not guaranteed.",
   },
 ]
 
@@ -54,7 +55,7 @@ const steps = [
   {
     n: "1",
     title: "Plug in your Fire TV Stick",
-    body: "Any Fire TV Stick (4K recommended) or Fire TV built-in television works. Connect it to Wi-Fi.",
+    body: "Check that PiAds is available for your device in the Amazon Appstore, then connect the device to your TV and internet.",
   },
   {
     n: "2",
@@ -64,27 +65,28 @@ const steps = [
   {
     n: "3",
     title: "Pair from your dashboard",
-    body: "In app.piads.co, go to Screens → Connect screen, enter the code, and name the screen.",
+    body: "In app.piads.co, choose Connect to TV for your prepared screen and enter the code. Use Connect screen when adding another display.",
   },
   {
     n: "4",
     title: "Your content is live",
-    body: "Playlists and schedules you set in the dashboard start playing immediately — and keep playing through network hiccups.",
+    body: "Confirm your screen is online and check its assigned content on the TV. Cached content can continue offline; live online content and new updates need a connection.",
   },
 ]
 
 const faqs = [
+  { q: "Do I have to approve ads myself?", a: APPROVAL_ANSWER },
   {
     q: "Which Fire TV devices does PiAds support?",
-    a: "Fire TV Stick (Lite, HD, 4K, 4K Max), Fire TV Cube, Fire TV built-in televisions, and the newest generation of Vega-based Fire TV devices. One app, the whole family.",
+    a: "PiAds has an Amazon Appstore player for compatible Fire TV devices. Check the listing on your specific device, including its operating system and region, before buying hardware.",
   },
   {
     q: "Do I need to buy special signage hardware?",
-    a: "No. If there's already a Fire TV Stick behind your TV, you're one app install away from digital signage. If not, a stick costs $30–60 on Amazon — compare that to $200–500 proprietary players other platforms require.",
+    a: "No proprietary signage player is required. If you already have a compatible Fire TV device, install PiAds from its Amazon Appstore listing. Hardware purchases are separate from the software plan.",
   },
   {
     q: "What happens if the internet drops?",
-    a: "The player caches your content and keeps playing. When the connection returns, it syncs any changes automatically.",
+    a: "Downloaded content can continue playing through offline caching. New content, live websites, and remote changes need an internet connection. Test your content on your device.",
   },
   {
     q: "Can the TV still be used as a normal TV?",
@@ -92,11 +94,11 @@ const faqs = [
   },
   {
     q: "How does my screen earn money?",
-    a: "Local advertisers book slots on your screen through the PiAds marketplace. Your own content always comes first — ads fill the gaps you allow — and you keep 70% of every booking.",
+    a: REVENUE_ANSWER,
   },
   {
     q: "What does it cost?",
-    a: "$0 for participating Partner screens that enable approved marketplace ad slots. You keep 70% of cleared ad revenue.",
+    a: PLAN_ANSWER,
   },
 ]
 
@@ -114,10 +116,10 @@ export default function FireTvPlayerPage() {
             Digital signage on the Fire TV Stick you already own
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl">
-            PiAds runs natively on the entire Fire TV family — sticks, cubes,
-            built-in TVs, and the newest Vega devices. Plug in, pair with a
-            code from the TV, and your screen is live in minutes. Then let it
-            earn: PiAds screens run local ads and you keep 70%.
+            Turn a compatible Fire TV device into a guest welcome screen,
+            menu board, or business display. Install PiAds from the Amazon
+            Appstore, pair your prepared screen, and manage its content from
+            the dashboard. Advertising is optional.
           </p>
           <div className="flex flex-wrap gap-4">
             <Button size="lg" className="rounded-xl h-14 px-7" asChild>

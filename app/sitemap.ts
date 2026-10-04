@@ -3,6 +3,7 @@ import { getAllPosts } from "@/lib/mdx"
 import { INDUSTRIES } from "@/lib/industries"
 import { COMPETITORS } from "@/lib/competitors"
 import { SITE_URL } from "@/lib/site"
+import { PRODUCT_REVIEWED_AT } from "@/lib/product-answers"
 
 // Bump when a static page materially changes. A fresh Date() on every build
 // told Google everything changed daily, which it learns to ignore.
@@ -15,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date("2026-10-02"),
+      lastModified: new Date(PRODUCT_REVIEWED_AT),
       changeFrequency: "weekly",
       priority: 1,
     },
@@ -27,19 +28,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/pricing`,
-      lastModified: STATIC_UPDATED,
+      lastModified: new Date(PRODUCT_REVIEWED_AT),
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/free-digital-signage`,
-      lastModified: STATIC_UPDATED,
+      lastModified: new Date(PRODUCT_REVIEWED_AT),
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/digital-signage-ad-revenue`,
-      lastModified: STATIC_UPDATED,
+      lastModified: new Date(PRODUCT_REVIEWED_AT),
       changeFrequency: "monthly",
       priority: 0.9,
     },
@@ -51,13 +52,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/get-started`,
-      lastModified: STATIC_UPDATED,
+      lastModified: new Date(PRODUCT_REVIEWED_AT),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: STATIC_UPDATED,
+      lastModified: new Date(PRODUCT_REVIEWED_AT),
       changeFrequency: "monthly",
       priority: 0.7,
     },
@@ -69,13 +70,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/devices`,
-      lastModified: STATIC_UPDATED,
+      lastModified: new Date(PRODUCT_REVIEWED_AT),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${baseUrl}/players/fire-tv`,
-      lastModified: STATIC_UPDATED,
+      lastModified: new Date(PRODUCT_REVIEWED_AT),
       changeFrequency: "monthly",
       priority: 0.8,
     },

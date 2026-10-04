@@ -1,3 +1,4 @@
+import { PLAN_ANSWER, APPROVAL_ANSWER, REVENUE_ANSWER } from "@/lib/product-answers"
 
 import { SignupLink } from "@/components/signup-link";
 import type { Metadata } from "next"
@@ -13,11 +14,11 @@ import { ArrowRight, Check, CircleDollarSign, ShieldCheck, MapPin, Sparkles, Sto
 export const metadata: Metadata = {
   title: "Digital Signage That Pays You: Earn Ad Revenue From Your Venue Screens",
   description:
-    "Turn the TVs in your cafe, gym, salon, or shop into income. Local businesses book ad slots between your own content, you approve every ad, and you keep 70%. The software is free for partner screens.",
+    "Turn the TVs in your cafe, gym, salon, or shop into income. Local businesses book ad slots between your own content, you choose how ads are approved, and you keep 70%. The software is free for partner screens.",
   alternates: { canonical: "/digital-signage-ad-revenue" },
   openGraph: {
     title: "Digital Signage That Pays You — Earn From Your Venue Screens",
-    description: "Local advertisers book your screens, you approve every ad, you keep 70%. Free software for partner screens.",
+    description: "Local advertisers book your screens, you choose how ads are approved, you keep 70%. Free software for partner screens.",
     url: "/digital-signage-ad-revenue",
   },
 }
@@ -25,21 +26,21 @@ export const metadata: Metadata = {
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
 
 const STEPS = [
-  { icon: Store, title: "Run your own content", text: "Menus, promos, announcements, the game. Your playlist always plays first. Ads only fill the gaps you open." },
+  { icon: Store, title: "Run your own content", text: "Menus, promotions, announcements, and guest welcomes. Approved ads rotate with your content during the time windows you make available." },
   { icon: Clock, title: "Open the slots you choose", text: "Pick the dayparts and how much inventory to make available. Breakfast only, evenings only, or all day — and change it any time." },
   { icon: MapPin, title: "Local businesses book them", text: "Nearby gyms, salons, dentists, and shops find your screen on the PiAds marketplace and book by daypart. No national ad networks." },
-  { icon: BadgeCheck, title: "You approve every ad", text: "Nothing plays without your sign-off. Decline a creative, block whole categories, or pause ads with one tap in the iOS app." },
+  { icon: BadgeCheck, title: "Choose how ads are approved", text: "Review bookings yourself, or turn on optional Instant Book for automatic approval. Set content guidelines and available time windows." },
   { icon: CircleDollarSign, title: "You get paid 70%", text: "For every cleared booking your venue receives 70%. Payouts and proof-of-play show up in your dashboard." },
 ]
 
 const FAQS = [
-  { question: "How much can a venue earn from digital signage ads?", answer: "It depends on foot traffic, location, the dayparts you open, and how many local advertisers book. Venues set their own slot prices on PiAds — many start around $8 to $25 per daypart per day. For every cleared booking the venue keeps 70%. Earnings are not guaranteed; they follow real advertiser demand." },
-  { question: "What is the revenue split?", answer: "70% to the venue, 30% to PiAds. On a $100 cleared booking your venue receives $70. PiAds' share funds the marketplace, payments, support, and the signage software, which is why partner screens pay $0 for the platform." },
+  { question: "How much can a venue earn from digital signage ads?", answer: "It depends on foot traffic, location, the dayparts you open, and how many local advertisers book. Venues set their own slot prices on PiAds — prices vary by venue and time window. For every cleared booking the venue keeps 70%. Earnings are not guaranteed; they follow real advertiser demand." },
+  { question: "What is the revenue split?", answer: REVENUE_ANSWER },
   { question: "Who are the advertisers?", answer: "Local businesses near your venue — not national ad networks. They browse venues on the PiAds marketplace, choose your screen and a daypart, and submit a campaign for your approval." },
-  { question: "Do I have to run ads to use PiAds?", answer: "No. Screens that don't enable ad slots are billed $10 per screen per month or $100 per year. Enable approved ad slots and that screen's software is free, plus it earns." },
-  { question: "Can I reject an ad or block a category?", answer: "Yes. Every campaign requires your approval before it plays. You can decline individual creatives and block categories such as alcohol, competitors, or anything that doesn't fit your venue." },
+  { question: "Do I have to run ads to use PiAds?", answer: PLAN_ANSWER },
+  { question: "Who controls which ads appear?", answer: APPROVAL_ANSWER },
   { question: "How is this different from Loop TV, Atmosphere, or programmatic screen networks?", answer: "Ad-network products fill your TV from national or programmatic demand and share a slice of the revenue. PiAds is the reverse: your content is the program, local businesses you approve book the slots, and the venue keeps 70%. It is a marketplace you control, not a channel you host." },
-  { question: "When and how do I get paid?", answer: "Bookings clear after the campaign runs and payments settle; payouts are tracked in your dashboard with proof-of-play for each spot. There is a minimum payout threshold before funds are sent." },
+  { question: "When and how do I get paid?", answer: "Your dashboard shows payout setup, status, and history. Complete the required payout verification. Refunds and delivery adjustments can affect earnings; a booking total is not the same as money paid out." },
 ]
 
 export default function AdRevenuePage() {
@@ -58,8 +59,8 @@ export default function AdRevenuePage() {
           </h1>
           {/* Direct answer, one paragraph, quotable. */}
           <p className="mt-7 max-w-3xl text-xl leading-relaxed text-gray-700">
-            PiAds turns venue screens into income. Your own content plays first; local businesses book short ad slots in the gaps you open;
-            you approve every ad; and your venue keeps <strong className="text-gray-950">70% of every cleared booking</strong>. Because advertising
+            PiAds turns venue screens into income. Local businesses book short ad slots during the time windows you open;
+            you choose how ads are approved; and your venue keeps <strong className="text-gray-950">70% of every cleared booking</strong>. Because advertising
             funds the platform, the signage software is <strong className="text-gray-950">free for partner screens</strong>.
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -105,7 +106,7 @@ export default function AdRevenuePage() {
             </p>
             <ul className="mt-8 space-y-4">
               {[
-                "Venues typically price dayparts from about $8 to $25 per day, higher in busy locations.",
+                "Venues set their prices. Advertisers see the available inventory and total before payment.",
                 "Earnings follow real local demand — we don't promise a monthly number, and neither should anyone.",
                 "Partner screens pay $0 for the software. Ad-free screens are $10/month or $100/year.",
                 "Proof-of-play shows every spot that ran; payouts are itemized per booking.",
@@ -139,7 +140,7 @@ export default function AdRevenuePage() {
                 {[
                   ["What plays", "Their channel or programmatic fill, with your promos in between", "Your content first; ads only in slots you open"],
                   ["Who advertises", "National / programmatic demand", "Local businesses near you"],
-                  ["Approval", "Category controls at best", "Every campaign approved by you"],
+                  ["Approval", "Category controls at best", "Manual approval or optional Instant Book"],
                   ["Your share", "A share of network revenue", "70% of each cleared booking"],
                   ["Software cost", "Usually free, ad-funded", "$0 for partner screens; $10/mo without ads"],
                   ["Hardware", "Often their box", "Fire TV Stick, Android TV, Pi, or browser you own"],

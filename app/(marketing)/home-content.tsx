@@ -24,6 +24,7 @@ import styles from "./stays.module.css";
 import { CoastalHeroMedia } from "@/components/coastal-hero-media";
 import { PortfolioSection } from "@/components/portfolio-section";
 import { INDUSTRIES } from "@/lib/industries";
+import { PRODUCT_FAQS } from "@/lib/product-answers";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co";
 const SIGN_UP = `${APP_URL}/sign-up?role=venue_owner`;
@@ -31,32 +32,6 @@ const PHOTO = "/stays/coastal-retreat.webp";
 const tabs = ["Welcome", "House guide", "Local favorites"] as const;
 type ScreenTab = (typeof tabs)[number];
 
-const faqs = [
-  [
-    "Will it work with the TV I already have?",
-    "PiAds works with Fire TV Stick, Android TV, Google TV, Raspberry Pi, and supported browsers. Connect your device, open the player, and enter the pairing code in your PiAds dashboard. You can check the full device list before getting started.",
-  ],
-  [
-    "Can my guests still watch their favorite shows?",
-    "Yes. PiAds runs as an app on your device. Guests can switch to their usual streaming apps whenever they like. Their own streaming subscriptions and the device’s normal controls still apply.",
-  ],
-  [
-    "Do I have to update it for every booking?",
-    "You can save a standing welcome screen or personalize names, dates, and house details from your phone before each arrival. Changes appear on your connected screen when you save. Booking details are managed by you.",
-  ],
-  [
-    "Can I manage more than one property?",
-    "Yes. Your screens live together in one dashboard, with online status and content controls. Give each property its own welcome and local recommendations, and manage your portfolio from the same account.",
-  ],
-  [
-    "How does the free plan work?",
-    "Participating screens that enable approved marketplace ad slots can use PiAds for $0. You choose the ad inventory and approve each campaign, and keep 70% of cleared ad revenue. Earnings depend on campaigns, availability, and advertiser demand; revenue is not guaranteed. See the full pricing page for current plan details.",
-  ],
-  [
-    "What happens if the internet drops?",
-    "The player can continue showing cached content and sync again when connectivity returns. New changes and online content need a connection, so keep important house information in your saved screen content.",
-  ],
-];
 
 export function HomeContent() {
   const [tab, setTab] = useState<ScreenTab>("Welcome");
@@ -504,7 +479,7 @@ export function HomeContent() {
             <div>
               <h3>Your space. Your standards.</h3>
               <p>
-                You choose the content and approve every ad. Guests can switch
+                You choose your content and ad approval settings. Guests can switch
                 to their favorite streaming apps whenever they’re ready.
               </p>
             </div>
@@ -533,19 +508,19 @@ export function HomeContent() {
         <div className={styles.steps}>
           {[
             {
-              icon: Monitor,
-              title: "Connect your TV",
-              text: "Open PiAds on a supported device. Enter the pairing code, and your screen is ready.",
-            },
-            {
               icon: Home,
-              title: "Make it feel like you",
-              text: "Add your welcome, Wi-Fi, house notes, and favorite local spots. Give every stay its own personality.",
+              title: "Tell us about your space",
+              text: "Create your account and enter your space details. PiAds prepares your first screen and starter playlist.",
             },
             {
               icon: Check,
-              title: "Put your welcome to work",
-              text: "Publish to your screen. Refresh it for new guests, and add approved local offers when you choose.",
+              title: "Make it feel like you",
+              text: "Add your welcome, Wi-Fi, house notes, and favorite local spots. Use Play preview to check it in your dashboard.",
+            },
+            {
+              icon: Monitor,
+              title: "Connect your TV",
+              text: "Open the player on a supported device. Choose Connect to TV in your dashboard and enter the player's pairing code.",
             },
           ].map((step, index) => (
             <article key={step.title}>
@@ -574,7 +549,7 @@ export function HomeContent() {
           </h2>
           <p>
             Introduce guests to local businesses you’re happy to recommend.
-            Enable approved marketplace ad slots, use PiAds free, and keep 70%
+            Offer qualifying marketplace ad slots, use PiAds free, and keep 70%
             of cleared ad revenue.
           </p>
           <a className={styles.buttonLime} href={SIGN_UP}>
@@ -592,7 +567,7 @@ export function HomeContent() {
           <div className={styles.price}>
             $0<span>/ participating screen</span>
           </div>
-          <p>With approved marketplace ad slots.</p>
+          <p>With qualifying marketplace ad slots.</p>
           <div className={styles.revenueSplit}>
             <span>You keep</span>
             <strong>
@@ -613,13 +588,13 @@ export function HomeContent() {
           </div>
           <ul>
             <li>
-              <Check size={17} /> You approve every campaign
+              <Check size={17} /> Manual approval or optional Instant Book
             </li>
             <li>
               <Check size={17} /> You choose when ads run
             </li>
             <li>
-              <Check size={17} /> Your own content stays the priority
+              <Check size={17} /> Schedule ads alongside your content
             </li>
           </ul>
           <small>
@@ -645,7 +620,7 @@ export function HomeContent() {
           </a>
         </div>
         <div className={styles.faqItems}>
-          {faqs.map(([question, answer], index) => (
+          {PRODUCT_FAQS.map(({ question, answer, href, linkLabel }, index) => (
             <div className={styles.faqItem} key={question}>
               <h3>
                 <button
@@ -666,14 +641,9 @@ export function HomeContent() {
                 hidden={openFaq !== index}
               >
                 <p>{answer}</p>
-                {index === 0 && (
-                  <a href="/devices">
-                    See supported devices <ArrowUpRight size={14} />
-                  </a>
-                )}
-                {index === 4 && (
-                  <a href="/pricing">
-                    View pricing <ArrowUpRight size={14} />
+                {href && (
+                  <a href={href}>
+                    {linkLabel} <ArrowUpRight size={14} />
                   </a>
                 )}
               </div>
