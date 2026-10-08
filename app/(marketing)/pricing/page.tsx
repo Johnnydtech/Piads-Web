@@ -1,4 +1,4 @@
-import { PLAN_ANSWER, REVENUE_ANSWER } from "@/lib/product-answers"
+import { PLAN_ANSWER, REVENUE_ANSWER, ADVERTISER_PRICE_ANSWER } from "@/lib/product-answers"
 
 import { SignupLink } from "@/components/signup-link";
 import { JsonLd, graph, faqPage, breadcrumbs } from "@/components/seo/json-ld"
@@ -45,6 +45,7 @@ const advertiserFeatures = [
 ]
 
 const faqs = [
+  { question: "How much does advertising cost?", answer: ADVERTISER_PRICE_ANSWER },
   { question: "Can I try PiAds without ads?", answer: PLAN_ANSWER },
   {
     question: "What makes the Partner plan free?",
@@ -164,7 +165,7 @@ export default function PricingPage() {
               <span className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-teal/10 text-teal"><Store className="h-6 w-6" /></span>
               <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-teal">For advertisers</p>
               <h2 className="font-display text-4xl font-bold tracking-tight text-gray-950 md:text-5xl">Reach real customers in the places they visit.</h2>
-              <p className="mt-5 text-lg leading-relaxed text-gray-600">Book selected screens by venue, location, and daypart. Start locally without a billboard-sized commitment.</p>
+              <p className="mt-5 text-lg leading-relaxed text-gray-600">{ADVERTISER_PRICE_ANSWER}</p>
               <Button className="mt-8 h-12 rounded-xl bg-gray-950 px-7 font-semibold hover:bg-gray-800" asChild><Link href={`${APP_URL}/sign-up?role=advertiser`}>Browse venues <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">

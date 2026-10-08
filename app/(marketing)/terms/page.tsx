@@ -245,11 +245,7 @@ export default function TermsPage() {
                     <p className="text-sm text-muted-foreground mb-3">
                       Pricing is set by individual Venues based on location, screen size, daypart, and demand. All prices in USD.
                     </p>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="bg-[#7E8BA3]/10 rounded-lg px-3 py-1.5 text-sm">Breakfast: $8-12</span>
-                      <span className="bg-[#7E8BA3]/10 rounded-lg px-3 py-1.5 text-sm">Lunch: $12-18</span>
-                      <span className="bg-[#7E8BA3]/10 rounded-lg px-3 py-1.5 text-sm">Evening: $15-25</span>
-                    </div>
+                    <p className="text-sm text-muted-foreground">The booking total depends on your selected screens, dates, time windows, and ad spots. Review the exact total before payment; there is no fixed weekly advertising package.</p>
                   </div>
 
                   <div className="border rounded-2xl p-5">

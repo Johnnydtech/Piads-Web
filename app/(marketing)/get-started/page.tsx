@@ -1,5 +1,6 @@
 "use client"
 
+import { ADVERTISER_PRICE_ANSWER } from "@/lib/product-answers"
 import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -815,42 +816,16 @@ Most venues respond within 24-48 hours.`,
         id: "set-budget",
         title: "Budgeting and pricing guide",
         description: "Plan your advertising spend",
-        content: `TYPICAL PRICING
+        content: `${ADVERTISER_PRICE_ANSWER}
 
-Per daypart, per day:
-• Breakfast: $8 - $12
-• Lunch: $12 - $18
-• Evening: $15 - $25
+PLAN YOUR BUDGET
+• Start with one screen and a time window that suits your audience.
+• Select your dates to check current availability and pricing.
+• Compare the quote with your budget before adding more locations or ad spots.
+• Review the final booking total and listed plays before paying.
 
-(Prices vary by venue location, traffic, and demand)
-
-STARTER BUDGET: $50-75/WEEK
-
-With this budget you can get:
-• 1-2 screens
-• 1-2 dayparts
-• 7 days of exposure
-• Estimated 1,000-2,000 impressions
-
-EXAMPLE CAMPAIGNS
-
-Budget-friendly ($50/week):
-• 1 venue, lunch daypart, 7 days
-• Great for testing
-
-Mid-range ($150/week):
-• 2-3 venues, lunch + evening, 7 days
-• Good coverage
-
-Premium ($300+/week):
-• 3-5 venues, all dayparts, 7 days
-• Maximum reach
-
-COST-SAVING TIPS
-• Book multiple days at once (some venues offer discounts)
-• Start with one daypart to test effectiveness
-• Try less popular dayparts (breakfast often cheaper)
-• Look for newer venues offering intro pricing
+UNDERSTAND YOUR RESULTS
+Recorded plays measure screen playback, not the number of people who saw your ad. Audience size, responses, and sales are not guaranteed.
 
 ROI TRACKING
 Track your return by:
@@ -1585,7 +1560,7 @@ export default function GetStartedPage() {
                 <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                   {activeTab === "venues"
                     ? "Free for partner screens, and you keep 70% of every ad booking. Setup takes about five minutes."
-                    : "Reach local customers where they already spend time. Start with just $50/week."}
+                    : "Reach local customers where they already spend time. Choose your screens and dates to see current ad prices."}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Button size="lg" className="bg-blue hover:bg-blue/90 rounded-full" asChild>

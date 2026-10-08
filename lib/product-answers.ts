@@ -1,6 +1,6 @@
 // Shared public facts: keep visible answers, structured data, and llms.txt aligned.
 // Reviewed against CMS signup/setup and billing components on this date.
-export const PRODUCT_REVIEWED_AT = "2026-10-04";
+export const PRODUCT_REVIEWED_AT = "2026-10-08";
 
 export const PRODUCT_SUMMARY =
   "PiAds is cloud digital signage software for guest welcome screens and business displays. Hosts, property managers, and local businesses use one dashboard to manage welcome messages, house guides, images, videos, playlists, and schedules. An optional marketplace lets advertisers book available venue screens.";
@@ -13,6 +13,9 @@ export const APPROVAL_ANSWER =
 
 export const REVENUE_ANSWER =
   "Venues keep 70% of cleared ad revenue and PiAds retains 30%. A cleared $100 booking means $70 for the venue and $30 for PiAds. Earnings depend on advertiser demand and campaign delivery; enabling ad slots does not guarantee bookings or income.";
+
+export const ADVERTISER_PRICE_ANSWER =
+  "Venues set their own ad rates. Your booking total depends on the screens, dates, time windows, and number of ad spots you select. There is no fixed weekly PiAds advertising package. Review the exact total before paying; availability and venue approval apply.";
 
 export const SETUP_ANSWER =
   "Create your account, then enter your space name, type, and address. PiAds prepares your first screen and starter playlist. On the Screens page, customize your content, use Play preview to check it in the dashboard, and choose Connect to TV to pair the prepared screen using the code on your player.";
@@ -67,6 +70,12 @@ export const PRODUCT_FAQS = [
     answer: APPROVAL_ANSWER,
     href: "/digital-signage-ad-revenue",
     linkLabel: "Understand ad controls",
+  },
+  {
+    question: "How much does advertising on PiAds cost?",
+    answer: ADVERTISER_PRICE_ANSWER,
+    href: "/pricing",
+    linkLabel: "Understand advertising prices",
   },
   {
     question: "How much can I earn from ads?",
