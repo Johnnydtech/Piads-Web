@@ -1,12 +1,24 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ArrowUpRight, Check, Download, ImagePlus, Loader2, MapPin, Sparkles, Star, X } from 'lucide-react'
+import { ArrowUpRight, Check, Copy, Download, FileText, ImagePlus, Loader2, Lock, MapPin, Sparkles, Star, X } from 'lucide-react'
 import { WelcomeScreen, type WelcomePick, type WelcomeScreenData } from '@/components/welcome-screen'
 import { TurnstileWidget } from '@/components/turnstile-widget'
 import { track, trackCta } from '@/lib/analytics'
 import { hostSignupUrl } from '@/lib/signup-links'
 import styles from './generator.module.css'
+import {
+  CHECKOUT_STEPS,
+  DEFAULT_KIT,
+  HOUSE_RULES,
+  KIT_PAGES,
+  PAGE_H,
+  PAGE_W,
+  buildKitPdf,
+  guestMessages,
+  type KitData,
+  type KitDetails,
+} from './kit'
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://api.piads.co').replace(/\/$/, '')
 const SIGN_UP = hostSignupUrl(process.env.NEXT_PUBLIC_APP_URL || 'https://app.piads.co', 'short_term_rental')
@@ -16,6 +28,10 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const DEFAULT_GUEST = 'Maya'
 const DEFAULT_MESSAGE = 'Make yourself at home. Here are a few of our favorite spots nearby.'
 const DEFAULT_CHECKOUT = 'Checkout is at 11 AM. Just lock up and leave the keys on the counter.'
+// Phone photos run 3-8 MB; anything far past that is not a photo of a living room.
+const MAX_PHOTO_BYTES = 20 * 1024 * 1024
+const PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+const THUMB_W = 200
 
 interface Generated {
   location: { formatted_address: string; city: string }
@@ -49,6 +65,11 @@ export function WelcomeBookGenerator() {
   const [message, setMessage] = useState(DEFAULT_MESSAGE)
   const [checkout, setCheckout] = useState(DEFAULT_CHECKOUT)
   const [photo, setPhoto] = useState<string | null>(null)
+  const [photoError, setPhotoError] = useState('')
+  // Wi-Fi details stay in this component's state: they are drawn onto the
+  // printables on the device and never sent anywhere.
+  const [kit, setKit] = useState<KitDetails>(DEFAULT_KIT)
+  const [copied, setCopied] = useState<string | null>(null)
 
   const [token, setToken] = useState<string | null>(null)
   const [captchaReset, setCaptchaReset] = useState(0)
@@ -58,10 +79,13 @@ export function WelcomeBookGenerator() {
   const [gateError, setGateError] = useState('')
   const [downloading, setDownloading] = useState(false)
   const [exporting, setExporting] = useState(false)
+  const [unlocked, setUnlocked] = useState(false)
+  const [buildingKit, setBuildingKit] = useState(false)
 
   const addressRef = useRef<HTMLInputElement>(null)
   const workspaceRef = useRef<HTMLElement>(null)
   const exportRef = useRef<HTMLDivElement>(null)
+  const kitStageRef = useRef<HTMLDivElement>(null)
 
   // The photo never leaves the browser: it is an object URL, released when
   // replaced or when the page goes away.
@@ -127,9 +151,35 @@ export function WelcomeBookGenerator() {
 
   function onPhoto(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
-    if (!file || !file.type.startsWith('image/')) return
+    e.target.value = ''
+    if (!file) return
+    if (!PHOTO_TYPES.includes(file.type)) {
+      setPhotoError('Use a JPG, PNG or WebP photo.')
+      return
+    }
+    if (file.size > MAX_PHOTO_BYTES) {
+      setPhotoError('That photo is too large. Try one under 20 MB.')
+      return
+    }
+    setPhotoError('')
+    // An object URL: the photo is shown and exported from this device only.
     setPhoto(URL.createObjectURL(file))
     track('welcome_generator_photo_added')
+  }
+
+  function toggle(list: 'rules' | 'checkoutSteps', item: string) {
+    setKit((k) => ({ ...k, [list]: k[list].includes(item) ? k[list].filter((x) => x !== item) : [...k[list], item] }))
+  }
+
+  async function copyMessage(title: string, text: string) {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopied(title)
+      setTimeout(() => setCopied((c) => (c === title ? null : c)), 1800)
+      track('welcome_generator_message_copied', { message: title })
+    } catch {
+      setCopied(null)
+    }
   }
 
   const screen: WelcomeScreenData = {
@@ -144,6 +194,45 @@ export function WelcomeBookGenerator() {
     weather: result?.weather ?? null,
   }
 
+  const kitData: KitData = {
+    propertyName: propertyName.trim(),
+    message: message.trim(),
+    checkout: checkout.trim(),
+    city: result?.location.city || '',
+    picks,
+    details: { ...kit, wifiName: kit.wifiName.trim(), wifiPassword: kit.wifiPassword.trim() },
+  }
+  const fileSlug = (result?.location.city || 'piads').toLowerCase().replace(/[^a-z0-9]+/g, '-')
+
+  function save(href: string, filename: string) {
+    const a = document.createElement('a')
+    a.href = href
+    a.download = filename
+    a.click()
+  }
+
+  async function exportKit() {
+    setBuildingKit(true)
+    try {
+      // Mount the full-size pages off-screen, let fonts settle, then draw them.
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))
+      await document.fonts?.ready
+      const stage = kitStageRef.current
+      if (!stage) throw new Error('kit stage missing')
+      const blob = await buildKitPdf(Array.from(stage.children) as HTMLElement[])
+      const url = URL.createObjectURL(blob)
+      save(url, `host-starter-kit-${fileSlug}.pdf`)
+      setTimeout(() => URL.revokeObjectURL(url), 10_000)
+      track('welcome_generator_kit_downloaded', {
+        pages: KIT_PAGES.length,
+        has_wifi: !!kitData.details.wifiName,
+        rules: kitData.details.rules.length,
+      })
+    } finally {
+      setBuildingKit(false)
+    }
+  }
+
   async function exportPng() {
     setExporting(true)
     try {
@@ -156,10 +245,7 @@ export function WelcomeBookGenerator() {
       )
       const { toPng } = await import('html-to-image')
       const dataUrl = await toPng(node, { width: 1920, height: 1080, pixelRatio: 1, backgroundColor: '#17130F' })
-      const a = document.createElement('a')
-      a.href = dataUrl
-      a.download = `welcome-screen-${(result?.location.city || 'piads').toLowerCase().replace(/[^a-z0-9]+/g, '-')}.png`
-      a.click()
+      save(dataUrl, `welcome-screen-${fileSlug}.png`)
       track('welcome_generator_downloaded', { picks: picks.length })
     } finally {
       setExporting(false)
@@ -182,11 +268,21 @@ export function WelcomeBookGenerator() {
       body: JSON.stringify({ email: value, city: result?.location.city || '', picks: picks.length }),
     }).catch(() => undefined)
     track('welcome_generator_lead')
+    setUnlocked(true)
     try {
-      await exportPng()
+      await exportKit()
       setGateOpen(false)
     } catch {
-      setGateError('We couldn’t build the image. Please try again.')
+      setGateError('We couldn’t build your kit. Please try again.')
+    } finally {
+      setDownloading(false)
+    }
+  }
+
+  async function downloadAgain(kind: 'kit' | 'png') {
+    setDownloading(true)
+    try {
+      await (kind === 'kit' ? exportKit() : exportPng())
     } finally {
       setDownloading(false)
     }
@@ -249,7 +345,7 @@ export function WelcomeBookGenerator() {
           <ul className={styles.heroPoints}>
             <li><Check size={15} aria-hidden /> Free, no account</li>
             <li><Check size={15} aria-hidden /> Real places, today’s hours</li>
-            <li><Check size={15} aria-hidden /> Download it or put it on your TV</li>
+            <li><Check size={15} aria-hidden /> Free printable kit: Wi-Fi sign, checkout card, local guide</li>
           </ul>
         </div>
       </section>
@@ -320,8 +416,15 @@ export function WelcomeBookGenerator() {
             <label className={styles.photoButton}>
               <ImagePlus size={17} aria-hidden />
               {photo ? 'Change the background photo' : 'Add a photo of your place'}
-              <input type="file" accept="image/*" onChange={onPhoto} className="sr-only" />
+              <input type="file" accept={PHOTO_TYPES.join(',')} onChange={onPhoto} className="sr-only" />
             </label>
+            {photoError ? (
+              <p className={styles.photoError} role="alert">{photoError}</p>
+            ) : (
+              <p className={styles.privacyNote}>
+                <Lock size={12} aria-hidden /> Your photo stays on your device. It is not uploaded.
+              </p>
+            )}
 
             {ready ? (
               <>
@@ -363,9 +466,18 @@ export function WelcomeBookGenerator() {
                   >
                     Put it on my TV, free <ArrowUpRight size={18} aria-hidden />
                   </a>
-                  {gateOpen ? (
+                  {unlocked ? (
+                    <div className={styles.downloads}>
+                      <button type="button" className={styles.secondary} onClick={() => downloadAgain('kit')} disabled={downloading}>
+                        <FileText size={17} aria-hidden /> Printable kit (PDF)
+                      </button>
+                      <button type="button" className={styles.secondary} onClick={() => downloadAgain('png')} disabled={downloading}>
+                        <Download size={17} aria-hidden /> TV screen (PNG)
+                      </button>
+                    </div>
+                  ) : gateOpen ? (
                     <form className={styles.gate} onSubmit={submitGate} noValidate>
-                      <label htmlFor="wg-email">Where should we send it? Enter your email to download.</label>
+                      <label htmlFor="wg-email">Enter your email and the kit downloads right away.</label>
                       <div>
                         <input
                           id="wg-email"
@@ -384,7 +496,7 @@ export function WelcomeBookGenerator() {
                     </form>
                   ) : (
                     <button type="button" className={styles.secondary} onClick={() => setGateOpen(true)}>
-                      <Download size={17} aria-hidden /> Download for your TV (PNG)
+                      <Download size={17} aria-hidden /> Get the free starter kit
                     </button>
                   )}
                   <p className={styles.fineprint}>
@@ -396,12 +508,132 @@ export function WelcomeBookGenerator() {
             ) : null}
           </aside>
         </div>
+
+        {ready ? (
+          <div className={styles.kit} aria-labelledby="kit-title">
+            <div className={styles.kitHead}>
+              <p className={styles.kicker}>Free host starter kit</p>
+              <h2 id="kit-title">Everything your guests ask about, printed and ready</h2>
+              <p>
+                A welcome and Wi-Fi sign with a scan-to-join code, a checkout card, a local guide with map links, and
+                the messages to send before and after each stay. Built on your device: your Wi-Fi password is never sent to us.
+              </p>
+            </div>
+
+            <div className={styles.kitGrid}>
+              <div>
+                <ul className={styles.thumbs}>
+                  {KIT_PAGES.map(({ key, label, Page }) => (
+                    <li key={key}>
+                      <div className={styles.thumb} style={{ width: THUMB_W, height: (PAGE_H * THUMB_W) / PAGE_W }}>
+                        <div style={{ width: PAGE_W, height: PAGE_H, transform: `scale(${THUMB_W / PAGE_W})`, transformOrigin: 'top left' }}>
+                          <Page data={kitData} />
+                        </div>
+                      </div>
+                      <span>{label}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <h3 className={styles.kitSubhead}>Messages to send your guests</h3>
+                <ul className={styles.messages}>
+                  {guestMessages(kitData).map((m) => (
+                    <li key={m.title}>
+                      <div className={styles.messageHead}>
+                        <strong>{m.title}</strong>
+                        <span>{m.when}</span>
+                        <button type="button" onClick={() => copyMessage(m.title, m.text)}>
+                          {copied === m.title ? <Check size={14} aria-hidden /> : <Copy size={14} aria-hidden />}
+                          {copied === m.title ? 'Copied' : 'Copy'}
+                        </button>
+                      </div>
+                      <p>{m.text}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <aside className={styles.panel}>
+                <h2>Kit details</h2>
+                <div className={styles.field}>
+                  <label htmlFor="wg-wifi">Wi-Fi network</label>
+                  <input
+                    id="wg-wifi"
+                    value={kit.wifiName}
+                    maxLength={32}
+                    autoComplete="off"
+                    placeholder="e.g. CoastalHouse"
+                    onChange={(e) => setKit((k) => ({ ...k, wifiName: e.target.value }))}
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="wg-wifi-pass">Wi-Fi password</label>
+                  <input
+                    id="wg-wifi-pass"
+                    value={kit.wifiPassword}
+                    maxLength={63}
+                    autoComplete="off"
+                    spellCheck={false}
+                    placeholder="Leave empty if there is none"
+                    onChange={(e) => setKit((k) => ({ ...k, wifiPassword: e.target.value }))}
+                  />
+                  <small>
+                    <Lock size={11} aria-hidden /> Stays on this device. Leave both empty to get a sign you can write on.
+                  </small>
+                </div>
+                <fieldset className={styles.checks}>
+                  <legend>House rules</legend>
+                  {HOUSE_RULES.map((r) => (
+                    <label key={r}>
+                      <input type="checkbox" checked={kit.rules.includes(r)} onChange={() => toggle('rules', r)} /> {r}
+                    </label>
+                  ))}
+                </fieldset>
+                <fieldset className={styles.checks}>
+                  <legend>Checkout steps</legend>
+                  {CHECKOUT_STEPS.map((s) => (
+                    <label key={s}>
+                      <input type="checkbox" checked={kit.checkoutSteps.includes(s)} onChange={() => toggle('checkoutSteps', s)} /> {s}
+                    </label>
+                  ))}
+                </fieldset>
+                {unlocked ? (
+                  <button type="button" className={styles.secondary} onClick={() => downloadAgain('kit')} disabled={downloading}>
+                    {downloading ? <Loader2 size={16} className={styles.spin} aria-hidden /> : <FileText size={17} aria-hidden />}
+                    Download the kit again
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className={styles.secondary}
+                    onClick={() => {
+                      setGateOpen(true)
+                      workspaceRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                    }}
+                  >
+                    <Download size={17} aria-hidden /> Get the free starter kit
+                  </button>
+                )}
+              </aside>
+            </div>
+          </div>
+        ) : null}
       </section>
 
       {exporting && ready ? (
         <div aria-hidden className={styles.exportStage}>
           <div ref={exportRef} style={{ position: 'relative', width: 1920, height: 1080 }}>
             <WelcomeScreen data={screen} frozen />
+          </div>
+        </div>
+      ) : null}
+
+      {buildingKit && ready ? (
+        <div aria-hidden className={styles.exportStage} style={{ width: PAGE_W, height: 'auto' }}>
+          <div ref={kitStageRef}>
+            {KIT_PAGES.map(({ key, Page }) => (
+              <Page key={key} data={kitData} />
+            ))}
           </div>
         </div>
       ) : null}

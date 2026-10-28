@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 
-// A host who downloaded their welcome screen from /airbnb-welcome-book-generator.
+// A host who downloaded the starter kit from /airbnb-welcome-book-generator.
 // Same delivery as the newsletter and contact forms (a Resend notification to
 // the team inbox) until a proper list provider is wired up.
 
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
           to: ["hello@piads.co"],
           subject: `Welcome book generator lead${city ? ` (${city})` : ""}`,
           html:
-            `<p><strong>${escapeHtml(email)}</strong> downloaded a welcome screen from the generator.</p>` +
+            `<p><strong>${escapeHtml(email)}</strong> downloaded the host starter kit from the generator.</p>` +
             `<p>City: ${escapeHtml(city || "unknown")}<br/>Local picks kept: ${picks}</p>` +
             `<p>They have not signed up yet. Worth a follow-up about putting it on their TV.</p>`,
         }),

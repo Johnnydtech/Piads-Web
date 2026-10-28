@@ -431,6 +431,162 @@
   }
 }
 
+.privacyNote,
+.photoError {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 0;
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+.photoError {
+  color: #b42318;
+}
+.field small {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.downloads {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.downloads .secondary {
+  font-size: 0.88rem;
+}
+.secondary:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* ---- starter kit ----------------------------------------------------- */
+.kit {
+  margin-top: 56px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line);
+}
+.kitHead {
+  max-width: 720px;
+  margin-bottom: 28px;
+}
+.kitHead h2 {
+  margin: 8px 0 0;
+  font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  line-height: 1.12;
+}
+.kitHead p:last-child {
+  margin: 12px 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.kitGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 350px;
+  gap: 28px;
+  align-items: start;
+}
+.thumbs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+.thumbs li {
+  flex: none;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.thumb {
+  overflow: hidden;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(18, 58, 46, 0.12), 0 14px 28px -18px rgba(18, 58, 46, 0.45);
+  pointer-events: none;
+}
+.kitSubhead {
+  margin: 34px 0 12px;
+  font-size: 1.05rem;
+  font-weight: 650;
+}
+.messages {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+.messages li {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.messageHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.messageHead span {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.messageHead button {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+.messages p {
+  margin: 8px 0 0;
+  line-height: 1.55;
+  font-size: 0.92rem;
+}
+.checks {
+  border: 0;
+  padding: 0;
+  margin: 4px 0 14px;
+  display: grid;
+  gap: 7px;
+}
+.checks legend {
+  font-size: 0.8rem;
+  font-weight: 650;
+  margin-bottom: 6px;
+  padding: 0;
+}
+.checks label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+.checks input {
+  accent-color: var(--forest);
+  width: 16px;
+  height: 16px;
+}
+
 /* The PNG export renders a full 1920x1080 copy off-screen. */
 .exportStage {
   position: fixed;
@@ -603,8 +759,10 @@
 }
 
 @media (max-width: 1024px) {
-  .grid {
-    grid-template-columns: 1fr;
+  /* minmax(0, ...) so the scrolling thumbnail row can't widen the column. */
+  .grid,
+  .kitGrid {
+    grid-template-columns: minmax(0, 1fr);
   }
   .panel {
     position: static;

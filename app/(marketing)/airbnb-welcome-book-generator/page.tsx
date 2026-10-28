@@ -12,7 +12,7 @@ const PATH = '/airbnb-welcome-book-generator'
 export const metadata: Metadata = {
   title: 'Free Airbnb Welcome Book Generator (TV-Ready)',
   description:
-    'Type your rental’s address and get a welcome book with the best-rated coffee, food, drinks and things to do nearby, laid out for your TV. Free, no signup.',
+    'Type your rental’s address and get a TV welcome screen plus a free printable host starter kit: Wi-Fi sign with QR code, checkout card, local guide and guest messages. Free, no signup.',
   alternates: { canonical: PATH },
   openGraph: {
     title: 'Free Airbnb Welcome Book Generator',
@@ -25,7 +25,17 @@ const FAQS = [
   {
     question: 'Is the welcome book generator really free?',
     answer:
-      'Yes. Generating, editing and downloading your welcome screen is free and needs no account. If you want it on your TV and keeping itself current, PiAds is free for hosts who enable approved local ad slots, or $10 per screen per month without ads.',
+      'Yes. Generating, editing and downloading your welcome screen and starter kit is free and needs no account. If you want it on your TV and keeping itself current, PiAds is free for hosts who enable approved local ad slots, or $10 per screen per month without ads.',
+  },
+  {
+    question: 'What is in the free host starter kit?',
+    answer:
+      'A printable PDF with a welcome and Wi-Fi sign (guests scan the QR code to join your Wi-Fi), a checkout card with your steps, a local guide where each spot has a QR code that opens Google Maps, and three ready-to-send guest messages for check-in, checkout and reviews. You also get your welcome screen as a TV-sized image.',
+  },
+  {
+    question: 'Is my Wi-Fi password safe?',
+    answer:
+      'Your Wi-Fi password and your photo never leave your device. The kit is built in your browser and downloaded straight to you; PiAds never receives either one.',
   },
   {
     question: 'Where do the local recommendations come from?',
@@ -45,7 +55,7 @@ const FAQS = [
   {
     question: 'Do you save my address?',
     answer:
-      'We use your address only to look up places near you. It is not tied to you or saved to an account. If you download the image, we ask for your email and may follow up once about putting it on your TV.',
+      'We use your address only to look up places near you. It is not tied to you or saved to an account. If you download the kit, we ask for your email and may follow up once about putting it on your TV.',
   },
   {
     question: 'Why a TV instead of a printed welcome book?',
