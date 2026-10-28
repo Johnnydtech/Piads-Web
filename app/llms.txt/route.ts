@@ -21,6 +21,7 @@ ${PRODUCT_FAQS.map(({ question, answer, href }) => `### ${question}\n\n${answer}
 - Setup guide: ${SITE_URL}/get-started
 - Features: ${SITE_URL}/features
 - Guest welcome screens: ${SITE_URL}/digital-signage-for/short-term-rentals
+- Free Airbnb welcome book generator: ${SITE_URL}/airbnb-welcome-book-generator
 - Free Partner plan: ${SITE_URL}/free-digital-signage
 - Venue advertising and revenue: ${SITE_URL}/digital-signage-ad-revenue
 - Contact: ${SITE_URL}/contact

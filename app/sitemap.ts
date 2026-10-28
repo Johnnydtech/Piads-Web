@@ -45,6 +45,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/airbnb-welcome-book-generator`,
+      lastModified: new Date("2026-10-28"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/blog`,
       lastModified: STATIC_UPDATED,
       changeFrequency: "weekly",

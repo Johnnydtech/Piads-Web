@@ -19,6 +19,8 @@ for (const [slug, entry] of Object.entries(INDUSTRY_SIGNUP)) {
   }
   console.log('PASS built signup links', slug, links.length)
 }
+// The welcome book generator is a short-term-rental page: its signups land in STR onboarding.
+assert.equal(signupUseCaseForPath('/airbnb-welcome-book-generator'), 'short_term_rental')
 assert.equal(signupUseCaseForPath('/'), undefined)
 assert.equal(signupUseCaseForPath('/pricing'), undefined)
 assert.equal(industrySignup('__proto__'), null)
