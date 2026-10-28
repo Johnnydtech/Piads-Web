@@ -55,7 +55,7 @@ const FAQS = [
   {
     question: 'Do you save my address?',
     answer:
-      'We use your address only to look up places near you. It is not tied to you or saved to an account. If you download the kit, we ask for your email and may follow up once about putting it on your TV.',
+      'We use your address only to look up places near you. It is not tied to you or saved to an account. When you download the kit you can leave your email or phone, both optional, and we may follow up once about putting it on your TV.',
   },
   {
     question: 'Why a TV instead of a printed welcome book?',

@@ -414,6 +414,25 @@
   color: #b42318;
   font-size: 0.85rem;
 }
+.gate .gateLead {
+  color: var(--ink);
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.gate .gateLead span {
+  color: var(--muted);
+  font-weight: 500;
+}
+.gate .gateSubmit {
+  justify-content: center;
+  height: 44px;
+}
+.gate .gateNote {
+  color: var(--muted);
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
 .fineprint {
   margin: 2px 0 0;
   color: var(--muted);

@@ -25,6 +25,13 @@ const SIGN_UP = hostSignupUrl(process.env.NEXT_PUBLIC_APP_URL || 'https://app.pi
 const NEEDS_CAPTCHA = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+/** Mirrors the API's normalize_phone: +country code, or a US/Canada number with area code. */
+function phoneLooksValid(raw: string): boolean {
+  const digits = raw.replace(/\D/g, '')
+  if (raw.trim().startsWith('+')) return digits.length >= 8 && digits.length <= 15
+  return digits.length === 10 || (digits.length === 11 && digits.startsWith('1'))
+}
+
 const DEFAULT_GUEST = 'Maya'
 const DEFAULT_MESSAGE = 'Make yourself at home. Here are a few of our favorite spots nearby.'
 const DEFAULT_CHECKOUT = 'Checkout is at 11 AM. Just lock up and leave the keys on the counter.'
@@ -76,6 +83,7 @@ export function WelcomeBookGenerator() {
 
   const [gateOpen, setGateOpen] = useState(false)
   const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [gateError, setGateError] = useState('')
   const [downloading, setDownloading] = useState(false)
   const [exporting, setExporting] = useState(false)
@@ -254,20 +262,39 @@ export function WelcomeBookGenerator() {
 
   async function submitGate(e: React.FormEvent) {
     e.preventDefault()
-    const value = email.trim()
-    if (!EMAIL_RE.test(value)) {
-      setGateError('Enter a valid email address.')
+    // Both are optional: the kit downloads either way. Whatever is filled in
+    // must be valid, so a typo doesn't become a dead lead.
+    const emailValue = email.trim()
+    const phoneValue = phone.trim()
+    if (emailValue && !EMAIL_RE.test(emailValue)) {
+      setGateError('That email doesn’t look right. Fix it or leave it empty.')
+      return
+    }
+    if (phoneValue && !phoneLooksValid(phoneValue)) {
+      setGateError('Add the area code to your phone number, or leave it empty.')
       return
     }
     setGateError('')
     setDownloading(true)
-    // Record the lead, but never let a failed notification block the download.
-    fetch('/api/welcome-generator-lead', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: value, city: result?.location.city || '', picks: picks.length }),
-    }).catch(() => undefined)
-    track('welcome_generator_lead')
+    if (emailValue || phoneValue) {
+      // The API saves the lead and mirrors it to HubSpot. Fire-and-forget:
+      // a failed lead must never block the download.
+      fetch(`${API_URL}/api/v1/guests/generator-leads`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: JSON.stringify({
+          email: emailValue || null,
+          phone: phoneValue || null,
+          city: result?.location.city || null,
+          picks: picks.length,
+          turnstile_token: token,
+        }),
+      })
+        .catch(() => undefined)
+        .finally(() => setCaptchaReset((n) => n + 1))
+    }
+    track('welcome_generator_lead', { shared_email: !!emailValue, shared_phone: !!phoneValue })
     setUnlocked(true)
     try {
       await exportKit()
@@ -477,22 +504,36 @@ export function WelcomeBookGenerator() {
                     </div>
                   ) : gateOpen ? (
                     <form className={styles.gate} onSubmit={submitGate} noValidate>
-                      <label htmlFor="wg-email">Enter your email and the kit downloads right away.</label>
-                      <div>
-                        <input
-                          id="wg-email"
-                          type="email"
-                          value={email}
-                          autoComplete="email"
-                          placeholder="you@example.com"
-                          onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <button type="submit" disabled={downloading}>
-                          {downloading ? <Loader2 size={16} className={styles.spin} aria-hidden /> : <Download size={16} aria-hidden />}
-                          Download
-                        </button>
-                      </div>
+                      <p className={styles.gateLead}>
+                        Want help putting it on your TV? Leave your email or phone. <span>Both optional.</span>
+                      </p>
+                      <label htmlFor="wg-email" className="sr-only">Email (optional)</label>
+                      <input
+                        id="wg-email"
+                        type="email"
+                        value={email}
+                        autoComplete="email"
+                        placeholder="Email (optional)"
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                      <label htmlFor="wg-phone" className="sr-only">Phone (optional)</label>
+                      <input
+                        id="wg-phone"
+                        type="tel"
+                        value={phone}
+                        autoComplete="tel"
+                        inputMode="tel"
+                        placeholder="Phone (optional)"
+                        onChange={(e) => setPhone(e.target.value)}
+                      />
+                      <button type="submit" className={styles.gateSubmit} disabled={downloading}>
+                        {downloading ? <Loader2 size={16} className={styles.spin} aria-hidden /> : <Download size={16} aria-hidden />}
+                        Download my kit
+                      </button>
                       {gateError ? <p role="alert">{gateError}</p> : null}
+                      <p className={styles.gateNote}>
+                        We only use it to help you get set up. No spam, and we never sell your details.
+                      </p>
                     </form>
                   ) : (
                     <button type="button" className={styles.secondary} onClick={() => setGateOpen(true)}>
