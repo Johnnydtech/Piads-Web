@@ -144,7 +144,7 @@ export function WelcomeScreen({ data, frozen = false }: { data: WelcomeScreenDat
       <style>{`@keyframes gw-roll { from { transform: translate3d(0,0,0) } to { transform: translate3d(-50%,0,0) } }`}</style>
       {data.background_url ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={data.background_url} alt="" style={styles.bg} />
+        <img src={data.background_url} alt="" crossOrigin="anonymous" style={styles.bg} />
       ) : (
         <div style={{ ...styles.bg, background: FALLBACK_BG }} />
       )}

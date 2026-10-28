@@ -20,6 +20,8 @@ const DEFAULT_CHECKOUT = 'Checkout is at 11 AM. Just lock up and leave the keys 
 interface Generated {
   location: { formatted_address: string; city: string }
   utc_offset_minutes: number | null
+  // A wide photo of the city's best-known sight, so the screen looks like the place.
+  background_url: string | null
   weather: WelcomeScreenData['weather']
   picks: WelcomePick[]
 }
@@ -135,7 +137,8 @@ export function WelcomeBookGenerator() {
     welcome_message: message.trim(),
     property_name: propertyName.trim(),
     checkout_text: checkout.trim(),
-    background_url: photo,
+    // The host's own photo wins over the city's.
+    background_url: photo ?? (status === 'ready' ? result?.background_url ?? null : null),
     picks: status === 'ready' ? picks : [],
     utc_offset_minutes: result?.utc_offset_minutes ?? null,
     weather: result?.weather ?? null,
