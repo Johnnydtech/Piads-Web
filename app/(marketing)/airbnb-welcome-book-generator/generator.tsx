@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import FocusedGuide from './FocusedGuide'
-import GuidePreviewPanel from './GuidePreviewPanel'
-import * as Dialog from '@radix-ui/react-dialog'
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import FocusedGuide from "./FocusedGuide";
+import GuidePreviewPanel from "./GuidePreviewPanel";
+import * as Dialog from "@radix-ui/react-dialog";
 import {
   ArrowLeft,
   ArrowRight,
@@ -23,16 +23,16 @@ import {
   Star,
   X,
   ZoomIn,
-} from 'lucide-react'
+} from "lucide-react";
 import {
   WelcomeScreen,
   type WelcomePick,
   type WelcomeScreenData,
-} from '@/components/welcome-screen'
-import { TurnstileWidget } from '@/components/turnstile-widget'
-import { track, trackCta } from '@/lib/analytics'
-import { hostSignupUrl } from '@/lib/signup-links'
-import { parseWelcomeHandoff } from '@/lib/welcome-handoff'
+} from "@/components/welcome-screen";
+import { TurnstileWidget } from "@/components/turnstile-widget";
+import { track, trackCta } from "@/lib/analytics";
+import { hostSignupUrl } from "@/lib/signup-links";
+import { parseWelcomeHandoff } from "@/lib/welcome-handoff";
 import {
   GENERATOR_PATH,
   RESULT_PATH,
@@ -40,7 +40,7 @@ import {
   saveDraft,
   type Generated,
   type GuideDraft,
-} from './draft'
+} from "./draft";
 import {
   BOOK_THEMES,
   availableKitPages,
@@ -57,36 +57,36 @@ import {
   guestMessages,
   type KitData,
   type KitDetails,
-} from './kit'
-import styles from './generator.module.css'
+} from "./kit";
+import styles from "./generator.module.css";
 
 const API_URL = (
-  process.env.NEXT_PUBLIC_API_URL || 'https://api.piads.co'
-).replace(/\/$/, '')
+  process.env.NEXT_PUBLIC_API_URL || "https://api.piads.co"
+).replace(/\/$/, "");
 const APP_URL = (
-  process.env.NEXT_PUBLIC_APP_URL || 'https://app.piads.co'
-).replace(/\/$/, '')
-const NEEDS_CAPTCHA = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
-const STEPS = ['Welcome screen', 'Printable guide', 'Download', 'Connect a TV']
-const PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+  process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
+).replace(/\/$/, "");
+const NEEDS_CAPTCHA = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+const STEPS = ["Welcome screen", "Printable guide", "Download", "Connect a TV"];
+const PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const DEFAULT_MESSAGE =
-  'Make yourself at home. Explore these places nearby during your stay.'
+  "Make yourself at home. Explore these places nearby during your stay.";
 const DEFAULT_CHECKOUT =
-  'Thank you for staying with us. Please check your booking for checkout instructions.'
+  "Thank you for staying with us. Please check your booking for checkout instructions.";
 function phoneValid(raw: string) {
-  const digits = raw.replace(/\D/g, '')
-  return raw.trim().startsWith('+')
+  const digits = raw.replace(/\D/g, "");
+  return raw.trim().startsWith("+")
     ? digits.length >= 8 && digits.length <= 15
-    : digits.length === 10 || (digits.length === 11 && digits.startsWith('1'))
+    : digits.length === 10 || (digits.length === 11 && digits.startsWith("1"));
 }
 function Field({
   label,
   children,
   hint,
 }: {
-  label: string
-  children: React.ReactNode
-  hint?: string
+  label: string;
+  children: React.ReactNode;
+  hint?: string;
 }) {
   return (
     <label className={styles.field}>
@@ -94,85 +94,85 @@ function Field({
       {children}
       {hint && <small>{hint}</small>}
     </label>
-  )
+  );
 }
 function errorMessage(body: any) {
   return (
     body?.detail?.message ||
     body?.error?.message ||
-    'Something went wrong. Please try again.'
-  )
+    "Something went wrong. Please try again."
+  );
 }
 
 export function WelcomeBookGenerator({
   workspace = false,
 }: {
-  workspace?: boolean
+  workspace?: boolean;
 }) {
-  const router = useRouter()
-  const [loaded, setLoaded] = useState(!workspace)
-  const [address, setAddress] = useState('')
-  const [result, setResult] = useState<Generated | null>(null)
-  const [createdAt, setCreatedAt] = useState(0)
-  const [picks, setPicks] = useState<WelcomePick[]>([])
-  const [guestName, setGuestName] = useState('')
-  const [propertyName, setPropertyName] = useState('')
-  const [message, setMessage] = useState(DEFAULT_MESSAGE)
-  const [checkout, setCheckout] = useState(DEFAULT_CHECKOUT)
-  const [photo, setPhoto] = useState<string | null>(null)
-  const [neutralBackground, setNeutralBackground] = useState(false)
+  const router = useRouter();
+  const [loaded, setLoaded] = useState(!workspace);
+  const [address, setAddress] = useState("");
+  const [result, setResult] = useState<Generated | null>(null);
+  const [createdAt, setCreatedAt] = useState(0);
+  const [picks, setPicks] = useState<WelcomePick[]>([]);
+  const [guestName, setGuestName] = useState("");
+  const [propertyName, setPropertyName] = useState("");
+  const [message, setMessage] = useState(DEFAULT_MESSAGE);
+  const [checkout, setCheckout] = useState(DEFAULT_CHECKOUT);
+  const [photo, setPhoto] = useState<string | null>(null);
+  const [neutralBackground, setNeutralBackground] = useState(false);
   const [kit, setKit] = useState<KitDetails>({
     ...DEFAULT_KIT,
     rules: [],
     checkoutSteps: [],
-  })
-  const [bookTheme, setBookTheme] = useState<BookTheme>('forest')
-  const [paperSize, setPaperSize] = useState<PaperSize>('letter')
-  const [excludedPages, setExcludedPages] = useState<string[]>([])
-  const [step, setStep] = useState(0)
-  const [busy, setBusy] = useState(false)
-  const [error, setError] = useState('')
-  const [photoError, setPhotoError] = useState('')
-  const [token, setToken] = useState<string | null>(null)
-  const [captchaReset, setCaptchaReset] = useState(0)
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
+  });
+  const [bookTheme, setBookTheme] = useState<BookTheme>("forest");
+  const [paperSize, setPaperSize] = useState<PaperSize>("letter");
+  const [excludedPages, setExcludedPages] = useState<string[]>([]);
+  const [step, setStep] = useState(0);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [photoError, setPhotoError] = useState("");
+  const [token, setToken] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [contactState, setContactState] = useState<
-    'idle' | 'sending' | 'saved' | 'error'
-  >('idle')
-  const [contactError, setContactError] = useState('')
+    "idle" | "sending" | "saved" | "error"
+  >("idle");
+  const [contactError, setContactError] = useState("");
   const [downloaded, setDownloaded] = useState<{
-    url: string
-    filename: string
-  } | null>(null)
-  const [exportKind, setExportKind] = useState<'kit' | 'png' | null>(null)
-  const [copied, setCopied] = useState<string | null>(null)
-  const [previewPage, setPreviewPage] = useState<number | null>(null)
-  const [handoffState, setHandoffState] = useState<'idle' | 'waiting' | 'sent'>(
-    'idle',
-  )
-  const stageRef = useRef<HTMLDivElement>(null)
-  const headingRef = useRef<HTMLHeadingElement>(null)
-  const handoffCleanup = useRef<(() => void) | null>(null)
-  const onToken = useCallback((value: string | null) => setToken(value), [])
+    url: string;
+    filename: string;
+  } | null>(null);
+  const [exportKind, setExportKind] = useState<"kit" | "png" | null>(null);
+  const [copied, setCopied] = useState<string | null>(null);
+  const [previewPage, setPreviewPage] = useState<number | null>(null);
+  const [handoffState, setHandoffState] = useState<"idle" | "waiting" | "sent">(
+    "idle",
+  );
+  const stageRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const handoffCleanup = useRef<(() => void) | null>(null);
+  const onToken = useCallback((value: string | null) => setToken(value), []);
 
   useEffect(() => {
-    const draft = readDraft()
+    const draft = readDraft();
     if (draft) {
-      setResult(draft.result)
-      setCreatedAt(draft.createdAt)
-      setPicks(draft.picks)
-      setGuestName(draft.guestName)
-      setPropertyName(draft.propertyName)
-      setMessage(draft.message)
-      setCheckout(draft.checkout)
-      setNeutralBackground(draft.neutralBackground)
-      setAddress(draft.result.location.formatted_address)
+      setResult(draft.result);
+      setCreatedAt(draft.createdAt);
+      setPicks(draft.picks);
+      setGuestName(draft.guestName);
+      setPropertyName(draft.propertyName);
+      setMessage(draft.message);
+      setCheckout(draft.checkout);
+      setNeutralBackground(draft.neutralBackground);
+      setAddress(draft.result.location.formatted_address);
     }
-    setLoaded(true)
-  }, [])
+    setLoaded(true);
+  }, []);
   useEffect(() => {
-    if (!workspace || !loaded || !result) return
+    if (!workspace || !loaded || !result) return;
     saveDraft({
       version: 2,
       createdAt,
@@ -183,7 +183,7 @@ export function WelcomeBookGenerator({
       checkout,
       picks,
       neutralBackground,
-    })
+    });
   }, [
     workspace,
     loaded,
@@ -195,122 +195,125 @@ export function WelcomeBookGenerator({
     checkout,
     picks,
     neutralBackground,
-  ])
+  ]);
   useEffect(
     () => () => {
-      if (photo) URL.revokeObjectURL(photo)
+      if (photo) URL.revokeObjectURL(photo);
     },
     [photo],
-  )
-  useEffect(() => () => handoffCleanup.current?.(), [])
+  );
+  useEffect(() => () => handoffCleanup.current?.(), []);
   useEffect(
     () => () => {
-      if (downloaded?.url.startsWith('blob:'))
-        URL.revokeObjectURL(downloaded.url)
+      if (downloaded?.url.startsWith("blob:"))
+        URL.revokeObjectURL(downloaded.url);
     },
     [downloaded],
-  )
+  );
 
   function goStep(next: number) {
-    setStep(next)
-    setError('')
-    track('welcome_generator_step_viewed', { step: next + 1 })
+    setStep(next);
+    setError("");
+    track("welcome_generator_step_viewed", { step: next + 1 });
     requestAnimationFrame(() => {
-      headingRef.current?.focus({ preventScroll: true })
-      headingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    })
+      headingRef.current?.focus({ preventScroll: true });
+      headingRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
   }
   async function generate(event: React.FormEvent) {
-    event.preventDefault()
-    if (busy) return
+    event.preventDefault();
+    if (busy) return;
     if (address.trim().length < 3) {
-      setError('Enter your rental’s street address and city.')
-      return
+      setError("Enter your rental’s street address and city.");
+      return;
     }
     if (NEEDS_CAPTCHA && !token) {
-      setError('Please complete the quick check below.')
-      return
+      setError("Please complete the quick check below.");
+      return;
     }
-    setBusy(true)
-    setError('')
-    track('welcome_generator_submitted')
+    setBusy(true);
+    setError("");
+    track("welcome_generator_submitted");
     try {
       const res = await fetch(`${API_URL}/api/v1/guests/generate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         signal: AbortSignal.timeout(45000),
         body: JSON.stringify({
           address: address.trim(),
           turnstile_token: token,
         }),
-      })
-      const body = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(errorMessage(body))
-      const data: Generated = body.data
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(errorMessage(body));
+      const data: Generated = body.data;
       if (!data?.location?.formatted_address || !Array.isArray(data.picks))
-        throw new Error('We couldn’t prepare this address. Please try again.')
+        throw new Error("We couldn’t prepare this address. Please try again.");
       const draft: GuideDraft = {
         version: 2,
         createdAt: Date.now(),
         result: data,
-        guestName: '',
+        guestName: "",
         propertyName: data.location.city
           ? `Your stay in ${data.location.city}`
-          : 'Your rental',
+          : "Your rental",
         message: DEFAULT_MESSAGE,
         checkout: DEFAULT_CHECKOUT,
         picks: data.picks,
         neutralBackground: false,
-      }
+      };
       if (!saveDraft(draft))
         throw new Error(
-          'Allow browser storage for this site so we can open your guide. Your address stays out of the URL.',
-        )
-      track('welcome_generator_generated', { picks: data.picks.length })
-      router.push(RESULT_PATH)
+          "Allow browser storage for this site so we can open your guide. Your address stays out of the URL.",
+        );
+      track("welcome_generator_generated", { picks: data.picks.length });
+      router.push(RESULT_PATH);
     } catch (err) {
       setError(
-        err instanceof Error && err.name !== 'TimeoutError'
+        err instanceof Error && err.name !== "TimeoutError"
           ? err.message
-          : 'This is taking longer than expected. Please try again.',
-      )
-      track('welcome_generator_failed')
+          : "This is taking longer than expected. Please try again.",
+      );
+      track("welcome_generator_failed");
     } finally {
-      setBusy(false)
-      setToken(null)
-      setCaptchaReset((n) => n + 1)
+      setBusy(false);
+      setToken(null);
+      setCaptchaReset((n) => n + 1);
     }
   }
   async function onPhoto(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0]
-    event.target.value = ''
-    if (!file) return
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
     if (!PHOTO_TYPES.includes(file.type) || file.size > 20 * 1024 * 1024) {
-      setPhotoError('Choose a JPG, PNG or WebP photo under 20 MB.')
-      return
+      setPhotoError("Choose a JPG, PNG or WebP photo under 20 MB.");
+      return;
     }
-    const url = URL.createObjectURL(file)
+    const url = URL.createObjectURL(file);
     try {
-      const img = new Image()
-      img.src = url
-      await img.decode()
-      setPhoto(url)
-      setPhotoError('')
-      track('welcome_generator_photo_added')
+      const img = new Image();
+      img.src = url;
+      await img.decode();
+      setPhoto(url);
+      setPhotoError("");
+      track("welcome_generator_photo_added");
     } catch {
-      URL.revokeObjectURL(url)
+      URL.revokeObjectURL(url);
       setPhotoError(
-        'That photo couldn’t be opened. Please choose another image.',
-      )
+        "That photo couldn’t be opened. Please choose another image.",
+      );
     }
   }
-  function toggle(list: 'rules' | 'checkoutSteps', item: string) {
+  function toggle(list: "rules" | "checkoutSteps", item: string) {
     setKit((k) => ({
       ...k,
       [list]: k[list].includes(item)
         ? k[list].filter((x) => x !== item)
         : [...k[list], item],
-    }))
+    }));
   }
   const screen: WelcomeScreenData = {
     guest_name: guestName.trim(),
@@ -322,7 +325,7 @@ export function WelcomeBookGenerator({
     picks,
     utc_offset_minutes: result?.utc_offset_minutes,
     weather: result?.weather,
-  }
+  };
   const kitData: KitData = {
     propertyName: propertyName.trim(),
     address: result?.location.formatted_address || address,
@@ -330,140 +333,147 @@ export function WelcomeBookGenerator({
     theme: bookTheme,
     message: message.trim(),
     checkout: checkout.trim(),
-    city: result?.location.city || '',
+    city: result?.location.city || "",
     picks,
     details: { ...kit, wifiName: kit.wifiName, wifiPassword: kit.wifiPassword },
-  }
-  const availablePages = availableKitPages(kitData)
+  };
+  const availablePages = availableKitPages(kitData);
   const selectedPages = availablePages.filter(
     (p) => !excludedPages.includes(p.key),
-  )
-  const review = guideReview(kitData)
+  );
+  const review = guideReview(kitData);
   const removed = (result?.picks || []).filter(
     (p) => !picks.some((selected) => selected.place_id === p.place_id),
-  )
-  const fileSlug = (result?.location.city || 'piads')
+  );
+  const fileSlug = (result?.location.city || "piads")
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-  async function download(kind: 'kit' | 'png') {
-    if (exportKind) return
-    setExportKind(kind)
-    setError('')
+    .replace(/[^a-z0-9]+/g, "-");
+  async function download(kind: "kit" | "png") {
+    if (exportKind) return;
+    setExportKind(kind);
+    setError("");
     try {
       await new Promise((r) =>
         requestAnimationFrame(() => requestAnimationFrame(r)),
-      )
-      await document.fonts.ready
-      const stage = stageRef.current
-      if (!stage) throw new Error('Missing export')
-      let url: string
-      if (kind === 'kit')
+      );
+      await document.fonts.ready;
+      const stage = stageRef.current;
+      if (!stage) throw new Error("Missing export");
+      let url: string;
+      if (kind === "kit")
         url = URL.createObjectURL(
           await buildKitPdf(Array.from(stage.children) as HTMLElement[], {
             paper: paperSize,
-            title: `${propertyName || 'Your stay'} | Guest welcome book`,
+            title: `${propertyName || "Your stay"} | Guest welcome book`,
           }),
-        )
+        );
       else {
         await Promise.all(
-          Array.from(stage.querySelectorAll('img')).map((img) =>
+          Array.from(stage.querySelectorAll("img")).map((img) =>
             img.decode().catch(() => undefined),
           ),
-        )
-        const { toPng } = await import('html-to-image')
+        );
+        const { toPng } = await import("html-to-image");
         url = await toPng(stage, {
           width: 1920,
           height: 1080,
           pixelRatio: 1,
-          backgroundColor: '#17130F',
-        })
+          backgroundColor: "#17130F",
+        });
       }
-      const filename = `${kind === 'kit' ? 'guest-welcome-book' : 'welcome-screen'}-${fileSlug}.${kind === 'kit' ? 'pdf' : 'png'}`
-      setDownloaded({ url, filename })
-      const a = document.createElement('a')
-      a.href = url
-      a.download = filename
-      document.body.appendChild(a)
-      a.click()
-      a.remove()
+      const filename = `${kind === "kit" ? "guest-welcome-book" : "welcome-screen"}-${fileSlug}.${kind === "kit" ? "pdf" : "png"}`;
+      setDownloaded({ url, filename });
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
       track(
-        kind === 'kit'
-          ? 'welcome_generator_kit_downloaded'
-          : 'welcome_generator_downloaded',
+        kind === "kit"
+          ? "welcome_generator_kit_downloaded"
+          : "welcome_generator_downloaded",
         { picks: picks.length },
-      )
+      );
     } catch (cause) {
       setError(
         cause instanceof Error &&
           /too much text|Choose at least one page/.test(cause.message)
           ? cause.message
-          : 'We couldn’t finish the download. Please try again. Your edits are still here.',
-      )
+          : "We couldn’t finish the download. Please try again. Your edits are still here.",
+      );
     } finally {
-      setExportKind(null)
+      setExportKind(null);
     }
   }
   async function submitContact(event: React.FormEvent) {
-    event.preventDefault()
-    if (contactState === 'sending') return
+    event.preventDefault();
+    if (contactState === "sending") return;
     const e = email.trim(),
-      p = phone.trim()
+      p = phone.trim();
     if (!e && !p) {
       setContactError(
-        'Add an email or phone number so we can help you. Downloads don’t require either.',
-      )
-      return
+        "Add an email or phone number so we can help you. Downloads don’t require either.",
+      );
+      return;
     }
     if (e && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) {
-      setContactError('Please check your email address.')
-      return
+      setContactError("Please check your email address.");
+      return;
     }
     if (p && !phoneValid(p)) {
-      setContactError('Include your area code, or use + and your country code.')
-      return
+      setContactError(
+        "Include your area code, or use + and your country code.",
+      );
+      return;
     }
     if (NEEDS_CAPTCHA && !token) {
-      setContactError('Please complete the quick check below.')
-      return
+      setContactError("Please complete the quick check below.");
+      return;
     }
-    setContactState('sending')
-    setContactError('')
+    setContactState("sending");
+    setContactError("");
     try {
       const res = await fetch(`${API_URL}/api/v1/guests/generator-leads`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         signal: AbortSignal.timeout(15000),
         body: JSON.stringify({
           email: e || null,
           phone: p || null,
           city: result?.location.city || null,
           picks: picks.length,
-          intent: 'setup_help',
+          intent: "setup_help",
           turnstile_token: token,
         }),
-      })
-      const body = await res.json().catch(() => ({}))
+      });
+      const body = await res.json().catch(() => ({}));
       if (!res.ok || body?.data?.recorded !== true)
-        throw new Error('not recorded')
-      setContactState('saved')
-      track('welcome_generator_lead', { shared_email: !!e, shared_phone: !!p })
+        throw new Error("not recorded");
+      setContactState("saved");
+      track("welcome_generator_lead", { shared_email: !!e, shared_phone: !!p });
     } catch {
-      setContactState('error')
+      setContactState("error");
       setContactError(
-        'We couldn’t save your request. Please try again, or email yohanes@piads.co. You can still download your guide.',
-      )
+        "We couldn’t save your request. Please try again, or email yohanes@piads.co. You can still download your guide.",
+      );
     } finally {
-      setToken(null)
-      setCaptchaReset((n) => n + 1)
+      setToken(null);
+      setCaptchaReset((n) => n + 1);
     }
   }
   function connectTv() {
-    if (!result || handoffState === 'waiting') return
-    handoffCleanup.current?.()
-    setError('')
+    if (!result || handoffState === "waiting") return;
+    handoffCleanup.current?.();
+    setError("");
     const draft = parseWelcomeHandoff({
       version: 1,
-      guideStyle: bookTheme === 'coast' ? 'postcard' : bookTheme === 'clay' ? 'journal' : 'illustrated',
+      guideStyle:
+        bookTheme === "coast"
+          ? "postcard"
+          : bookTheme === "clay"
+            ? "journal"
+            : "illustrated",
       createdAt: Date.now(),
       address: result.location.formatted_address,
       propertyName: propertyName.trim(),
@@ -473,67 +483,67 @@ export function WelcomeBookGenerator({
       picks: picks.map((p) => ({
         place_id: p.place_id,
         name: p.name,
-        blurb: p.blurb || '',
+        blurb: p.blurb || "",
       })),
-    })
+    });
     if (!draft) {
-      setError('Please check your property details before continuing.')
-      return
+      setError("Please check your property details before continuing.");
+      return;
     }
-    const app = new URL(APP_URL)
-    const nonce = crypto.randomUUID()
-    const url = new URL('/welcome-import', app)
-    url.searchParams.set('source', window.location.origin)
-    url.searchParams.set('request', nonce)
-    const popup = window.open(url.toString(), '_blank')
+    const app = new URL(APP_URL);
+    const nonce = crypto.randomUUID();
+    const url = new URL("/welcome-import", app);
+    url.searchParams.set("source", window.location.origin);
+    url.searchParams.set("request", nonce);
+    const popup = window.open(url.toString(), "_blank");
     if (!popup) {
       setError(
-        'Allow a new tab for PiAds, then select Continue again. Your guide is still here.',
-      )
-      return
+        "Allow a new tab for PiAds, then select Continue again. Your guide is still here.",
+      );
+      return;
     }
-    setHandoffState('waiting')
+    setHandoffState("waiting");
     const timeout = window.setTimeout(() => {
-      cleanup()
-      setHandoffState('idle')
+      cleanup();
+      setHandoffState("idle");
       setError(
-        'The app didn’t receive your guide. Keep this page open and try again.',
-      )
-    }, 30000)
+        "The app didn’t receive your guide. Keep this page open and try again.",
+      );
+    }, 30000);
     function receive(event: MessageEvent) {
       if (
         event.origin !== app.origin ||
         event.source !== popup ||
         event.data?.request !== nonce
       )
-        return
-      if (event.data.type === 'piads:welcome-ready')
+        return;
+      if (event.data.type === "piads:welcome-ready")
         popup!.postMessage(
-          { type: 'piads:welcome-draft', request: nonce, draft },
+          { type: "piads:welcome-draft", request: nonce, draft },
           app.origin,
-        )
-      if (event.data.type === 'piads:welcome-saved') {
-        cleanup()
-        setHandoffState('sent')
-        trackCta('Continue with my guide', 'welcome-generator', {
+        );
+      if (event.data.type === "piads:welcome-saved") {
+        cleanup();
+        setHandoffState("sent");
+        trackCta("Continue with my guide", "welcome-generator", {
           picks: picks.length,
-        })
+        });
       }
-      if (event.data.type === 'piads:welcome-error') {
-        cleanup()
-        setHandoffState('idle')
+      if (event.data.type === "piads:welcome-error") {
+        cleanup();
+        setHandoffState("idle");
         setError(
-          'The app couldn’t save your guide in this browser. Allow browser storage and try again.',
-        )
+          "The app couldn’t save your guide in this browser. Allow browser storage and try again.",
+        );
       }
     }
     function cleanup() {
-      window.clearTimeout(timeout)
-      window.removeEventListener('message', receive)
-      handoffCleanup.current = null
+      window.clearTimeout(timeout);
+      window.removeEventListener("message", receive);
+      handoffCleanup.current = null;
     }
-    window.addEventListener('message', receive)
-    handoffCleanup.current = cleanup
+    window.addEventListener("message", receive);
+    handoffCleanup.current = cleanup;
   }
 
   if (!workspace)
@@ -613,10 +623,10 @@ export function WelcomeBookGenerator({
             <div className={styles.tvScreen}>
               <WelcomeScreen
                 data={{
-                  guest_name: 'Maya',
-                  property_name: 'Your rental',
+                  guest_name: "Maya",
+                  property_name: "Your rental",
                   welcome_message: DEFAULT_MESSAGE,
-                  checkout_text: 'Your checkout instructions here',
+                  checkout_text: "Your checkout instructions here",
                   background_url: null,
                   picks: [],
                 }}
@@ -629,7 +639,7 @@ export function WelcomeBookGenerator({
           </p>
         </div>
       </section>
-    )
+    );
 
   if (!loaded)
     return (
@@ -637,7 +647,7 @@ export function WelcomeBookGenerator({
         <Loader2 className={styles.spin} />
         <p role="status">Opening your guide…</p>
       </section>
-    )
+    );
   if (!result)
     return (
       <section className={styles.empty}>
@@ -651,7 +661,7 @@ export function WelcomeBookGenerator({
           Create my free guide <ArrowRight size={18} />
         </Link>
       </section>
-    )
+    );
 
   return (
     <>
@@ -680,7 +690,7 @@ export function WelcomeBookGenerator({
               key={label}
               onClick={() => goStep(index)}
               type="button"
-              aria-current={step === index ? 'step' : undefined}
+              aria-current={step === index ? "step" : undefined}
             >
               <span>{index + 1}</span>
               <strong>{label}</strong>
@@ -690,20 +700,20 @@ export function WelcomeBookGenerator({
         <h2 ref={headingRef} tabIndex={-1} className={styles.stepHeading}>
           {
             [
-              'Make the first impression yours',
-              'Prepare the details guests need',
-              'Your guide, ready to use',
-              'Bring your welcome to the TV',
+              "Make the first impression yours",
+              "Prepare the details guests need",
+              "Your guide, ready to use",
+              "Bring your welcome to the TV",
             ][step]
           }
         </h2>
         <p className={styles.stepDescription}>
           {
             [
-              'Review the address above, personalize your welcome, and choose the places you want guests to explore.',
-              'Add only the details that apply to your property. Select a page to see a larger preview.',
-              'Download without sharing your contact details. You can come back to edit any step.',
-              'Create an account, confirm your property, then pair your TV. You can also try the player in a browser.',
+              "Review the address above, personalize your welcome, and choose the places you want guests to explore.",
+              "Add only the details that apply to your property. Select a page to see a larger preview.",
+              "Download without sharing your contact details. You can come back to edit any step.",
+              "Create an account, confirm your property, then pair your TV. You can also try the player in a browser.",
             ][step]
           }
         </p>
@@ -715,7 +725,10 @@ export function WelcomeBookGenerator({
 
         {step === 0 && (
           <div className={styles.grid}>
-            <GuidePreviewPanel className={styles.previewColumn} label="Preview your TV welcome">
+            <GuidePreviewPanel
+              className={styles.previewColumn}
+              label="Preview your TV welcome"
+            >
               <div className={styles.tv}>
                 <div className={styles.tvScreen}>
                   <WelcomeScreen data={screen} />
@@ -732,137 +745,150 @@ export function WelcomeBookGenerator({
               </div>
             </GuidePreviewPanel>
             <aside className={styles.panel} aria-label="Welcome screen details">
-              <FocusedGuide titles={['Your welcome', 'Property photo', 'Local suggestions']}>
-              <div>
-              <Field label="Property name">
-                <input
-                  value={propertyName}
-                  maxLength={60}
-                  onChange={(e) => setPropertyName(e.target.value)}
-                />
-              </Field>
-              <Field
-                label="Guest name (optional)"
-                hint="Leave blank for a welcome that works for every stay."
+              <FocusedGuide
+                titles={[
+                  "Your property",
+                  "Welcome & checkout",
+                  "Property photo",
+                  "Local suggestions",
+                ]}
               >
-                <input
-                  value={guestName}
-                  maxLength={40}
-                  placeholder="e.g. Maya"
-                  onChange={(e) => setGuestName(e.target.value)}
-                />
-              </Field>
-              <Field label="Welcome message">
-                <textarea
-                  rows={3}
-                  value={message}
-                  maxLength={140}
-                  onChange={(e) => setMessage(e.target.value)}
-                />
-              </Field>
-              <Field label="Checkout note">
-                <textarea
-                  rows={3}
-                  value={checkout}
-                  maxLength={120}
-                  onChange={(e) => setCheckout(e.target.value)}
-                />
-              </Field>
-              </div>
-              <div>
-              <label className={styles.photoButton}>
-                <ImagePlus size={17} />{' '}
-                {photo ? 'Change your photo' : 'Add a photo of your property'}
-                <input
-                  type="file"
-                  accept={PHOTO_TYPES.join(',')}
-                  onChange={onPhoto}
-                  className="sr-only"
-                />
-              </label>
-              {photo && (
-                <button
-                  className={styles.textButton}
-                  onClick={() => setPhoto(null)}
-                  type="button"
-                >
-                  Remove uploaded photo
-                </button>
-              )}
-              <label className={styles.checkLabel}>
-                <input
-                  type="checkbox"
-                  checked={neutralBackground}
-                  onChange={(e) => setNeutralBackground(e.target.checked)}
-                />{' '}
-                Use a neutral background
-              </label>
-              {photoError && (
-                <p role="alert" className={styles.error}>
-                  {photoError}
-                </p>
-              )}
-              </div>
-              <div>
-              <div className={styles.picksHeader}>
-                <h3>Local suggestions</h3>
-                <span>{picks.length} selected</span>
-              </div>
-              <p className={styles.privacyNote}>
-                Review these suggestions before sharing with guests. Hours may
-                change.
-              </p>
-              <ul className={styles.picks}>
-                {picks.map((p) => (
-                  <li key={p.place_id}>
-                    <div>
-                      <strong>{p.name}</strong>
-                      <span>
-                        {typeof p.rating === 'number' && (
-                          <>
-                            <Star size={12} fill="currentColor" />{' '}
-                            {p.rating.toFixed(1)}
-                          </>
-                        )}
-                        {p.closes_at && ` · ${p.closes_at}`}
-                      </span>
-                    </div>
+                <div>
+                  <Field label="Property name">
+                    <input
+                      value={propertyName}
+                      maxLength={60}
+                      onChange={(e) => setPropertyName(e.target.value)}
+                    />
+                  </Field>
+                  <Field
+                    label="Guest name (optional)"
+                    hint="Leave blank for a welcome that works for every stay."
+                  >
+                    <input
+                      value={guestName}
+                      maxLength={40}
+                      placeholder="e.g. Maya"
+                      onChange={(e) => setGuestName(e.target.value)}
+                    />
+                  </Field>
+                </div>
+                <div>
+                  <Field label="Welcome message">
+                    <textarea
+                      rows={3}
+                      value={message}
+                      maxLength={140}
+                      onChange={(e) => setMessage(e.target.value)}
+                    />
+                  </Field>
+                  <Field label="Checkout note">
+                    <textarea
+                      rows={3}
+                      value={checkout}
+                      maxLength={120}
+                      onChange={(e) => setCheckout(e.target.value)}
+                    />
+                  </Field>
+                </div>
+                <div>
+                  <label className={styles.photoButton}>
+                    <ImagePlus size={17} />{" "}
+                    {photo
+                      ? "Change your photo"
+                      : "Add a photo of your property"}
+                    <input
+                      type="file"
+                      accept={PHOTO_TYPES.join(",")}
+                      onChange={onPhoto}
+                      className="sr-only"
+                    />
+                  </label>
+                  {photo && (
                     <button
+                      className={styles.textButton}
+                      onClick={() => setPhoto(null)}
                       type="button"
-                      onClick={() => {
-                        setPicks((current) =>
-                          current.filter((x) => x.place_id !== p.place_id),
-                        )
-                        track('welcome_generator_pick_removed')
-                      }}
-                      aria-label={`Remove ${p.name}`}
                     >
-                      <X size={15} />
+                      Remove uploaded photo
                     </button>
-                  </li>
-                ))}
-              </ul>
-              {!picks.length && (
-                <p className={styles.tip}>
-                  No places selected. Your welcome and checkout pages still
-                  work.
-                </p>
-              )}
-              {removed.length > 0 && (
-                <details className={styles.restore}>
-                  <summary>Restore removed places ({removed.length})</summary>
-                  {removed.map((p) => (
-                    <button
-                      key={p.place_id}
-                      type="button"
-                      onClick={() => setPicks((current) => [...current, p])}
-                    >
-                      <RotateCcw size={14} /> {p.name}
-                    </button>
-                  ))}
-                </details>
-              )}
-              </div>
+                  )}
+                  <label className={styles.checkLabel}>
+                    <input
+                      type="checkbox"
+                      checked={neutralBackground}
+                      onChange={(e) => setNeutralBackground(e.target.checked)}
+                    />{" "}
+                    Use a neutral background
+                  </label>
+                  {photoError && (
+                    <p role="alert" className={styles.error}>
+                      {photoError}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <div className={styles.picksHeader}>
+                    <h3>Local suggestions</h3>
+                    <span>{picks.length} selected</span>
+                  </div>
+                  <p className={styles.privacyNote}>
+                    Review these suggestions before sharing with guests. Hours
+                    may change.
+                  </p>
+                  <ul className={styles.picks}>
+                    {picks.map((p) => (
+                      <li key={p.place_id}>
+                        <div>
+                          <strong>{p.name}</strong>
+                          <span>
+                            {typeof p.rating === "number" && (
+                              <>
+                                <Star size={12} fill="currentColor" />{" "}
+                                {p.rating.toFixed(1)}
+                              </>
+                            )}
+                            {p.closes_at && ` · ${p.closes_at}`}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPicks((current) =>
+                              current.filter((x) => x.place_id !== p.place_id),
+                            );
+                            track("welcome_generator_pick_removed");
+                          }}
+                          aria-label={`Remove ${p.name}`}
+                        >
+                          <X size={15} />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                  {!picks.length && (
+                    <p className={styles.tip}>
+                      No places selected. Your welcome and checkout pages still
+                      work.
+                    </p>
+                  )}
+                  {removed.length > 0 && (
+                    <details className={styles.restore}>
+                      <summary>
+                        Restore removed places ({removed.length})
+                      </summary>
+                      {removed.map((p) => (
+                        <button
+                          key={p.place_id}
+                          type="button"
+                          onClick={() => setPicks((current) => [...current, p])}
+                        >
+                          <RotateCcw size={14} /> {p.name}
+                        </button>
+                      ))}
+                    </details>
+                  )}
+                </div>
               </FocusedGuide>
             </aside>
           </div>
@@ -870,7 +896,10 @@ export function WelcomeBookGenerator({
 
         {step === 1 && (
           <div className={styles.kitGrid}>
-            <GuidePreviewPanel className={styles.bookPreview} label="Choose style & preview pages">
+            <GuidePreviewPanel
+              className={styles.bookPreview}
+              label="Choose style & preview pages"
+            >
               <fieldset className={styles.stylePicker}>
                 <legend>Choose your book’s style</legend>
                 <div>
@@ -895,7 +924,12 @@ export function WelcomeBookGenerator({
                   ))}
                 </div>
               </fieldset>
-              <div className={styles.pagePreviews} role="region" aria-label="Guest book page previews" tabIndex={0}>
+              <div
+                className={styles.pagePreviews}
+                role="region"
+                aria-label="Guest book page previews"
+                tabIndex={0}
+              >
                 {availablePages.map(({ key, label, Page }) => (
                   <article key={key} className={styles.pagePreview}>
                     <div
@@ -907,7 +941,7 @@ export function WelcomeBookGenerator({
                           width: PAGE_W,
                           height: PAGE_H,
                           transform: `scale(${200 / PAGE_W})`,
-                          transformOrigin: 'top left',
+                          transformOrigin: "top left",
                         }}
                       >
                         <Page data={kitData} />
@@ -941,187 +975,197 @@ export function WelcomeBookGenerator({
                 saved to your account or sent to HubSpot. Keep entry codes in
                 your private booking messages.
               </p>
-              <FocusedGuide titles={['Your host', 'Arrival & parking', 'House essentials', 'Wi-Fi', 'House rules', 'Checkout']}>
-              <div>
-                <Field label="Host name">
-                  <input
-                    value={kit.hostName}
-                    maxLength={60}
-                    placeholder="e.g. Alex & Sam"
-                    onChange={(e) =>
-                      setKit((k) => ({ ...k, hostName: e.target.value }))
-                    }
-                  />
-                </Field>
-                <Field label="How guests can contact you">
-                  <input
-                    value={kit.hostContact}
-                    maxLength={100}
-                    placeholder="e.g. Message us through your booking app"
-                    onChange={(e) =>
-                      setKit((k) => ({ ...k, hostContact: e.target.value }))
-                    }
-                  />
-                </Field>
-                <Field label="Check-in time">
-                  <input
-                    value={kit.checkIn}
-                    maxLength={60}
-                    placeholder="e.g. From 3 PM"
-                    onChange={(e) =>
-                      setKit((k) => ({ ...k, checkIn: e.target.value }))
-                    }
-                  />
-                </Field>
-              </div>
-              <div>
-                <Field label="Arrival instructions">
-                  <textarea
-                    value={kit.arrival}
-                    rows={3}
-                    maxLength={220}
-                    placeholder="How to find the entrance and collect keys. Send access codes separately."
-                    onChange={(e) =>
-                      setKit((k) => ({ ...k, arrival: e.target.value }))
-                    }
-                  />
-                </Field>
-                <Field label="Parking & getting around">
-                  <textarea
-                    value={kit.parking}
-                    rows={3}
-                    maxLength={220}
-                    placeholder="Where to park, any restrictions, or a useful transit stop."
-                    onChange={(e) =>
-                      setKit((k) => ({ ...k, parking: e.target.value }))
-                    }
-                  />
-                </Field>
-              </div>
-              <div>
-                <Field label="TV, heating, appliances & amenities">
-                  <textarea
-                    value={kit.homeTips}
-                    rows={5}
-                    maxLength={600}
-                    placeholder="The useful things guests usually ask you about."
-                    onChange={(e) =>
-                      setKit((k) => ({ ...k, homeTips: e.target.value }))
-                    }
-                  />
-                </Field>
-                <Field
-                  label="Safety information"
-                  hint="Add only details you have checked for this property."
-                >
-                  <textarea
-                    value={kit.safety}
-                    rows={4}
-                    maxLength={400}
-                    placeholder="Where guests can find first aid supplies, the fire extinguisher, and exit information."
-                    onChange={(e) =>
-                      setKit((k) => ({ ...k, safety: e.target.value }))
-                    }
-                  />
-                </Field>
-              </div>
-              <div>
-              <Field label="Wi-Fi network (optional)">
-                <input
-                  value={kit.wifiName}
-                  maxLength={32}
-                  autoComplete="off"
-                  onChange={(e) =>
-                    setKit((k) => ({ ...k, wifiName: e.target.value }))
-                  }
-                />
-              </Field>
-              <Field
-                label="Wi-Fi password (optional)"
-                hint="Stays on this page. It is included in your downloaded PDF and is cleared when you leave or reload."
+              <FocusedGuide
+                titles={[
+                  "Your host",
+                  "Arrival & parking",
+                  "House essentials",
+                  "Wi-Fi",
+                  "House rules",
+                  "Checkout",
+                ]}
               >
-                <input
-                  value={kit.wifiPassword}
-                  maxLength={63}
-                  autoComplete="off"
-                  spellCheck={false}
-                  onChange={(e) =>
-                    setKit((k) => ({ ...k, wifiPassword: e.target.value }))
-                  }
-                />
-              </Field>
-              </div>
-              <div>
-              <fieldset className={styles.checks}>
-                <legend>House rules</legend>
-                {HOUSE_RULES.map((rule) => (
-                  <label key={rule}>
+                <div>
+                  <Field label="Host name">
                     <input
-                      type="checkbox"
-                      checked={kit.rules.includes(rule)}
-                      onChange={() => toggle('rules', rule)}
+                      value={kit.hostName}
+                      maxLength={60}
+                      placeholder="e.g. Alex & Sam"
+                      onChange={(e) =>
+                        setKit((k) => ({ ...k, hostName: e.target.value }))
+                      }
                     />
-                    {rule}
-                  </label>
-                ))}
-              </fieldset>
-              <Field
-                label="Your own house rules"
-                hint="One per line, up to four. No rules are selected for you."
-              >
-                <textarea
-                  rows={3}
-                  value={kit.customRules}
-                  maxLength={280}
-                  onChange={(e) =>
-                    setKit((k) => ({
-                      ...k,
-                      customRules: e.target.value
-                        .split('\n')
-                        .slice(0, 4)
-                        .join('\n'),
-                    }))
-                  }
-                />
-              </Field>
-              </div>
-              <div>
-              <fieldset className={styles.checks}>
-                <legend>Checkout steps</legend>
-                {CHECKOUT_STEPS.map((item) => (
-                  <label key={item}>
+                  </Field>
+                  <Field label="How guests can contact you">
                     <input
-                      type="checkbox"
-                      checked={kit.checkoutSteps.includes(item)}
-                      onChange={() => toggle('checkoutSteps', item)}
+                      value={kit.hostContact}
+                      maxLength={100}
+                      placeholder="e.g. Message us through your booking app"
+                      onChange={(e) =>
+                        setKit((k) => ({ ...k, hostContact: e.target.value }))
+                      }
                     />
-                    {item}
-                  </label>
-                ))}
-              </fieldset>
-              <Field
-                label="Your own checkout steps"
-                hint="One per line, up to four."
-              >
-                <textarea
-                  rows={3}
-                  maxLength={280}
-                  value={kit.customCheckout}
-                  onChange={(e) =>
-                    setKit((k) => ({
-                      ...k,
-                      customCheckout: e.target.value
-                        .split('\n')
-                        .slice(0, 4)
-                        .join('\n'),
-                    }))
-                  }
-                />
-              </Field>
-              </div>
+                  </Field>
+                  <Field label="Check-in time">
+                    <input
+                      value={kit.checkIn}
+                      maxLength={60}
+                      placeholder="e.g. From 3 PM"
+                      onChange={(e) =>
+                        setKit((k) => ({ ...k, checkIn: e.target.value }))
+                      }
+                    />
+                  </Field>
+                </div>
+                <div>
+                  <Field label="Arrival instructions">
+                    <textarea
+                      value={kit.arrival}
+                      rows={3}
+                      maxLength={220}
+                      placeholder="How to find the entrance and collect keys. Send access codes separately."
+                      onChange={(e) =>
+                        setKit((k) => ({ ...k, arrival: e.target.value }))
+                      }
+                    />
+                  </Field>
+                  <Field label="Parking & getting around">
+                    <textarea
+                      value={kit.parking}
+                      rows={3}
+                      maxLength={220}
+                      placeholder="Where to park, any restrictions, or a useful transit stop."
+                      onChange={(e) =>
+                        setKit((k) => ({ ...k, parking: e.target.value }))
+                      }
+                    />
+                  </Field>
+                </div>
+                <div>
+                  <Field label="TV, heating, appliances & amenities">
+                    <textarea
+                      value={kit.homeTips}
+                      rows={3}
+                      maxLength={600}
+                      placeholder="The useful things guests usually ask you about."
+                      onChange={(e) =>
+                        setKit((k) => ({ ...k, homeTips: e.target.value }))
+                      }
+                    />
+                  </Field>
+                  <Field
+                    label="Safety information"
+                    hint="Add only details you have checked for this property."
+                  >
+                    <textarea
+                      value={kit.safety}
+                      rows={3}
+                      maxLength={400}
+                      placeholder="Where guests can find first aid supplies, the fire extinguisher, and exit information."
+                      onChange={(e) =>
+                        setKit((k) => ({ ...k, safety: e.target.value }))
+                      }
+                    />
+                  </Field>
+                </div>
+                <div>
+                  <Field label="Wi-Fi network (optional)">
+                    <input
+                      value={kit.wifiName}
+                      maxLength={32}
+                      autoComplete="off"
+                      onChange={(e) =>
+                        setKit((k) => ({ ...k, wifiName: e.target.value }))
+                      }
+                    />
+                  </Field>
+                  <Field
+                    label="Wi-Fi password (optional)"
+                    hint="Stays on this page. It is included in your downloaded PDF and is cleared when you leave or reload."
+                  >
+                    <input
+                      value={kit.wifiPassword}
+                      maxLength={63}
+                      autoComplete="off"
+                      spellCheck={false}
+                      onChange={(e) =>
+                        setKit((k) => ({ ...k, wifiPassword: e.target.value }))
+                      }
+                    />
+                  </Field>
+                </div>
+                <div>
+                  <fieldset className={styles.checks}>
+                    <legend>House rules</legend>
+                    {HOUSE_RULES.map((rule) => (
+                      <label key={rule}>
+                        <input
+                          type="checkbox"
+                          checked={kit.rules.includes(rule)}
+                          onChange={() => toggle("rules", rule)}
+                        />
+                        {rule}
+                      </label>
+                    ))}
+                  </fieldset>
+                  <Field
+                    label="Your own house rules"
+                    hint="One per line, up to four. No rules are selected for you."
+                  >
+                    <textarea
+                      rows={3}
+                      value={kit.customRules}
+                      maxLength={280}
+                      onChange={(e) =>
+                        setKit((k) => ({
+                          ...k,
+                          customRules: e.target.value
+                            .split("\n")
+                            .slice(0, 4)
+                            .join("\n"),
+                        }))
+                      }
+                    />
+                  </Field>
+                </div>
+                <div>
+                  <fieldset className={styles.checks}>
+                    <legend>Checkout steps</legend>
+                    {CHECKOUT_STEPS.map((item) => (
+                      <label key={item}>
+                        <input
+                          type="checkbox"
+                          checked={kit.checkoutSteps.includes(item)}
+                          onChange={() => toggle("checkoutSteps", item)}
+                        />
+                        {item}
+                      </label>
+                    ))}
+                  </fieldset>
+                  <Field
+                    label="Your own checkout steps"
+                    hint="One per line, up to four."
+                  >
+                    <textarea
+                      rows={3}
+                      maxLength={280}
+                      value={kit.customCheckout}
+                      onChange={(e) =>
+                        setKit((k) => ({
+                          ...k,
+                          customCheckout: e.target.value
+                            .split("\n")
+                            .slice(0, 4)
+                            .join("\n"),
+                        }))
+                      }
+                    />
+                  </Field>
+                </div>
               </FocusedGuide>
               <p className={styles.privacyNote}>
-                <Lock size={13} /> These details stay in your browser and downloads.
+                <Lock size={13} /> These details stay in your browser and
+                downloads.
               </p>
             </aside>
           </div>
@@ -1150,7 +1194,7 @@ export function WelcomeBookGenerator({
                       <span aria-hidden>○</span>
                     )}
                     {item.label}
-                    <span>{item.ready ? 'Added' : 'Not added'}</span>
+                    <span>{item.ready ? "Added" : "Not added"}</span>
                   </li>
                 ))}
               </ul>
@@ -1202,14 +1246,14 @@ export function WelcomeBookGenerator({
                 <button
                   type="button"
                   className={styles.primary}
-                  onClick={() => download('kit')}
+                  onClick={() => download("kit")}
                   disabled={!!exportKind || !selectedPages.length}
                 >
-                  {exportKind === 'kit' ? (
+                  {exportKind === "kit" ? (
                     <Loader2 className={styles.spin} size={18} />
                   ) : (
                     <Download size={18} />
-                  )}{' '}
+                  )}{" "}
                   Download {selectedPages.length}-page PDF
                 </button>
                 <small>
@@ -1229,14 +1273,14 @@ export function WelcomeBookGenerator({
                 <button
                   type="button"
                   className={styles.secondary}
-                  onClick={() => download('png')}
+                  onClick={() => download("png")}
                   disabled={!!exportKind}
                 >
-                  {exportKind === 'png' ? (
+                  {exportKind === "png" ? (
                     <Loader2 className={styles.spin} size={18} />
                   ) : (
                     <Download size={18} />
-                  )}{' '}
+                  )}{" "}
                   Download PNG
                 </button>
                 <small>
@@ -1252,7 +1296,7 @@ export function WelcomeBookGenerator({
                 <div>
                   <strong>Your download is ready.</strong>
                   <p>
-                    Look in your browser’s Downloads. If it didn’t start,{' '}
+                    Look in your browser’s Downloads. If it didn’t start,{" "}
                     <a href={downloaded.url} download={downloaded.filename}>
                       save your file here
                     </a>
@@ -1272,15 +1316,15 @@ export function WelcomeBookGenerator({
                       type="button"
                       onClick={async () => {
                         try {
-                          await navigator.clipboard.writeText(m.text)
-                          setCopied(m.title)
-                          track('welcome_generator_message_copied', {
+                          await navigator.clipboard.writeText(m.text);
+                          setCopied(m.title);
+                          track("welcome_generator_message_copied", {
                             message: m.title,
-                          })
+                          });
                         } catch {
                           setError(
-                            'Copy isn’t available in this browser. Select the message text and copy it instead.',
-                          )
+                            "Copy isn’t available in this browser. Select the message text and copy it instead.",
+                          );
                         }
                       }}
                     >
@@ -1289,7 +1333,7 @@ export function WelcomeBookGenerator({
                       ) : (
                         <Copy size={14} />
                       )}
-                      {copied === m.title ? 'Copied' : 'Copy'}
+                      {copied === m.title ? "Copied" : "Copy"}
                     </button>
                   </div>
                   <p>{m.text}</p>
@@ -1332,9 +1376,9 @@ export function WelcomeBookGenerator({
                 type="button"
                 onClick={connectTv}
                 className={styles.primary}
-                disabled={handoffState === 'waiting'}
+                disabled={handoffState === "waiting"}
               >
-                {handoffState === 'waiting' ? (
+                {handoffState === "waiting" ? (
                   <>
                     <Loader2 className={styles.spin} size={18} /> Opening PiAds…
                   </>
@@ -1344,7 +1388,7 @@ export function WelcomeBookGenerator({
                   </>
                 )}
               </button>
-              {handoffState === 'sent' && (
+              {handoffState === "sent" && (
                 <p role="status" className={styles.success}>
                   Your guide is ready in the PiAds tab. Continue there to sign
                   up.
@@ -1361,7 +1405,7 @@ export function WelcomeBookGenerator({
               </p>
               <a
                 className={styles.textButton}
-                href={hostSignupUrl(APP_URL, 'short_term_rental')}
+                href={hostSignupUrl(APP_URL, "short_term_rental")}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -1374,7 +1418,7 @@ export function WelcomeBookGenerator({
                 Optional. Share a way to reach you and the PiAds team can follow
                 up about your TV setup.
               </p>
-              {contactState === 'saved' ? (
+              {contactState === "saved" ? (
                 <p role="status" className={styles.success}>
                   <Check size={18} /> Your request is saved. We’ll follow up
                   using the details you shared.
@@ -1407,11 +1451,11 @@ export function WelcomeBookGenerator({
                   <button
                     type="submit"
                     className={styles.secondary}
-                    disabled={contactState === 'sending'}
+                    disabled={contactState === "sending"}
                   >
-                    {contactState === 'sending'
-                      ? 'Saving your request…'
-                      : 'Request setup help'}
+                    {contactState === "sending"
+                      ? "Saving your request…"
+                      : "Request setup help"}
                   </button>
                   {contactError && (
                     <p role="alert" className={styles.error}>
@@ -1447,9 +1491,9 @@ export function WelcomeBookGenerator({
             >
               {
                 [
-                  'Next: printable guide',
-                  'Next: download your kit',
-                  'Next: connect a TV',
+                  "Next: printable guide",
+                  "Next: download your kit",
+                  "Next: connect a TV",
                 ][step]
               }
               <ArrowRight size={18} />
@@ -1460,7 +1504,7 @@ export function WelcomeBookGenerator({
       <Dialog.Root
         open={previewPage !== null}
         onOpenChange={(open) => {
-          if (!open) setPreviewPage(null)
+          if (!open) setPreviewPage(null);
         }}
       >
         <Dialog.Portal>
@@ -1470,7 +1514,7 @@ export function WelcomeBookGenerator({
               <Dialog.Title>
                 {previewPage !== null
                   ? KIT_PAGES[previewPage].label
-                  : 'Page preview'}
+                  : "Page preview"}
               </Dialog.Title>
               <Dialog.Close
                 className={styles.textButton}
@@ -1486,8 +1530,8 @@ export function WelcomeBookGenerator({
             <div className={styles.fullPage}>
               {previewPage !== null &&
                 (() => {
-                  const Page = KIT_PAGES[previewPage].Page
-                  return <Page data={kitData} />
+                  const Page = KIT_PAGES[previewPage].Page;
+                  return <Page data={kitData} />;
                 })()}
             </div>
           </Dialog.Content>
@@ -1498,19 +1542,19 @@ export function WelcomeBookGenerator({
           aria-hidden
           className={styles.exportStage}
           style={{
-            width: exportKind === 'kit' ? PAGE_W : 1920,
-            height: 'auto',
+            width: exportKind === "kit" ? PAGE_W : 1920,
+            height: "auto",
           }}
         >
           <div
             ref={stageRef}
             style={
-              exportKind === 'png'
-                ? { position: 'relative', width: 1920, height: 1080 }
+              exportKind === "png"
+                ? { position: "relative", width: 1920, height: 1080 }
                 : undefined
             }
           >
-            {exportKind === 'kit' ? (
+            {exportKind === "kit" ? (
               selectedPages.map(({ key, Page }) => (
                 <Page key={key} data={kitData} />
               ))
@@ -1521,5 +1565,5 @@ export function WelcomeBookGenerator({
         </div>
       )}
     </>
-  )
+  );
 }

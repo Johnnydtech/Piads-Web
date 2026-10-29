@@ -1,19 +1,118 @@
-.wizard { min-width:0; border:1px solid #d8dfcf; border-radius:18px; background:#fff; color:#173f33; overflow:hidden; }
-.header { display:flex; align-items:center; gap:12px; justify-content:space-between; padding:12px 16px; }
-.header label { font-size:12px; white-space:nowrap; }
-.header select { min-width:0; width:auto; max-width:65%; min-height:44px; border:1px solid #d8dfcf; border-radius:10px; padding:8px; background:#f6f7f2; color:inherit; font:inherit; }
-.progress { display:flex; gap:4px; padding:0 16px; }
-.progress span { flex:1; height:3px; background:#edf1e7; border-radius:3px; }
-.progress span[data-current='true'] { background:#173f33; }
-.body { height:360px; overflow:auto; overscroll-behavior:contain; scrollbar-width:thin; padding:16px; scroll-padding:16px; }
-.body h3 { font-family:Georgia,serif; font-size:24px; font-weight:400; margin:0 0 16px; }
-.body [hidden] { display:none !important; }
-.footer { display:flex; gap:12px; align-items:center; justify-content:space-between; border-top:1px solid #d8dfcf; padding:10px 16px; background:#fafbf7; }
-.footer button { min-height:44px; border:1px solid #d8dfcf; border-radius:12px; padding:8px 16px; font:inherit; background:white; color:#173f33; cursor:pointer; }
-.footer button:last-child { background:#173f33; color:white; }
-.footer button:disabled { opacity:.4; cursor:default; }
-.footer span { font-size:12px; }
-.wizard :is(button,select):focus-visible { outline:2px solid #173f33; outline-offset:2px; }
-@media(max-width:600px) { .body { height: min(360px, 48dvh); min-height:200px; } .header,.footer { padding:8px 12px; } }
+.wizard {
+  min-width: 0;
+  border: 1px solid #d8dfcf;
+  border-radius: 18px;
+  background: #fff;
+  color: #173f33;
+  overflow: hidden;
+}
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 12px 16px;
+}
+.header label {
+  font-size: 12px;
+  white-space: nowrap;
+}
+.header select {
+  min-width: 0;
+  width: auto;
+  max-width: 65%;
+  min-height: 44px;
+  border: 1px solid #d8dfcf;
+  border-radius: 10px;
+  padding: 8px;
+  background: #f6f7f2;
+  color: inherit;
+  font: inherit;
+}
+.progress {
+  display: flex;
+  gap: 4px;
+  padding: 0 16px;
+}
+.progress span {
+  flex: 1;
+  height: 3px;
+  background: #edf1e7;
+  border-radius: 3px;
+}
+.progress span[data-current="true"] {
+  background: #173f33;
+}
+.body {
+  height: 360px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  padding: 16px;
+  scroll-padding: 16px;
+}
+.body h3 {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: 400;
+  margin: 0 0 16px;
+}
+.body [hidden] {
+  display: none !important;
+}
+.footer {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #d8dfcf;
+  padding: 10px 16px;
+  background: #fafbf7;
+}
+.footer button {
+  min-height: 44px;
+  border: 1px solid #d8dfcf;
+  border-radius: 12px;
+  padding: 8px 16px;
+  font: inherit;
+  background: white;
+  color: #173f33;
+  cursor: pointer;
+}
+.footer button:last-child {
+  background: #173f33;
+  color: white;
+}
+.footer button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.footer span {
+  font-size: 12px;
+}
+.wizard :is(button, select):focus-visible {
+  outline: 2px solid #173f33;
+  outline-offset: 2px;
+}
+@media (max-width: 600px) {
+  .body {
+    height: min(360px, 48dvh);
+    min-height: 200px;
+  }
+  .header,
+  .footer {
+    padding: 8px 12px;
+  }
+}
 
-.previewToggle { width:100%; min-height:44px; padding:12px; border:1px solid #d8dfcf; border-radius:12px; background:#fff; color:#173f33; font:inherit; cursor:pointer; }
+.previewToggle {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px;
+  border: 1px solid #d8dfcf;
+  border-radius: 12px;
+  background: #fff;
+  color: #173f33;
+  font: inherit;
+  cursor: pointer;
+}
