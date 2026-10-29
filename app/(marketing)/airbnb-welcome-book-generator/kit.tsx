@@ -481,6 +481,9 @@ export function LocalGuidePage({ data }: { data: KitData }) {
 export function MorePlacesPage({ data }: { data: KitData }) {
   return <Places data={data} offset={4} />
 }
+export function ExtraPlacesPage({ data }: { data: KitData }) {
+  return <Places data={data} offset={8} />
+}
 export function CheckoutPage({ data }: { data: KitData }) {
   return (
     <Sheet
@@ -543,6 +546,7 @@ export const KIT_PAGES = [
   { key: 'rules', label: 'House rules', Page: RulesPage },
   { key: 'guide', label: 'Local guide', Page: LocalGuidePage },
   { key: 'more', label: 'More local places', Page: MorePlacesPage },
+  { key: 'extra', label: 'Host favorites', Page: ExtraPlacesPage },
   { key: 'checkout', label: 'Checkout card', Page: CheckoutPage },
 ] as const
 export function availableKitPages(data: KitData) {
@@ -556,6 +560,7 @@ export function availableKitPages(data: KitData) {
       )
     if (p.key === 'guide') return data.picks.length > 0
     if (p.key === 'more') return data.picks.length > 4
+    if (p.key === 'extra') return data.picks.length > 8
     return true
   })
 }

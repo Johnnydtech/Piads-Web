@@ -45,7 +45,7 @@ export function readDraft(): GuideDraft | null {
       !d.result?.location?.formatted_address ||
       !Array.isArray(d.result.picks) ||
       !Array.isArray(d.picks) ||
-      d.picks.length > 8 ||
+      d.picks.length > 12 ||
       !['guestName', 'propertyName', 'message', 'checkout'].every(
         (k) => typeof d[k] === 'string',
       )

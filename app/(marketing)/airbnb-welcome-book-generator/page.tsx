@@ -40,7 +40,7 @@ const FAQS = [
   {
     question: 'Where do the local recommendations come from?',
     answer:
-      'Google Maps. We look near your address for the best-rated coffee, restaurants, bars and things to do: four stars and up, enough reviews to trust the rating, and a photo. Hours are shown when available and may change. Review the suggestions, remove any you don’t want, and restore them later.',
+      'Google Maps. We look near your address for the best-rated coffee, restaurants, bars and things to do: four stars and up, enough reviews to trust the rating, and a photo. Hours are shown when available and may change. Review the suggestions, search by business name to add your own favorites, and keep up to 12 places. You can remove suggestions or restore them later.',
   },
   {
     question: 'How do I get it onto my TV?',

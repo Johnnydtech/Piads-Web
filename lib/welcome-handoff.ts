@@ -41,7 +41,7 @@ export function parseWelcomeHandoff(
   if (
     !(d.address as string).trim() ||
     !Array.isArray(d.picks) ||
-    d.picks.length > 8
+    d.picks.length > 12
   )
     return null
   const picks: WelcomeHandoff['picks'] = []

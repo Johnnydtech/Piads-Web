@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import LocalFavoriteSearch from "@/components/LocalFavoriteSearch";
 import LocalFavoritesGallery from "@/components/LocalFavoritesGallery";
 import FocusedGuide from "./FocusedGuide";
 import GuidePreviewPanel from "./GuidePreviewPanel";
@@ -890,6 +891,20 @@ export function WelcomeBookGenerator({
                     Review these suggestions before sharing with guests. Hours
                     may change.
                   </p>
+                  <LocalFavoriteSearch
+                    address={result.location.formatted_address}
+                    picks={picks}
+                    onAdd={(pick) =>
+                      setPicks((current) =>
+                        current.length < 12 &&
+                        !current.some(
+                          (existing) => existing.place_id === pick.place_id,
+                        )
+                          ? [...current, pick]
+                          : current,
+                      )
+                    }
+                  />
                   <LocalFavoritesGallery
                     picks={picks}
                     onChangeTip={(id, blurb) =>
@@ -915,7 +930,17 @@ export function WelcomeBookGenerator({
                         <button
                           key={p.place_id}
                           type="button"
-                          onClick={() => setPicks((current) => [...current, p])}
+                          disabled={picks.length >= 12}
+                          onClick={() =>
+                            setPicks((current) =>
+                              current.length < 12 &&
+                              !current.some(
+                                (pick) => pick.place_id === p.place_id,
+                              )
+                                ? [...current, p]
+                                : current,
+                            )
+                          }
                         >
                           <RotateCcw size={14} /> {p.name}
                         </button>
