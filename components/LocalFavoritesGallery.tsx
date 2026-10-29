@@ -96,7 +96,7 @@ export default function LocalFavoritesGallery({
             type="button"
             aria-label="Previous favorites"
             aria-controls={galleryId}
-            disabled={position <= 1}
+            disabled={position <= 2}
             onClick={() => scroll(-1)}
           >
             <ArrowLeft size={18} />
