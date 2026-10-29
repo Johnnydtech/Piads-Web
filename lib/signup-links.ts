@@ -18,7 +18,7 @@ export function signupUseCaseForPath(pathname: string): string | undefined {
   const match = pathname.match(/^\/digital-signage-for\/([^/]+)\/?$/)
   if (match) return industrySignup(match[1])?.useCase
   if (pathname === '/blog/digital-signage-for-short-term-rentals') return 'short_term_rental'
-  if (pathname === '/airbnb-welcome-book-generator') return 'short_term_rental'
+  if ((/^\/airbnb-welcome-book-generator(?:\/your-guide)?\/?$/).test(pathname)) return 'short_term_rental'
   return undefined
 }
 export function hostSignupUrl(appUrl: string, useCase?: string): string {

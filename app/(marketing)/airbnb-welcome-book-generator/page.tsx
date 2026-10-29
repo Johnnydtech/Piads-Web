@@ -30,7 +30,7 @@ const FAQS = [
   {
     question: 'What is in the free host starter kit?',
     answer:
-      'A printable PDF with a welcome and Wi-Fi sign (guests scan the QR code to join your Wi-Fi), a checkout card with your steps, a local guide where each spot has a QR code that opens Google Maps, and three ready-to-send guest messages for check-in, checkout and reviews. You also get your welcome screen as a TV-sized image.',
+      'A customizable guest book with three coordinated styles: a welcome cover, arrival and host contact details, a Wi-Fi sign with a working QR code, house guidance and rules, local places with Google Maps links, and checkout steps. Choose your pages and download in Letter or A4. Copyable host messages and a TV-sized welcome image are also included.',
   },
   {
     question: 'Is my Wi-Fi password safe?',
@@ -40,7 +40,7 @@ const FAQS = [
   {
     question: 'Where do the local recommendations come from?',
     answer:
-      'Google Maps. We look near your address for the best-rated coffee, restaurants, bars and things to do: four stars and up, enough reviews to trust the rating, and a photo. Each pick shows today’s hours. You can remove any pick you don’t like.',
+      'Google Maps. We look near your address for the best-rated coffee, restaurants, bars and things to do: four stars and up, enough reviews to trust the rating, and a photo. Hours are shown when available and may change. Review the suggestions, remove any you don’t want, and restore them later.',
   },
   {
     question: 'How do I get it onto my TV?',
@@ -55,7 +55,7 @@ const FAQS = [
   {
     question: 'Do you save my address?',
     answer:
-      'We use your address only to look up places near you. It is not tied to you or saved to an account. When you download the kit you can leave your email or phone, both optional, and we may follow up once about putting it on your TV.',
+      'We use your address to find nearby places. Your guide is kept in this browser tab for up to one hour so you can edit it. Choosing Continue with my guide sends the property details and selected places to PiAds for you to confirm during signup. Requesting setup help is optional; downloads do not require contact details.',
   },
   {
     question: 'Why a TV instead of a printed welcome book?',
@@ -103,13 +103,13 @@ export default function WelcomeBookGeneratorPage() {
             </li>
             <li className={styles.step}>
               <span className={styles.stepNumber}>2</span>
-              <h3>We pick the best spots</h3>
-              <p>Coffee, food, drinks and things to do nearby, rated four stars and up, with photos and today’s hours.</p>
+              <h3>Review your generated guide</h3>
+              <p>Your guide opens on its own page. Edit your welcome, review nearby places, choose a design, and preview your guest book.</p>
             </li>
             <li className={styles.step}>
               <span className={styles.stepNumber}>3</span>
               <h3>Download it, or put it on your TV</h3>
-              <p>Save the image for any TV, or let PiAds keep it current, greet each guest by name, and share your Wi-Fi by QR code.</p>
+              <p>Follow the download instructions, then bring your guide into signup when you’re ready to connect a TV.</p>
             </li>
           </ol>
         </div>

@@ -163,7 +163,7 @@ export function WelcomeScreen({ data, frozen = false }: { data: WelcomeScreenDat
               </div>
             ) : null}
 
-            <div style={styles.nowBlock}>
+            {!frozen && <div style={styles.nowBlock}>
               <div style={styles.nowLine}>
                 <span>{now.time}</span>
                 {typeof data.weather?.temp_f === 'number' ? (
@@ -177,11 +177,11 @@ export function WelcomeScreen({ data, frozen = false }: { data: WelcomeScreenDat
                 {now.date}
                 {data.weather?.condition ? <span style={styles.nowMetaDim}> &middot; {data.weather.condition}</span> : null}
               </div>
-            </div>
+            </div>}
           </div>
 
           <div style={styles.column}>
-            <div style={styles.card}>
+            {!frozen && <div style={styles.card}>
               <div style={styles.cardEyebrow}>Scan for</div>
               <div style={styles.cardTitle}>Wi-Fi &amp; house guide</div>
               <div style={styles.qrWrap}>
@@ -203,7 +203,7 @@ export function WelcomeScreen({ data, frozen = false }: { data: WelcomeScreenDat
                 </div>
               </div>
               <div style={styles.cardHint}>Sample &mdash; the real code is generated per screen</div>
-            </div>
+            </div>}
 
             {data.checkout_text ? (
               <div style={styles.cardSmall}>
@@ -220,7 +220,7 @@ export function WelcomeScreen({ data, frozen = false }: { data: WelcomeScreenDat
             {frozen ? (
               <div style={styles.frozenRow}>
                 {picks.slice(0, FROZEN_PICKS).map((p) => (
-                  <PickTile key={p.place_id} pick={p} />
+                  <PickTile key={p.place_id} pick={{ ...p, closes_at: null }} />
                 ))}
               </div>
             ) : (

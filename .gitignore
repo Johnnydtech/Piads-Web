@@ -42,3 +42,7 @@ tsconfig.tsbuildinfo
 
 # Temporary entry points for the complete static review build
 app/**/*.preview.tsx
+
+# Isolated verification builds
+.next-build/
+.env*.local

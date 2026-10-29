@@ -9,7 +9,8 @@ for (const [slug, entry] of Object.entries(INDUSTRY_SIGNUP)) {
   assert.equal(url.searchParams.get('role'), 'venue_owner')
   assert.equal(url.searchParams.get('use_case'), entry.useCase)
   // Verify the actual built page, including shared header/footer CTAs.
-  const html = fs.readFileSync(`out/digital-signage-for/${slug}.html`, 'utf8')
+  const builtRoot = process.env.PIADS_BUILT_PAGES || 'out'
+  const html = fs.readFileSync(`${builtRoot}/digital-signage-for/${slug}.html`, 'utf8')
   const links = [...html.matchAll(/href="([^"]*\/sign-up[^\"]*)"/g)].map(m=>m[1].replaceAll('&amp;', '&'))
   assert.ok(links.length >= 3, `${slug}: hero, header, and footer signup links`)
   for (const link of links) {
@@ -21,6 +22,7 @@ for (const [slug, entry] of Object.entries(INDUSTRY_SIGNUP)) {
 }
 // The welcome book generator is a short-term-rental page: its signups land in STR onboarding.
 assert.equal(signupUseCaseForPath('/airbnb-welcome-book-generator'), 'short_term_rental')
+assert.equal(signupUseCaseForPath('/airbnb-welcome-book-generator/your-guide'), 'short_term_rental')
 assert.equal(signupUseCaseForPath('/'), undefined)
 assert.equal(signupUseCaseForPath('/pricing'), undefined)
 assert.equal(industrySignup('__proto__'), null)
