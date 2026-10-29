@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import LocalFavoritesGallery from "@/components/LocalFavoritesGallery";
 import FocusedGuide from "./FocusedGuide";
 import GuidePreviewPanel from "./GuidePreviewPanel";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -466,7 +467,11 @@ export function WelcomeBookGenerator({
   }
   function connectTv() {
     if (!result || handoffState === "waiting") return;
-    if (handoffState === "sent" && handoffWindow.current && !handoffWindow.current.closed) {
+    if (
+      handoffState === "sent" &&
+      handoffWindow.current &&
+      !handoffWindow.current.closed
+    ) {
       handoffWindow.current.focus();
       return;
     }
@@ -685,38 +690,92 @@ export function WelcomeBookGenerator({
             <Lock size={12} /> Free to edit and download
           </span>
         </div>
-        {step >= 0 && <button type="button" className={styles.textButton} onClick={() => goStep(-1)}>
-          <ArrowLeft size={16} /> Back to my welcome
-        </button>}
-        {step >= 0 && <>
-          <h2 ref={headingRef} tabIndex={-1} className={styles.stepHeading}>
-            {["Make it yours", "Your printable guide", "Download your guide", "Help connecting your TV"][step]}
-          </h2>
-          <p className={styles.stepDescription}>These details are optional. Your welcome is already ready to use.</p>
-        </>}
-        {error && <p role="alert" className={styles.error}>{error}</p>}
+        {step >= 0 && (
+          <button
+            type="button"
+            className={styles.textButton}
+            onClick={() => goStep(-1)}
+          >
+            <ArrowLeft size={16} /> Back to my welcome
+          </button>
+        )}
+        {step >= 0 && (
+          <>
+            <h2 ref={headingRef} tabIndex={-1} className={styles.stepHeading}>
+              {
+                [
+                  "Make it yours",
+                  "Your printable guide",
+                  "Download your guide",
+                  "Help connecting your TV",
+                ][step]
+              }
+            </h2>
+            <p className={styles.stepDescription}>
+              These details are optional. Your welcome is already ready to use.
+            </p>
+          </>
+        )}
+        {error && (
+          <p role="alert" className={styles.error}>
+            {error}
+          </p>
+        )}
         {step === -1 && (
           <div className={styles.readyWelcome}>
             <div className={styles.readyHeading}>
               <p className={styles.kicker}>Made for your place</p>
-              <h1 ref={headingRef} tabIndex={-1}>Your welcome is ready.</h1>
+              <h1 ref={headingRef} tabIndex={-1}>
+                Your welcome is ready.
+              </h1>
               <p>{result.location.formatted_address}</p>
             </div>
-            <div className={styles.tv}><div className={styles.tvScreen}><WelcomeScreen data={screen} /></div></div>
+            <div className={styles.tv}>
+              <div className={styles.tvScreen}>
+                <WelcomeScreen data={screen} />
+              </div>
+            </div>
             <div className={styles.readyAction}>
-              <p>A warm welcome on your TV. A local guide on your guests’ phones.</p>
-              <button type="button" className={styles.primary} onClick={connectTv} disabled={handoffState === "waiting"}>
-                {handoffState === "waiting" ? "Opening PiAds…" : handoffState === "sent" ? "Continue in PiAds" : "Put this on my TV"}
+              <p>
+                A warm welcome on your TV. A local guide on your guests’ phones.
+              </p>
+              <button
+                type="button"
+                className={styles.primary}
+                onClick={connectTv}
+                disabled={handoffState === "waiting"}
+              >
+                {handoffState === "waiting"
+                  ? "Opening PiAds…"
+                  : handoffState === "sent"
+                    ? "Continue in PiAds"
+                    : "Put this on my TV"}
                 <ArrowRight size={18} />
               </button>
-              <p className={styles.fineprint}>Create your account, then connect your TV. No card to start.</p>
-              <p className={styles.fineprint}>After your trial: $10 per screen/month, or free with qualifying ads.</p>
-              {handoffState === "sent" && <p role="status">Your welcome is ready in the PiAds tab.</p>}
+              <p className={styles.fineprint}>
+                Create your account, then connect your TV. No card to start.
+              </p>
+              <p className={styles.fineprint}>
+                After your trial: $10 per screen/month, or free with qualifying
+                ads.
+              </p>
+              {handoffState === "sent" && (
+                <p role="status">Your welcome is ready in the PiAds tab.</p>
+              )}
               <div className={styles.readyLinks}>
-                <button type="button" onClick={() => goStep(0)}>Personalize</button>
-                <button type="button" onClick={() => goStep(2)}>Download a free copy</button>
+                <button type="button" onClick={() => goStep(0)}>
+                  Personalize
+                </button>
+                <button type="button" onClick={() => goStep(2)}>
+                  Download a free copy
+                </button>
               </div>
-              {(photo || kit.wifiName || kit.wifiPassword) && <p className={styles.privacyNote}>Your uploaded photo and Wi-Fi details stay in this tab. Add them in PiAds after signup.</p>}
+              {(photo || kit.wifiName || kit.wifiPassword) && (
+                <p className={styles.privacyNote}>
+                  Your uploaded photo and Wi-Fi details stay in this tab. Add
+                  them in PiAds after signup.
+                </p>
+              )}
             </div>
           </div>
         )}
@@ -835,42 +894,22 @@ export function WelcomeBookGenerator({
                     Review these suggestions before sharing with guests. Hours
                     may change.
                   </p>
-                  <ul className={styles.picks}>
-                    {picks.map((p) => (
-                      <li key={p.place_id}>
-                        <div>
-                          <strong>{p.name}</strong>
-                          <span>
-                            {typeof p.rating === "number" && (
-                              <>
-                                <Star size={12} fill="currentColor" />{" "}
-                                {p.rating.toFixed(1)}
-                              </>
-                            )}
-                            {p.closes_at && ` · ${p.closes_at}`}
-                          </span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setPicks((current) =>
-                              current.filter((x) => x.place_id !== p.place_id),
-                            );
-                            track("welcome_generator_pick_removed");
-                          }}
-                          aria-label={`Remove ${p.name}`}
-                        >
-                          <X size={15} />
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                  {!picks.length && (
-                    <p className={styles.tip}>
-                      No places selected. Your welcome and checkout pages still
-                      work.
-                    </p>
-                  )}
+                  <LocalFavoritesGallery
+                    picks={picks}
+                    onChangeTip={(id, blurb) =>
+                      setPicks((current) =>
+                        current.map((pick) =>
+                          pick.place_id === id ? { ...pick, blurb } : pick,
+                        ),
+                      )
+                    }
+                    onRemove={(id) => {
+                      setPicks((current) =>
+                        current.filter((pick) => pick.place_id !== id),
+                      );
+                      track("welcome_generator_pick_removed");
+                    }}
+                  />
                   {removed.length > 0 && (
                     <details className={styles.restore}>
                       <summary>
@@ -1475,13 +1514,28 @@ export function WelcomeBookGenerator({
             </aside>
           </div>
         )}
-        {step === 2 && <footer className={styles.flowFooter}>
-          <button type="button" className={styles.textButton} onClick={() => goStep(-1)}><ArrowLeft size={16} /> Back to my welcome</button>
-          <button type="button" className={styles.primary} onClick={connectTv} disabled={handoffState === "waiting"}>
-            {handoffState === "waiting" ? "Opening PiAds…" : "Put this on my TV"} <ArrowRight size={18} />
-          </button>
-        </footer>}
-
+        {step === 2 && (
+          <footer className={styles.flowFooter}>
+            <button
+              type="button"
+              className={styles.textButton}
+              onClick={() => goStep(-1)}
+            >
+              <ArrowLeft size={16} /> Back to my welcome
+            </button>
+            <button
+              type="button"
+              className={styles.primary}
+              onClick={connectTv}
+              disabled={handoffState === "waiting"}
+            >
+              {handoffState === "waiting"
+                ? "Opening PiAds…"
+                : "Put this on my TV"}{" "}
+              <ArrowRight size={18} />
+            </button>
+          </footer>
+        )}
       </section>
       <Dialog.Root
         open={previewPage !== null}
