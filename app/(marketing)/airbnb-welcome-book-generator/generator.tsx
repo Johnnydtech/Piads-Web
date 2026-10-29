@@ -67,7 +67,7 @@ const APP_URL = (
   process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co"
 ).replace(/\/$/, "");
 const NEEDS_CAPTCHA = !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-const STEPS = ["Welcome screen", "Printable guide", "Download", "Connect a TV"];
+
 const PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const DEFAULT_MESSAGE =
   "Make yourself at home. Explore these places nearby during your stay.";
@@ -129,7 +129,7 @@ export function WelcomeBookGenerator({
   const [bookTheme, setBookTheme] = useState<BookTheme>("forest");
   const [paperSize, setPaperSize] = useState<PaperSize>("letter");
   const [excludedPages, setExcludedPages] = useState<string[]>([]);
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(-1);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [photoError, setPhotoError] = useState("");
@@ -153,6 +153,7 @@ export function WelcomeBookGenerator({
   );
   const stageRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const handoffWindow = useRef<Window | null>(null);
   const handoffCleanup = useRef<(() => void) | null>(null);
   const onToken = useCallback((value: string | null) => setToken(value), []);
 
@@ -213,6 +214,7 @@ export function WelcomeBookGenerator({
 
   function goStep(next: number) {
     setStep(next);
+    if (next === 0 || next === 1) setHandoffState("idle");
     setError("");
     track("welcome_generator_step_viewed", { step: next + 1 });
     requestAnimationFrame(() => {
@@ -464,6 +466,10 @@ export function WelcomeBookGenerator({
   }
   function connectTv() {
     if (!result || handoffState === "waiting") return;
+    if (handoffState === "sent" && handoffWindow.current && !handoffWindow.current.closed) {
+      handoffWindow.current.focus();
+      return;
+    }
     handoffCleanup.current?.();
     setError("");
     const draft = parseWelcomeHandoff({
@@ -502,6 +508,7 @@ export function WelcomeBookGenerator({
       );
       return;
     }
+    handoffWindow.current = popup;
     setHandoffState("waiting");
     const timeout = window.setTimeout(() => {
       cleanup();
@@ -668,7 +675,7 @@ export function WelcomeBookGenerator({
       <section
         className={styles.workspace}
         aria-label="Welcome guide workspace"
-        data-editing={step < 2}
+        data-editing={step >= 0 && step < 2}
       >
         <div className={styles.workspaceHead}>
           <Link href={GENERATOR_PATH} className={styles.textButton}>
@@ -678,50 +685,40 @@ export function WelcomeBookGenerator({
             <Lock size={12} /> Free to edit and download
           </span>
         </div>
-        <div className={styles.workspaceIntro}>
-          <p className={styles.kicker}>Your host starter kit</p>
-          <h1>Your welcome starts here.</h1>
-          <p>
-            <MapPin size={16} /> {result.location.formatted_address}
-          </p>
-        </div>
-        <nav className={styles.flowSteps} aria-label="Guide steps">
-          {STEPS.map((label, index) => (
-            <button
-              key={label}
-              onClick={() => goStep(index)}
-              type="button"
-              aria-current={step === index ? "step" : undefined}
-            >
-              <span>{index + 1}</span>
-              <strong>{label}</strong>
-            </button>
-          ))}
-        </nav>
-        <h2 ref={headingRef} tabIndex={-1} className={styles.stepHeading}>
-          {
-            [
-              "Make the first impression yours",
-              "Prepare the details guests need",
-              "Your guide, ready to use",
-              "Bring your welcome to the TV",
-            ][step]
-          }
-        </h2>
-        <p className={styles.stepDescription}>
-          {
-            [
-              "Review the address above, personalize your welcome, and choose the places you want guests to explore.",
-              "Add only the details that apply to your property. Select a page to see a larger preview.",
-              "Download without sharing your contact details. You can come back to edit any step.",
-              "Create an account, confirm your property, then pair your TV. You can also try the player in a browser.",
-            ][step]
-          }
-        </p>
-        {error && (
-          <p role="alert" className={styles.error}>
-            {error}
-          </p>
+        {step >= 0 && <button type="button" className={styles.textButton} onClick={() => goStep(-1)}>
+          <ArrowLeft size={16} /> Back to my welcome
+        </button>}
+        {step >= 0 && <>
+          <h2 ref={headingRef} tabIndex={-1} className={styles.stepHeading}>
+            {["Make it yours", "Your printable guide", "Download your guide", "Help connecting your TV"][step]}
+          </h2>
+          <p className={styles.stepDescription}>These details are optional. Your welcome is already ready to use.</p>
+        </>}
+        {error && <p role="alert" className={styles.error}>{error}</p>}
+        {step === -1 && (
+          <div className={styles.readyWelcome}>
+            <div className={styles.readyHeading}>
+              <p className={styles.kicker}>Made for your place</p>
+              <h1 ref={headingRef} tabIndex={-1}>Your welcome is ready.</h1>
+              <p>{result.location.formatted_address}</p>
+            </div>
+            <div className={styles.tv}><div className={styles.tvScreen}><WelcomeScreen data={screen} /></div></div>
+            <div className={styles.readyAction}>
+              <p>A warm welcome on your TV. A local guide on your guests’ phones.</p>
+              <button type="button" className={styles.primary} onClick={connectTv} disabled={handoffState === "waiting"}>
+                {handoffState === "waiting" ? "Opening PiAds…" : handoffState === "sent" ? "Continue in PiAds" : "Put this on my TV"}
+                <ArrowRight size={18} />
+              </button>
+              <p className={styles.fineprint}>Create your account, then connect your TV. No card to start.</p>
+              <p className={styles.fineprint}>After your trial: $10 per screen/month, or free with qualifying ads.</p>
+              {handoffState === "sent" && <p role="status">Your welcome is ready in the PiAds tab.</p>}
+              <div className={styles.readyLinks}>
+                <button type="button" onClick={() => goStep(0)}>Personalize</button>
+                <button type="button" onClick={() => goStep(2)}>Download a free copy</button>
+              </div>
+              {(photo || kit.wifiName || kit.wifiPassword) && <p className={styles.privacyNote}>Your uploaded photo and Wi-Fi details stay in this tab. Add them in PiAds after signup.</p>}
+            </div>
+          </div>
         )}
 
         {step === 0 && (
@@ -747,6 +744,7 @@ export function WelcomeBookGenerator({
             </GuidePreviewPanel>
             <aside className={styles.panel} aria-label="Welcome screen details">
               <FocusedGuide
+                onDone={() => goStep(-1)}
                 titles={[
                   "Your property",
                   "Welcome & checkout",
@@ -977,6 +975,8 @@ export function WelcomeBookGenerator({
                 your private booking messages.
               </p>
               <FocusedGuide
+                onDone={() => goStep(2)}
+                doneLabel="See downloads"
                 titles={[
                   "Your host",
                   "Arrival & parking",
@@ -1475,35 +1475,13 @@ export function WelcomeBookGenerator({
             </aside>
           </div>
         )}
-        <footer className={styles.flowFooter}>
-          {step > 0 ? (
-            <button
-              type="button"
-              className={styles.textButton}
-              onClick={() => goStep(step - 1)}
-            >
-              <ArrowLeft size={16} /> Back
-            </button>
-          ) : (
-            <span>Make changes at any step.</span>
-          )}
-          {step < 3 && (
-            <button
-              type="button"
-              className={styles.primary}
-              onClick={() => goStep(step + 1)}
-            >
-              {
-                [
-                  "Next: printable guide",
-                  "Next: download your kit",
-                  "Next: connect a TV",
-                ][step]
-              }
-              <ArrowRight size={18} />
-            </button>
-          )}
-        </footer>
+        {step === 2 && <footer className={styles.flowFooter}>
+          <button type="button" className={styles.textButton} onClick={() => goStep(-1)}><ArrowLeft size={16} /> Back to my welcome</button>
+          <button type="button" className={styles.primary} onClick={connectTv} disabled={handoffState === "waiting"}>
+            {handoffState === "waiting" ? "Opening PiAds…" : "Put this on my TV"} <ArrowRight size={18} />
+          </button>
+        </footer>}
+
       </section>
       <Dialog.Root
         open={previewPage !== null}

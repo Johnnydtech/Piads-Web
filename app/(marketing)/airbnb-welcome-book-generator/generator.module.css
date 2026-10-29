@@ -1504,3 +1504,24 @@
 
 .workspace[data-editing="true"] .stepHeading { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .workspace[data-editing="true"] .stepDescription { display: none; }
+
+/* The generated result is the starting point; editing is optional. */
+.readyWelcome { max-width: 900px; margin: 12px auto 36px; }
+.readyHeading { text-align: center; margin-bottom: 26px; }
+.readyHeading h1 { font-size: clamp(32px, 4vw, 48px); line-height: 1.12; margin: 8px 0 12px; }
+.readyHeading > p:last-child { color: #65776d; font-size: 15px; }
+.readyWelcome .tv { max-width: 740px; margin: auto; padding: 9px; }
+.readyAction { text-align: center; padding-top: 24px; }
+.readyAction > p:first-child { font-size: 17px; margin: 0 0 20px; }
+.readyAction .primary { min-height: 52px; min-width: 250px; justify-content: center; }
+.readyAction .fineprint { margin: 10px 0 0; font-size: 12px; }
+.readyLinks { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 28px; margin-top: 20px; }
+.readyLinks button { border: 0; background: none; color: #254c3f; text-decoration: underline; text-underline-offset: 4px; min-height: 44px; padding: 8px; cursor: pointer; font-size: 14px; }
+@media (max-width: 600px) {
+  .readyWelcome { margin-top: 24px; }
+  .readyHeading { margin-bottom: 24px; }
+  .readyWelcome .tv { padding: 5px; border-radius: 12px; }
+  .readyAction { padding-top: 24px; }
+  .readyAction > p:first-child { max-width: 290px; margin: 0 auto 20px; line-height: 1.6; }
+  .readyAction .primary { width: 100%; }
+}

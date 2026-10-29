@@ -24,10 +24,12 @@ const introductions: Record<string, string> = {
 };
 
 /** Keep fields mounted so moving between sections preserves work in progress. */
-export default function FocusedGuide({ titles, children, action }: {
+export default function FocusedGuide({ titles, children, action, onDone, doneLabel = "Done" }: {
   titles: string[];
   children: ReactNode;
   action?: ReactNode;
+  onDone?: () => void;
+  doneLabel?: string;
 }) {
   const [step, setStep] = useState(0);
   const id = useId();
@@ -76,7 +78,7 @@ export default function FocusedGuide({ titles, children, action }: {
             <div className={styles.actions}>
               {step < titles.length - 1 ? (
                 <button type="button" onClick={() => go(step + 1)}>Continue →</button>
-              ) : !action && <span>Ready when you are. Continue below.</span>}
+              ) : !action && onDone && <button type="button" onClick={onDone}>{doneLabel} →</button>}
               {action}
             </div>
           </div>
