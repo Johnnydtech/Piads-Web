@@ -7,6 +7,7 @@ import LocalFavoriteSearch from "@/components/LocalFavoriteSearch";
 import LocalFavoritesGallery from "@/components/LocalFavoritesGallery";
 import FocusedGuide from "./FocusedGuide";
 import GuidePreviewPanel from "./GuidePreviewPanel";
+import { DEMO_WELCOME } from "./demo";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
   ArrowLeft,
@@ -20,6 +21,8 @@ import {
   Lock,
   MapPin,
   Monitor,
+  Pause,
+  Play,
   RotateCcw,
   Sparkles,
   Star,
@@ -113,6 +116,7 @@ export function WelcomeBookGenerator({
 }) {
   const router = useRouter();
   const [loaded, setLoaded] = useState(!workspace);
+  const [demoPaused, setDemoPaused] = useState(false);
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<Generated | null>(null);
   const [createdAt, setCreatedAt] = useState(0);
@@ -634,22 +638,20 @@ export function WelcomeBookGenerator({
         <div className={styles.landingPreview}>
           <div className={styles.tv}>
             <div className={styles.tvScreen}>
-              <WelcomeScreen
-                data={{
-                  guest_name: "Maya",
-                  property_name: "Your rental",
-                  welcome_message: DEFAULT_MESSAGE,
-                  checkout_text: "Your checkout instructions here",
-                  background_url: null,
-                  picks: [],
-                }}
-              />
+              <WelcomeScreen data={DEMO_WELCOME} paused={demoPaused} />
             </div>
           </div>
-          <p className={styles.tvCaption}>
-            Example TV layout. Your guide opens on the next page, ready to
-            personalize.
-          </p>
+          <div className={styles.demoFooter}>
+            <p className={styles.tvCaption}>
+              This is how your TV welcome works. Example places and weather;
+              your guide uses your property’s details.
+            </p>
+            <button type="button" className={styles.demoPause}
+              aria-pressed={demoPaused} onClick={() => setDemoPaused((value) => !value)}>
+              {demoPaused ? <Play size={15} aria-hidden="true" /> : <Pause size={15} aria-hidden="true" />}
+              {demoPaused ? "Resume scrolling" : "Pause scrolling"}
+            </button>
+          </div>
         </div>
       </section>
     );

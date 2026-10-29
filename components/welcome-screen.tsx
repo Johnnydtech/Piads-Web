@@ -134,14 +134,14 @@ function PickTile({ pick }: { pick: WelcomePick }) {
   )
 }
 
-export function WelcomeScreen({ data, frozen = false }: { data: WelcomeScreenData; frozen?: boolean }) {
+export function WelcomeScreen({ data, frozen = false, paused = false }: { data: WelcomeScreenData; frozen?: boolean; paused?: boolean }) {
   const now = useLocalNow(data.utc_offset_minutes)
   const picks = data.picks || []
   const greeting = data.guest_name ? `Welcome, ${data.guest_name}` : 'Welcome'
 
   return (
     <div style={styles.root}>
-      <style>{`@keyframes gw-roll { from { transform: translate3d(0,0,0) } to { transform: translate3d(-50%,0,0) } }`}</style>
+      <style>{`@keyframes gw-roll { from { transform: translate3d(0,0,0) } to { transform: translate3d(-50%,0,0) } } @media (prefers-reduced-motion: reduce) { [data-welcome-marquee] { animation: none !important; } }`}</style>
       {data.background_url ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={data.background_url} alt="" crossOrigin="anonymous" style={styles.bg} />
@@ -225,7 +225,7 @@ export function WelcomeScreen({ data, frozen = false }: { data: WelcomeScreenDat
               </div>
             ) : (
               <div style={styles.marquee}>
-                <div style={{ ...styles.track, animationDuration: `${picks.length * SECONDS_PER_PICK}s` }}>
+                <div data-welcome-marquee style={{ ...styles.track, animationDuration: `${picks.length * SECONDS_PER_PICK}s`, animationPlayState: paused ? 'paused' : 'running' }}>
                   {/* Rendered twice so the -50% translate loops with no seam. */}
                   {[...picks, ...picks].map((p, i) => (
                     <PickTile key={`${i}-${p.place_id}`} pick={p} />
@@ -249,6 +249,7 @@ const styles: Record<string, React.CSSProperties> = {
     background: INK,
     color: WARM_WHITE,
     fontFamily: SERIF,
+    textAlign: 'left',
   },
   bg: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' },
   wash: {

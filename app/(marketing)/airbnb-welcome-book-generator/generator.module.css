@@ -810,6 +810,40 @@
   max-width: 850px;
   margin: 42px auto 24px;
 }
+.demoFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 16px;
+}
+.demoFooter .tvCaption {
+  flex: 1 1 320px;
+  margin: 0;
+  text-align: left;
+}
+.demoPause {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #dce3d8;
+  border-radius: 24px;
+  background: white;
+  color: #173f33;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.demoPause:focus-visible {
+  outline: 2px solid #173f33;
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .demoPause { display: none; }
+}
 .workspaceHead {
   display: flex;
   justify-content: space-between;
