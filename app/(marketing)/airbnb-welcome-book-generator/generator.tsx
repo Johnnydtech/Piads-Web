@@ -886,10 +886,6 @@ export function WelcomeBookGenerator({
                   )}
                 </div>
                 <div>
-                  <div className={styles.picksHeader}>
-                    <h3>Local suggestions</h3>
-                    <span>{picks.length} selected</span>
-                  </div>
                   <p className={styles.privacyNote}>
                     Review these suggestions before sharing with guests. Hours
                     may change.
