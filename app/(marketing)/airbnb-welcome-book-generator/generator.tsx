@@ -668,6 +668,7 @@ export function WelcomeBookGenerator({
       <section
         className={styles.workspace}
         aria-label="Welcome guide workspace"
+        data-editing={step < 2}
       >
         <div className={styles.workspaceHead}>
           <Link href={GENERATOR_PATH} className={styles.textButton}>

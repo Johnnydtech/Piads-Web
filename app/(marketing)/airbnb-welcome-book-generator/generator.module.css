@@ -1501,3 +1501,6 @@
   .editingWorkspace > .bookPreview { justify-content: flex-start; }
   .workspace { padding: 24px 16px; }
 }
+
+.workspace[data-editing="true"] .stepHeading { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.workspace[data-editing="true"] .stepDescription { display: none; }
