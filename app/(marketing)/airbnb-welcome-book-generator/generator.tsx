@@ -724,7 +724,7 @@ export function WelcomeBookGenerator({
         )}
 
         {step === 0 && (
-          <div className={styles.grid}>
+          <div className={styles.editingWorkspace}>
             <GuidePreviewPanel
               className={styles.previewColumn}
               label="Preview your TV welcome"
@@ -895,7 +895,7 @@ export function WelcomeBookGenerator({
         )}
 
         {step === 1 && (
-          <div className={styles.kitGrid}>
+          <div className={styles.editingWorkspace}>
             <GuidePreviewPanel
               className={styles.bookPreview}
               label="Choose style & preview pages"

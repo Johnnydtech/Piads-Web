@@ -1,45 +1,33 @@
 "use client";
 
-import { useEffect, useId, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { Eye } from "lucide-react";
 import styles from "./focused-guide.module.css";
 
-export default function GuidePreviewPanel({
-  children,
-  label,
-  className,
-  breakpoint = 900,
-}: {
+export default function GuidePreviewPanel({ children, label, className }: {
   children: ReactNode;
   label: string;
   className?: string;
-  breakpoint?: number;
 }) {
-  const [wide, setWide] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const id = useId();
-  useEffect(() => {
-    const media = window.matchMedia(`(min-width: ${breakpoint + 1}px)`);
-    const update = () => setWide(media.matches);
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, [breakpoint]);
   return (
     <div className={className}>
-      {!wide && (
-        <button
-          className={styles.previewToggle}
-          type="button"
-          aria-expanded={expanded}
-          aria-controls={id}
-          onClick={() => setExpanded(!expanded)}
-        >
-          {expanded ? "Hide preview" : label}
-        </button>
-      )}
-      <div id={id} hidden={!wide && !expanded}>
-        {children}
-      </div>
+      <Dialog.Root>
+        <Dialog.Trigger asChild>
+          <button className={styles.previewToggle} type="button"><Eye size={18} aria-hidden="true" />{label}</button>
+        </Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Overlay className={styles.previewOverlay} />
+          <Dialog.Content className={styles.previewDialog}>
+            <div className={styles.previewHeader}>
+              <Dialog.Title className={styles.previewTitle}>{label}</Dialog.Title>
+              <Dialog.Close className={styles.previewClose}>Back to editing</Dialog.Close>
+            </div>
+            <Dialog.Description className={styles.previewDescription}>See your latest changes, then return to where you left off.</Dialog.Description>
+            {children}
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </div>
   );
 }

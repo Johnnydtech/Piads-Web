@@ -1481,3 +1481,23 @@
     font-size: 13px;
   }
 }
+
+/* A roomy editing workspace, with the design preview opened on demand. */
+.editingWorkspace { display: flex; flex-direction: column; gap: 24px; }
+.editingWorkspace > .panel { padding: 0; border: 0; background: transparent; }
+.editingWorkspace > .previewColumn,
+.editingWorkspace > .bookPreview { order: 0; display: flex; justify-content: flex-end; }
+.editingWorkspace .field { gap: 10px; margin-bottom: 24px; }
+.editingWorkspace .field > span { font-size: 15px; }
+.editingWorkspace .field small { font-size: 13px; line-height: 1.5; }
+.editingWorkspace .panel > h3 { font-size: 22px; margin-bottom: 12px; }
+.editingWorkspace .panel > .privacyNote { max-width: 80ch; font-size: 13px; line-height: 1.6; margin-bottom: 24px; }
+.workspaceHead { margin-bottom: 24px; }
+.stepDescription { margin-bottom: 24px; max-width: 80ch; }
+.flowFooter { margin-top: 24px; padding: 20px 0; position: static; }
+@media (max-width: 900px) {
+  .editingWorkspace { gap: 20px; }
+  .editingWorkspace > .previewColumn,
+  .editingWorkspace > .bookPreview { justify-content: flex-start; }
+  .workspace { padding: 24px 16px; }
+}
