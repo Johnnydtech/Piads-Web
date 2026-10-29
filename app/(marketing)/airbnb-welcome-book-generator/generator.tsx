@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import FocusedGuide from './FocusedGuide'
+import GuidePreviewPanel from './GuidePreviewPanel'
 import * as Dialog from '@radix-ui/react-dialog'
 import {
   ArrowLeft,
@@ -713,7 +715,7 @@ export function WelcomeBookGenerator({
 
         {step === 0 && (
           <div className={styles.grid}>
-            <div className={styles.previewColumn}>
+            <GuidePreviewPanel className={styles.previewColumn} label="Preview your TV welcome">
               <div className={styles.tv}>
                 <div className={styles.tvScreen}>
                   <WelcomeScreen data={screen} />
@@ -728,8 +730,10 @@ export function WelcomeBookGenerator({
                 background if the suggested city photo isn’t right for your
                 property.
               </div>
-            </div>
+            </GuidePreviewPanel>
             <aside className={styles.panel} aria-label="Welcome screen details">
+              <FocusedGuide titles={['Your welcome', 'Property photo', 'Local suggestions']}>
+              <div>
               <Field label="Property name">
                 <input
                   value={propertyName}
@@ -764,6 +768,8 @@ export function WelcomeBookGenerator({
                   onChange={(e) => setCheckout(e.target.value)}
                 />
               </Field>
+              </div>
+              <div>
               <label className={styles.photoButton}>
                 <ImagePlus size={17} />{' '}
                 {photo ? 'Change your photo' : 'Add a photo of your property'}
@@ -796,6 +802,8 @@ export function WelcomeBookGenerator({
                   {photoError}
                 </p>
               )}
+              </div>
+              <div>
               <div className={styles.picksHeader}>
                 <h3>Local suggestions</h3>
                 <span>{picks.length} selected</span>
@@ -854,13 +862,15 @@ export function WelcomeBookGenerator({
                   ))}
                 </details>
               )}
+              </div>
+              </FocusedGuide>
             </aside>
           </div>
         )}
 
         {step === 1 && (
           <div className={styles.kitGrid}>
-            <div>
+            <GuidePreviewPanel className={styles.bookPreview} label="Choose style & preview pages">
               <fieldset className={styles.stylePicker}>
                 <legend>Choose your book’s style</legend>
                 <div>
@@ -923,7 +933,7 @@ export function WelcomeBookGenerator({
                 appear when you add them. Your uploaded property photo is used
                 on the cover; suggested city photos are not included in the PDF.
               </p>
-            </div>
+            </GuidePreviewPanel>
             <aside className={styles.panel} aria-label="Printable details">
               <h3>The details guests actually need</h3>
               <p className={styles.privacyNote}>
@@ -931,8 +941,8 @@ export function WelcomeBookGenerator({
                 saved to your account or sent to HubSpot. Keep entry codes in
                 your private booking messages.
               </p>
-              <details className={styles.editorGroup} open>
-                <summary>Arrival & your host</summary>
+              <FocusedGuide titles={['Your host', 'Arrival & parking', 'House essentials', 'Wi-Fi', 'House rules', 'Checkout']}>
+              <div>
                 <Field label="Host name">
                   <input
                     value={kit.hostName}
@@ -963,6 +973,8 @@ export function WelcomeBookGenerator({
                     }
                   />
                 </Field>
+              </div>
+              <div>
                 <Field label="Arrival instructions">
                   <textarea
                     value={kit.arrival}
@@ -985,9 +997,8 @@ export function WelcomeBookGenerator({
                     }
                   />
                 </Field>
-              </details>
-              <details className={styles.editorGroup}>
-                <summary>House essentials</summary>
+              </div>
+              <div>
                 <Field label="TV, heating, appliances & amenities">
                   <textarea
                     value={kit.homeTips}
@@ -1013,7 +1024,8 @@ export function WelcomeBookGenerator({
                     }
                   />
                 </Field>
-              </details>
+              </div>
+              <div>
               <Field label="Wi-Fi network (optional)">
                 <input
                   value={kit.wifiName}
@@ -1038,6 +1050,8 @@ export function WelcomeBookGenerator({
                   }
                 />
               </Field>
+              </div>
+              <div>
               <fieldset className={styles.checks}>
                 <legend>House rules</legend>
                 {HOUSE_RULES.map((rule) => (
@@ -1070,6 +1084,8 @@ export function WelcomeBookGenerator({
                   }
                 />
               </Field>
+              </div>
+              <div>
               <fieldset className={styles.checks}>
                 <legend>Checkout steps</legend>
                 {CHECKOUT_STEPS.map((item) => (
@@ -1102,6 +1118,8 @@ export function WelcomeBookGenerator({
                   }
                 />
               </Field>
+              </div>
+              </FocusedGuide>
               <p className={styles.privacyNote}>
                 <Lock size={13} /> These details stay in your browser and downloads.
               </p>

@@ -907,3 +907,38 @@
   .pagePreviews { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 4px 16px; gap: 14px; }
   .pagePreview { flex: 0 0 240px; scroll-snap-align: start; }
 }
+
+/* A focused editing desk: one set of fields, with navigation always in reach. */
+.workspaceHead { margin: 8px 0 12px; }
+.workspaceIntro h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); margin: 0; }
+.workspaceIntro .kicker { display: none; }
+.flowSteps { margin: 16px 0; }
+.stepDescription { margin-bottom: 16px; }
+.grid, .kitGrid { grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr); gap: 24px; }
+.grid > .panel, .kitGrid > .panel { padding: 0; border: 0; background: transparent; }
+.panel > h3, .panel > .privacyNote { margin: 0 0 10px; }
+.panel > h3 { font-size: 18px; }
+.panel > .privacyNote { font-size: 12px; }
+.flowFooter { margin-top: 16px; padding: 12px 0; position: sticky; bottom: 0; background: var(--cream, #f7f8f2); z-index: 5; }
+.pagePreviews { display: flex; overflow-x: auto; gap: 14px; padding: 4px 4px 12px; }
+.pagePreview { flex: 0 0 210px; }
+.pagePreview .thumb { margin: auto; }
+.stylePicker { margin-bottom: 12px; }
+.stylePicker button > span { width: 28px; height: 28px; }
+.previewColumn, .bookPreview { min-width: 0; position: static; }
+@media (min-width: 901px) {
+}
+@media (max-width: 900px) {
+  .grid, .kitGrid { display: flex; flex-direction: column; gap: 12px; }
+  .grid > *, .kitGrid > * { width: 100%; }
+  .previewColumn, .bookPreview { order: 2; }
+  .workspace { padding: 12px 16px 24px; }
+  .workspaceIntro, .stepDescription { display: none; }
+  .stepHeading { font-size: 1.5rem; margin: 12px 0; }
+  .flowSteps { margin: 10px 0; padding: 4px; gap: 4px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .flowSteps button { padding: 8px 4px; flex-direction: column; gap: 4px; font-size: 11px; }
+  .flowSteps button > span { width: 20px; height: 20px; font-size: 11px; }
+  .panel > .privacyNote { font-size: 11px; }
+  .flowFooter { flex-wrap: nowrap; }
+  .flowFooter > button { width: auto; min-height: 44px; padding: 10px 12px; font-size: 13px; }
+}
