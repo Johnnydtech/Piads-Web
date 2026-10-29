@@ -74,13 +74,11 @@ export default function FocusedGuide({ titles, children, action, onDone, doneLab
             ))}
           </div>
           <div className={styles.footer}>
-            {!onDone && !action && <button type="button" disabled={step === 0} onClick={() => go(step - 1)}>Back</button>}
+            <button type="button" disabled={step === 0} onClick={() => go(step - 1)}>Back</button>
             <div className={styles.actions}>
-              {!onDone && step < titles.length - 1 ? (
+              {step < titles.length - 1 ? (
                 <button type="button" onClick={() => go(step + 1)}>Continue →</button>
-              ) : null}
-              {!action && onDone && <button type="button" onClick={onDone}>{doneLabel} →</button>}
-              {action}
+              ) : action || (onDone && <button type="button" onClick={onDone}>{doneLabel} →</button>)}
             </div>
           </div>
         </div>
