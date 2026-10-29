@@ -983,6 +983,7 @@ export function WelcomeBookGenerator({
                   "Wi-Fi",
                   "House rules",
                   "Checkout",
+                  "Custom notes",
                 ]}
               >
                 <div>
@@ -1108,25 +1109,6 @@ export function WelcomeBookGenerator({
                       </label>
                     ))}
                   </fieldset>
-                  <Field
-                    label="Your own house rules"
-                    hint="One per line, up to four. No rules are selected for you."
-                  >
-                    <textarea
-                      rows={3}
-                      value={kit.customRules}
-                      maxLength={280}
-                      onChange={(e) =>
-                        setKit((k) => ({
-                          ...k,
-                          customRules: e.target.value
-                            .split("\n")
-                            .slice(0, 4)
-                            .join("\n"),
-                        }))
-                      }
-                    />
-                  </Field>
                 </div>
                 <div>
                   <fieldset className={styles.checks}>
@@ -1142,12 +1124,33 @@ export function WelcomeBookGenerator({
                       </label>
                     ))}
                   </fieldset>
+                </div>
+                <div>
+                  <Field
+                    label="Your own house rules"
+                    hint="One per line, up to four."
+                  >
+                    <textarea
+                      rows={2}
+                      value={kit.customRules}
+                      maxLength={280}
+                      onChange={(e) =>
+                        setKit((k) => ({
+                          ...k,
+                          customRules: e.target.value
+                            .split("\n")
+                            .slice(0, 4)
+                            .join("\n"),
+                        }))
+                      }
+                    />
+                  </Field>
                   <Field
                     label="Your own checkout steps"
                     hint="One per line, up to four."
                   >
                     <textarea
-                      rows={3}
+                      rows={2}
                       maxLength={280}
                       value={kit.customCheckout}
                       onChange={(e) =>
