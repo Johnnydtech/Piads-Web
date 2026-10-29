@@ -103,13 +103,13 @@ export default function WelcomeBookGeneratorPage() {
             </li>
             <li className={styles.step}>
               <span className={styles.stepNumber}>2</span>
-              <h3>Review your generated guide</h3>
-              <p>Your guide opens on its own page. Edit your welcome, review nearby places, choose a design, and preview your guest book.</p>
+              <h3>See your welcome</h3>
+              <p>See your finished TV welcome and nearby recommendations. Personalize it if you like, or use it as it is.</p>
             </li>
             <li className={styles.step}>
               <span className={styles.stepNumber}>3</span>
-              <h3>Download it, or put it on your TV</h3>
-              <p>Follow the download instructions, then bring your guide into signup when you’re ready to connect a TV.</p>
+              <h3>Put it on your TV</h3>
+              <p>Create your account with your welcome already prepared, then enter the code from your TV. A free download is always available too.</p>
             </li>
           </ol>
         </div>
