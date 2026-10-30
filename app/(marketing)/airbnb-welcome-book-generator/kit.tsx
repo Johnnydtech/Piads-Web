@@ -611,6 +611,8 @@ export async function buildKitPdf(
         'One page has too much text. Shorten your notes and try again.',
       )
     const dataUrl = await toPng(node, {
+      // Places photos share an endpoint; their query strings identify different images.
+      includeQueryParams: true,
       width: PAGE_W,
       height: PAGE_H,
       pixelRatio: 2.5,

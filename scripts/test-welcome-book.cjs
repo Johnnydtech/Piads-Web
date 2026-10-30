@@ -9,7 +9,10 @@ for (const ext of ['.ts', '.tsx']) require.extensions[ext] = (module, file) => {
 }
 const originalLoad = Module._load
 Module._load = function (id, ...args) {
-  if (id === 'html-to-image') return { toPng: async () => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLbtAAAAABJRU5ErkJggg==' }
+  if (id === 'html-to-image') return { toPng: async (_node, options) => {
+    assert.equal(options.includeQueryParams, true, 'distinct Places photo URLs must not share a cached export image')
+    return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLbtAAAAABJRU5ErkJggg=='
+  } }
   return originalLoad.call(this, id, ...args)
 }
 const { availableKitPages, buildKitPdf, DEFAULT_KIT, guideReview, customLines } = require('../app/(marketing)/airbnb-welcome-book-generator/kit.tsx')

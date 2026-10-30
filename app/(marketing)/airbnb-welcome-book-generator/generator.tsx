@@ -384,7 +384,7 @@ export function WelcomeBookGenerator({
       else {
         await Promise.all(Array.from(stage.querySelectorAll("img")).map(img => img.decode().catch(() => undefined)));
         const { toPng } = await import("html-to-image");
-        blob = await (await fetch(await toPng(stage, { width: 1920, height: 1080, pixelRatio: 1, backgroundColor: "#17130F" }))).blob();
+        blob = await (await fetch(await toPng(stage, { includeQueryParams: true, width: 1920, height: 1080, pixelRatio: 1, backgroundColor: "#17130F" }))).blob();
       }
       const form = new FormData(); form.append("kind", kind);
       form.append("file", blob, kind === "kit" ? "guest-book.pdf" : "welcome-screen.png");
