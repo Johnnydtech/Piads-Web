@@ -1563,3 +1563,5 @@
 .aiDesign { padding:24px; margin:24px 0; border:1px solid #dce2d9; border-radius:20px; background:#f0f4e9; display:grid; gap:14px; }
 .aiDesign > span { display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;font-weight:600; }
 .aiDesign h3,.aiDesign p { margin:0; } .aiDesign p { line-height:1.6; } .aiDesign small { color:#64746b;line-height:1.6; }
+
+.designWorkspace{display:grid;grid-template-columns:minmax(250px,350px) minmax(0,1fr);gap:40px;align-items:start;max-width:1050px;margin:24px auto}.designPage{width:343px;height:444px;overflow:hidden;box-shadow:0 14px 44px #17392f20;border-radius:6px}.designWorkspace .aiDesign{margin-top:24px}.designWorkspace .stylePicker{margin:0}.designWorkspace .stylePicker>div{flex-wrap:wrap}.designWorkspace>div{min-width:0}@media(max-width:760px){.designWorkspace{grid-template-columns:1fr;gap:24px}.designPage{margin:auto}.designWorkspace .aiDesign{padding:20px}}@media(max-width:390px){.designPage{zoom:.82}}

@@ -691,6 +691,7 @@ export function WelcomeBookGenerator({
                   "Your printable guide",
                   "Download your guide",
                   "Help connecting your TV",
+                  "Make the design yours",
                 ][step]
               }
             </h2>
@@ -749,14 +750,16 @@ export function WelcomeBookGenerator({
                 <button type="button" onClick={() => goStep(0)}>
                   Personalize
                 </button>
+                <button type="button" onClick={() => goStep(4)}>
+                  Create my AI design
+                </button>
                 <button type="button" onClick={() => goStep(2)}>
                   Download a free copy
                 </button>
               </div>
-              {(photo || kit.wifiName || kit.wifiPassword) && (
+              {(artwork || photo || kit.wifiName || kit.wifiPassword) && (
                 <p className={styles.privacyNote}>
-                  Your uploaded photo and Wi-Fi details stay in this tab. Add
-                  them in PiAds after signup.
+                  Your artwork, uploaded photo and Wi-Fi details are included in your emailed files. Add them in PiAds after signup; the signup transfer currently includes text and local favorites.
                 </p>
               )}
             </div>
@@ -935,12 +938,12 @@ export function WelcomeBookGenerator({
           </div>
         )}
 
-        {step === 1 && (
-          <div className={styles.editingWorkspace}>
-            <GuidePreviewPanel
-              className={styles.bookPreview}
-              label="Choose style & preview pages"
-            >
+        {step === 4 && (
+          <div className={styles.designWorkspace}>
+            <div className={styles.designPage} aria-label="Your cover preview">
+              <div style={{width:PAGE_W,height:PAGE_H,transform:"scale(.42)",transformOrigin:"top left"}}>{(() => { const Cover = KIT_PAGES[0].Page; return <Cover data={kitData} />; })()}</div>
+            </div>
+            <div>
               <fieldset className={styles.stylePicker}>
                 <legend>Choose your book’s style</legend>
                 <div>
@@ -977,6 +980,17 @@ export function WelcomeBookGenerator({
                 <small>One free artwork per verified email and phone. AI artwork is decorative; review it before sharing. Your guide text stays editable.</small>
                 {error && <p role="alert" className={styles.error}>{error}</p>}
               </section>
+              <button type="button" className={styles.secondary} onClick={() => goStep(1)}>Continue to guide details <ArrowRight size={18} /></button>
+            </div>
+          </div>
+        )}
+
+        {step === 1 && (
+          <div className={styles.editingWorkspace}>
+            <GuidePreviewPanel
+              className={styles.bookPreview}
+              label="Preview your book pages"
+            >
               <div
                 className={styles.pagePreviews}
                 role="region"
@@ -1021,6 +1035,7 @@ export function WelcomeBookGenerator({
                 on the cover; suggested city photos are not included in the PDF.
               </p>
             </GuidePreviewPanel>
+            <button className={styles.textButton} type="button" onClick={() => goStep(4)}><Sparkles size={18} /> Change style or create AI artwork</button>
             <aside className={styles.panel} aria-label="Printable details">
               <h3>The details guests actually need</h3>
               <p className={styles.privacyNote}>

@@ -28,7 +28,7 @@ export function BookShowcase() {
       </div>
       <p className={styles.note}>Arrival · Wi-Fi · House essentials · House rules · Local favorites · Checkout<br/>Finished examples for a fictional property. Your guide uses the same templates, with your own details.</p>
       <a href="#generator-title" className={styles.primary}>Create my free guide →</a>
-      <p className={styles.note}>Free to personalize and download. No signup needed.</p>
+      <p className={styles.note}>Free to personalize. Your finished download arrives by email.</p>
     </div>
   </section>
 }
