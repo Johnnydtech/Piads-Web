@@ -26,7 +26,7 @@ const FAQS = [
   {
     question: 'Is the welcome book generator really free?',
     answer:
-      'Yes. Generating, editing and downloading your welcome screen and starter kit is free and needs no account. If you want it on your TV and keeping itself current, PiAds is free for hosts who enable approved local ad slots, or $10 per screen per month without ads.',
+      'Yes. Generating and editing is free. Enter your email and phone, then verify your email to receive a private download link. No PiAds account is needed. One free AI artwork is available per verified email and phone. If you want it on your TV and keeping itself current, PiAds is free for hosts who enable approved local ad slots, or $10 per screen per month without ads.',
   },
   {
     question: 'What is in the free host starter kit?',
@@ -36,7 +36,7 @@ const FAQS = [
   {
     question: 'Is my Wi-Fi password safe?',
     answer:
-      'Your Wi-Fi password and your photo never leave your device. The kit is built in your browser and downloaded straight to you; PiAds never receives either one.',
+      'Your edits stay in your browser until you request delivery. Your finished PDF or TV image is stored privately and emailed through a link that expires in 7 days. Guide details and Wi-Fi credentials are not sent to HubSpot. If you choose AI artwork, your property photo is sent to our AI provider to create it. Keep door codes in your private booking messages.',
   },
   {
     question: 'Where do the local recommendations come from?',
@@ -56,7 +56,7 @@ const FAQS = [
   {
     question: 'Do you save my address?',
     answer:
-      'We use your address to find nearby places. Your guide is kept in this browser tab for up to one hour so you can edit it. Choosing Continue with my guide sends the property details and selected places to PiAds for you to confirm during signup. Requesting setup help is optional; downloads do not require contact details.',
+      'We use your address to find nearby places. Your guide is kept in this browser tab for up to one hour so you can edit it. Choosing Continue with my guide sends the property details and selected places to PiAds for you to confirm during signup. Email and phone are required for emailed downloads and free AI artwork. Phone collection does not opt you into calls or texts. Requesting setup help is optional.',
   },
   {
     question: 'Why a TV instead of a printed welcome book?',

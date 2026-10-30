@@ -97,6 +97,7 @@ export default function PrivacyPage() {
                     </p>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-muted-foreground">
                       <li className="flex items-start gap-2"><span className="text-blue mt-1">•</span>Create an account (name, email, password)</li>
+                      <li className="flex items-start gap-2"><span className="text-blue mt-1">•</span>Request a welcome-guide download or AI artwork (email and phone, used for verification, delivery and free-artwork limits). Phone collection alone does not subscribe you to calls or texts. Finished downloads are stored privately; emailed links expire after seven days. Contact details may be stored in our CRM, but guide content and Wi-Fi details are not sent to it. If you request AI artwork, your photo and description are processed by our AI image provider.</li>
                       <li className="flex items-start gap-2"><span className="text-blue mt-1">•</span>Set up a venue profile (business details)</li>
                       <li className="flex items-start gap-2"><span className="text-blue mt-1">•</span>Create an advertiser account</li>
                       <li className="flex items-start gap-2"><span className="text-blue mt-1">•</span>Upload content or creatives</li>

@@ -1559,3 +1559,7 @@
   .readyAction > p:first-child { max-width: 290px; margin: 0 auto 20px; line-height: 1.6; }
   .readyAction .primary { width: 100%; }
 }
+
+.aiDesign { padding:24px; margin:24px 0; border:1px solid #dce2d9; border-radius:20px; background:#f0f4e9; display:grid; gap:14px; }
+.aiDesign > span { display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;font-weight:600; }
+.aiDesign h3,.aiDesign p { margin:0; } .aiDesign p { line-height:1.6; } .aiDesign small { color:#64746b;line-height:1.6; }

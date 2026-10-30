@@ -60,6 +60,7 @@ export interface KitData {
   address?: string
   photo?: string | null
   theme?: 'forest' | 'coast' | 'clay'
+  artwork?: string | null
   sample?: boolean
 }
 

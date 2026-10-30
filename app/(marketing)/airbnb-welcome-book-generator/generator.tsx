@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import LocalFavoriteSearch from "@/components/LocalFavoriteSearch";
 import LocalFavoritesGallery from "@/components/LocalFavoritesGallery";
+import GeneratorAccess, { generatorRequest } from "./GeneratorAccess";
 import FocusedGuide from "./FocusedGuide";
 import GuidePreviewPanel from "./GuidePreviewPanel";
 import { DEMO_WELCOME } from "./demo";
@@ -141,16 +142,20 @@ export function WelcomeBookGenerator({
   const [photoError, setPhotoError] = useState("");
   const [token, setToken] = useState<string | null>(null);
   const [captchaReset, setCaptchaReset] = useState(0);
+  const [deliveryToken, setDeliveryToken] = useState("");
+  const [deliveryEmail, setDeliveryEmail] = useState("");
+  const [pendingAction, setPendingAction] = useState<"art" | "kit" | "png" | null>(null);
+  const [artwork, setArtwork] = useState<string | null>(null);
+  const [useArtwork, setUseArtwork] = useState(true);
+  const [artDescription, setArtDescription] = useState("");
+  const [artBusy, setArtBusy] = useState(false);
+  const [deliverySent, setDeliverySent] = useState(false);
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [contactState, setContactState] = useState<
     "idle" | "sending" | "saved" | "error"
   >("idle");
   const [contactError, setContactError] = useState("");
-  const [downloaded, setDownloaded] = useState<{
-    url: string;
-    filename: string;
-  } | null>(null);
   const [exportKind, setExportKind] = useState<"kit" | "png" | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
   const [previewPage, setPreviewPage] = useState<number | null>(null);
@@ -210,13 +215,6 @@ export function WelcomeBookGenerator({
     [photo],
   );
   useEffect(() => () => handoffCleanup.current?.(), []);
-  useEffect(
-    () => () => {
-      if (downloaded?.url.startsWith("blob:"))
-        URL.revokeObjectURL(downloaded.url);
-    },
-    [downloaded],
-  );
 
   function goStep(next: number) {
     setStep(next);
@@ -329,7 +327,7 @@ export function WelcomeBookGenerator({
     welcome_message: message.trim(),
     checkout_text: checkout.trim(),
     background_url:
-      photo || (neutralBackground ? null : (result?.background_url ?? null)),
+      (useArtwork && artwork) || photo || (neutralBackground ? null : (result?.background_url ?? null)),
     picks,
     utc_offset_minutes: result?.utc_offset_minutes,
     weather: result?.weather,
@@ -337,7 +335,8 @@ export function WelcomeBookGenerator({
   const kitData: KitData = {
     propertyName: propertyName.trim(),
     address: result?.location.formatted_address || address,
-    photo,
+    photo: (useArtwork && artwork) || photo,
+    artwork: useArtwork ? artwork : null,
     theme: bookTheme,
     message: message.trim(),
     checkout: checkout.trim(),
@@ -353,66 +352,47 @@ export function WelcomeBookGenerator({
   const removed = (result?.picks || []).filter(
     (p) => !picks.some((selected) => selected.place_id === p.place_id),
   );
-  const fileSlug = (result?.location.city || "piads")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-");
-  async function download(kind: "kit" | "png") {
-    if (exportKind) return;
-    setExportKind(kind);
-    setError("");
+  async function createArtwork(verifiedToken = deliveryToken) {
+    if (!verifiedToken) { setPendingAction("art"); return; }
+    if (artBusy) return;
+    setArtBusy(true); setError("");
     try {
-      await new Promise((r) =>
-        requestAnimationFrame(() => requestAnimationFrame(r)),
-      );
+      const form = new FormData();
+      form.append("theme", bookTheme);
+      form.append("city", result?.location.city || "");
+      form.append("description", artDescription);
+      if (photo) form.append("photo", await (await fetch(photo)).blob(), "property.jpg");
+      const data = await generatorRequest("artwork", { method: "POST", headers: { Authorization: `Bearer ${verifiedToken}` }, body: form });
+      setArtwork(data.url); setUseArtwork(true); setBookTheme(data.theme);
+      track("welcome_generator_art_created");
+    } catch (cause) { if ((cause as {status?: number})?.status === 401) setDeliveryToken(""); setError(cause instanceof Error ? cause.message : "We couldn’t create the artwork."); }
+    finally { setArtBusy(false); }
+  }
+  async function download(kind: "kit" | "png", verifiedToken = deliveryToken) {
+    if (!verifiedToken) { setPendingAction(kind); return; }
+    if (exportKind) return;
+    setExportKind(kind); setError(""); setDeliverySent(false);
+    try {
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
       await document.fonts.ready;
       const stage = stageRef.current;
       if (!stage) throw new Error("Missing export");
-      let url: string;
-      if (kind === "kit")
-        url = URL.createObjectURL(
-          await buildKitPdf(Array.from(stage.children) as HTMLElement[], {
-            paper: paperSize,
-            title: `${propertyName || "Your stay"} | Guest welcome book`,
-          }),
-        );
+      let blob: Blob;
+      if (kind === "kit") blob = await buildKitPdf(Array.from(stage.children) as HTMLElement[], {
+        paper: paperSize, title: `${propertyName || "Your stay"} | Guest welcome book`,
+      });
       else {
-        await Promise.all(
-          Array.from(stage.querySelectorAll("img")).map((img) =>
-            img.decode().catch(() => undefined),
-          ),
-        );
+        await Promise.all(Array.from(stage.querySelectorAll("img")).map(img => img.decode().catch(() => undefined)));
         const { toPng } = await import("html-to-image");
-        url = await toPng(stage, {
-          width: 1920,
-          height: 1080,
-          pixelRatio: 1,
-          backgroundColor: "#17130F",
-        });
+        blob = await (await fetch(await toPng(stage, { width: 1920, height: 1080, pixelRatio: 1, backgroundColor: "#17130F" }))).blob();
       }
-      const filename = `${kind === "kit" ? "guest-welcome-book" : "welcome-screen"}-${fileSlug}.${kind === "kit" ? "pdf" : "png"}`;
-      setDownloaded({ url, filename });
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      track(
-        kind === "kit"
-          ? "welcome_generator_kit_downloaded"
-          : "welcome_generator_downloaded",
-        { picks: picks.length },
-      );
-    } catch (cause) {
-      setError(
-        cause instanceof Error &&
-          /too much text|Choose at least one page/.test(cause.message)
-          ? cause.message
-          : "We couldn’t finish the download. Please try again. Your edits are still here.",
-      );
-    } finally {
-      setExportKind(null);
-    }
+      const form = new FormData(); form.append("kind", kind);
+      form.append("file", blob, kind === "kit" ? "guest-book.pdf" : "welcome-screen.png");
+      await generatorRequest("delivery", { method: "POST", headers: { Authorization: `Bearer ${verifiedToken}` }, body: form });
+      setDeliverySent(true);
+      track("welcome_generator_download_emailed", { kind, picks: picks.length });
+    } catch (cause) { if ((cause as {status?: number})?.status === 401) setDeliveryToken(""); setError(cause instanceof Error ? cause.message : "We couldn’t email the download. Your edits are still here."); }
+    finally { setExportKind(null); }
   }
   async function submitContact(event: React.FormEvent) {
     event.preventDefault();
@@ -421,7 +401,7 @@ export function WelcomeBookGenerator({
       p = phone.trim();
     if (!e && !p) {
       setContactError(
-        "Add an email or phone number so we can help you. Downloads don’t require either.",
+        "Add an email or phone number so we can help you. This help request is separate from your download.",
       );
       return;
     }
@@ -620,7 +600,7 @@ export function WelcomeBookGenerator({
           )}
           <ul className={styles.heroPoints}>
             <li>
-              <Check size={15} /> No signup to create or download
+              <Check size={15} /> Free to create · downloads by email
             </li>
             <li>
               <Check size={15} /> A complete guest welcome book
@@ -690,7 +670,7 @@ export function WelcomeBookGenerator({
             <ArrowLeft size={16} /> Change address
           </Link>
           <span className={styles.privacyNote}>
-            <Lock size={12} /> Free to edit and download
+            <Lock size={12} /> Free to edit · email your download
           </span>
         </div>
         {step >= 0 && (
@@ -985,6 +965,18 @@ export function WelcomeBookGenerator({
                   ))}
                 </div>
               </fieldset>
+              <section className={styles.aiDesign} aria-label="AI design personalization">
+                <span><Sparkles size={18} /> MADE FOR YOUR PROPERTY</span>
+                <h3>Create your own artwork</h3>
+                <p>Turn your property photo into artwork, or create a scene inspired by your location. Your selected style guides the colors and finish.</p>
+                <Field label="What does your place feel like?" hint="Optional. No guest names, door codes or private details.">
+                  <textarea rows={3} maxLength={500} value={artDescription} onChange={e => setArtDescription(e.target.value)} placeholder="A cozy cedar cabin, pine trees, warm light and sage-green interiors…" />
+                </Field>
+                <small>{photo ? "Your uploaded photo will be sent to our AI image provider when you create artwork." : "Add a property photo in the first step for a closer match. Without one, artwork is inspired by your city and description."}</small>
+                {artwork ? <><p role="status">Your AI artwork is ready. You can still change text and layout.</p><label><input type="checkbox" checked={useArtwork} onChange={e => setUseArtwork(e.target.checked)} /> Use my AI artwork on the cover and TV preview</label></> : <button className={styles.primary} type="button" disabled={artBusy} onClick={() => createArtwork()}>{artBusy ? <Loader2 size={18} className={styles.spin} /> : <Sparkles size={18} />}{artBusy ? "Creating your artwork…" : "Create my free AI artwork"}</button>}
+                <small>One free artwork per verified email and phone. AI artwork is decorative; review it before sharing. Your guide text stays editable.</small>
+                {error && <p role="alert" className={styles.error}>{error}</p>}
+              </section>
               <div
                 className={styles.pagePreviews}
                 role="region"
@@ -1032,9 +1024,7 @@ export function WelcomeBookGenerator({
             <aside className={styles.panel} aria-label="Printable details">
               <h3>The details guests actually need</h3>
               <p className={styles.privacyNote}>
-                These details stay in this tab and your downloads. They are not
-                saved to your account or sent to HubSpot. Keep entry codes in
-                your private booking messages.
+                Your edits stay in this tab until you email a download. The finished file is then stored privately for delivery. Guide details are not sent to HubSpot. Keep entry codes in your private booking messages.
               </p>
               <FocusedGuide
                 onDone={() => goStep(2)}
@@ -1145,7 +1135,7 @@ export function WelcomeBookGenerator({
                   </Field>
                   <Field
                     label="Wi-Fi password (optional)"
-                    hint="Stays on this page. It is included in your downloaded PDF and is cleared when you leave or reload."
+                    hint="Included in your privately stored PDF when you request email delivery. Keep door codes in private booking messages."
                   >
                     <input
                       value={kit.wifiPassword}
@@ -1320,10 +1310,10 @@ export function WelcomeBookGenerator({
                   ) : (
                     <Download size={18} />
                   )}{" "}
-                  Download {selectedPages.length}-page PDF
+                  Email my {selectedPages.length}-page PDF
                 </button>
                 <small>
-                  Print at actual size on your selected paper. Or send the PDF
+                  Your finished file is stored privately and emailed as a link valid for 7 days. Print at actual size on your selected paper. Or send the PDF
                   privately through your booking app. Test Wi-Fi and map links
                   before sharing. Host message templates below stay out of the
                   guest book.
@@ -1347,7 +1337,7 @@ export function WelcomeBookGenerator({
                   ) : (
                     <Download size={18} />
                   )}{" "}
-                  Download PNG
+                  Email my TV image
                 </button>
                 <small>
                   The downloaded image leaves out the live clock, weather and
@@ -1356,18 +1346,12 @@ export function WelcomeBookGenerator({
                 </small>
               </article>
             </div>
-            {downloaded && (
+            {deliverySent && (
               <div className={styles.success} role="status">
                 <Check size={20} />
                 <div>
-                  <strong>Your download is ready.</strong>
-                  <p>
-                    Look in your browser’s Downloads. If it didn’t start,{" "}
-                    <a href={downloaded.url} download={downloaded.filename}>
-                      save your file here
-                    </a>
-                    . Want a screen that updates? Continue to Connect a TV.
-                  </p>
+                  <strong>Your download link is on its way.</strong>
+                  <p>Check {deliveryEmail}, including your spam folder. Your private link works for 7 days. Anyone you share it with can open it.</p>
                 </div>
               </div>
             )}
@@ -1560,6 +1544,11 @@ export function WelcomeBookGenerator({
           </footer>
         )}
       </section>
+      <GeneratorAccess open={pendingAction !== null} onClose={() => setPendingAction(null)} onVerified={(verifiedToken, verifiedEmail) => {
+        const action = pendingAction; setDeliveryToken(verifiedToken); setDeliveryEmail(verifiedEmail); setPendingAction(null);
+        if (action === "art") void createArtwork(verifiedToken);
+        else if (action) void download(action, verifiedToken);
+      }} />
       <Dialog.Root
         open={previewPage !== null}
         onOpenChange={(open) => {
