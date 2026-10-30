@@ -975,7 +975,12 @@ export function WelcomeBookGenerator({
                 <Field label="What does your place feel like?" hint="Optional. No guest names, door codes or private details.">
                   <textarea rows={3} maxLength={500} value={artDescription} onChange={e => setArtDescription(e.target.value)} placeholder="A cozy cedar cabin, pine trees, warm light and sage-green interiors…" />
                 </Field>
-                <small>{photo ? "Your uploaded photo will be sent to our AI image provider when you create artwork." : "Add a property photo in the first step for a closer match. Without one, artwork is inspired by your city and description."}</small>
+                <label className={styles.photoButton}>
+                  <ImagePlus size={17} /> {photo ? "Change property photo" : "Add a property photo (optional)"}
+                  <input type="file" accept={PHOTO_TYPES.join(",")} onChange={onPhoto} className="sr-only" disabled={artBusy} />
+                </label>
+                {photo && <button className={styles.textButton} onClick={() => setPhoto(null)} type="button" disabled={artBusy}>Remove uploaded photo</button>}
+                <small>{photo ? "Your uploaded photo will be sent to our AI image provider when you create artwork." : "Without a photo, artwork is inspired by your city and description."}</small>
                 {artwork ? <><p role="status">Your AI artwork is ready. You can still change text and layout.</p><label><input type="checkbox" checked={useArtwork} onChange={e => setUseArtwork(e.target.checked)} /> Use my AI artwork on the cover and TV preview</label></> : <button className={styles.primary} type="button" disabled={artBusy} onClick={() => createArtwork()}>{artBusy ? <Loader2 size={18} className={styles.spin} /> : <Sparkles size={18} />}{artBusy ? "Creating your artwork…" : "Create my free AI artwork"}</button>}
                 <small>One free artwork per verified email and phone. AI artwork is decorative; review it before sharing. Your guide text stays editable.</small>
                 {error && <p role="alert" className={styles.error}>{error}</p>}
