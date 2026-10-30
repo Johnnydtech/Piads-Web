@@ -1,123 +1,34 @@
 "use client";
-import { useState } from "react";
-import { ArrowUpRight, Check, Home, Monitor, Wifi } from "lucide-react";
+
+import { ArrowUpRight, FileText, Monitor } from "lucide-react";
+import { trackCta } from "@/lib/analytics";
 import styles from "./portfolio-section.module.css";
 
-const properties = [
-  {
-    name: "The Coastal House",
-    location: "A place by the water",
-    guests: "Maya & Jordan",
-    network: "CoastalHouse_Guest",
-    note: "Beach towels are in the hall cupboard.",
-  },
-  {
-    name: "The Woodland Cabin",
-    location: "A slower kind of weekend",
-    guests: "Alex & Sam",
-    network: "Woodland_Guest",
-    note: "Trail maps are beside the front door.",
-  },
-  {
-    name: "The City Loft",
-    location: "Right in the neighborhood",
-    guests: "Taylor & Morgan",
-    network: "CityLoft_Guest",
-    note: "Your favorite coffee is a short walk away.",
-  },
-];
 export function PortfolioSection() {
-  const [selected, setSelected] = useState(0);
-  const property = properties[selected];
   return (
-    <section
-      id="property-managers"
-      className={styles.section}
-      aria-labelledby="portfolio-title"
-    >
+    <section id="property-managers" className={styles.section} aria-labelledby="portfolio-title">
       <div className={styles.copy}>
-        <p className={styles.eyebrow}>FOR PROPERTY MANAGERS</p>
-        <h2 id="portfolio-title">
-          One portfolio.
-          <br />
-          <em>Every stay, personal.</em>
-        </h2>
-        <p>
-          A consistent guest experience across your properties, with room for
-          what makes each one special. Manage the screens from one place and
-          refresh the details before every arrival.
-        </p>
-        <ul>
-          <li>
-            <Check size={17} /> See your properties’ screens and online status.
-          </li>
-          <li>
-            <Check size={17} /> Give each property its own welcome and house
-            guide.
-          </li>
-          <li>
-            <Check size={17} /> Update guest details remotely between stays.
-          </li>
-        </ul>
-        <a href="/contact">
-          Talk about your portfolio <ArrowUpRight size={19} />
-        </a>
+        <p className={styles.eyebrow}>ONE HOME OR A WHOLE COLLECTION</p>
+        <h2 id="portfolio-title">Start with one guide.<br /><em>Make every stay yours.</em></h2>
+        <p>Try it with your next arrival. Create a guide that feels like your place, then bring it into PiAds when you’re ready to welcome guests on the TV.</p>
+        <p>Managing more than one property? Keep each home’s welcome, Wi-Fi and local favorites personal, while managing your screens from one dashboard.</p>
+        <a className={styles.contact} href="/contact" onClick={() => trackCta("Talk about your properties", "homepage_portfolio")}>Managing several properties? Let’s talk <ArrowUpRight size={18} aria-hidden="true" /></a>
       </div>
-      <div className={styles.portfolio}>
-        <div className={styles.toolbar}>
-          <span>
-            <Monitor size={17} /> Your properties
-          </span>
-          <small>INTERACTIVE EXAMPLE</small>
-        </div>
-        <div className={styles.layout}>
-          <div
-            className={styles.properties}
-            aria-label="Choose an example property"
-          >
-            {properties.map((p, i) => (
-              <button
-                type="button"
-                key={p.name}
-                aria-pressed={selected === i}
-                onClick={() => setSelected(i)}
-                className={selected === i ? styles.selected : ""}
-              >
-                <Home size={18} />
-                <span>
-                  <strong>{p.name}</strong>
-                  <small>
-                    <i /> Online
-                  </small>
-                </span>
-                <ArrowUpRight size={14} />
-              </button>
-            ))}
-          </div>
-          <div className={styles.property} aria-live="polite">
-            <div className={styles.propertyTop}>
-              <span>GUEST WELCOME</span>
-              <span>
-                <i /> Ready for arrival
-              </span>
-            </div>
-            <h3>{property.name}</h3>
-            <p>{property.location}</p>
-            <div className={styles.welcome}>
-              <span>Make yourself at home,</span>
-              <strong>{property.guests}.</strong>
-              <p>{property.note}</p>
-            </div>
-            <div className={styles.propertyBottom}>
-              <Wifi size={17} />
-              <span>{property.network}</span>
-              <Check size={16} />
-            </div>
-          </div>
-        </div>
-        <div className={styles.caption}>
-          Sample properties and guest details · Select a property to explore.
-        </div>
+      <div className={styles.options}>
+        <article className={styles.guide}>
+          <div className={styles.cardTop}><FileText size={22} aria-hidden="true" /><span>START HERE · FREE</span></div>
+          <h3>Your place, in a little book.</h3>
+          <p>Add your address, choose a style and make the details yours. Verify your email to receive the finished PDF, with a Wi-Fi QR code for your guests.</p>
+          <a className={styles.primary} href="/airbnb-welcome-book-generator" onClick={() => trackCta("Create Free with Piads", "homepage_portfolio")}>Create Free with Piads <ArrowUpRight size={18} aria-hidden="true" /></a>
+          <span className={styles.note}>No PiAds account or TV required.</span>
+        </article>
+        <article className={styles.tv}>
+          <div className={styles.cardTop}><Monitor size={22} aria-hidden="true" /><span>WHEN YOU’RE READY · CONNECT A TV</span></div>
+          <h3>Let the welcome come to life.</h3>
+          <p>Bring your guide into your PiAds account. Pair a supported TV, share the phone guide through its QR code, and update guest details between stays.</p>
+          <a className={styles.textLink} href="/pricing" onClick={() => trackCta("Explore screen plans", "homepage_portfolio")}>Explore screen plans <ArrowUpRight size={18} aria-hidden="true" /></a>
+          <span className={styles.note}>Live TV service uses a PiAds screen plan.</span>
+        </article>
       </div>
     </section>
   );
