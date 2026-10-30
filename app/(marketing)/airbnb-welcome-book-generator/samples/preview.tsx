@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { availableKitPages, BOOK_THEMES, type KitData } from '../kit'
-import { SAMPLE_BOOK } from './sample-data'
+import { sampleBook } from './sample-data'
 import styles from '../showcase.module.css'
 
 export function SampleBookPreview({ initialTheme = 'forest' }: { initialTheme?: KitData['theme'] }) {
@@ -17,7 +17,7 @@ export function SampleBookPreview({ initialTheme = 'forest' }: { initialTheme?: 
     observer.observe(node)
     return () => observer.disconnect()
   }, [])
-  const data = { ...SAMPLE_BOOK, theme }
+  const data = sampleBook(theme || 'forest')
   const pages = availableKitPages(data)
   return <div className={styles.samplePage}>
     <a href="/airbnb-welcome-book-generator">← Back to the free generator</a>

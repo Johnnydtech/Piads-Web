@@ -7,6 +7,7 @@ import { ConsentBanner } from "@/components/consent-banner";
 
 export function MarketingChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  if (pathname === "/airbnb-welcome-book-generator/guest-demo") return <main id="main-content">{children}</main>;
   const isHome = pathname === "/";
   if (pathname === "/airbnb-welcome-book-generator/your-guide") {
     return (

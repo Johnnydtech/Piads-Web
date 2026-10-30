@@ -1,34 +1,62 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { WelcomeScreen } from '@/components/welcome-screen'
+import { DEMO_WELCOME } from './demo'
+import { BookCollection, PhoneMockup } from './sample-experience'
+import { SAMPLE_STYLES, sampleBook, type SampleStyle } from './samples/sample-data'
 import styles from './showcase.module.css'
 
-const books = [
-  { key: 'forest', title: 'Illustrated Stay', description: 'Botanical details, warm paper and a little storybook charm.' },
-  { key: 'coast', title: 'Weekend Postcard', description: 'Cobalt blue, sunny cream and a playful postcard feel.' },
-  { key: 'clay', title: 'Retreat Journal', description: 'A beautiful photo cover with quiet, editorial pages inside.' },
-]
-
+const base = '/airbnb-welcome-book-generator'
 export function BookShowcase() {
+  const [style, setStyle] = useState<SampleStyle>('forest')
+  const [paused, setPaused] = useState(false)
+  const [origin, setOrigin] = useState('')
+  useEffect(() => setOrigin(window.location.origin), [])
+  const book = sampleBook(style)
+  const demoUrl = `${base}/guest-demo?style=${style}`
   return <section className={styles.showcase} aria-labelledby="book-samples-title" id="sample-books">
     <div className={styles.inner}>
-      <p className={styles.eyebrow}>See what you’ll take home</p>
-      <h2 id="book-samples-title">A welcome worth keeping.</h2>
-      <p className={styles.intro}>Three styles. A complete guest book. Preview the finished pages, then make them yours with your property photo, Wi-Fi and favorite local spots.</p>
+      <p className={styles.eyebrow}>A little more you. A lot more welcome.</p>
+      <h2 id="book-samples-title">Not just a guide.<br/><em>A feeling of being somewhere.</em></h2>
+      <p className={styles.intro}>A storybook cottage. A sunny postcard. A quiet retreat. Explore three finished examples, from the printed pages to the guide in your guest’s pocket.</p>
       <div className={styles.cards}>
-        {books.map(book => <article className={styles.card} key={book.key}>
-          <a className={styles.art} href={`/airbnb-welcome-book-generator/samples?style=${book.key}`} aria-label={`Browse ${book.title} sample pages`}>
-            <img src={`/guest-demo/books/${book.key}-showcase.webp`} width={900} height={1050} alt={`${book.title} sample: finished cover, Wi-Fi page and local recommendations`} loading="lazy" />
-          </a>
+        {SAMPLE_STYLES.map((book, index) => <article className={styles.card} key={book.key}>
+          <BookCollection style={book.key} />
           <div className={styles.cardBody}>
+            <span className={styles.styleNumber}>0{index + 1} / The collection</span>
             <h3>{book.title}</h3><p>{book.description}</p>
+            <a className={styles.tryPhone} href={`${base}/guest-demo?style=${book.key}`}>Try the phone guide <span aria-hidden>↗</span></a>
             <div className={styles.links}>
-              <a href={`/airbnb-welcome-book-generator/samples?style=${book.key}`}>Browse all 7 pages ↗</a>
-              <a href={`/guest-demo/books/piads-${book.key}-sample.pdf`} download>Download sample PDF ↓</a>
+              <a href={`${base}/samples?style=${book.key}`}>Browse 7 pages ↗</a>
+              <a href={`/guest-demo/books/piads-${book.key}-sample.pdf`} download>Sample PDF ↓</a>
             </div>
           </div>
         </article>)}
       </div>
-      <p className={styles.note}>Arrival · Wi-Fi · House essentials · House rules · Local favorites · Checkout<br/>Finished examples for a fictional property. Your guide uses the same templates, with your own details.</p>
+      <p className={styles.note}>Original AI artwork · Real guide templates · Fictional property and local favorites<br/>Your own photo, details and artwork make it yours.</p>
+      <div className={styles.scanStory}>
+        <div className={styles.storyCopy}>
+          <p className={styles.eyebrow}>From the big screen to their next adventure</p>
+          <h2>A warm welcome.<br/>Then, one little scan.</h2>
+          <p>Welcome them on the TV. Let them scan for Wi-Fi, house notes and your favorite places—all in a guide made for their phone.</p>
+          <div className={styles.tabs} aria-label="TV and phone sample style">
+            {SAMPLE_STYLES.map(s => <button key={s.key} aria-pressed={style === s.key} onClick={() => setStyle(s.key)}>{s.title}</button>)}
+          </div>
+          <a className={styles.tryPhone} href={demoUrl}>Open this sample on your phone ↗</a>
+        </div>
+        <div className={styles.devices}>
+          <div className={styles.tv}>
+            <WelcomeScreen data={{ ...DEMO_WELCOME, property_name: book.propertyName, background_url: book.photo || null, picks: book.picks }} paused={paused} sampleGuideUrl={origin ? origin + demoUrl : undefined} />
+          </div>
+          <div className={styles.storyPhone}><PhoneMockup style={style} /></div>
+          <span className={styles.scanLabel}>TV → QR → phone</span>
+        </div>
+        <button className={styles.pausePreview} type="button" aria-pressed={paused} onClick={() => setPaused(value => !value)}>{paused ? 'Resume TV preview' : 'Pause TV preview'}</button>
+        <p className={styles.storyNote}>Try the QR code: it opens this fictional sample. For a live guest guide, connect a TV in PiAds and add your artwork, Wi-Fi and house details in the app.</p>
+      </div>
       <a href="#generator-title" className={styles.primary}>Create with AI →</a>
-      <p className={styles.note}>Free to personalize. Your finished download arrives by email.</p>
+      <p className={styles.note}>Personalize your free book, then get the download by email.<br/>Connect a TV in PiAds when you’re ready.</p>
     </div>
   </section>
 }

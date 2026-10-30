@@ -134,7 +134,7 @@ function PickTile({ pick }: { pick: WelcomePick }) {
   )
 }
 
-export function WelcomeScreen({ data, frozen = false, paused = false }: { data: WelcomeScreenData; frozen?: boolean; paused?: boolean }) {
+export function WelcomeScreen({ data, frozen = false, paused = false, sampleGuideUrl }: { data: WelcomeScreenData; frozen?: boolean; paused?: boolean; sampleGuideUrl?: string }) {
   const now = useLocalNow(data.utc_offset_minutes)
   const picks = data.picks || []
   const greeting = data.guest_name ? `Welcome, ${data.guest_name}` : 'Welcome'
@@ -187,7 +187,7 @@ export function WelcomeScreen({ data, frozen = false, paused = false }: { data: 
               <div style={styles.qrWrap}>
                 <div style={styles.qrFrame}>
                   <QRCodeSVG
-                    value={SAMPLE_QR_VALUE}
+                    value={sampleGuideUrl || SAMPLE_QR_VALUE}
                     size={220}
                     style={{ width: '100%', height: 'auto', display: 'block' }}
                     level="H"
@@ -202,7 +202,7 @@ export function WelcomeScreen({ data, frozen = false, paused = false }: { data: 
                   <span style={{ ...styles.bracket, ...styles.bracketBR }} />
                 </div>
               </div>
-              <div style={styles.cardHint}>Sample &mdash; the real code is generated per screen</div>
+              <div style={styles.cardHint}>{sampleGuideUrl ? 'Scan to open this sample guide' : 'Sample — the real code is generated per screen'}</div>
             </div>}
 
             {data.checkout_text ? (

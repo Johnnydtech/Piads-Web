@@ -1,0 +1,412 @@
+.guide {
+  --paper: #faf7ef;
+  --ink: #173f33;
+  --muted: #53665a;
+  --wash: #eaf0e3;
+  --line: #d8dfcf;
+  --accent: #173f33;
+  width: 100%;
+  max-width: 680px;
+  margin: auto;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Arial, sans-serif;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  overflow: hidden;
+  text-align: left;
+  isolation: isolate;
+}
+.guide[data-style='journal'] {
+  --paper: #f9f8f5;
+  --ink: #292823;
+  --muted: #666258;
+  --wash: #edeae4;
+  --line: #dedad1;
+  --accent: #292823;
+  border-radius: 6px;
+}
+.guide[data-style='postcard'] {
+  --paper: #fff9de;
+  --ink: #233f89;
+  --muted: #596483;
+  --wash: #f1e9bd;
+  --line: #dfd6ad;
+  --accent: #233f89;
+}
+.guide * {
+  box-sizing: border-box;
+  min-width: 0;
+}
+.guide h1,
+.guide h2 {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+}
+.guide h1 {
+  font-size: clamp(30px, 5vw, 44px);
+  margin: 12px 0;
+}
+.guide h2 {
+  font-size: 30px;
+  margin: 10px 0 22px;
+}
+.guide h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+.guide p {
+  margin: 0 0 10px;
+}
+.guide a {
+  color: inherit;
+}
+.guide button,
+.guide input {
+  font: inherit;
+}
+.guide a:focus-visible,
+.guide button:focus-visible,
+.guide summary:focus-visible,
+.guide input:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+.header {
+  padding: 28px 24px 20px;
+}
+.eyebrow {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+}
+.header > p {
+  color: var(--muted);
+  font-size: 14px;
+  max-width: 48ch;
+}
+.artwork {
+  display: block;
+  width: 100%;
+  height: 112px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-top: 18px;
+}
+.guide[data-style='journal'] .artwork {
+  border-radius: 0;
+  height: 130px;
+}
+.guide[data-style='postcard'] .header {
+  border-top: 7px solid var(--accent);
+}
+.guide[data-style='postcard'] .artwork {
+  border: 5px solid white;
+  box-shadow: 0 2px 7px #233f8912;
+}
+.nav {
+  display: flex;
+  gap: 5px;
+  padding: 0 20px 18px;
+  flex-wrap: wrap;
+}
+.nav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 40px;
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.body {
+  padding: 0 20px;
+}
+.wifi {
+  background: var(--wash);
+  padding: 22px;
+  border-radius: 18px;
+  scroll-margin: 20px;
+}
+.sectionTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.wifi h2 {
+  margin-bottom: 18px;
+}
+.wifi dl {
+  margin: 0 0 20px;
+}
+.wifi dt {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 14px;
+}
+.wifi dd {
+  margin: 2px 0 0;
+  font-size: 19px;
+  font-weight: 600;
+}
+.wifi dd.password {
+  font-family: ui-monospace, monospace;
+  font-size: 16px;
+  user-select: all;
+}
+.primary {
+  display: flex;
+  width: 100%;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  background: var(--accent);
+  color: white;
+  border: 0;
+  border-radius: 30px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.primary:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.fine {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 8px 0;
+  min-height: 0;
+}
+.fine:not(:empty) {
+  margin-top: 10px;
+}
+.details {
+  margin-top: 18px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+  font-size: 13px;
+}
+.details summary {
+  min-height: 44px;
+  padding: 12px 0;
+  cursor: pointer;
+}
+.qr {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.qr > svg {
+  flex-shrink: 0;
+  background: white;
+  border-radius: 8px;
+}
+.qr p {
+  flex: 1;
+  min-width: 120px;
+}
+.section {
+  padding: 32px 2px;
+  border-bottom: 1px solid var(--line);
+  scroll-margin: 20px;
+}
+.checkout {
+  padding: 18px;
+  background: var(--wash);
+  border-radius: 12px;
+  margin-bottom: 24px;
+  white-space: pre-line;
+}
+.notes {
+  padding: 0;
+  list-style: none;
+  margin: 0 0 20px;
+}
+.notes li {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  white-space: pre-line;
+  font-size: 14px;
+}
+.manual {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  text-decoration: none;
+  min-height: 48px;
+  font-size: 14px;
+}
+.intro {
+  color: var(--muted);
+  font-size: 14px;
+}
+.picks {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+.pick {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 14px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+.pick img {
+  width: 64px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.pickNumber {
+  font:
+    32px Georgia,
+    serif;
+  color: var(--muted);
+}
+.pick h3 {
+  margin-top: 0;
+}
+.pick p {
+  font-size: 14px;
+  color: var(--muted);
+}
+.pick a {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  font-size: 13px;
+  min-height: 44px;
+  text-underline-offset: 4px;
+}
+.footer {
+  padding: 24px 0;
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+}
+.previewLabel {
+  padding: 10px 16px;
+  background: var(--wash);
+  font-size: 11px;
+  text-align: center;
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.page {
+  min-height: 100dvh;
+  background: #eeeee7;
+  padding: 24px 12px;
+}
+.state {
+  max-width: 480px;
+  margin: 40px auto;
+  background: #faf7ef;
+  border: 1px solid #d8dfcf;
+  border-radius: 20px;
+  padding: 28px;
+  color: #173f33;
+}
+.state h1 {
+  font:
+    32px Georgia,
+    serif;
+  margin: 0 0 16px;
+}
+.form label {
+  display: block;
+  margin: 14px 0;
+  font-size: 14px;
+}
+.form input:not([type='checkbox']) {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 16px;
+  background: white;
+  color: var(--ink);
+}
+.form label.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.consent input {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.error {
+  color: #9c351f;
+  font-size: 14px;
+}
+.form details > summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding: 10px 0;
+}
+.form p {
+  font-size: 14px;
+  color: var(--muted);
+}
+@media (max-width: 420px) {
+  .page {
+    padding: 0;
+  }
+  .guide {
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+  .header {
+    padding: 24px 20px 16px;
+  }
+  .body {
+    padding: 0 16px;
+  }
+  .wifi {
+    padding: 20px;
+  }
+  .nav {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .guide h2 {
+    font-size: 28px;
+  }
+  .section {
+    padding: 28px 2px;
+  }
+  .guide h1 {
+    font-size: 34px;
+  }
+}
