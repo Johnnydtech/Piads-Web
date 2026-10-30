@@ -410,3 +410,9 @@
     font-size: 34px;
   }
 }
+
+/* The marketing shell has global !important H1 rules. Preserve the live guide's type. */
+.guide.guide[data-style] header h1 { font-family:Georgia,serif !important; font-size:var(--sample-heading-size,clamp(30px,5vw,44px)) !important; line-height:1.12 !important; letter-spacing:-.035em !important; font-weight:400 !important; color:var(--ink); }
+.guide.guide[data-style] h2 { font-family:Georgia,serif; color:var(--ink); letter-spacing:-.035em; }
+.guide.guide[data-style] h3 { color:var(--ink); font-weight:600; letter-spacing:normal; }
+@media(max-width:420px) { .guide.guide[data-style] header h1 { font-size:34px !important; } }

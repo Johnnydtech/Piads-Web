@@ -84,3 +84,11 @@
 .devices { padding-bottom:170px; }
 .storyPhone { width:23%; bottom:0; }
 @media(max-width:500px) { .devices { padding-bottom:105px; } .storyPhone { width:25%; } }
+
+.phone { --sample-heading-size:34px; }
+.scanAction { display:flex; align-items:center; gap:16px; margin-top:22px; }
+.scanAction > svg { flex-shrink:0; border-radius:12px; background:white; }
+.scanAction .eyebrow { font-size:9px; }
+.scanAction .tryPhone { margin:5px 0 10px; font-size:13px; }
+.qrHint { color:#637269; font-size:12px; }
+@media(max-width:500px) { .scanAction > svg { display:none; } }

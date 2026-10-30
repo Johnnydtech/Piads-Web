@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { QRCodeSVG } from 'qrcode.react'
 import { WelcomeScreen } from '@/components/welcome-screen'
 import { DEMO_WELCOME } from './demo'
 import { BookCollection, PhoneMockup } from './sample-experience'
@@ -43,7 +44,7 @@ export function BookShowcase() {
           <div className={styles.tabs} aria-label="TV and phone sample style">
             {SAMPLE_STYLES.map(s => <button key={s.key} aria-pressed={style === s.key} onClick={() => setStyle(s.key)}>{s.title}</button>)}
           </div>
-          <a className={styles.tryPhone} href={demoUrl}>Open this sample on your phone ↗</a>
+          <div className={styles.scanAction}>{origin && <QRCodeSVG value={origin + demoUrl} size={144} level="M" marginSize={4} title="Scan to open this sample guest guide" />}<div><span className={styles.eyebrow}>Give it a little scan</span><a className={styles.tryPhone} href={demoUrl}>Or open the phone guide ↗</a><span className={styles.qrHint}>Wi-Fi, house notes & local favorites.</span></div></div>
         </div>
         <div className={styles.devices}>
           <div className={styles.tv}>
