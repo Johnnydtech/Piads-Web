@@ -60,6 +60,7 @@ export interface KitData {
   address?: string
   photo?: string | null
   theme?: 'forest' | 'coast' | 'clay'
+  sample?: boolean
 }
 
 /** The standard Wi-Fi QR payload phones understand (ZXing "WIFI:" format). */

@@ -5,6 +5,7 @@ import { SignupLink } from '@/components/signup-link'
 import { hostSignupUrl } from '@/lib/signup-links'
 import { SITE_URL } from '@/lib/site'
 import { WelcomeBookGenerator } from './generator'
+import { BookShowcase } from './book-showcase'
 import styles from './generator.module.css'
 
 const PATH = '/airbnb-welcome-book-generator'
@@ -88,6 +89,7 @@ export default function WelcomeBookGeneratorPage() {
       />
 
       <WelcomeBookGenerator />
+      <BookShowcase />
 
       <section className={styles.section} aria-labelledby="how-title">
         <div className={styles.sectionInner}>

@@ -57,6 +57,8 @@ function Sheet({
   children: ReactNode
 }) {
   const theme = BOOK_THEMES.find((t) => t.key === data.theme) || BOOK_THEMES[0]
+  const postcard = theme.key === 'coast'
+  const journal = theme.key === 'clay'
   return (
     <div
       data-book-page={section}
@@ -70,7 +72,9 @@ function Sheet({
           height: PAGE_H,
           boxSizing: 'border-box',
           padding: '52px 64px 34px',
-          background: '#fff',
+          background: journal ? '#f9f8f5' : theme.paper,
+          borderLeft: postcard ? '10px solid #233f89' : undefined,
+          borderRight: postcard ? '10px solid #233f89' : undefined,
           color: INK,
           fontFamily: SANS,
           display: 'flex',
@@ -79,8 +83,10 @@ function Sheet({
         } as CSSProperties
       }
     >
+      {theme.key === 'forest' && <img src="/guest-demo/botanical-frame.png" alt="" style={{ position: 'absolute', inset: 16, width: 'calc(100% - 32px)', height: 'calc(100% - 32px)', opacity: postcard ? .08 : .18, pointerEvents: 'none' }} />}
       <div
         style={{
+          position: 'relative',
           display: 'flex',
           alignItems: 'center',
           gap: 18,
@@ -96,12 +102,14 @@ function Sheet({
           {section}
         </span>
       </div>
-      <div data-book-content style={{ flex: 1, minHeight: 0, paddingTop: 30 }}>
+      <div data-book-content style={{ flex: 1, minHeight: 0, paddingTop: 30, position: 'relative' }}>
         <h1
           style={{
             fontFamily: SERIF,
             fontSize: 60,
-            fontWeight: 400,
+            fontWeight: postcard ? 700 : 400,
+            color: INK,
+            fontStyle: theme.key === 'forest' ? 'italic' : 'normal',
             lineHeight: 1.05,
             letterSpacing: '-.02em',
             margin: '0 0 18px',
@@ -128,7 +136,7 @@ function Sheet({
         }}
       >
         <span>{data.city}</span>
-        <span>Made with PiAds · piads.co</span>
+        <span>{data.sample ? 'Sample guide · Fictional property · ' : ''}Made with PiAds · piads.co</span>
       </div>
     </div>
   )
@@ -193,6 +201,17 @@ function Checklist({
   )
 }
 export function CoverPage({ data }: { data: KitData }) {
+  if (data.theme === 'clay' && data.photo) return (
+    <div data-book-page="Your guest guide" style={{ width: PAGE_W, height: PAGE_H, position: 'relative', overflow: 'hidden', background: '#292823', color: '#fff9ee', fontFamily: SANS }}>
+      <img src={data.photo} alt="Your property" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}} />
+      <div style={{position:'absolute',inset:0,background:'linear-gradient(90deg,rgba(20,19,16,.72),rgba(20,19,16,.18))'}} />
+      <div data-book-content style={{position:'absolute',inset:'70px 64px',display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
+        <p style={{...eyebrow,color:'#fff9ee'}}>A journal for your stay / {data.city}</p>
+        <div><h1 style={{color:'#fff9ee',fontFamily:SERIF,fontSize:104,fontWeight:400,lineHeight:.94,overflowWrap:'anywhere',maxWidth:520,margin:'0 0 32px'}}>{data.propertyName}</h1><p style={{fontFamily:SERIF,fontSize:30,fontStyle:'italic',maxWidth:440,lineHeight:1.3}}>{data.message}</p></div>
+        <div style={{borderTop:'1px solid #ffffff70',paddingTop:24,fontSize:13,letterSpacing:'.12em'}}>SETTLE IN. SLOW DOWN. STAY A WHILE.<br/><span style={{fontSize:10,letterSpacing:0}}>{data.sample ? 'Sample guide · Fictional property · ' : ''}Made with PiAds · piads.co</span></div>
+      </div>
+    </div>
+  )
   return (
     <Sheet
       data={data}
@@ -206,7 +225,9 @@ export function CoverPage({ data }: { data: KitData }) {
       <div
         style={{
           height: 350,
-          borderRadius: '150px 150px 14px 14px',
+          borderRadius: data.theme === 'coast' ? 4 : '150px 150px 14px 14px',
+          border: data.theme === 'coast' ? '8px solid white' : undefined,
+          transform: data.theme === 'coast' ? 'rotate(-2deg)' : undefined,
           overflow: 'hidden',
           background: PAPER,
           position: 'relative',
@@ -405,16 +426,16 @@ function Places({ data, offset }: { data: KitData; offset: number }) {
       section={offset ? 'More nearby' : 'The neighborhood'}
       title={offset ? 'Keep exploring.' : 'Step outside.'}
       intro={
-        data.city
+        data.sample ? 'Your host’s favorite places. Illustrative recommendations for this sample.' : data.city
           ? `A few places to explore in ${data.city}. Tap a card in the PDF or scan its code for Google Maps.`
           : 'Tap a card in the PDF or scan its code for Google Maps.'
       }
     >
-      <div style={{ display: 'grid', gap: 18 }}>
+      <div style={{ display: 'grid', gap: 12 }}>
         {data.picks.slice(offset, offset + 4).map((p, i) => (
           <a
             key={p.place_id}
-            href={mapsUrl(p)}
+            href={data.sample ? undefined : mapsUrl(p)}
             style={{
               ...box,
               display: 'flex',
@@ -422,7 +443,7 @@ function Places({ data, offset }: { data: KitData; offset: number }) {
               alignItems: 'center',
               color: INK,
               textDecoration: 'none',
-              padding: 16,
+              padding: 12,
             }}
           >
             <div
@@ -433,15 +454,15 @@ function Places({ data, offset }: { data: KitData; offset: number }) {
                 flexShrink: 0,
               }}
             >
-              <QRCodeSVG
+              {p.photo_url ? <img src={p.photo_url} alt="" style={{ width: 90, height: 90, objectFit: 'cover', borderRadius: 6 }} /> : <QRCodeSVG
                 value={mapsUrl(p)}
                 size={84}
                 level="M"
                 fgColor="#183d32"
                 bgColor="#fff"
-              />
+              />}
             </div>
-            <div style={{ minWidth: 0 }}>
+            <div style={{ minWidth: 0, flex: 1 }}>
               <div style={eyebrow}>
                 {String(offset + i + 1).padStart(2, '0')} / Explore nearby
               </div>
@@ -449,6 +470,7 @@ function Places({ data, offset }: { data: KitData; offset: number }) {
                 style={{
                   fontFamily: SERIF,
                   fontSize: 29,
+                  color: INK,
                   lineHeight: 1.1,
                   marginTop: 7,
                   overflowWrap: 'anywhere',
@@ -462,15 +484,15 @@ function Places({ data, offset }: { data: KitData; offset: number }) {
                 </p>
               )}
               <div style={{ fontSize: 12, color: MUTED, marginTop: 8 }}>
-                Open in Google Maps ↗
+                {data.sample ? 'Example host recommendation' : 'Open in Google Maps ↗'}
+                {!data.sample && p.photo_url && <QRCodeSVG value={mapsUrl(p)} size={44} level="M" style={{ float: 'right', marginLeft: 8 }} />}
               </div>
             </div>
           </a>
         ))}
       </div>
       <p style={{ ...copy, fontSize: 12, marginTop: 20 }}>
-        Places from Google Maps. Check current hours and availability before
-        visiting.
+        {data.sample ? 'Sample names and photographs. Your guide can include real places and Google Maps directions.' : 'Places from Google Maps. Check current hours and availability before visiting.'}
       </p>
     </Sheet>
   )
@@ -592,7 +614,7 @@ export async function buildKitPdf(
       width: PAGE_W,
       height: PAGE_H,
       pixelRatio: 2.5,
-      backgroundColor: '#fff',
+      backgroundColor: node.style?.backgroundColor || '#fff',
     })
     const png = await pdf.embedPng(dataUrl)
     const [width, height] =
