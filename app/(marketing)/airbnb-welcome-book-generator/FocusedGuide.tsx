@@ -24,19 +24,25 @@ const introductions: Record<string, string> = {
 };
 
 /** Keep fields mounted so moving between sections preserves work in progress. */
-export default function FocusedGuide({ titles, children, action, onDone, doneLabel = "Done" }: {
+export default function FocusedGuide({ titles, children, action, onDone, doneLabel = "Done", onBack, activeSection, onSectionChange, sectionLabel = "Make it yours" }: {
   titles: string[];
   children: ReactNode;
   action?: ReactNode;
   onDone?: () => void;
   doneLabel?: string;
+  onBack?: () => void;
+  activeSection?: number;
+  onSectionChange?: (section: number) => void;
+  sectionLabel?: string;
 }) {
-  const [step, setStep] = useState(0);
+  const [localStep, setLocalStep] = useState(0);
+  const step = activeSection ?? localStep;
   const id = useId();
   const heading = useRef<HTMLHeadingElement>(null);
   const panels = Children.toArray(children);
   function go(next: number) {
-    setStep(next);
+    if (onSectionChange) onSectionChange(next);
+    else setLocalStep(next);
     requestAnimationFrame(() => {
       heading.current?.focus({ preventScroll: true });
       // Bring the new section into view only when navigation started below it.
@@ -49,7 +55,7 @@ export default function FocusedGuide({ titles, children, action, onDone, doneLab
     <div className={styles.wizard}>
       <div className={styles.layout}>
         <nav className={styles.navigation} aria-label="Guide sections">
-          <p className={styles.navTitle}>Make it yours</p>
+          <p className={styles.navTitle}>{sectionLabel}</p>
           <p className={styles.navHint}>A few details. A warmer welcome.</p>
           {titles.map((title, index) => (
             <button key={title} type="button" aria-current={step === index ? "step" : undefined}
@@ -74,7 +80,7 @@ export default function FocusedGuide({ titles, children, action, onDone, doneLab
             ))}
           </div>
           <div className={styles.footer}>
-            <button type="button" disabled={step === 0} onClick={() => go(step - 1)}>Back</button>
+            <button type="button" disabled={step === 0 && !onBack} onClick={() => step === 0 ? onBack?.() : go(step - 1)}>Back</button>
             <div className={styles.actions}>
               {step < titles.length - 1 ? (
                 <button type="button" onClick={() => go(step + 1)}>Continue →</button>

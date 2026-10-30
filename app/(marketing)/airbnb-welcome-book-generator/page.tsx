@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 import { ArrowUpRight } from 'lucide-react'
 import { JsonLd, graph, faqPage, breadcrumbs } from '@/components/seo/json-ld'
-import { SignupLink } from '@/components/signup-link'
-import { hostSignupUrl } from '@/lib/signup-links'
 import { SITE_URL } from '@/lib/site'
 import { WelcomeBookGenerator } from './generator'
 import { BookShowcase } from './book-showcase'
@@ -105,13 +103,13 @@ export default function WelcomeBookGeneratorPage() {
             </li>
             <li className={styles.step}>
               <span className={styles.stepNumber}>2</span>
-              <h3>See your welcome</h3>
-              <p>See your finished TV welcome and nearby recommendations. Personalize it if you like, or use it as it is.</p>
+              <h3>Create with AI</h3>
+              <p>Choose a style, create artwork for your property, and add guest details and local favorites in one guided flow.</p>
             </li>
             <li className={styles.step}>
               <span className={styles.stepNumber}>3</span>
-              <h3>Put it on your TV</h3>
-              <p>Create your account with your welcome already prepared, then enter the code from your TV. A free download is always available too.</p>
+              <h3>Get your guide by email</h3>
+              <p>Review your finished guide, verify your email and phone, and receive a private PDF download link. Then connect a TV whenever you’re ready.</p>
             </li>
           </ol>
         </div>
@@ -169,12 +167,12 @@ export default function WelcomeBookGeneratorPage() {
           Put it on your TV <em>today.</em>
         </h2>
         <p>Pair the stick that’s already in your TV, and your welcome screen greets the next guest by name.</p>
-        <SignupLink
-          href={hostSignupUrl(process.env.NEXT_PUBLIC_APP_URL || 'https://app.piads.co', 'short_term_rental')}
+        <a
+          href="#generator-title"
           className={styles.finalButton}
         >
-          Create your welcome screen <ArrowUpRight size={18} aria-hidden />
-        </SignupLink>
+          Create with AI <ArrowUpRight size={18} aria-hidden />
+        </a>
       </section>
     </div>
   )

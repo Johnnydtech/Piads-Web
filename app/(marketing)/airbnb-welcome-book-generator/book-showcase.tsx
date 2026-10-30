@@ -21,13 +21,13 @@ export function BookShowcase() {
             <h3>{book.title}</h3><p>{book.description}</p>
             <div className={styles.links}>
               <a href={`/airbnb-welcome-book-generator/samples?style=${book.key}`}>Browse all 7 pages ↗</a>
-              <a href={`/guest-demo/books/piads-${book.key}-sample.pdf`} download>Download PDF ↓</a>
+              <a href={`/guest-demo/books/piads-${book.key}-sample.pdf`} download>Download sample PDF ↓</a>
             </div>
           </div>
         </article>)}
       </div>
       <p className={styles.note}>Arrival · Wi-Fi · House essentials · House rules · Local favorites · Checkout<br/>Finished examples for a fictional property. Your guide uses the same templates, with your own details.</p>
-      <a href="#generator-title" className={styles.primary}>Create my free guide →</a>
+      <a href="#generator-title" className={styles.primary}>Create with AI →</a>
       <p className={styles.note}>Free to personalize. Your finished download arrives by email.</p>
     </div>
   </section>

@@ -1536,8 +1536,6 @@
   .workspace { padding: 24px 16px; }
 }
 
-.workspace[data-editing="true"] .stepHeading { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.workspace[data-editing="true"] .stepDescription { display: none; }
 
 /* The generated result is the starting point; editing is optional. */
 .readyWelcome { max-width: 900px; margin: 12px auto 36px; }
@@ -1565,3 +1563,13 @@
 .aiDesign h3,.aiDesign p { margin:0; } .aiDesign p { line-height:1.6; } .aiDesign small { color:#64746b;line-height:1.6; }
 
 .designWorkspace{display:grid;grid-template-columns:minmax(250px,350px) minmax(0,1fr);gap:40px;align-items:start;max-width:1050px;margin:24px auto}.designPage{width:343px;height:444px;overflow:hidden;box-shadow:0 14px 44px #17392f20;border-radius:6px}.designWorkspace .aiDesign{margin-top:24px}.designWorkspace .stylePicker{margin:0}.designWorkspace .stylePicker>div{flex-wrap:wrap}.designWorkspace>div{min-width:0}@media(max-width:760px){.designWorkspace{grid-template-columns:1fr;gap:24px}.designPage{margin:auto}.designWorkspace .aiDesign{padding:20px}}@media(max-width:390px){.designPage{zoom:.82}}
+
+/* One continuous creation flow, with the same navigation on every stage. */
+.creationSteps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 8px; margin: 0 0 28px; background: #fff; border: 1px solid var(--line); border-radius: 20px; }
+.creationSteps button { display: flex; align-items: center; gap: 10px; padding: 14px 12px; border: 0; border-radius: 14px; background: transparent; color: var(--muted); font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
+.creationSteps button span { display: grid; place-items: center; width: 26px; height: 26px; flex-shrink: 0; border: 1px solid var(--line); border-radius: 50%; }
+.creationSteps button[aria-current] { color: #fff; background: var(--forest); }
+.creationSteps button[aria-current] span { background: var(--lime); color: var(--forest); border-color: var(--lime); }
+.creationSteps button:focus-visible { outline: 3px solid var(--forest); outline-offset: 3px; }
+.creationSteps button:disabled { cursor: wait; opacity: .6; }
+@media (max-width: 640px) { .creationSteps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 6px; margin-bottom: 24px; } .creationSteps button { padding: 10px 8px; font-size: 12px; gap: 7px; min-height: 48px; } }

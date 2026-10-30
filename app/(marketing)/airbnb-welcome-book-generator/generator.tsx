@@ -136,7 +136,9 @@ export function WelcomeBookGenerator({
   const [bookTheme, setBookTheme] = useState<BookTheme>("forest");
   const [paperSize, setPaperSize] = useState<PaperSize>("letter");
   const [excludedPages, setExcludedPages] = useState<string[]>([]);
-  const [step, setStep] = useState(-1);
+  const [step, setStep] = useState(4);
+  const [propertySection, setPropertySection] = useState(0);
+  const [guestSection, setGuestSection] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [photoError, setPhotoError] = useState("");
@@ -556,8 +558,8 @@ export function WelcomeBookGenerator({
             <em>One address away.</em>
           </h1>
           <p className={styles.lede}>
-            Start with your rental’s address. We’ll prepare a welcome screen and
-            local guide, then help you make them yours.
+            Start with your rental’s address. Choose a design, add your details
+            and favorite places, then get your finished guide by email.
           </p>
           <form className={styles.form} onSubmit={generate}>
             <label className={styles.inputWrap}>
@@ -581,7 +583,7 @@ export function WelcomeBookGenerator({
                 </>
               ) : (
                 <>
-                  Create my free guide <ArrowRight size={18} />
+                  Create with AI <ArrowRight size={18} />
                 </>
               )}
             </button>
@@ -653,7 +655,7 @@ export function WelcomeBookGenerator({
           to continue.
         </p>
         <Link href={GENERATOR_PATH} className={styles.primary}>
-          Create my free guide <ArrowRight size={18} />
+          Create with AI <ArrowRight size={18} />
         </Link>
       </section>
     );
@@ -673,99 +675,33 @@ export function WelcomeBookGenerator({
             <Lock size={12} /> Free to edit · email your download
           </span>
         </div>
-        {step >= 0 && (
-          <button
-            type="button"
-            className={styles.textButton}
-            onClick={() => goStep(-1)}
-          >
-            <ArrowLeft size={16} /> Back to my welcome
-          </button>
-        )}
-        {step >= 0 && (
-          <>
-            <h2 ref={headingRef} tabIndex={-1} className={styles.stepHeading}>
-              {
-                [
-                  "Make it yours",
-                  "Your printable guide",
-                  "Download your guide",
-                  "Help connecting your TV",
-                  "Make the design yours",
-                ][step]
-              }
-            </h2>
-            <p className={styles.stepDescription}>
-              These details are optional. Your welcome is already ready to use.
-            </p>
-          </>
-        )}
+        <nav className={styles.creationSteps} aria-label="Create with AI progress">
+          {[
+            { id: 4, label: "Design" },
+            { id: 0, label: "Your place & favorites" },
+            { id: 1, label: "Guest details" },
+            { id: 2, label: "Review & email" },
+          ].map((stage, index) => (
+            <button key={stage.id} type="button" aria-current={step === stage.id ? "step" : undefined}
+              onClick={() => goStep(stage.id)} disabled={artBusy || !!exportKind}>
+              <span>{index + 1}</span>{stage.label}
+            </button>
+          ))}
+        </nav>
+        <h2 ref={headingRef} tabIndex={-1} className={styles.stepHeading}>
+          {({ 4: "Make the design yours", 0: "A welcome that feels like your place", 1: "The details guests need", 2: "Your guide, ready to share", 3: "Connect your TV" } as Record<number, string>)[step]}
+        </h2>
+        <p className={styles.stepDescription}>
+          {step === 4 ? "Choose your look. We’ll help you personalize the whole guide, one step at a time."
+            : step === 2 ? "Review your guide, then we’ll email you a private download link. No account needed."
+            : step === 3 ? "Bring your welcome to your TV with PiAds."
+            : "Add what you know now. You can move back and forth without losing your edits."}
+        </p>
         {error && (
           <p role="alert" className={styles.error}>
             {error}
           </p>
         )}
-        {step === -1 && (
-          <div className={styles.readyWelcome}>
-            <div className={styles.readyHeading}>
-              <p className={styles.kicker}>Made for your place</p>
-              <h1 ref={headingRef} tabIndex={-1}>
-                Your welcome is ready.
-              </h1>
-              <p>{result.location.formatted_address}</p>
-            </div>
-            <div className={styles.tv}>
-              <div className={styles.tvScreen}>
-                <WelcomeScreen data={screen} />
-              </div>
-            </div>
-            <div className={styles.readyAction}>
-              <p>
-                A warm welcome on your TV. A local guide on your guests’ phones.
-              </p>
-              <button
-                type="button"
-                className={styles.primary}
-                onClick={connectTv}
-                disabled={handoffState === "waiting"}
-              >
-                {handoffState === "waiting"
-                  ? "Opening PiAds…"
-                  : handoffState === "sent"
-                    ? "Continue in PiAds"
-                    : "Put this on my TV"}
-                <ArrowRight size={18} />
-              </button>
-              <p className={styles.fineprint}>
-                Create your account, then connect your TV. No card to start.
-              </p>
-              <p className={styles.fineprint}>
-                After your trial: $10 per screen/month, or free with qualifying
-                ads.
-              </p>
-              {handoffState === "sent" && (
-                <p role="status">Your welcome is ready in the PiAds tab.</p>
-              )}
-              <div className={styles.readyLinks}>
-                <button type="button" onClick={() => goStep(0)}>
-                  Personalize
-                </button>
-                <button type="button" onClick={() => goStep(4)}>
-                  Create my AI design
-                </button>
-                <button type="button" onClick={() => goStep(2)}>
-                  Download a free copy
-                </button>
-              </div>
-              {(artwork || photo || kit.wifiName || kit.wifiPassword) && (
-                <p className={styles.privacyNote}>
-                  Your artwork, uploaded photo and Wi-Fi details are included in your emailed files. Add them in PiAds after signup; the signup transfer currently includes text and local favorites.
-                </p>
-              )}
-            </div>
-          </div>
-        )}
-
         {step === 0 && (
           <div className={styles.editingWorkspace}>
             <GuidePreviewPanel
@@ -782,18 +718,21 @@ export function WelcomeBookGenerator({
                 screen gets its own code.
               </p>
               <div className={styles.tip}>
-                Your uploaded photo stays on this page. Choose a neutral
-                background if the suggested city photo isn’t right for your
-                property.
+                Your design and local favorites appear together here. You can change
+                the artwork in the Design step at any time.
               </div>
             </GuidePreviewPanel>
             <aside className={styles.panel} aria-label="Welcome screen details">
               <FocusedGuide
-                onDone={() => goStep(-1)}
+                onDone={() => goStep(1)}
+                doneLabel="Continue to guest details"
+                onBack={() => goStep(4)}
+                activeSection={propertySection}
+                onSectionChange={setPropertySection}
+                sectionLabel="Your place & favorites"
                 titles={[
                   "Your property",
                   "Welcome & checkout",
-                  "Property photo",
                   "Local suggestions",
                 ]}
               >
@@ -834,42 +773,6 @@ export function WelcomeBookGenerator({
                       onChange={(e) => setCheckout(e.target.value)}
                     />
                   </Field>
-                </div>
-                <div>
-                  <label className={styles.photoButton}>
-                    <ImagePlus size={17} />{" "}
-                    {photo
-                      ? "Change your photo"
-                      : "Add a photo of your property"}
-                    <input
-                      type="file"
-                      accept={PHOTO_TYPES.join(",")}
-                      onChange={onPhoto}
-                      className="sr-only"
-                    />
-                  </label>
-                  {photo && (
-                    <button
-                      className={styles.textButton}
-                      onClick={() => setPhoto(null)}
-                      type="button"
-                    >
-                      Remove uploaded photo
-                    </button>
-                  )}
-                  <label className={styles.checkLabel}>
-                    <input
-                      type="checkbox"
-                      checked={neutralBackground}
-                      onChange={(e) => setNeutralBackground(e.target.checked)}
-                    />{" "}
-                    Use a neutral background
-                  </label>
-                  {photoError && (
-                    <p role="alert" className={styles.error}>
-                      {photoError}
-                    </p>
-                  )}
                 </div>
                 <div>
                   <p className={styles.privacyNote}>
@@ -953,6 +856,7 @@ export function WelcomeBookGenerator({
                       type="button"
                       aria-pressed={bookTheme === theme.key}
                       onClick={() => setBookTheme(theme.key)}
+                      disabled={artBusy}
                     >
                       <span
                         style={{
@@ -979,13 +883,15 @@ export function WelcomeBookGenerator({
                   <ImagePlus size={17} /> {photo ? "Change property photo" : "Add a property photo (optional)"}
                   <input type="file" accept={PHOTO_TYPES.join(",")} onChange={onPhoto} className="sr-only" disabled={artBusy} />
                 </label>
+                {photoError && <p role="alert" className={styles.error}>{photoError}</p>}
                 {photo && <button className={styles.textButton} onClick={() => setPhoto(null)} type="button" disabled={artBusy}>Remove uploaded photo</button>}
                 <small>{photo ? "Your uploaded photo will be sent to our AI image provider when you create artwork." : "Without a photo, artwork is inspired by your city and description."}</small>
                 {artwork ? <><p role="status">Your AI artwork is ready. You can still change text and layout.</p><label><input type="checkbox" checked={useArtwork} onChange={e => setUseArtwork(e.target.checked)} /> Use my AI artwork on the cover and TV preview</label></> : <button className={styles.primary} type="button" disabled={artBusy} onClick={() => createArtwork()}>{artBusy ? <Loader2 size={18} className={styles.spin} /> : <Sparkles size={18} />}{artBusy ? "Creating your artwork…" : "Create my free AI artwork"}</button>}
                 <small>One free artwork per verified email and phone. AI artwork is decorative; review it before sharing. Your guide text stays editable.</small>
-                {error && <p role="alert" className={styles.error}>{error}</p>}
               </section>
-              <button type="button" className={styles.secondary} onClick={() => goStep(1)}>Continue to guide details <ArrowRight size={18} /></button>
+              <label className={styles.checkLabel}><input type="checkbox" checked={neutralBackground} onChange={e => setNeutralBackground(e.target.checked)} /> Use a neutral TV background when no artwork or photo is selected</label>
+              <p className={styles.privacyNote}>{artwork && useArtwork ? "Your artwork is included. Next, add your property details and favorite local places." : "You can continue with this style now, or create your free artwork above. We’ll verify your email once for artwork and downloads."}</p>
+              <button type="button" className={styles.primary} disabled={artBusy} onClick={() => goStep(0)}>Continue to your place <ArrowRight size={18} /></button>
             </div>
           </div>
         )}
@@ -1036,19 +942,21 @@ export function WelcomeBookGenerator({
               </div>
               <p className={styles.tvCaption}>
                 Your guest book updates as you edit. House essentials and rules
-                appear when you add them. Your uploaded property photo is used
+                appear when you add them. Your AI artwork or uploaded property photo appears
                 on the cover; suggested city photos are not included in the PDF.
               </p>
             </GuidePreviewPanel>
-            <button className={styles.textButton} type="button" onClick={() => goStep(4)}><Sparkles size={18} /> Change style or create AI artwork</button>
             <aside className={styles.panel} aria-label="Printable details">
-              <h3>The details guests actually need</h3>
               <p className={styles.privacyNote}>
                 Your edits stay in this tab until you email a download. The finished file is then stored privately for delivery. Guide details are not sent to HubSpot. Keep entry codes in your private booking messages.
               </p>
               <FocusedGuide
                 onDone={() => goStep(2)}
-                doneLabel="See downloads"
+                doneLabel="Review & email my guide"
+                onBack={() => goStep(0)}
+                activeSection={guestSection}
+                onSectionChange={setGuestSection}
+                sectionLabel="Guest details"
                 titles={[
                   "Your host",
                   "Arrival & parking",
@@ -1470,8 +1378,8 @@ export function WelcomeBookGenerator({
                 service.
               </p>
               <p className={styles.privacyNote}>
-                Uploaded photos, Wi-Fi details and printable checklists stay
-                here. Your account won’t be created until you sign up.
+                Your AI artwork, uploaded photos, Wi-Fi details and printable checklists
+                are in your emailed files. Add these in the app after signup. Your account won’t be created until you sign up.
               </p>
               <a
                 className={styles.textButton}
@@ -1546,19 +1454,16 @@ export function WelcomeBookGenerator({
             <button
               type="button"
               className={styles.textButton}
-              onClick={() => goStep(-1)}
+              onClick={() => goStep(1)}
             >
-              <ArrowLeft size={16} /> Back to my welcome
+              <ArrowLeft size={16} /> Back to guest details
             </button>
             <button
               type="button"
-              className={styles.primary}
-              onClick={connectTv}
-              disabled={handoffState === "waiting"}
+              className={styles.secondary}
+              onClick={() => goStep(3)}
             >
-              {handoffState === "waiting"
-                ? "Opening PiAds…"
-                : "Put this on my TV"}{" "}
+              Next: put this on my TV{" "}
               <ArrowRight size={18} />
             </button>
           </footer>
