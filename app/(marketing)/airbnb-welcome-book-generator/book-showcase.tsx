@@ -7,6 +7,7 @@ import { DEMO_WELCOME } from './demo'
 import { BookCollection, PhoneMockup } from './sample-experience'
 import { SAMPLE_STYLES, sampleBook, type SampleStyle } from './samples/sample-data'
 import styles from './showcase.module.css'
+import { SampleDownload } from './sample-download'
 
 const base = '/airbnb-welcome-book-generator'
 export function BookShowcase() {
@@ -30,7 +31,7 @@ export function BookShowcase() {
             <a className={styles.tryPhone} href={`${base}/guest-demo?style=${book.key}`}>Try the phone guide <span aria-hidden>↗</span></a>
             <div className={styles.links}>
               <a href={`${base}/samples?style=${book.key}`}>Browse 7 pages ↗</a>
-              <a href={`/guest-demo/books/piads-${book.key}-sample.pdf`} download>Sample PDF ↓</a>
+              <SampleDownload style={book.key} />
             </div>
           </div>
         </article>)}

@@ -92,3 +92,6 @@
 .scanAction .tryPhone { margin:5px 0 10px; font-size:13px; }
 .qrHint { color:#637269; font-size:12px; }
 @media(max-width:500px) { .scanAction > svg { display:none; } }
+
+.sampleButton{appearance:none;border:0;padding:0;background:none;color:inherit;font:inherit;font-weight:600;text-decoration:underline;text-underline-offset:5px;cursor:pointer;text-align:left}
+.sampleButton:focus-visible{outline:2px solid #183d32;outline-offset:5px;border-radius:3px}

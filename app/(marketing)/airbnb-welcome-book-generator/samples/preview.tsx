@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { availableKitPages, BOOK_THEMES, type KitData } from '../kit'
 import { sampleBook } from './sample-data'
 import styles from '../showcase.module.css'
+import { SampleDownload } from '../sample-download'
 
 export function SampleBookPreview({ initialTheme = 'forest' }: { initialTheme?: KitData['theme'] }) {
   const [theme, setTheme] = useState<KitData['theme']>(initialTheme)
@@ -27,7 +28,7 @@ export function SampleBookPreview({ initialTheme = 'forest' }: { initialTheme?: 
     <div className={styles.tabs} aria-label="Book style">
       {BOOK_THEMES.map(t => <button key={t.key} aria-pressed={theme === t.key} onClick={() => setTheme(t.key)}>{t.name}</button>)}
     </div>
-    <a className={styles.primary} href={`/guest-demo/books/piads-${theme}-sample.pdf`} download>Download sample PDF</a>
+    <SampleDownload key={theme} style={theme || 'forest'} className={styles.primary} />
     <p className={styles.note}>Fictional property, sample Wi-Fi and illustrative local recommendations.</p>
     <div className={styles.sampleGrid}>
       {pages.map(({key,label,Page}, index) => <figure key={key}><div className={styles.pageFrame} ref={index === 0 ? firstPageRef : undefined}><div className={styles.pageScale} style={{transform:`scale(${scale})`}}><Page data={data}/></div></div><figcaption>{label}</figcaption></figure>)}
