@@ -1,11 +1,22 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { availableKitPages, BOOK_THEMES, type KitData } from '../kit'
 import { SAMPLE_BOOK } from './sample-data'
 import styles from '../showcase.module.css'
 
 export function SampleBookPreview({ initialTheme = 'forest' }: { initialTheme?: KitData['theme'] }) {
   const [theme, setTheme] = useState<KitData['theme']>(initialTheme)
+  const firstPageRef = useRef<HTMLDivElement>(null)
+  const [scale, setScale] = useState(0.4)
+  useEffect(() => {
+    const node = firstPageRef.current
+    if (!node) return
+    const resize = () => setScale(node.clientWidth / 816)
+    resize()
+    const observer = new ResizeObserver(resize)
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [])
   const data = { ...SAMPLE_BOOK, theme }
   const pages = availableKitPages(data)
   return <div className={styles.samplePage}>
@@ -19,7 +30,7 @@ export function SampleBookPreview({ initialTheme = 'forest' }: { initialTheme?: 
     <a className={styles.primary} href={`/guest-demo/books/piads-${theme}-sample.pdf`} download>Download sample PDF</a>
     <p className={styles.note}>Fictional property, sample Wi-Fi and illustrative local recommendations.</p>
     <div className={styles.sampleGrid}>
-      {pages.map(({key,label,Page}) => <figure key={key}><div className={styles.pageFrame}><div className={styles.pageScale}><Page data={data}/></div></div><figcaption>{label}</figcaption></figure>)}
+      {pages.map(({key,label,Page}, index) => <figure key={key}><div className={styles.pageFrame} ref={index === 0 ? firstPageRef : undefined}><div className={styles.pageScale} style={{transform:`scale(${scale})`}}><Page data={data}/></div></div><figcaption>{label}</figcaption></figure>)}
     </div>
     <a className={styles.primary} href="/airbnb-welcome-book-generator#generator-title">Create my free guide →</a>
   </div>

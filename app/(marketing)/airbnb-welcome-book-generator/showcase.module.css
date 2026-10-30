@@ -24,8 +24,8 @@
 .tabs button[aria-pressed=true] { background:#173f33; color:white; }
 .sampleGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; margin:40px 0; }
 .sampleGrid figure { margin:0; min-width:0; }
-.pageFrame { container-type:inline-size; aspect-ratio:816/1056; overflow:hidden; box-shadow:0 10px 25px #173f3312; background:#faf7ef; }
-.pageScale { width:816px; height:1056px; transform:scale(calc(100cqw / 816px)); transform-origin:top left; }
+.pageFrame { aspect-ratio:816/1056; overflow:hidden; box-shadow:0 10px 25px #173f3312; background:#faf7ef; }
+.pageScale { width:816px; height:1056px; transform-origin:top left; }
 .sampleGrid figcaption { font-size:14px; margin:12px 0 20px; }
 @media(max-width:850px) { .cards { grid-template-columns:1fr; max-width:490px; margin-left:auto; margin-right:auto; } .sampleGrid { grid-template-columns:repeat(2,minmax(0,1fr)); } .showcase { padding:60px 20px; } }
 @media(max-width:500px) { .sampleGrid { grid-template-columns:1fr; } }
