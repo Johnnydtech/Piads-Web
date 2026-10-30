@@ -966,7 +966,7 @@ export function WelcomeBookGenerator({
             </GuidePreviewPanel>
             <aside className={styles.panel} aria-label="Printable details">
               <p className={styles.privacyNote}>
-                Your edits stay in this tab until you email a download. The finished file is then stored privately for delivery. Guide details are not sent to HubSpot. Keep entry codes in your private booking messages.
+                Your edits are encrypted in this tab. Emailed downloads are stored privately, and importing your guide requires signing in with your verified email. Guide details are not sent to HubSpot. Keep entry codes in your private booking messages.
               </p>
               <FocusedGuide
                 onDone={() => goStep(2)}
