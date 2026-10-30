@@ -103,7 +103,7 @@ export default function WelcomeBookGeneratorPage() {
             </li>
             <li className={styles.step}>
               <span className={styles.stepNumber}>2</span>
-              <h3>Create with AI</h3>
+              <h3>Create Free with Piads</h3>
               <p>Choose a style, create artwork for your property, and add guest details and local favorites in one guided flow.</p>
             </li>
             <li className={styles.step}>
@@ -171,7 +171,7 @@ export default function WelcomeBookGeneratorPage() {
           href="#generator-title"
           className={styles.finalButton}
         >
-          Create with AI <ArrowUpRight size={18} aria-hidden />
+          Create Free with Piads <ArrowUpRight size={18} aria-hidden />
         </a>
       </section>
     </div>

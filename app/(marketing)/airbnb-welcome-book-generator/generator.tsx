@@ -602,7 +602,7 @@ export function WelcomeBookGenerator({
                 </>
               ) : (
                 <>
-                  Create with AI <ArrowRight size={18} />
+                  Create Free with Piads <ArrowRight size={18} />
                 </>
               )}
             </button>
@@ -674,7 +674,7 @@ export function WelcomeBookGenerator({
           to continue.
         </p>
         <Link href={GENERATOR_PATH} className={styles.primary}>
-          Create with AI <ArrowRight size={18} />
+          Create Free with Piads <ArrowRight size={18} />
         </Link>
       </section>
     );
@@ -693,7 +693,7 @@ export function WelcomeBookGenerator({
             <Lock size={12} /> Free to edit · email your download
           </span>
         </div>
-        <nav className={styles.creationSteps} aria-label="Create with AI progress">
+        <nav className={styles.creationSteps} aria-label="Create Free with Piads progress">
           {[
             { id: 4, label: "Design" },
             { id: 0, label: "Your place & favorites" },

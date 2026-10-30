@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { trackCta } from "@/lib/analytics";
 import {
   ArrowUpRight,
@@ -8,14 +8,11 @@ import {
   ChevronDown,
   Wifi,
   MapPin,
-  Clock3,
   Monitor,
   Smartphone,
   Play,
   Home,
   ShieldCheck,
-  Coffee,
-  Sun,
   Plus,
   Minus,
 } from "lucide-react";
@@ -24,25 +21,15 @@ import styles from "./stays.module.css";
 import { CoastalHeroMedia } from "@/components/coastal-hero-media";
 import { PortfolioSection } from "@/components/portfolio-section";
 import { INDUSTRIES } from "@/lib/industries";
+import { HomeGuidePreview } from "@/components/home-guide-preview";
 import { PRODUCT_FAQS } from "@/lib/product-answers";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co";
 const SIGN_UP = `${APP_URL}/sign-up?role=venue_owner`;
-const PHOTO = "/stays/coastal-retreat.webp";
-const tabs = ["Welcome", "House guide", "Local favorites"] as const;
-type ScreenTab = (typeof tabs)[number];
-
+const GUIDE_URL = "/airbnb-welcome-book-generator";
 
 export function HomeContent() {
-  const [tab, setTab] = useState<ScreenTab>("Welcome");
-  const [guest, setGuest] = useState("Maya & Jordan");
-  const [property, setProperty] = useState("The Coastal House");
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const changeTab = (index: number) => {
-    setTab(tabs[index]);
-    tabRefs.current[index]?.focus();
-  };
 
   return (
     <div className={styles.site} id="top">
@@ -64,8 +51,8 @@ export function HomeContent() {
             portfolio from one simple dashboard.
           </p>
           <div className={styles.heroButtons}>
-            <a className={styles.buttonLime} href={SIGN_UP} onClick={() => trackCta("Create your first welcome", "hero")}>
-              Create your first welcome <ArrowUpRight size={19} />
+            <a className={styles.buttonLime} href={GUIDE_URL} onClick={() => trackCta("Create your free welcome guide", "hero")}>
+              Create your free welcome guide <ArrowUpRight size={19} />
             </a>
             <a className={styles.heroDemo} href="#experience" onClick={() => trackCta("See it in action", "hero")}>
               <span>
@@ -75,13 +62,13 @@ export function HomeContent() {
             </a>
           </div>
           <p className={styles.heroNote}>
-            <Check size={14} /> Your TV. Your content. No card required.
+            <Check size={14} /> Free guide. No account needed. Connect a TV when you’re ready.
           </p>
         </div>
         <a
           className={styles.arrivalCard}
           href="#experience"
-          aria-label="Explore the welcome screen demo"
+          aria-label="Explore the welcome guide preview"
         >
           <div className={styles.arrivalTop}>
             <span>
@@ -104,10 +91,10 @@ export function HomeContent() {
             </div>
             <div className={styles.miniQr}>
               <QRCodeSVG
-                value="https://www.piads.co/digital-signage-for/short-term-rentals"
+                value="https://www.piads.co/airbnb-welcome-book-generator/guest-demo?style=forest"
                 size={45}
                 fgColor="#183d32"
-                title="Learn about PiAds for short-term rentals"
+                title="Open the sample phone guide"
               />
             </div>
           </div>
@@ -148,262 +135,7 @@ export function HomeContent() {
         </a>
       </div>
 
-      <section
-        className={`${styles.section} ${styles.experience}`}
-        id="experience"
-        aria-labelledby="experience-title"
-      >
-        <div className={styles.sectionHeading}>
-          <div>
-            <p className={styles.kicker}>01 / THE GUEST EXPERIENCE</p>
-            <h2 id="experience-title">
-              The little things.
-              <br />
-              <em>All taken care of.</em>
-            </h2>
-          </div>
-          <p>
-            A warm hello. The Wi-Fi password. That coffee spot only locals know.
-            Everything guests need, right where they’ll see it.
-          </p>
-        </div>
-        <div className={styles.experienceLayout}>
-          <div className={styles.experienceControls}>
-            <div
-              className={styles.tabList}
-              role="tablist"
-              aria-label="Explore guest screen content"
-              aria-orientation="vertical"
-            >
-              {tabs.map((item, index) => {
-                const Icon = [Home, Wifi, MapPin][index];
-                return (
-                  <button
-                    key={item}
-                    ref={(el) => {
-                      tabRefs.current[index] = el;
-                    }}
-                    id={`guest-tab-${index}`}
-                    type="button"
-                    role="tab"
-                    aria-selected={tab === item}
-                    aria-controls="guest-screen"
-                    tabIndex={tab === item ? 0 : -1}
-                    className={`${styles.experienceTab} ${tab === item ? styles.tabActive : ""}`}
-                    onClick={() => setTab(item)}
-                    onKeyDown={(event) => {
-                      if (
-                        ["ArrowDown", "ArrowUp", "Home", "End"].includes(
-                          event.key,
-                        )
-                      ) {
-                        event.preventDefault();
-                        changeTab(
-                          event.key === "Home"
-                            ? 0
-                            : event.key === "End"
-                              ? 2
-                              : (index + (event.key === "ArrowDown" ? 1 : 2)) %
-                                3,
-                        );
-                      }
-                    }}
-                  >
-                    <Icon size={20} />
-                    <span>
-                      <strong>{item}</strong>
-                      <small>
-                        {
-                          [
-                            "A first impression that feels personal.",
-                            "The answers, before they ask.",
-                            "Your neighborhood. Their next discovery.",
-                          ][index]
-                        }
-                      </small>
-                    </span>
-                    <ArrowUpRight size={17} />
-                  </button>
-                );
-              })}
-            </div>
-            <div className={styles.personalize}>
-              <span className={styles.tryLabel}>
-                <span className={styles.liveDot} /> TRY YOUR OWN WELCOME
-              </span>
-              <label htmlFor="guest-name">Guest names</label>
-              <input
-                id="guest-name"
-                value={guest}
-                maxLength={32}
-                onChange={(event) => setGuest(event.target.value)}
-                placeholder="Maya & Jordan"
-              />
-              <label htmlFor="property-name">Property name</label>
-              <input
-                id="property-name"
-                value={property}
-                maxLength={32}
-                onChange={(event) => setProperty(event.target.value)}
-                placeholder="The Coastal House"
-              />
-              <p>Your edits appear in the example screen.</p>
-            </div>
-          </div>
-          <div className={styles.demoWrap}>
-            <div className={styles.demoToolbar}>
-              <span>
-                <span className={styles.liveDot} />{" "}
-                {property.trim() || "Your property"}
-              </span>
-              <span>
-                INTERACTIVE DEMO <Monitor size={15} />
-              </span>
-            </div>
-            <div
-              className={styles.guestScreen}
-              id="guest-screen"
-              role="tabpanel"
-              aria-labelledby={`guest-tab-${tabs.indexOf(tab)}`}
-              tabIndex={0}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={PHOTO}
-                alt="Coastal retreat backdrop"
-                width="1672"
-                height="941"
-                className={styles.screenPhoto}
-              />
-              <div className={styles.screenShade} />
-              <div className={styles.screenHeader}>
-                <span>{property.trim() || "Your property"}</span>
-                <span>
-                  <Sun size={16} /> MAKE YOURSELF AT HOME
-                </span>
-              </div>
-              <div className={styles.screenContent} key={tab}>
-                {tab === "Welcome" && (
-                  <>
-                    <span className={styles.screenEyebrow}>
-                      YOUR STAY STARTS HERE
-                    </span>
-                    <h3>
-                      Welcome,
-                      <br />
-                      <em>{guest.trim() || "lovely guests"}.</em>
-                    </h3>
-                    <p>
-                      Drop your bags. Take a breath.
-                      <br />
-                      We’re so happy you’re here.
-                    </p>
-                    <div className={styles.screenPills}>
-                      <span>
-                        <Wifi size={15} /> Wi-Fi ready
-                      </span>
-                      <span>
-                        <Clock3 size={15} /> Check-out at 11 AM
-                      </span>
-                    </div>
-                  </>
-                )}
-                {tab === "House guide" && (
-                  <>
-                    <span className={styles.screenEyebrow}>
-                      SETTLE RIGHT IN
-                    </span>
-                    <h3>
-                      A few little
-                      <br />
-                      <em>things to know.</em>
-                    </h3>
-                    <div className={styles.houseNotes}>
-                      <div>
-                        <Wifi size={20} />
-                        <span>
-                          Wi-Fi network<strong>CoastalHouse_Guest</strong>
-                        </span>
-                      </div>
-                      <div>
-                        <Clock3 size={20} />
-                        <span>
-                          Check-out
-                          <strong>11:00 AM · Leave keys on the table</strong>
-                        </span>
-                      </div>
-                      <div>
-                        <Home size={20} />
-                        <span>
-                          Quiet hours<strong>10:00 PM – 8:00 AM</strong>
-                        </span>
-                      </div>
-                    </div>
-                  </>
-                )}
-                {tab === "Local favorites" && (
-                  <>
-                    <span className={styles.screenEyebrow}>
-                      A LITTLE LOCAL KNOWLEDGE
-                    </span>
-                    <h3>
-                      Go where
-                      <br />
-                      <em>the locals go.</em>
-                    </h3>
-                    <div className={styles.localPicks}>
-                      <div>
-                        <Coffee size={22} />
-                        <span>
-                          Morning coffee
-                          <strong>The little café on the corner</strong>
-                          <small>5-minute walk · Host’s pick</small>
-                        </span>
-                      </div>
-                      <div>
-                        <Sun size={22} />
-                        <span>
-                          Your sunset spot<strong>The west-facing beach</strong>
-                          <small>12-minute walk · Bring a blanket</small>
-                        </span>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-              <div className={styles.screenBottom}>
-                <span>CURATED BY YOUR HOST</span>
-                <span>
-                  Powered by <strong>piads</strong>
-                </span>
-              </div>
-              {tab === "Welcome" && (
-                <a
-                  className={styles.screenQr}
-                  href="/digital-signage-for/short-term-rentals"
-                  aria-label="Learn how the PiAds guest guide works"
-                >
-                  <QRCodeSVG
-                    value="https://www.piads.co/digital-signage-for/short-term-rentals"
-                    size={62}
-                    fgColor="#173d32"
-                    title="PiAds guest guide information"
-                  />
-                  <span>Explore PiAds</span>
-                </a>
-              )}
-            </div>
-            <div className={styles.demoFootnote}>
-              <span>
-                Example guest screen · Your names, your place, your style.
-              </span>
-              <span>
-                <Smartphone size={14} /> Update from anywhere
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HomeGuidePreview />
 
       <PortfolioSection />
       <section
@@ -693,10 +425,10 @@ export function HomeContent() {
           <br />
           <em>how you made them feel.</em>
         </h2>
-        <a className={styles.buttonDark} href={SIGN_UP}>
-          Make your first welcome <ArrowUpRight size={19} />
+        <a className={styles.buttonDark} href={GUIDE_URL} onClick={() => trackCta("Create your free welcome guide", "homepage_footer")}>
+          Create your free welcome guide <ArrowUpRight size={19} />
         </a>
-        <p className={styles.ctaNote}>Start with the TV you already have.</p>
+        <p className={styles.ctaNote}>Start with a free guide. Bring it to your TV when you’re ready.</p>
       </section>
     </div>
   );
