@@ -585,6 +585,12 @@ export function WelcomeBookGenerator({
               <MapPin size={18} aria-hidden />
               <span className="sr-only">Rental address</span>
               <input
+                type="text"
+                name="address"
+                inputMode="text"
+                enterKeyHint="go"
+                autoCapitalize="words"
+                spellCheck={false}
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="Street address, city and state"
