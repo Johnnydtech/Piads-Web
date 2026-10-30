@@ -44,6 +44,7 @@ import {
   RESULT_PATH,
   readDraft,
   saveDraft,
+  persistentImage,
   type Generated,
   type GuideDraft,
 } from "./draft";
@@ -116,7 +117,7 @@ export function WelcomeBookGenerator({
   workspace?: boolean;
 }) {
   const router = useRouter();
-  const [loaded, setLoaded] = useState(!workspace);
+  const [loaded, setLoaded] = useState(false);
   const [demoPaused, setDemoPaused] = useState(false);
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<Generated | null>(null);
@@ -146,7 +147,7 @@ export function WelcomeBookGenerator({
   const [captchaReset, setCaptchaReset] = useState(0);
   const [deliveryToken, setDeliveryToken] = useState("");
   const [deliveryEmail, setDeliveryEmail] = useState("");
-  const [pendingAction, setPendingAction] = useState<"art" | "kit" | "png" | null>(null);
+  const [pendingAction, setPendingAction] = useState<"art" | "kit" | "png" | "transfer" | null>(null);
   const [artwork, setArtwork] = useState<string | null>(null);
   const [useArtwork, setUseArtwork] = useState(true);
   const [artDescription, setArtDescription] = useState("");
@@ -167,49 +168,51 @@ export function WelcomeBookGenerator({
   const stageRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const handoffWindow = useRef<Window | null>(null);
+  const [draftSaved, setDraftSaved] = useState(true);
   const handoffCleanup = useRef<(() => void) | null>(null);
   const onToken = useCallback((value: string | null) => setToken(value), []);
 
   useEffect(() => {
-    const draft = readDraft();
-    if (draft) {
-      setResult(draft.result);
-      setCreatedAt(draft.createdAt);
-      setPicks(draft.picks);
-      setGuestName(draft.guestName);
-      setPropertyName(draft.propertyName);
-      setMessage(draft.message);
-      setCheckout(draft.checkout);
-      setNeutralBackground(draft.neutralBackground);
-      setAddress(draft.result.location.formatted_address);
-    }
-    setLoaded(true);
+    let cancelled = false;
+    void readDraft().then((draft) => {
+      if (cancelled) return;
+      if (draft) {
+        setResult(draft.result); setCreatedAt(draft.createdAt); setPicks(draft.picks);
+        setGuestName(draft.guestName); setPropertyName(draft.propertyName);
+        setMessage(draft.message); setCheckout(draft.checkout);
+        setNeutralBackground(draft.neutralBackground); setAddress(draft.result.location.formatted_address);
+        if (draft.kit) setKit(draft.kit);
+        setPhoto(draft.photo || null); setArtwork(draft.artwork || null);
+        setUseArtwork(draft.useArtwork ?? true); setArtDescription(draft.artDescription || "");
+        setBookTheme(draft.bookTheme || "forest"); setPaperSize(draft.paperSize || "letter");
+        setExcludedPages(draft.excludedPages || []); setStep(draft.step ?? 4);
+        setPropertySection(draft.propertySection ?? 0); setGuestSection(draft.guestSection ?? 0);
+        setDeliveryToken(draft.deliveryToken || ""); setDeliveryEmail(draft.deliveryEmail || "");
+      }
+      setLoaded(true);
+    });
+    return () => { cancelled = true; };
   }, []);
   useEffect(() => {
     if (!workspace || !loaded || !result) return;
-    saveDraft({
-      version: 2,
-      createdAt,
-      result,
-      guestName,
-      propertyName,
-      message,
-      checkout,
-      picks,
-      neutralBackground,
-    });
-  }, [
-    workspace,
-    loaded,
-    result,
-    createdAt,
-    guestName,
-    propertyName,
-    message,
-    checkout,
-    picks,
-    neutralBackground,
-  ]);
+    let cancelled = false;
+    setDraftSaved(false);
+    const timer = window.setTimeout(() => {
+      void saveDraft({ version: 3, createdAt, result, guestName, propertyName, message, checkout, picks,
+        neutralBackground, kit, photo, artwork, useArtwork, artDescription, bookTheme, paperSize,
+        excludedPages, step, propertySection, guestSection, deliveryToken, deliveryEmail,
+      }).then(saved => { if (!cancelled) setDraftSaved(saved); });
+    }, 200);
+    return () => { cancelled = true; window.clearTimeout(timer); };
+  }, [workspace, loaded, result, createdAt, guestName, propertyName, message, checkout, picks,
+      neutralBackground, kit, photo, artwork, useArtwork, artDescription, bookTheme, paperSize,
+      excludedPages, step, propertySection, guestSection, deliveryToken, deliveryEmail]);
+  useEffect(() => {
+    if (draftSaved) return;
+    const warn = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = ""; };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [draftSaved]);
   useEffect(
     () => () => {
       if (photo) URL.revokeObjectURL(photo);
@@ -261,7 +264,7 @@ export function WelcomeBookGenerator({
       if (!data?.location?.formatted_address || !Array.isArray(data.picks))
         throw new Error("We couldn’t prepare this address. Please try again.");
       const draft: GuideDraft = {
-        version: 2,
+        version: 3,
         createdAt: Date.now(),
         result: data,
         guestName: "",
@@ -273,7 +276,7 @@ export function WelcomeBookGenerator({
         picks: data.picks,
         neutralBackground: false,
       };
-      if (!saveDraft(draft))
+      if (!(await saveDraft(draft)))
         throw new Error(
           "Allow browser storage for this site so we can open your guide. Your address stays out of the URL.",
         );
@@ -300,16 +303,11 @@ export function WelcomeBookGenerator({
       setPhotoError("Choose a JPG, PNG or WebP photo under 20 MB.");
       return;
     }
-    const url = URL.createObjectURL(file);
     try {
-      const img = new Image();
-      img.src = url;
-      await img.decode();
-      setPhoto(url);
+      setPhoto(await persistentImage(file));
       setPhotoError("");
       track("welcome_generator_photo_added");
     } catch {
-      URL.revokeObjectURL(url);
       setPhotoError(
         "That photo couldn’t be opened. Please choose another image.",
       );
@@ -365,7 +363,7 @@ export function WelcomeBookGenerator({
       form.append("description", artDescription);
       if (photo) form.append("photo", await (await fetch(photo)).blob(), "property.jpg");
       const data = await generatorRequest("artwork", { method: "POST", headers: { Authorization: `Bearer ${verifiedToken}` }, body: form });
-      setArtwork(data.url); setUseArtwork(true); setBookTheme(data.theme);
+      setArtwork(await persistentImage(await (await fetch(data.url)).blob())); setUseArtwork(true); setBookTheme(data.theme);
       track("welcome_generator_art_created");
     } catch (cause) { if ((cause as {status?: number})?.status === 401) setDeliveryToken(""); setError(cause instanceof Error ? cause.message : "We couldn’t create the artwork."); }
     finally { setArtBusy(false); }
@@ -452,7 +450,7 @@ export function WelcomeBookGenerator({
       setCaptchaReset((n) => n + 1);
     }
   }
-  function connectTv() {
+  async function connectTv(verifiedToken = deliveryToken) {
     if (!result || handoffState === "waiting") return;
     if (
       handoffState === "sent" &&
@@ -462,6 +460,7 @@ export function WelcomeBookGenerator({
       handoffWindow.current.focus();
       return;
     }
+    if (!verifiedToken) { setPendingAction("transfer"); return; }
     handoffCleanup.current?.();
     setError("");
     const draft = parseWelcomeHandoff({
@@ -488,18 +487,38 @@ export function WelcomeBookGenerator({
       setError("Please check your property details before continuing.");
       return;
     }
+    const popup = window.open("about:blank", "_blank");
+    if (!popup) { setError("Allow a new tab for PiAds, then select Continue again. Your guide is still here."); return; }
+    setHandoffState("waiting");
+    try {
+      const notes = [
+        kit.hostName && `Your host: ${kit.hostName}`, kit.hostContact && `Contact: ${kit.hostContact}`,
+        kit.checkIn && `Check-in: ${kit.checkIn}`, kit.arrival && `Arrival: ${kit.arrival}`,
+        kit.parking && `Parking: ${kit.parking}`, kit.homeTips && `House essentials: ${kit.homeTips}`,
+        kit.safety && `Safety: ${kit.safety}`,
+        ...kit.rules.map(rule => `House rule: ${rule}`), kit.customRules && `House rules: ${kit.customRules}`,
+        ...kit.checkoutSteps.map(item => `Before checkout: ${item}`), kit.customCheckout && `Checkout: ${kit.customCheckout}`,
+      ].filter(Boolean);
+      const form = new FormData();
+      form.append("draft", JSON.stringify({ guide_style: draft.guideStyle, guest_name: draft.guestName,
+        welcome_message: draft.message, checkout_text: draft.checkout, picks: draft.picks,
+        wifi_ssid: kit.wifiName, wifi_password: kit.wifiPassword,
+        wifi_security: kit.wifiPassword ? "WPA" : "nopass", house_notes: notes }));
+      const selectedImage = useArtwork && artwork ? artwork : photo;
+      if (selectedImage) form.append("image", await (await fetch(selectedImage)).blob(), "guide-artwork.jpg");
+      const transfer = await generatorRequest("transfer", { method: "POST", headers: { Authorization: `Bearer ${verifiedToken}` }, body: form });
+      draft.importToken = transfer.token;
+    } catch (err) {
+      popup.close(); setHandoffState("idle");
+      setError(err instanceof Error ? err.message : "We couldn’t import your guide. Please try again.");
+      return;
+    }
     const app = new URL(APP_URL);
     const nonce = crypto.randomUUID();
     const url = new URL("/welcome-import", app);
     url.searchParams.set("source", window.location.origin);
     url.searchParams.set("request", nonce);
-    const popup = window.open(url.toString(), "_blank");
-    if (!popup) {
-      setError(
-        "Allow a new tab for PiAds, then select Continue again. Your guide is still here.",
-      );
-      return;
-    }
+    popup.location.replace(url.toString());
     handoffWindow.current = popup;
     setHandoffState("waiting");
     const timeout = window.setTimeout(() => {
@@ -1329,15 +1348,13 @@ export function WelcomeBookGenerator({
                 <li>
                   <strong>Create your PiAds account</strong>
                   <p>
-                    Your property name, address, welcome text, checkout note and
-                    selected places come with you.
+                    Your design, Wi-Fi, house details and favorite local places come with you.
                   </p>
                 </li>
                 <li>
                   <strong>Confirm your property</strong>
                   <p>
-                    Review your details and create your first screen. Add your
-                    photo and Wi-Fi securely in the app.
+                    Sign up with the same email you verified for your guide. Review your property and create your first screen.
                   </p>
                 </li>
                 <li>
@@ -1351,7 +1368,7 @@ export function WelcomeBookGenerator({
               </ol>
               <button
                 type="button"
-                onClick={connectTv}
+                onClick={() => void connectTv()}
                 className={styles.primary}
                 disabled={handoffState === "waiting"}
               >
@@ -1377,8 +1394,7 @@ export function WelcomeBookGenerator({
                 service.
               </p>
               <p className={styles.privacyNote}>
-                Your AI artwork, uploaded photos, Wi-Fi details and printable checklists
-                are in your emailed files. Add these in the app after signup. Your account won’t be created until you sign up.
+                Your selected artwork and guest details transfer privately after you sign in. Import within 24 hours. Your account won’t be created until you sign up.
               </p>
               <a
                 className={styles.textButton}
@@ -1468,9 +1484,11 @@ export function WelcomeBookGenerator({
           </footer>
         )}
       </section>
+      {workspace && loaded && result && !draftSaved && <p className={styles.fineprint}>Saving your guide in this tab… Keep this page open until it finishes.</p>}
       <GeneratorAccess open={pendingAction !== null} onClose={() => setPendingAction(null)} onVerified={(verifiedToken, verifiedEmail) => {
         const action = pendingAction; setDeliveryToken(verifiedToken); setDeliveryEmail(verifiedEmail); setPendingAction(null);
         if (action === "art") void createArtwork(verifiedToken);
+        else if (action === "transfer") void connectTv(verifiedToken);
         else if (action) void download(action, verifiedToken);
       }} />
       <Dialog.Root

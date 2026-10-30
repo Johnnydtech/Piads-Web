@@ -15,3 +15,6 @@ assert.equal(parseWelcomeHandoff({...valid,guideStyle:'postcard'},now).guideStyl
 assert.equal(parseWelcomeHandoff({...valid,guideStyle:'javascript:bad'},now),null)
 
 assert.equal(parseWelcomeHandoff({...valid,picks:Array.from({length:12},(_,i)=>({place_id:`place${i}`,name:`Place ${i}`,blurb:""}))},now).picks.length,12)
+
+assert.equal(parseWelcomeHandoff({...valid,importToken:'x'.repeat(43)},now).importToken,'x'.repeat(43))
+assert.equal(parseWelcomeHandoff({...valid,importToken:'https://private.example/token'},now),null)

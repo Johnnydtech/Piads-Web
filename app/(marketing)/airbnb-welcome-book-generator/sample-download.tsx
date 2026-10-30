@@ -55,7 +55,7 @@ export function SampleDownload({ style, className }: { style: SampleStyle; class
         <Dialog.Description>{sent ? `We emailed all seven pages to ${email}. Your private download link is valid for seven days. Check your spam folder if it doesn’t arrive.` : busy ? 'Preparing a private link to your sample PDF. This may take a moment.' : 'Your sample is still available. Please try sending it again.'}</Dialog.Description>
         {busy && <Loader2 className={styles.spin} aria-hidden />}
         {error && <p className={styles.error} role="alert">{error}</p>}
-        {sent ? <><p className={access.note}>This is a fictional example. Next, make a guide with your own property, Wi-Fi and favorite places.</p><a className={styles.primary} style={{ marginTop: 24 }} href="/airbnb-welcome-book-generator#generator-title">Create my own with AI →</a></> : !busy && <button className={styles.primary} onClick={request}>{token ? 'Try sending again' : 'Verify email again'}</button>}
+        {sent ? <><p className={access.note}>Your sample includes an example Wi-Fi QR code. Create your own free guide with your network and password to give guests a QR code they can scan to join your Wi-Fi.</p><a className={styles.primary} style={{ marginTop: 24 }} href="/airbnb-welcome-book-generator#generator-title">Create my own with AI →</a></> : !busy && <button className={styles.primary} onClick={request}>{token ? 'Try sending again' : 'Verify email again'}</button>}
       </Dialog.Content>
     </Dialog.Portal></Dialog.Root>
   </>

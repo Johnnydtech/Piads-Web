@@ -28,6 +28,7 @@ export function BookShowcase() {
           <div className={styles.cardBody}>
             <span className={styles.styleNumber}>0{index + 1} / The collection</span>
             <h3>{book.title}</h3><p>{book.description}</p>
+            <p><strong>Free Wi-Fi QR code included.</strong> A little scan, an easier arrival. Add your Wi-Fi details when you create your own guide.</p>
             <a className={styles.tryPhone} href={`${base}/guest-demo?style=${book.key}`}>Try the phone guide <span aria-hidden>↗</span></a>
             <div className={styles.links}>
               <a href={`${base}/samples?style=${book.key}`}>Browse 7 pages ↗</a>

@@ -1,6 +1,7 @@
 /** Shared with the CMS. Only allowlisted guide fields cross the signup boundary. */
 export interface WelcomeHandoff {
   version: 1
+  importToken?: string
   createdAt: number
   address: string
   propertyName: string
@@ -27,6 +28,7 @@ export function parseWelcomeHandoff(
   )
     return null
   if (d.guideStyle !== undefined && !['illustrated', 'journal', 'postcard'].includes(d.guideStyle as string)) return null
+  if (d.importToken !== undefined && (typeof d.importToken !== 'string' || !/^[A-Za-z0-9_-]{43}$/.test(d.importToken))) return null
   const limits = {
     address: 1000,
     propertyName: 255,
@@ -62,6 +64,7 @@ export function parseWelcomeHandoff(
   }
   return {
     version: 1,
+    ...(d.importToken ? { importToken: d.importToken as string } : {}),
     createdAt: d.createdAt,
     address: (d.address as string).trim(),
     propertyName: d.propertyName as string,
