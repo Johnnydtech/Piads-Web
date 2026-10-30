@@ -1330,7 +1330,7 @@ export function WelcomeBookGenerator({
                   ) : (
                     <Download size={18} />
                   )}{" "}
-                  Email my {selectedPages.length}-page PDF
+                  {exportKind === "kit" ? "Preparing & emailing your PDF…" : `Email my ${selectedPages.length}-page PDF`}
                 </button>
                 <small>
                   Your finished file is stored privately and emailed as a link valid for 7 days. Print at actual size on your selected paper. Or send the PDF
@@ -1357,7 +1357,7 @@ export function WelcomeBookGenerator({
                   ) : (
                     <Download size={18} />
                   )}{" "}
-                  Email my TV image
+                  {exportKind === "png" ? "Preparing & emailing your image…" : "Email my TV image"}
                 </button>
                 <small>
                   The downloaded image leaves out the live clock, weather and
