@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import "./marketing-theme.css";
 import { SITE_URL } from "@/lib/site";
+import { SITE_SHARE_IMAGE } from "@/lib/brand";
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -30,11 +31,11 @@ const pacifico = Pacifico({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "PiAds - Free Digital Signage That Pays You",
+    default: "PiAds — Digital Signage & Guest Welcome Screens",
     template: "%s | PiAds",
   },
   description:
-    "Manage every venue screen from one simple dashboard. Enable approved local ad slots, use PiAds free, and keep 70% of cleared ad revenue.",
+    "Beautiful guest guides, welcoming TVs, and digital signage. Manage screens, content and local recommendations from one simple dashboard.",
   keywords: [
     "free digital signage",
     "free digital signage software",
@@ -53,24 +54,28 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: "PiAds",
-    title: "PiAds - Free Digital Signage That Pays You",
+    title: "PiAds — Digital Signage & Guest Welcome Screens",
     description:
-      "Enable approved local ad slots, use PiAds free, and keep 70% of cleared ad revenue.",
-    images: [{ url: "/og.png", width: 1200, height: 630 }],
+      "Beautiful guest guides, welcoming TVs, and digital signage. Start with a free welcome book and connect your TV when ready.",
+    images: [SITE_SHARE_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: "PiAds - Free Digital Signage That Pays You",
+    title: "PiAds — Digital Signage & Guest Welcome Screens",
     description:
-      "Enable approved local ad slots, use PiAds free, and keep 70% of cleared ad revenue.",
-    images: ["/og.png"],
+      "Beautiful guest guides, welcoming TVs, and digital signage. Start with a free welcome book and connect your TV when ready.",
+    images: [SITE_SHARE_IMAGE],
   },
   icons: {
-    icon: "/logo/favicon.ico",
-    shortcut: "/logo/favicon-16x16.png",
-    apple: "/logo/apple-touch-icon.png",
+    icon: [
+      { url: "/brand/piads-icon-v2.ico", sizes: "16x16 32x32 48x48" },
+      { url: "/brand/piads-icon-32-v2.png", type: "image/png", sizes: "32x32" },
+      { url: "/brand/piads-icon-v2.svg", type: "image/svg+xml", sizes: "any" },
+    ],
+    shortcut: "/brand/piads-icon-v2.ico",
+    apple: { url: "/brand/piads-icon-180-v2.png", sizes: "180x180" },
   },
-  manifest: "/logo/site.webmanifest",
+  manifest: "/brand/site-v2.webmanifest",
 };
 
 export default function RootLayout({

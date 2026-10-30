@@ -1,4 +1,5 @@
 import { JsonLd, graph, blogPosting, breadcrumbs, faqPage } from "@/components/seo/json-ld"
+import { SITE_SHARE_IMAGE } from "@/lib/brand"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { MDXRemote } from "next-mdx-remote/rsc"
@@ -33,7 +34,13 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
       type: "article",
       url: `/blog/${post.slug}`,
       publishedTime: post.publishedAt,
-      images: post.image ? [post.image] : ["/og/default.png"],
+      images: post.image ? [post.image] : [SITE_SHARE_IMAGE],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.description,
+      images: post.image ? [post.image] : [SITE_SHARE_IMAGE],
     },
   }
 }

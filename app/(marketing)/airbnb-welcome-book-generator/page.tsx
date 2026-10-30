@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { GENERATOR_SHARE_IMAGE } from '@/lib/brand'
 import { ArrowUpRight } from 'lucide-react'
 import { JsonLd, graph, faqPage, breadcrumbs } from '@/components/seo/json-ld'
 import { SITE_URL } from '@/lib/site'
@@ -11,12 +12,21 @@ const PATH = '/airbnb-welcome-book-generator'
 export const metadata: Metadata = {
   title: 'Free Airbnb Welcome Book Generator (TV-Ready)',
   description:
-    'Type your rental’s address and get a TV welcome screen plus a free printable host starter kit: Wi-Fi sign with QR code, checkout card, local guide and guest messages. Free, no signup.',
+    'Create a free personalized welcome book with Wi-Fi QR code, house details and local favorites. Verify your email for your PDF. No PiAds account needed.',
   alternates: { canonical: PATH },
   openGraph: {
     title: 'Free Airbnb Welcome Book Generator',
-    description: 'Your address in, a TV-ready welcome book out. Real local picks with today’s hours. Free, no signup.',
+    description: 'Create a free welcome book with your own style, Wi-Fi QR code and local favorites. Verify your email to receive your PDF.',
     url: PATH,
+    type: 'website',
+    siteName: 'PiAds',
+    images: [GENERATOR_SHARE_IMAGE],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Airbnb Welcome Book Generator',
+    description: 'Create a free welcome book with your own style, Wi-Fi QR code and local favorites. Verify your email to receive your PDF.',
+    images: [GENERATOR_SHARE_IMAGE],
   },
 }
 

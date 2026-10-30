@@ -18,7 +18,7 @@ export const ORGANIZATION = {
   "@id": `${SITE_URL}/#organization`,
   name: "PiAds",
   url: SITE_URL,
-  logo: `${SITE_URL}/logo/apple-touch-icon.png`,
+  logo: `${SITE_URL}/brand/piads-icon-512-v2.png`,
   sameAs: [
     "https://apps.apple.com/us/app/piads/id6759892788",
     "https://play.google.com/store/apps/details?id=co.piads.kiosk",

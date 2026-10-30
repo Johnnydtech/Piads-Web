@@ -2,6 +2,7 @@ import { PLAN_ANSWER, APPROVAL_ANSWER, REVENUE_ANSWER } from "@/lib/product-answ
 
 import { SignupLink } from "@/components/signup-link";
 import type { Metadata } from "next"
+import { SITE_SHARE_IMAGE } from "@/lib/brand"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { JsonLd, graph, faqPage, breadcrumbs } from "@/components/seo/json-ld"
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
     title: "Digital Signage That Pays You — Earn From Your Venue Screens",
     description: "Local advertisers book your screens, you choose how ads are approved, you keep 70%. Free software for partner screens.",
     url: "/digital-signage-ad-revenue",
+    images: [SITE_SHARE_IMAGE],
   },
 }
 

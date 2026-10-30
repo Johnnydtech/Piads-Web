@@ -10,6 +10,7 @@ import {
 } from "@/components/seo/json-ld";
 import { PRODUCT_FAQS } from "@/lib/product-answers";
 import { SITE_URL } from "@/lib/site";
+import { SITE_SHARE_IMAGE } from "@/lib/brand";
 
 const title = "PiAds | Digital Signage & Guest Welcome Screens";
 const description =
@@ -26,13 +27,13 @@ export const metadata: Metadata = {
     siteName: "PiAds",
     title,
     description,
-    images: [{ url: "/og.png", width: 1200, height: 630 }],
+    images: [SITE_SHARE_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    images: ["/og.png"],
+    images: [SITE_SHARE_IMAGE],
   },
   alternates: { canonical: "/" },
 };
