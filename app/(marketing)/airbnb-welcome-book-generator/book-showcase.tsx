@@ -56,7 +56,7 @@ export function BookShowcase() {
           <span className={styles.scanLabel}>TV → QR → phone</span>
         </div>
         <button className={styles.pausePreview} type="button" aria-pressed={paused} onClick={() => setPaused(value => !value)}>{paused ? 'Resume TV preview' : 'Pause TV preview'}</button>
-        <p className={styles.storyNote}>Try the QR code: it opens this fictional sample. For a live guest guide, connect a TV in PiAds and add your artwork, Wi-Fi and house details in the app.</p>
+        <p className={styles.storyNote}>Try the QR code: it opens this fictional sample. For a live guest guide, create your own guide, bring it into PiAds, then connect your TV. Your selected artwork, Wi-Fi and house details come with you.</p>
       </div>
       <a href="#generator-title" className={styles.primary}>Create with AI →</a>
       <p className={styles.note}>Personalize your free book, then get the download by email.<br/>Connect a TV in PiAds when you’re ready.</p>

@@ -168,7 +168,7 @@ export function WelcomeBookGenerator({
   const stageRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const handoffWindow = useRef<Window | null>(null);
-  const [draftSaved, setDraftSaved] = useState(true);
+  const [draftStatus, setDraftStatus] = useState<"saved" | "saving" | "failed">("saved");
   const handoffCleanup = useRef<(() => void) | null>(null);
   const onToken = useCallback((value: string | null) => setToken(value), []);
 
@@ -196,23 +196,23 @@ export function WelcomeBookGenerator({
   useEffect(() => {
     if (!workspace || !loaded || !result) return;
     let cancelled = false;
-    setDraftSaved(false);
+    setDraftStatus("saving");
     const timer = window.setTimeout(() => {
       void saveDraft({ version: 3, createdAt, result, guestName, propertyName, message, checkout, picks,
         neutralBackground, kit, photo, artwork, useArtwork, artDescription, bookTheme, paperSize,
         excludedPages, step, propertySection, guestSection, deliveryToken, deliveryEmail,
-      }).then(saved => { if (!cancelled) setDraftSaved(saved); });
+      }).then(saved => { if (!cancelled) setDraftStatus(saved ? "saved" : "failed"); });
     }, 200);
     return () => { cancelled = true; window.clearTimeout(timer); };
   }, [workspace, loaded, result, createdAt, guestName, propertyName, message, checkout, picks,
       neutralBackground, kit, photo, artwork, useArtwork, artDescription, bookTheme, paperSize,
       excludedPages, step, propertySection, guestSection, deliveryToken, deliveryEmail]);
   useEffect(() => {
-    if (draftSaved) return;
+    if (draftStatus === "saved") return;
     const warn = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = ""; };
     window.addEventListener("beforeunload", warn);
     return () => window.removeEventListener("beforeunload", warn);
-  }, [draftSaved]);
+  }, [draftStatus]);
   useEffect(
     () => () => {
       if (photo) URL.revokeObjectURL(photo);
@@ -670,7 +670,7 @@ export function WelcomeBookGenerator({
         <MapPin size={32} />
         <h1>Let’s start with your address</h1>
         <p>
-          Your guide is kept in this browser tab for one hour. Create a new one
+          Your guide is kept in this browser tab for 24 hours. Create a new one
           to continue.
         </p>
         <Link href={GENERATOR_PATH} className={styles.primary}>
@@ -1166,8 +1166,7 @@ export function WelcomeBookGenerator({
                 </div>
               </FocusedGuide>
               <p className={styles.privacyNote}>
-                <Lock size={13} /> These details stay in your browser and
-                downloads.
+                <Lock size={13} /> Encrypted in this tab. Included in your downloads or privately imported when you choose Continue with my guide.
               </p>
             </aside>
           </div>
@@ -1484,7 +1483,7 @@ export function WelcomeBookGenerator({
           </footer>
         )}
       </section>
-      {workspace && loaded && result && !draftSaved && <p className={styles.fineprint}>Saving your guide in this tab… Keep this page open until it finishes.</p>}
+      {workspace && loaded && result && draftStatus !== "saved" && <p className={styles.fineprint} role={draftStatus === "failed" ? "alert" : undefined}>{draftStatus === "failed" ? "This browser couldn’t save your latest edits. Keep this tab open and email your guide before leaving." : "Saving your guide in this tab…"}</p>}
       <GeneratorAccess open={pendingAction !== null} onClose={() => setPendingAction(null)} onVerified={(verifiedToken, verifiedEmail) => {
         const action = pendingAction; setDeliveryToken(verifiedToken); setDeliveryEmail(verifiedEmail); setPendingAction(null);
         if (action === "art") void createArtwork(verifiedToken);

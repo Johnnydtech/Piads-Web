@@ -34,7 +34,7 @@ const FAQS = [
   {
     question: 'Is my Wi-Fi password safe?',
     answer:
-      'Your edits stay in your browser until you request delivery. Your finished PDF or TV image is stored privately and emailed through a link that expires in 7 days. Guide details and Wi-Fi credentials are not sent to HubSpot. If you choose AI artwork, your property photo is sent to our AI provider to create it. Keep door codes in your private booking messages.',
+      'Your edits are encrypted in this browser tab until you request delivery or choose to import your guide into PiAds. Your finished PDF or TV image is stored privately and emailed through a link that expires in 7 days. Guide details and Wi-Fi credentials are not sent to HubSpot. If you choose AI artwork, your property photo is sent to our AI provider to create it. Keep door codes in your private booking messages.',
   },
   {
     question: 'Where do the local recommendations come from?',
@@ -54,7 +54,7 @@ const FAQS = [
   {
     question: 'Do you save my address?',
     answer:
-      'We use your address to find nearby places. Your guide is kept in this browser tab for up to one hour so you can edit it. Choosing Continue with my guide sends the property details and selected places to PiAds for you to confirm during signup. Email and phone are required for emailed downloads and free AI artwork. Phone collection does not opt you into calls or texts. Requesting setup help is optional.',
+      'We use your address to find nearby places. Your guide is encrypted in this browser tab for up to 24 hours so a refresh preserves your edits. Choosing Continue with my guide creates a private 24-hour import for the account using your verified email. Your selected artwork, Wi-Fi, house details and favorite places come with you after signup. Email and phone are required for emailed downloads and free AI artwork. Phone collection does not opt you into calls or texts. Requesting setup help is optional.',
   },
   {
     question: 'Why a TV instead of a printed welcome book?',
