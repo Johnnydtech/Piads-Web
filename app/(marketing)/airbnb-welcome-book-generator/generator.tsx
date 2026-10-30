@@ -665,7 +665,6 @@ export function WelcomeBookGenerator({
       <section
         className={styles.workspace}
         aria-label="Welcome guide workspace"
-        data-editing={step >= 0 && step < 2}
       >
         <div className={styles.workspaceHead}>
           <Link href={GENERATOR_PATH} className={styles.textButton}>
@@ -688,9 +687,9 @@ export function WelcomeBookGenerator({
             </button>
           ))}
         </nav>
-        <h2 ref={headingRef} tabIndex={-1} className={styles.stepHeading}>
+        <h1 ref={headingRef} tabIndex={-1} className={styles.stepHeading}>
           {({ 4: "Make the design yours", 0: "A welcome that feels like your place", 1: "The details guests need", 2: "Your guide, ready to share", 3: "Connect your TV" } as Record<number, string>)[step]}
-        </h2>
+        </h1>
         <p className={styles.stepDescription}>
           {step === 4 ? "Choose your look. We’ll help you personalize the whole guide, one step at a time."
             : step === 2 ? "Review your guide, then we’ll email you a private download link. No account needed."
@@ -725,7 +724,7 @@ export function WelcomeBookGenerator({
             <aside className={styles.panel} aria-label="Welcome screen details">
               <FocusedGuide
                 onDone={() => goStep(1)}
-                doneLabel="Continue to guest details"
+                doneLabel="Guest details"
                 onBack={() => goStep(4)}
                 activeSection={propertySection}
                 onSectionChange={setPropertySection}
@@ -952,7 +951,7 @@ export function WelcomeBookGenerator({
               </p>
               <FocusedGuide
                 onDone={() => goStep(2)}
-                doneLabel="Review & email my guide"
+                doneLabel="Review & email"
                 onBack={() => goStep(0)}
                 activeSection={guestSection}
                 onSectionChange={setGuestSection}

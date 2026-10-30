@@ -109,7 +109,7 @@ export default function WelcomeBookGeneratorPage() {
             <li className={styles.step}>
               <span className={styles.stepNumber}>3</span>
               <h3>Get your guide by email</h3>
-              <p>Review your finished guide, verify your email and phone, and receive a private PDF download link. Then connect a TV whenever you’re ready.</p>
+              <p>Review your finished guide, add your email and phone, and verify your email to receive a private PDF download link. Then connect a TV whenever you’re ready.</p>
             </li>
           </ol>
         </div>
