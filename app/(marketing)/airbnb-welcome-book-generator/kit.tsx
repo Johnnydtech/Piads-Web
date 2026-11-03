@@ -573,6 +573,7 @@ export const KIT_PAGES = [
 ] as const
 export function availableKitPages(data: KitData) {
   return KIT_PAGES.filter((p) => {
+    if (p.key === 'welcome') return !!data.details.wifiName.trim()
     if (p.key === 'home')
       return !!(data.details.homeTips.trim() || data.details.safety.trim())
     if (p.key === 'rules')

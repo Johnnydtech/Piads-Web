@@ -8,7 +8,7 @@ import LocalFavoritesGallery from "@/components/LocalFavoritesGallery";
 import GeneratorAccess, { generatorRequest } from "./GeneratorAccess";
 import FocusedGuide from "./FocusedGuide";
 import GuidePreviewPanel from "./GuidePreviewPanel";
-import { DEMO_WELCOME } from "./demo";
+import GuideSplash from "./GuideSplash";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
   ArrowLeft,
@@ -21,9 +21,8 @@ import {
   Loader2,
   Lock,
   MapPin,
+  Mail,
   Monitor,
-  Pause,
-  Play,
   RotateCcw,
   Sparkles,
   Star,
@@ -118,7 +117,9 @@ export function WelcomeBookGenerator({
 }) {
   const router = useRouter();
   const [loaded, setLoaded] = useState(false);
-  const [demoPaused, setDemoPaused] = useState(false);
+  const [requestEmail, setRequestEmail] = useState("");
+  const [deliveryHasPhone, setDeliveryHasPhone] = useState(false);
+  const [autoRequestEmail, setAutoRequestEmail] = useState(false);
   const [address, setAddress] = useState("");
   const [result, setResult] = useState<Generated | null>(null);
   const [createdAt, setCreatedAt] = useState(0);
@@ -137,7 +138,7 @@ export function WelcomeBookGenerator({
   const [bookTheme, setBookTheme] = useState<BookTheme>("forest");
   const [paperSize, setPaperSize] = useState<PaperSize>("letter");
   const [excludedPages, setExcludedPages] = useState<string[]>([]);
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(5);
   const [propertySection, setPropertySection] = useState(0);
   const [guestSection, setGuestSection] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -185,14 +186,16 @@ export function WelcomeBookGenerator({
         setPhoto(draft.photo || null); setArtwork(draft.artwork || null);
         setUseArtwork(draft.useArtwork ?? true); setArtDescription(draft.artDescription || "");
         setBookTheme(draft.bookTheme || "forest"); setPaperSize(draft.paperSize || "letter");
-        setExcludedPages(draft.excludedPages || []); setStep(draft.step ?? 4);
+        setExcludedPages(draft.excludedPages || []); setStep(draft.step ?? 5);
         setPropertySection(draft.propertySection ?? 0); setGuestSection(draft.guestSection ?? 0);
         setDeliveryToken(draft.deliveryToken || ""); setDeliveryEmail(draft.deliveryEmail || "");
+        setRequestEmail(draft.deliveryEmail || ""); setDeliveryHasPhone(draft.deliveryHasPhone ?? false);
+        if (workspace && draft.requestDelivery) { setPendingAction("kit"); setAutoRequestEmail(true); }
       }
       setLoaded(true);
     });
     return () => { cancelled = true; };
-  }, []);
+  }, [workspace]);
   useEffect(() => {
     if (!workspace || !loaded || !result) return;
     let cancelled = false;
@@ -200,13 +203,13 @@ export function WelcomeBookGenerator({
     const timer = window.setTimeout(() => {
       void saveDraft({ version: 3, createdAt, result, guestName, propertyName, message, checkout, picks,
         neutralBackground, kit, photo, artwork, useArtwork, artDescription, bookTheme, paperSize,
-        excludedPages, step, propertySection, guestSection, deliveryToken, deliveryEmail,
+        excludedPages, step, propertySection, guestSection, deliveryToken, deliveryEmail, deliveryHasPhone,
       }).then(saved => { if (!cancelled) setDraftStatus(saved ? "saved" : "failed"); });
     }, 200);
     return () => { cancelled = true; window.clearTimeout(timer); };
   }, [workspace, loaded, result, createdAt, guestName, propertyName, message, checkout, picks,
       neutralBackground, kit, photo, artwork, useArtwork, artDescription, bookTheme, paperSize,
-      excludedPages, step, propertySection, guestSection, deliveryToken, deliveryEmail]);
+      excludedPages, step, propertySection, guestSection, deliveryToken, deliveryEmail, deliveryHasPhone]);
   useEffect(() => {
     if (draftStatus === "saved") return;
     const warn = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = ""; };
@@ -275,6 +278,9 @@ export function WelcomeBookGenerator({
         checkout: DEFAULT_CHECKOUT,
         picks: data.picks,
         neutralBackground: false,
+        bookTheme, step: 5, deliveryEmail: requestEmail.trim(), requestDelivery: true,
+        kit: { ...DEFAULT_KIT, hostContact: "Message your host through your booking app.",
+          arrival: "Check your booking messages for arrival instructions and access details." },
       };
       if (!(await saveDraft(draft)))
         throw new Error(
@@ -353,7 +359,7 @@ export function WelcomeBookGenerator({
     (p) => !picks.some((selected) => selected.place_id === p.place_id),
   );
   async function createArtwork(verifiedToken = deliveryToken) {
-    if (!verifiedToken) { setPendingAction("art"); return; }
+    if (!verifiedToken || (verifiedToken === deliveryToken && !deliveryHasPhone)) { setPendingAction("art"); return; }
     if (artBusy) return;
     setArtBusy(true); setError("");
     try {
@@ -564,104 +570,9 @@ export function WelcomeBookGenerator({
     handoffCleanup.current = cleanup;
   }
 
-  if (!workspace)
-    return (
-      <section className={styles.hero} aria-labelledby="generator-title">
-        <div className={styles.heroInner}>
-          <p className={styles.eyebrow}>
-            <Sparkles size={14} aria-hidden /> Free host starter kit
-          </p>
-          <h1 id="generator-title" className={styles.title}>
-            A warmer welcome.
-            <br />
-            <em>One address away.</em>
-          </h1>
-          <p className={styles.lede}>
-            Start with your rental’s address. Choose a design, add your details
-            and favorite places, then get your finished guide by email.
-          </p>
-          <form className={styles.form} onSubmit={generate}>
-            <label className={styles.inputWrap}>
-              <MapPin size={18} aria-hidden />
-              <span className="sr-only">Rental address</span>
-              <input
-                type="text"
-                name="address"
-                inputMode="text"
-                enterKeyHint="go"
-                autoCapitalize="words"
-                spellCheck={false}
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                placeholder="Street address, city and state"
-                autoComplete="street-address"
-                maxLength={200}
-                required
-                disabled={busy}
-              />
-            </label>
-            <button type="submit" className={styles.generate} disabled={busy}>
-              {busy ? (
-                <>
-                  <Loader2 size={18} className={styles.spin} /> Creating your
-                  guide…
-                </>
-              ) : (
-                <>
-                  Create Free with Piads <ArrowRight size={18} />
-                </>
-              )}
-            </button>
-          </form>
-          <TurnstileWidget onToken={onToken} resetKey={captchaReset} />
-          {error && (
-            <p className={styles.error} role="alert">
-              {error}
-            </p>
-          )}
-          {busy && (
-            <p role="status" className={styles.tvCaption}>
-              Finding your location and nearby places. This may take a few
-              moments.
-            </p>
-          )}
-          <ul className={styles.heroPoints}>
-            <li>
-              <Check size={15} /> Free to create · downloads by email
-            </li>
-            <li>
-              <Check size={15} /> A complete guest welcome book
-            </li>
-            <li>
-              <Check size={15} /> A preview for your TV
-            </li>
-          </ul>
-          {loaded && result && (
-            <Link href={RESULT_PATH} className={styles.textButton}>
-              Continue editing my guide <ArrowRight size={15} />
-            </Link>
-          )}
-        </div>
-        <div className={styles.landingPreview}>
-          <div className={styles.tv}>
-            <div className={styles.tvScreen}>
-              <WelcomeScreen data={DEMO_WELCOME} paused={demoPaused} />
-            </div>
-          </div>
-          <div className={styles.demoFooter}>
-            <p className={styles.tvCaption}>
-              This is how your TV welcome works. Example places and weather;
-              your guide uses your property’s details.
-            </p>
-            <button type="button" className={styles.demoPause}
-              aria-pressed={demoPaused} onClick={() => setDemoPaused((value) => !value)}>
-              {demoPaused ? <Play size={15} aria-hidden="true" /> : <Pause size={15} aria-hidden="true" />}
-              {demoPaused ? "Resume scrolling" : "Pause scrolling"}
-            </button>
-          </div>
-        </div>
-      </section>
-    );
+  if (!workspace) return <GuideSplash address={address} email={requestEmail} theme={bookTheme}
+    onAddress={setAddress} onEmail={setRequestEmail} onTheme={setBookTheme} busy={busy} error={error}
+    onSubmit={generate} onToken={onToken} captchaReset={captchaReset} />;
 
   if (!loaded)
     return (
@@ -699,24 +610,19 @@ export function WelcomeBookGenerator({
             <Lock size={12} /> Free to edit · email your download
           </span>
         </div>
-        <nav className={styles.creationSteps} aria-label="Create Free with Piads progress">
-          {[
-            { id: 4, label: "Design" },
-            { id: 0, label: "Your place & favorites" },
-            { id: 1, label: "Guest details" },
-            { id: 2, label: "Review & email" },
-          ].map((stage, index) => (
-            <button key={stage.id} type="button" aria-current={step === stage.id ? "step" : undefined}
-              onClick={() => goStep(stage.id)} disabled={artBusy || !!exportKind}>
-              <span>{index + 1}</span>{stage.label}
-            </button>
-          ))}
-        </nav>
+        {step !== 5 && <div className={styles.quickEditNav}>
+          <button type="button" className={styles.secondary} disabled={artBusy || !!exportKind} onClick={() => goStep(5)}><ArrowLeft size={16}/> Back to my guide</button>
+          <nav aria-label="Optional guide edits">
+            {[{id:4,label:"Design"},{id:0,label:"Local places"},{id:1,label:"House details"},{id:2,label:"Download options"}].map(item =>
+              <button type="button" key={item.id} aria-current={step === item.id ? "page" : undefined} disabled={artBusy || !!exportKind} onClick={() => goStep(item.id)}>{item.label}</button>)}
+          </nav>
+        </div>}
         <h1 ref={headingRef} tabIndex={-1} className={styles.stepHeading}>
-          {({ 4: "Make the design yours", 0: "A welcome that feels like your place", 1: "The details guests need", 2: "Your guide, ready to share", 3: "Connect your TV" } as Record<number, string>)[step]}
+          {({ 5: "Your welcome guide is ready", 4: "Make the design yours", 0: "A welcome that feels like your place", 1: "The details guests need", 2: "Your guide, ready to share", 3: "Connect your TV" } as Record<number, string>)[step]}
         </h1>
         <p className={styles.stepDescription}>
-          {step === 4 ? "Choose your look. We’ll help you personalize the whole guide, one step at a time."
+          {step === 5 ? "Your address, your selected style and nearby places are already inside. Changes are optional."
+            : step === 4 ? "Change the style or add your own artwork. Your guide is already created."
             : step === 2 ? "Review your guide, then we’ll email you a private download link. No account needed."
             : step === 3 ? "Bring your welcome to your TV with PiAds."
             : "Add what you know now. You can move back and forth without losing your edits."}
@@ -726,6 +632,28 @@ export function WelcomeBookGenerator({
             {error}
           </p>
         )}
+        {step === 5 && <>
+          <div className={styles.quickResultActions}>
+            <button type="button" className={styles.primary} disabled={!!exportKind} onClick={() => download("kit")}>
+              {exportKind === "kit" ? <Loader2 size={18} className={styles.spin}/> : <Mail size={18}/>}
+              {exportKind === "kit" ? "Preparing & emailing your PDF…" : deliverySent ? "Email my guide again" : "Email my free guide"}
+            </button>
+            <button type="button" className={styles.secondary} disabled={!!exportKind} onClick={() => goStep(0)}>Make a change</button>
+          </div>
+          {deliverySent && <div className={styles.success} role="status"><Check size={20}/><div><strong>Your download link is on its way.</strong><p>Check {deliveryEmail}, including spam. Your private link works for 7 days.</p></div></div>}
+          <div className={styles.readyPages} aria-label="Your generated guide pages">
+            {selectedPages.map(({key,label,Page}) => <article key={key}>
+              <div className={styles.readyPage}><div style={{width:PAGE_W,height:PAGE_H,transform:"scale(.3)",transformOrigin:"top left"}}><Page data={kitData}/></div></div>
+              <button className={styles.textButton} type="button" onClick={() => setPreviewPage(KIT_PAGES.findIndex(p => p.key === key))}>{label} <ZoomIn size={14}/></button>
+            </article>)}
+          </div>
+          <p className={styles.privacyNote}>Check local recommendations before sharing. Wi-Fi, house rules and private arrival details are included only when you add them.</p>
+          <div className={styles.quickExtras}>
+            <button type="button" className={styles.textButton} onClick={() => goStep(1)}>Add Wi-Fi or house details</button>
+            <button type="button" className={styles.textButton} onClick={() => goStep(4)}>Change design or add artwork</button>
+            {deliverySent && <button type="button" className={styles.textButton} onClick={() => goStep(3)}>Put this guide on my TV <ArrowRight size={16}/></button>}
+          </div>
+        </>}
         {step === 0 && (
           <div className={styles.editingWorkspace}>
             <GuidePreviewPanel
@@ -748,8 +676,8 @@ export function WelcomeBookGenerator({
             </GuidePreviewPanel>
             <aside className={styles.panel} aria-label="Welcome screen details">
               <FocusedGuide
-                onDone={() => goStep(1)}
-                doneLabel="Guest details"
+                onDone={() => goStep(5)}
+                doneLabel="Done editing"
                 onBack={() => goStep(4)}
                 activeSection={propertySection}
                 onSectionChange={setPropertySection}
@@ -914,8 +842,8 @@ export function WelcomeBookGenerator({
                 <small>One free artwork per verified email and phone. AI artwork is decorative; review it before sharing. Your guide text stays editable.</small>
               </section>
               <label className={styles.checkLabel}><input type="checkbox" checked={neutralBackground} onChange={e => setNeutralBackground(e.target.checked)} /> Use a neutral TV background when no artwork or photo is selected</label>
-              <p className={styles.privacyNote}>{artwork && useArtwork ? "Your artwork is included. Next, add your property details and favorite local places." : "You can continue with this style now, or create your free artwork above. We’ll verify your email once for artwork and downloads."}</p>
-              <button type="button" className={styles.primary} disabled={artBusy} onClick={() => goStep(0)}>Continue to your place <ArrowRight size={18} /></button>
+              <p className={styles.privacyNote}>{artwork && useArtwork ? "Your artwork is included. Next, add your property details and favorite local places." : "Your selected style is ready to use. Custom artwork is optional and requires email verification and a phone number."}</p>
+              <button type="button" className={styles.primary} disabled={artBusy} onClick={() => goStep(5)}>Done editing <Check size={18} /></button>
             </div>
           </div>
         )}
@@ -975,8 +903,8 @@ export function WelcomeBookGenerator({
                 Your edits are encrypted in this tab. Emailed downloads are stored privately, and importing your guide requires signing in with your verified email. Guide details are not sent to HubSpot. Keep entry codes in your private booking messages.
               </p>
               <FocusedGuide
-                onDone={() => goStep(2)}
-                doneLabel="Review & email"
+                onDone={() => goStep(5)}
+                doneLabel="Done editing"
                 onBack={() => goStep(0)}
                 activeSection={guestSection}
                 onSectionChange={setGuestSection}
@@ -1490,8 +1418,8 @@ export function WelcomeBookGenerator({
         )}
       </section>
       {workspace && loaded && result && draftStatus !== "saved" && <p className={styles.fineprint} role={draftStatus === "failed" ? "alert" : undefined}>{draftStatus === "failed" ? "This browser couldn’t save your latest edits. Keep this tab open and email your guide before leaving." : "Saving your guide in this tab…"}</p>}
-      <GeneratorAccess open={pendingAction !== null} onClose={() => setPendingAction(null)} onVerified={(verifiedToken, verifiedEmail) => {
-        const action = pendingAction; setDeliveryToken(verifiedToken); setDeliveryEmail(verifiedEmail); setPendingAction(null);
+      <GeneratorAccess verificationLabel={pendingAction === "kit" ? "Verify & email my guide" : pendingAction === "png" ? "Verify & email my TV image" : "Verify & continue"} key={`${pendingAction || "closed"}:${deliveryEmail}`} initialEmail={deliveryEmail} autoRequest={autoRequestEmail && pendingAction === "kit"} requirePhone={pendingAction === "art"} open={pendingAction !== null} onClose={() => { setPendingAction(null); setAutoRequestEmail(false); }} onVerified={(verifiedToken, verifiedEmail, hasPhone) => {
+        const action = pendingAction; setDeliveryToken(verifiedToken); setDeliveryEmail(verifiedEmail); setDeliveryHasPhone(hasPhone); setAutoRequestEmail(false); setPendingAction(null);
         if (action === "art") void createArtwork(verifiedToken);
         else if (action === "transfer") void connectTv(verifiedToken);
         else if (action) void download(action, verifiedToken);

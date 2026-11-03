@@ -1582,3 +1582,13 @@
 .creationSteps button:focus-visible { outline: 3px solid var(--forest); outline-offset: 3px; }
 .creationSteps button:disabled { cursor: wait; opacity: .6; }
 @media (max-width: 640px) { .creationSteps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 6px; margin-bottom: 24px; } .creationSteps button { padding: 10px 8px; font-size: 12px; gap: 7px; min-height: 48px; } }
+
+.quickEditNav { display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin:20px 0; }
+.quickEditNav nav { display:flex; flex-wrap:wrap; gap:8px; }
+.quickEditNav nav button { background:white; border:1px solid #dce3d8; border-radius:30px; padding:10px 15px; color:var(--ink); cursor:pointer; }
+.quickEditNav nav button[aria-current=page] { background:var(--ink); color:white; }
+.quickResultActions { display:flex; flex-wrap:wrap; gap:12px; margin:22px 0; }
+.readyPages { display:flex; overflow-x:auto; gap:24px; padding:12px 4px 24px; scroll-snap-type:x proximity; }
+.readyPages article { flex:0 0 244.8px; scroll-snap-align:start; }
+.readyPage { width:244.8px; height:316.8px; overflow:hidden; border-radius:4px; box-shadow:0 8px 24px #173f3318; margin-bottom:12px; }
+.quickExtras { display:flex; flex-wrap:wrap; gap:18px; padding-top:20px; border-top:1px solid #dce3d8; margin-top:24px; }

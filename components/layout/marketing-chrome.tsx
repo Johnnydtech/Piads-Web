@@ -8,6 +8,18 @@ import { ConsentBanner } from "@/components/consent-banner";
 export function MarketingChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   if (pathname === "/airbnb-welcome-book-generator/guest-demo") return <main id="main-content">{children}</main>;
+  if (pathname === "/airbnb-welcome-book-generator") return (
+    <div style={{ background: "#f8f9f5", minHeight: "100svh" }}>
+      <header style={{ maxWidth: 1200, margin: "auto", padding: "18px 24px 0" }}>
+        <img src="/logo/piads-logo-text.png" alt="PiAds" style={{ width: 88, height: 48, objectFit: "contain" }} />
+      </header>
+      <main id="main-content">{children}</main>
+      <footer style={{ textAlign: "center", padding: "10px 20px 16px", color: "#65786d", fontSize: 11 }}>
+        Made with PiAds · <a href="/privacy" target="_blank" rel="noreferrer">Privacy</a>
+      </footer>
+      <ConsentBanner />
+    </div>
+  );
   const isHome = pathname === "/";
   if (pathname === "/airbnb-welcome-book-generator/your-guide") {
     return (

@@ -33,6 +33,8 @@ export interface GuideDraft {
   propertySection?: number
   guestSection?: number
   deliveryToken?: string
+  requestDelivery?: boolean
+  deliveryHasPhone?: boolean
   deliveryEmail?: string
 }
 // Private details and images are encrypted at rest. The key lives only in this tab.

@@ -1,18 +1,16 @@
 import type { Metadata } from 'next'
 import { GENERATOR_SHARE_IMAGE } from '@/lib/brand'
-import { ArrowUpRight } from 'lucide-react'
-import { JsonLd, graph, faqPage, breadcrumbs } from '@/components/seo/json-ld'
+import { JsonLd, graph, breadcrumbs } from '@/components/seo/json-ld'
 import { SITE_URL } from '@/lib/site'
 import { WelcomeBookGenerator } from './generator'
-import { BookShowcase } from './book-showcase'
 import styles from './generator.module.css'
 
 const PATH = '/airbnb-welcome-book-generator'
 
 export const metadata: Metadata = {
-  title: 'Free Airbnb Welcome Book Generator (TV-Ready)',
+  title: 'Free Welcome Guide for Your Airbnb or Short-Term Rental',
   description:
-    'Create a free personalized welcome book with Wi-Fi QR code, house details and local favorites. Verify your email for your PDF. No PiAds account needed.',
+    'Enter your rental address, choose a style and get a free welcome guide with local places already included. Edit details afterward. No account needed.',
   alternates: { canonical: PATH },
   openGraph: {
     title: 'Free Airbnb Welcome Book Generator',
@@ -30,55 +28,11 @@ export const metadata: Metadata = {
   },
 }
 
-const FAQS = [
-  {
-    question: 'Is the welcome book generator really free?',
-    answer:
-      'Yes. Generating and editing is free. Enter your email and phone, then verify your email to receive a private download link. No PiAds account is needed. One free AI artwork is available per verified email and phone. If you want it on your TV and keeping itself current, PiAds is free for hosts who enable approved local ad slots, or $10 per screen per month without ads.',
-  },
-  {
-    question: 'What is in the free host starter kit?',
-    answer:
-      'A customizable guest book with three coordinated styles: a welcome cover, arrival and host contact details, a Wi-Fi sign with a working QR code, house guidance and rules, local places with Google Maps links, and checkout steps. Choose your pages and download in Letter or A4. Copyable host messages and a TV-sized welcome image are also included.',
-  },
-  {
-    question: 'Is my Wi-Fi password safe?',
-    answer:
-      'Your edits are encrypted in this browser tab until you request delivery or choose to import your guide into PiAds. Your finished PDF or TV image is stored privately and emailed through a link that expires in 7 days. Guide details and Wi-Fi credentials are not sent to HubSpot. If you choose AI artwork, your property photo is sent to our AI provider to create it. Keep door codes in your private booking messages.',
-  },
-  {
-    question: 'Where do the local recommendations come from?',
-    answer:
-      'Google Maps. We look near your address for the best-rated coffee, restaurants, bars and things to do: four stars and up, enough reviews to trust the rating, and a photo. Hours are shown when available and may change. Review the suggestions, search by business name to add your own favorites, and keep up to 12 places. You can remove suggestions or restore them later.',
-  },
-  {
-    question: 'How do I get it onto my TV?',
-    answer:
-      'Two ways. Download the image and show it from a USB stick or your TV’s photo app. That works on almost any TV, but it is a still picture you update by hand. Or put it on PiAds: the screen updates itself, greets each guest by name, and shows a QR code guests scan for your Wi-Fi and house guide.',
-  },
-  {
-    question: 'Which TVs does PiAds work with?',
-    answer:
-      'PiAds runs on Fire TV, Android and Google TV, and any TV with a web browser. Most hosts use a streaming stick that is already plugged into the TV.',
-  },
-  {
-    question: 'Do you save my address?',
-    answer:
-      'We use your address to find nearby places. Your guide is encrypted in this browser tab for up to 24 hours so a refresh preserves your edits. Choosing Continue with my guide creates a private 24-hour import for the account using your verified email. Your selected artwork, Wi-Fi, house details and favorite places come with you after signup. Email and phone are required for emailed downloads and free AI artwork. Phone collection does not opt you into calls or texts. Requesting setup help is optional.',
-  },
-  {
-    question: 'Why a TV instead of a printed welcome book?',
-    answer:
-      'Guests rarely open the binder on the counter or the PDF in the booking app. The TV is the first screen they look at when they walk in, so the Wi-Fi, checkout time and your favorite spots are in front of them before they think to ask.',
-  },
-]
-
 export default function WelcomeBookGeneratorPage() {
   return (
     <div className={styles.page}>
       <JsonLd
         data={graph(
-          faqPage(FAQS),
           breadcrumbs([
             { name: 'Home', path: '/' },
             { name: 'Airbnb welcome book generator', path: PATH },
@@ -97,93 +51,6 @@ export default function WelcomeBookGeneratorPage() {
       />
 
       <WelcomeBookGenerator />
-      <BookShowcase />
-
-      <section className={styles.section} aria-labelledby="how-title">
-        <div className={styles.sectionInner}>
-          <p className={styles.kicker}>How it works</p>
-          <h2 id="how-title" className={styles.sectionTitle}>
-            From an address to a welcome screen, <em>without the busywork.</em>
-          </h2>
-          <ol className={styles.steps}>
-            <li className={styles.step}>
-              <span className={styles.stepNumber}>1</span>
-              <h3>Type your address</h3>
-              <p>Just the street and city of your rental. Nothing to sign up for.</p>
-            </li>
-            <li className={styles.step}>
-              <span className={styles.stepNumber}>2</span>
-              <h3>Create Free with Piads</h3>
-              <p>Choose a style, create artwork for your property, and add guest details and local favorites in one guided flow.</p>
-            </li>
-            <li className={styles.step}>
-              <span className={styles.stepNumber}>3</span>
-              <h3>Get your guide by email</h3>
-              <p>Review your finished guide, add your email and phone, and verify your email to receive a private PDF download link. Then connect a TV whenever you’re ready.</p>
-            </li>
-          </ol>
-        </div>
-      </section>
-
-      <section className={styles.section} aria-labelledby="why-title">
-        <div className={`${styles.sectionInner} ${styles.why}`}>
-          <div>
-            <p className={styles.kicker}>Why the TV</p>
-            <h2 id="why-title" className={styles.sectionTitle}>
-              A welcome book your guests <em>actually see.</em>
-            </h2>
-            <p>
-              The questions hosts answer most, the Wi-Fi password, checkout time, where to get coffee, are already
-              written down somewhere. The problem is where. A binder on the counter and a link in the booking app
-              both wait for the guest to go looking. The TV doesn’t.
-            </p>
-          </div>
-          <ul className={styles.compare}>
-            <li>
-              <strong>Printed welcome book</strong>
-              <span>Looks nice, gets skipped, and goes stale the day a café changes its hours.</span>
-            </li>
-            <li>
-              <strong>PDF or link in the app</strong>
-              <span>Sent days before arrival and buried under the rest of the conversation.</span>
-            </li>
-            <li className={styles.compareWinner}>
-              <strong>The TV, with PiAds</strong>
-              <span>On when they walk in, greets them by name, and keeps today’s hours current on its own.</span>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section className={styles.section} aria-labelledby="faq-title">
-        <div className={styles.sectionInner}>
-          <p className={styles.kicker}>Questions</p>
-          <h2 id="faq-title" className={styles.sectionTitle}>
-            Welcome book generator FAQ
-          </h2>
-          <div className={styles.faq}>
-            {FAQS.map((f) => (
-              <details key={f.question}>
-                <summary>{f.question}</summary>
-                <p>{f.answer}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.finalCta}>
-        <h2>
-          Put it on your TV <em>today.</em>
-        </h2>
-        <p>Pair the stick that’s already in your TV, and your welcome screen greets the next guest by name.</p>
-        <a
-          href="#generator-title"
-          className={styles.finalButton}
-        >
-          Create Free with Piads <ArrowUpRight size={18} aria-hidden />
-        </a>
-      </section>
     </div>
   )
 }
