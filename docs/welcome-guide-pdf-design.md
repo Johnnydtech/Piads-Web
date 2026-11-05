@@ -25,3 +25,11 @@ Marketing repo changes plus only `assets/guest-book-samples/{forest,coast,clay}.
 
 ## Design research
 https://www.etsy.com/listing/1575245205/airbnb-welcome-book-canva-template-100 offers 100 mix-and-match templates, including multiple alternative covers and section layouts. The generated guide uses relevant populated sections rather than duplicate or unfilled templates.
+
+## Address-only local editions — November 5, 2026
+
+Address-only guides now use three dedicated location-led covers. The city replaces generic "Your stay in ..." cover text, and a host-supplied name remains intact. Real nearby-place photos form a labeled collage; uploaded property photos and custom artwork take precedence. Collection art is used only when local photos are unavailable and is marked decorative. No extra generation, verification, or paid API step is added.
+
+The local directory includes thumbnail photos. Dense directories with long names fall back to a readable full-width list. Place pages use larger photographs when there is little supporting copy. Existing Airbnb property-led covers and the public samples keep their current behavior.
+
+Verified with three nine-page PDF exports using four real Nantes recommendations, plus a 12-place/long-property-name browser stress case in all three styles. This is an address-only renderer fixture; the example starting point is Place Graslin, not an imported rental address. Export images were served locally for the local-only fixture after remote image capture failed in the localhost preview. No email was sent for this design review. Previously emailed PDFs are immutable and must be regenerated after deployment to receive a new design.

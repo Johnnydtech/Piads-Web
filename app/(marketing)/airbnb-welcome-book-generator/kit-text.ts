@@ -203,11 +203,36 @@ export function guideReview(
   ]
 }
 
-/** A finished design must not depend on uploading a property photo. Collection
- * artwork is decorative, never presented as a photograph of the user's rental. */
-export function bookArtwork(data: Pick<KitData, 'photo' | 'artwork' | 'theme' | 'sample'>) {
+/** Address-only books feature actual nearby places, never an invented rental. */
+export function neighborhoodPhotos(data: Pick<KitData, 'picks'>) {
+  const unique = new Set<string>()
+  const photos = data.picks.filter(p => {
+    if (!p.photo_url || unique.has(p.photo_url)) return false
+    unique.add(p.photo_url)
+    return true
+  })
+  // Lead with a different view from the directory's first recommendation.
+  return photos.length > 1 ? [photos[photos.length - 1], ...photos.slice(0, -1)] : photos
+}
+
+export function isLocationEdition(data: Pick<KitData, 'photo' | 'artwork' | 'listing' | 'sample'>) {
+  return !data.photo && !data.artwork && !data.listing && !data.sample
+}
+
+export function locationCoverTitle(data: Pick<KitData, 'propertyName' | 'city'>) {
+  const name = data.propertyName.trim()
+  return !name || /^your stay in /i.test(name) || /^your (rental|stay)$/i.test(name)
+    ? data.city.trim() || 'A place to settle in'
+    : name
+}
+
+/** Uploaded photos/custom artwork take priority over neighborhood photography.
+ * The collection fallback remains explicitly decorative when there are no photos. */
+export function bookArtwork(data: Pick<KitData, 'photo' | 'artwork' | 'theme' | 'sample'> & Partial<Pick<KitData, 'picks'>>) {
   if (data.artwork) return { src: data.artwork, caption: 'AI artwork · an artistic interpretation' }
   if (data.photo) return { src: data.photo, caption: data.sample ? 'Sample artwork · fictional property' : '' }
+  const nearby = !data.sample && neighborhoodPhotos({picks: data.picks || []})[0]
+  if (nearby) return { src: nearby.photo_url!, caption: `Around your stay · ${nearby.name} · Photo via Google Maps` }
   const art = { forest: 'illustrated-stay', coast: 'weekend-postcard', clay: 'retreat-journal' }
   return { src: `/guest-demo/art/${art[data.theme || 'forest']}.jpg`, caption: 'Collection artwork · not a photo of this property' }
 }

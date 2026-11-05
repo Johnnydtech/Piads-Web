@@ -58,3 +58,17 @@ const chunks = listingParagraphs(prose)
 assert.equal(chunks.join(' '), prose)
 assert.ok(chunks.every(chunk => chunk.length <= 950))
 assert.deepEqual(listingParagraphs('   '), [])
+
+// Address-only covers use the actual neighborhood, but never replace a host photo.
+const {neighborhoodPhotos,isLocationEdition,locationCoverTitle} = await import('../app/(marketing)/airbnb-welcome-book-generator/kit-text.ts')
+const localPicks=[{place_id:'a',name:'Cafe',photo_url:'cafe.jpg'},{place_id:'b',name:'No photo'}, {place_id:'c',name:'Garden',photo_url:'garden.jpg'},{place_id:'d',name:'Duplicate',photo_url:'garden.jpg'}]
+assert.deepEqual(neighborhoodPhotos({picks:localPicks}).map(p=>p.name),['Garden','Cafe'])
+assert.equal(bookArtwork({picks:localPicks}).src,'garden.jpg')
+assert.match(bookArtwork({picks:localPicks}).caption,/Garden/)
+assert.equal(bookArtwork({picks:localPicks,photo:'my-house.jpg'}).src,'my-house.jpg')
+assert.equal(bookArtwork({picks:localPicks,artwork:'my-art.jpg'}).src,'my-art.jpg')
+assert.equal(locationCoverTitle({propertyName:'Your stay in Alexandria',city:'Alexandria'}),'Alexandria')
+assert.equal(locationCoverTitle({propertyName:'River House',city:'Alexandria'}),'River House')
+assert.equal(locationCoverTitle({propertyName:'',city:''}),'A place to settle in')
+assert.equal(isLocationEdition({}),true)
+for (const optedOut of [{photo:'home.jpg'},{artwork:'art.jpg'},{sample:true},{listing:{}}]) assert.equal(isLocationEdition(optedOut),false)

@@ -5,6 +5,9 @@ import { QRCodeSVG } from 'qrcode.react'
 import {
   BOOK_THEMES,
   bookArtwork,
+  neighborhoodPhotos,
+  isLocationEdition,
+  locationCoverTitle,
   customLines,
   guestMessages,
   mapsUrl,
@@ -205,8 +208,55 @@ function Checklist({
     </ul>
   )
 }
+/** Three designed local editions for hosts who have supplied only an address. */
+function LocationCover({ data }: { data: KitData }) {
+  const theme = BOOK_THEMES.find(t => t.key === data.theme) || BOOK_THEMES[0]
+  const title = locationCoverTitle(data)
+  const photos = neighborhoodPhotos(data)
+  const art = bookArtwork(data)
+  const secondary = photos[1]
+  const journal = theme.key === 'clay'
+  const postcard = theme.key === 'coast'
+  const titleSize = title.length > 75 ? 46 : title.length > 45 ? 62 : title.length > 25 ? 80 : 112
+  const photoCaption = photos[0] ? photos[0].name : 'Decorative collection artwork'
+  const footer = <div style={{display:'flex',justifyContent:'space-between',gap:24,borderTop:`1px solid ${theme.ink}40`,paddingTop:18,fontSize:11,lineHeight:1.6}}>
+    <span>{photos.length ? 'Neighborhood photographs via Google Maps' : 'Decorative artwork, not a property photograph'}<br/>Made with PiAds · piads.co</span>
+    <span style={{textAlign:'right'}}>{data.picks.length ? `${data.picks.length} places to explore` : 'Your guest welcome guide'}<br/>ARRIVE / EXPLORE / SETTLE IN</span>
+  </div>
+  const heading = <h1 style={{fontFamily:SERIF,fontSize:titleSize,fontWeight:400,lineHeight:.96,letterSpacing:'-.035em',overflowWrap:'anywhere',margin:'16px 0 18px',color:'inherit',fontStyle:theme.key === 'forest' ? 'italic' : 'normal'}}>{title}</h1>
+  return <div data-book-page="Your local welcome guide" style={{width:PAGE_W,height:PAGE_H,position:'relative',overflow:'hidden',boxSizing:'border-box',background:theme.paper,color:theme.ink,fontFamily:SANS}}>
+    {theme.key === 'forest' && <img src="/guest-demo/botanical-frame.png" alt="" style={{position:'absolute',inset:12,width:792,height:1032,opacity:.18}}/>}
+    {journal ? <>
+      <div style={{height:650,position:'relative',background:'#292823'}}>
+        <img src={art.src} alt={photoCaption} style={{width:'100%',height:'100%',objectFit:'cover'}}/>
+        <div style={{position:'absolute',inset:0,background:'linear-gradient(180deg,rgba(12,24,21,.35),transparent 30%,rgba(12,24,21,.85))'}}/>
+        <div style={{position:'absolute',top:50,left:52,right:52,color:'#fff9ee',display:'flex',justifyContent:'space-between',fontSize:11,letterSpacing:'.2em'}}><span>THE LOCAL EDITION</span><span>A GUEST JOURNAL</span></div>
+        <div style={{position:'absolute',bottom:38,left:52,right:52,color:'#fff9ee'}}><p style={{...eyebrow,color:'inherit'}}>Welcome to your stay in {data.city || 'the neighborhood'}</p>{heading}<p style={{fontSize:11,margin:'16px 0 0'}}>AROUND YOUR STAY / {photoCaption}</p></div>
+      </div>
+      <div data-book-content style={{height:406,boxSizing:'border-box',padding:'28px 52px 24px',display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
+        <div style={{display:'grid',gridTemplateColumns:secondary ? '1fr 180px' : '1fr',gap:32,alignItems:'start'}}>
+          <div><p style={{...eyebrow,color:theme.accent,fontSize:10,margin:'0 0 12px'}}>A GOOD PLACE TO BEGIN</p><p style={{fontFamily:SERIF,fontSize:34,lineHeight:1.1,margin:'0 0 18px'}}>Settle in.<br/>Find a new favorite.</p><p style={{fontSize:13,lineHeight:1.5,margin:0,overflowWrap:'anywhere'}}>{data.address || data.city}</p></div>
+          {secondary && <figure style={{margin:0}}><img src={secondary.photo_url!} alt={secondary.name} style={{width:180,height:150,objectFit:'cover'}}/><figcaption style={{fontSize:9,lineHeight:1.3,marginTop:7}}>NEARBY / {secondary.name}</figcaption></figure>}
+        </div>{footer}
+      </div>
+    </> : <div data-book-content style={{position:'absolute',inset:postcard ? '28px' : '42px 52px',border:postcard ? `2px solid ${theme.ink}` : undefined,padding:postcard ? '28px 28px 20px' : 0,display:'flex',flexDirection:'column',boxSizing:'border-box'}}>
+      <div style={{display:'flex',justifyContent:'space-between',borderBottom:`1px solid ${theme.ink}40`,paddingBottom:15,...eyebrow,color:theme.ink,fontSize:10}}><span>{postcard ? 'A POSTCARD FROM YOUR STAY' : 'A LITTLE GUIDE TO FEELING AT HOME'}</span><span>LOCAL EDITION</span></div>
+      <div style={{position:'relative',zIndex:1,marginTop:16}}>{heading}<p style={{fontFamily:SERIF,fontSize:25,margin:'0 0 20px',lineHeight:1.2}}>Your welcome. Your neighborhood. Your next favorite.</p></div>
+      <div style={{position:'relative',flex:1,minHeight:240,margin:'4px 0 22px'}}>
+        <figure style={{margin:0,position:'absolute',top:0,left:0,right:secondary ? 90 : 0,bottom:secondary ? 52 : 0,transform:postcard ? 'rotate(-2deg)' : undefined,background:'#fffdf8',padding:postcard ? '12px 12px 36px' : '0 0 30px',boxShadow:postcard ? '0 8px 20px #233f8918' : undefined}}>
+          <img src={art.src} alt={photoCaption} style={{width:'100%',height:'100%',objectFit:'cover',borderRadius:postcard ? 0 : '230px 230px 2px 2px'}}/>
+          <figcaption style={{fontSize:10,lineHeight:1.3,paddingTop:8,overflowWrap:'anywhere'}}>AROUND YOUR STAY / {photoCaption}</figcaption>
+        </figure>
+        {secondary && <figure style={{position:'absolute',right:0,bottom:0,width:210,margin:0,padding:'10px 10px 14px',background:'#fffdf8',boxShadow:'0 8px 24px #17261d22',transform:`rotate(${postcard ? 5 : 3}deg)`}}><img src={secondary.photo_url!} alt={secondary.name} style={{width:'100%',height:150,objectFit:'cover'}}/><figcaption style={{fontSize:10,lineHeight:1.4,paddingTop:8,overflowWrap:'anywhere'}}>{secondary.name}</figcaption></figure>}
+      </div>
+      <div style={{margin:'0 0 20px',display:'flex',gap:22,alignItems:'center'}}><span style={{...eyebrow,color:theme.ink,fontSize:10,flexShrink:0}}>YOUR ADDRESS</span><p style={{fontSize:13,lineHeight:1.5,margin:0,overflowWrap:'anywhere'}}>{data.address || data.city}</p></div>{footer}
+    </div>}
+  </div>
+}
+
 export function CoverPage({ data }: { data: KitData }) {
   const art = bookArtwork(data)
+  if (isLocationEdition(data)) return <LocationCover data={data} />
   if (data.theme === 'clay') return (
     <div data-book-page="Your guest guide" style={{ width: PAGE_W, height: PAGE_H, position: 'relative', overflow: 'hidden', background: '#292823', color: '#fff9ee', fontFamily: SANS }}>
       <img src={art.src} alt="" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}} />
@@ -438,12 +488,15 @@ export function RulesPage({ data }: { data: KitData }) {
   )
 }
 export function LocalGuidePage({ data }: { data: KitData }) {
+  const compact = data.picks.length > 8
+  const photoGrid = isLocationEdition(data) && !(compact && data.picks.some(p => p.name.length > 60))
   return <Sheet data={data} section="The neighborhood" title="Good places. New memories." intro={data.sample ? 'Illustrative recommendations for this sample.' : `Places to explore around ${data.city || 'your stay'}. Each has its own page, with a map to take you there.`}>
-    <ArtRibbon data={data} height={data.picks.length > 8 ? 70 : 100} />
-    <div style={{ display: 'grid', gap: 0 }}>
-      {data.picks.map((pick, i) => <a key={pick.place_id} href={data.sample ? undefined : mapsUrl(pick)} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '8px 0', borderBottom: `1px solid ${LINE}`, textDecoration: 'none', color: INK }}>
-        <span style={{ ...eyebrow, width: 28 }}>{String(i + 1).padStart(2, '0')}</span>
-        <span style={{ fontFamily: SERIF, fontSize: data.picks.length > 8 ? 20 : 22, lineHeight: 1.1 }}>{pick.name}</span>
+    {!isLocationEdition(data) && <ArtRibbon data={data} height={data.picks.length > 8 ? 70 : 100} />}
+    <div style={{ display: 'grid', gridTemplateColumns: photoGrid ? '1fr 1fr' : '1fr', columnGap: 24, rowGap: 0, marginTop: 24 }}>
+      {data.picks.map((pick, i) => <a key={pick.place_id} href={data.sample ? undefined : mapsUrl(pick)} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: photoGrid ? '16px 0' : compact ? '6px 0' : '8px 0', borderBottom: `1px solid ${LINE}`, textDecoration: 'none', color: INK }}>
+        {photoGrid && pick.photo_url && <img src={pick.photo_url} alt="" style={{width:64,height:data.picks.length > 8 ? 54 : 76,objectFit:'cover',borderRadius:data.theme === 'forest' ? '36px 36px 3px 3px' : 2,flexShrink:0}}/>}
+        <span style={{ ...eyebrow, width: 20, flexShrink:0 }}>{String(i + 1).padStart(2, '0')}</span>
+        <span style={{ fontFamily: SERIF, fontSize: photoGrid ? 20 : compact ? 17 : 22, lineHeight: 1.1 }}>{pick.name}</span>
         <span style={{ marginLeft: 'auto' }}>↗</span>
       </a>)}
     </div>
@@ -457,9 +510,9 @@ function PlacePage({ data, index }: { data: KitData; index: number }) {
   const art = bookArtwork(data)
   return <Sheet data={data} section={`Explore / ${String(index + 1).padStart(2, '0')}`} title={pick.name} titleSize={pick.name.length > 65 ? 38 : 46}>
     <div style={{ position: 'relative', margin: '26px 0', border: data.theme === 'coast' ? '8px solid white' : undefined, transform: data.theme === 'coast' ? 'rotate(-1deg)' : undefined }}>
-      <img src={pick.photo_url || art.src} alt={pick.photo_url ? pick.name : ''} style={{ display: 'block', width: '100%', height: pick.name.length > 65 ? 290 : 350, objectFit: 'cover', borderRadius: data.theme === 'forest' ? '110px 110px 4px 4px' : 2 }} />
+      <img src={pick.photo_url || art.src} alt={pick.photo_url ? pick.name : ''} style={{ display: 'block', width: '100%', height: pick.name.length > 65 ? 350 : pick.blurb ? 350 : 470, objectFit: 'cover', borderRadius: data.theme === 'forest' ? '110px 110px 4px 4px' : 2 }} />
     </div>
-    <p style={{ fontSize: 10, color: MUTED, margin: '-16px 0 24px' }}>{pick.photo_url ? (data.sample ? 'Sample photograph' : 'Place photo via Google Maps') : 'Decorative collection artwork · place photo unavailable'}</p>
+    <p style={{ fontSize: 10, color: MUTED, margin: '-16px 0 24px' }}>{pick.photo_url ? (data.sample ? 'Sample photograph' : 'Place photo via Google Maps') : art.caption || 'Selected cover image · place photo unavailable'}</p>
     {pick.blurb && <p style={{ ...copy, fontFamily: SERIF, fontSize: 25, color: INK, margin: '0 0 24px' }}>{pick.blurb}</p>}
     <a href={data.sample ? undefined : mapsUrl(pick)} style={{ display: 'flex', gap: 24, alignItems: 'center', borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}`, padding: '24px 0', textDecoration: 'none', color: INK }}>
       <QRCodeSVG value={mapsUrl(pick)} size={118} level="M" fgColor="#173f33" bgColor="#fff" marginSize={4} />
