@@ -19,6 +19,7 @@ export const CHECKOUT_STEPS = [
 ] as const
 
 export interface KitDetails {
+  propertyAddress?: string
   wifiName: string
   wifiPassword: string
   rules: string[]
@@ -35,6 +36,7 @@ export interface KitDetails {
 }
 
 export const DEFAULT_KIT: KitDetails = {
+  propertyAddress: '',
   wifiName: '',
   wifiPassword: '',
   rules: [],
@@ -50,7 +52,39 @@ export const DEFAULT_KIT: KitDetails = {
   customCheckout: '',
 }
 
+export interface ImportedListing {
+  listing_id: string
+  source_url: string
+  title: string
+  description: string
+  amenities: string[]
+  rules: string[]
+  photos: { url: string; caption: string }[]
+  location: string
+  city: string
+  location_precision: 'approximate'
+  warnings: string[]
+}
+
+/** Keep listing prose within fixed print pages, with no silently clipped text. */
+export function listingParagraphs(text: string): string[] {
+  const chunks: string[] = []
+  let rest = text.replace(/\s+/g, ' ').trim()
+  while (rest.length > 0) {
+    let end = Math.min(rest.length, 950)
+    if (end < rest.length) {
+      const sentence = Array.from(rest.slice(0, end).matchAll(/[.!?](?:\s|$)/g)).at(-1)
+      const boundary = sentence && sentence.index >= 600 ? sentence.index + 1 : rest.lastIndexOf(' ', end)
+      if (boundary > 600) end = boundary
+    }
+    chunks.push(rest.slice(0, end).trim())
+    rest = rest.slice(end).trim()
+  }
+  return chunks
+}
+
 export interface KitData {
+  listing?: ImportedListing
   propertyName: string
   message: string
   checkout: string
@@ -167,4 +201,13 @@ export function guideReview(
     { label: 'Wi-Fi network', ready: !!data.details.wifiName },
     { label: 'Checkout note', ready: !!data.checkout.trim() },
   ]
+}
+
+/** A finished design must not depend on uploading a property photo. Collection
+ * artwork is decorative, never presented as a photograph of the user's rental. */
+export function bookArtwork(data: Pick<KitData, 'photo' | 'artwork' | 'theme' | 'sample'>) {
+  if (data.artwork) return { src: data.artwork, caption: 'AI artwork · an artistic interpretation' }
+  if (data.photo) return { src: data.photo, caption: data.sample ? 'Sample artwork · fictional property' : '' }
+  const art = { forest: 'illustrated-stay', coast: 'weekend-postcard', clay: 'retreat-journal' }
+  return { src: `/guest-demo/art/${art[data.theme || 'forest']}.jpg`, caption: 'Collection artwork · not a photo of this property' }
 }

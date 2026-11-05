@@ -22,7 +22,7 @@ export function SampleBookPreview({ initialTheme = 'forest' }: { initialTheme?: 
   const pages = availableKitPages(data)
   return <div className={styles.samplePage}>
     <a href="/airbnb-welcome-book-generator">← Back to the free generator</a>
-    <p className={styles.eyebrow}>A complete sample · 7 pages</p>
+    <p className={styles.eyebrow}>A complete sample · {pages.length} pages</p>
     <h1>A little book. A warmer welcome.</h1>
     <p>Explore every page, including the free Wi-Fi QR code. Add your own network and password when you create your guide, so guests can scan to join.</p>
     <div className={styles.tabs} aria-label="Book style">

@@ -31,7 +31,7 @@
   padding-top: 65px;
   padding-bottom: 70px;
 }
-.marketing-page h1 {
+.marketing-page h1:not([data-book-page] h1) {
   font-family: var(--font-editorial), Georgia, serif !important;
   font-size: clamp(3rem, 5.5vw, 5.5rem) !important;
   line-height: 1.04 !important;
@@ -397,7 +397,7 @@
   line-height: 1.8;
 }
 @media (max-width: 900px) {
-  .marketing-page h1 {
+  .marketing-page h1:not([data-book-page] h1) {
     font-size: 3.8rem !important;
   }
   .marketing-page > div > section:first-of-type {
@@ -442,7 +442,7 @@
   .marketing-page .container {
     padding-inline: 23px;
   }
-  .marketing-page h1 {
+  .marketing-page h1:not([data-book-page] h1) {
     font-size: 3.1rem !important;
   }
   .marketing-page > div > section:first-of-type {

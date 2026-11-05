@@ -9,9 +9,9 @@ for (const ext of ['.ts', '.tsx']) require.extensions[ext] = (module, file) => {
 }
 const originalLoad = Module._load
 Module._load = function (id, ...args) {
-  if (id === 'html-to-image') return { toPng: async (_node, options) => {
+  if (id === 'html-to-image') return { toJpeg: async (_node, options) => {
     assert.equal(options.includeQueryParams, true, 'distinct Places photo URLs must not share a cached export image')
-    return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLbtAAAAABJRU5ErkJggg=='
+    return 'data:image/jpeg;base64,' + fs.readFileSync('public/guest-demo/art/retreat-journal.jpg').toString('base64')
   } }
   return originalLoad.call(this, id, ...args)
 }
@@ -19,12 +19,19 @@ const { availableKitPages, buildKitPdf, DEFAULT_KIT, guideReview, customLines } 
 const { PDFDocument, PDFName, PDFArray } = require('pdf-lib')
 global.document = { fonts: { ready: Promise.resolve() } }
 const data = { propertyName: 'A guest house', city: 'Austin', message: '', checkout: '', details: { ...DEFAULT_KIT }, picks: [] }
-assert.deepEqual(availableKitPages(data).map(p => p.key), ['cover','arrival','welcome','checkout'])
+assert.deepEqual(availableKitPages(data).map(p => p.key), ['cover','opening','arrival','checkout'])
 assert.ok(!availableKitPages(data).some(p => p.key === 'messages'), 'host messages must never go in the guest book')
 assert.equal(guideReview(data).filter(x => x.ready).length, 1)
 assert.deepEqual(customLines(' one\n\n two \nthree\nfour\nfive'), ['one','two','three','four'])
 const complete = { ...data, details: { ...DEFAULT_KIT, homeTips:'TV instructions', rules:['No smoking'], hostContact:'Message your host', arrival:'Side door', parking:'Driveway', wifiName:' Guest WiFi ' }, picks: Array.from({length:8},(_,i) => ({place_id:`id${i}`,name:`Place ${i}`})) }
-assert.equal(availableKitPages(complete).length, 8)
+assert.equal(availableKitPages(complete).length, 16)
+const automatic = {...data,picks:complete.picks}
+assert.equal(availableKitPages(automatic).length,13)
+assert.equal(availableKitPages(automatic).filter(p=>p.key.startsWith('place-')).length,8)
+assert.ok(!availableKitPages(automatic).some(p=>['welcome','home','rules'].includes(p.key)), 'never invent private host details to fill pages')
+assert.equal(availableKitPages(automatic).find(p=>p.key==='place-1').label,'Place 0')
+assert.equal(availableKitPages({...automatic,picks:[]}).length,4)
+
 const safe = 'https://www.google.com/maps/search/?api=1&query=Cafe'
 const node = {
   querySelector: () => ({ scrollHeight: 800, clientHeight: 875 }),

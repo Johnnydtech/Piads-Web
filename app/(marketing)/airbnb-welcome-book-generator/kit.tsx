@@ -4,9 +4,11 @@ import type { CSSProperties, ReactNode } from 'react'
 import { QRCodeSVG } from 'qrcode.react'
 import {
   BOOK_THEMES,
+  bookArtwork,
   customLines,
   guestMessages,
   mapsUrl,
+  listingParagraphs,
   wifiQrValue,
   type KitData,
   type PaperSize,
@@ -23,6 +25,7 @@ const PAPER = 'var(--book-paper)'
 const MUTED = '#5e6660'
 const LINE = '#dce2d9'
 const eyebrow: CSSProperties = {
+  fontFamily: SANS,
   fontSize: 12,
   letterSpacing: '.2em',
   textTransform: 'uppercase',
@@ -49,12 +52,14 @@ function Sheet({
   title,
   intro,
   children,
+  titleSize = 60,
 }: {
   data: KitData
   section: string
   title: string
   intro?: string
   children: ReactNode
+  titleSize?: number
 }) {
   const theme = BOOK_THEMES.find((t) => t.key === data.theme) || BOOK_THEMES[0]
   const postcard = theme.key === 'coast'
@@ -83,7 +88,7 @@ function Sheet({
         } as CSSProperties
       }
     >
-      {theme.key === 'forest' && <img src="/guest-demo/botanical-frame.png" alt="" style={{ position: 'absolute', inset: 16, width: 'calc(100% - 32px)', height: 'calc(100% - 32px)', opacity: postcard ? .08 : .18, pointerEvents: 'none' }} />}
+      {theme.key === 'forest' && <img src="/guest-demo/botanical-frame.png" alt="" style={{ position: 'absolute', inset: 16, width: 'calc(100% - 32px)', height: 'calc(100% - 32px)', opacity: .24, pointerEvents: 'none' }} />}
       <div
         style={{
           position: 'relative',
@@ -106,7 +111,7 @@ function Sheet({
         <h1
           style={{
             fontFamily: SERIF,
-            fontSize: 60,
+            fontSize: titleSize,
             fontWeight: postcard ? 700 : 400,
             color: INK,
             fontStyle: theme.key === 'forest' ? 'italic' : 'normal',
@@ -201,14 +206,15 @@ function Checklist({
   )
 }
 export function CoverPage({ data }: { data: KitData }) {
-  if (data.theme === 'clay' && data.photo) return (
+  const art = bookArtwork(data)
+  if (data.theme === 'clay') return (
     <div data-book-page="Your guest guide" style={{ width: PAGE_W, height: PAGE_H, position: 'relative', overflow: 'hidden', background: '#292823', color: '#fff9ee', fontFamily: SANS }}>
-      <img src={data.photo} alt="Your property" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}} />
+      <img src={art.src} alt="" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}} />
       <div style={{position:'absolute',inset:0,background:'linear-gradient(90deg,rgba(20,19,16,.72),rgba(20,19,16,.18))'}} />
       <div data-book-content style={{position:'absolute',inset:'70px 64px',display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
         <p style={{...eyebrow,color:'#fff9ee'}}>A journal for your stay / {data.city}</p>
-        <div><h1 style={{color:'#fff9ee',fontFamily:SERIF,fontSize:104,fontWeight:400,lineHeight:.94,overflowWrap:'anywhere',maxWidth:520,margin:'0 0 32px'}}>{data.propertyName}</h1><p style={{fontFamily:SERIF,fontSize:30,fontStyle:'italic',maxWidth:440,lineHeight:1.3}}>{data.message}</p></div>
-        <div style={{borderTop:'1px solid #ffffff70',paddingTop:24,fontSize:13,letterSpacing:'.12em'}}>SETTLE IN. SLOW DOWN. STAY A WHILE.<br/><span style={{fontSize:10,letterSpacing:0}}>{data.sample ? 'Sample guide · Fictional property · ' : ''}Made with PiAds · piads.co</span></div>
+        <div><h1 style={{color:'#fff9ee',fontFamily:SERIF,fontSize:data.propertyName.length > 50 ? 76 : 96,fontWeight:400,lineHeight:.94,overflowWrap:'anywhere',maxWidth:520,margin:'0 0 32px'}}>{data.propertyName}</h1><p style={{fontFamily:SERIF,fontSize:30,fontStyle:'italic',maxWidth:440,lineHeight:1.3}}>{data.message}</p></div>
+        <div style={{borderTop:'1px solid #ffffff70',paddingTop:24,fontSize:13,letterSpacing:'.12em'}}>SETTLE IN. SLOW DOWN. STAY A WHILE.<br/><span style={{fontSize:10,letterSpacing:0}}>{data.sample ? 'Sample guide · Fictional property · ' : ''}Made with PiAds · piads.co{art.caption && <> · {art.caption}</>}</span></div>
       </div>
     </div>
   )
@@ -236,29 +242,7 @@ export function CoverPage({ data }: { data: KitData }) {
           margin: '28px 0',
         }}
       >
-        {data.photo ? (
-          <img
-            alt="Your property"
-            src={data.photo}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
-        ) : (
-          <div
-            style={{
-              width: 220,
-              height: 250,
-              border: `1px solid ${ACCENT}`,
-              borderRadius: '110px 110px 0 0',
-              display: 'grid',
-              placeItems: 'center',
-              color: INK,
-            }}
-          >
-            <span style={{ fontFamily: SERIF, fontSize: 100 }}>
-              {data.propertyName.replace(/^the\s+/i, '').trim().charAt(0) || 'W'}
-            </span>
-          </div>
-        )}
+        <img alt="" src={art.src} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         <div
           style={{
             position: 'absolute',
@@ -275,6 +259,7 @@ export function CoverPage({ data }: { data: KitData }) {
           Settle in. Slow down. Explore a little.
         </div>
       </div>
+      {art.caption && <p style={{ fontSize: 10, color: MUTED, margin: '-18px 0 12px' }}>{art.caption}</p>}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28 }}>
         <Detail title="Your neighborhood">{data.city}</Detail>
         <Detail title="Your host">{data.details.hostName}</Detail>
@@ -287,6 +272,34 @@ export function CoverPage({ data }: { data: KitData }) {
     </Sheet>
   )
 }
+function ArtRibbon({ data, height = 170 }: { data: KitData; height?: number }) {
+  const art = bookArtwork(data)
+  return <div style={{ margin: '26px 0 20px' }}>
+    <img src={art.src} alt="" style={{ display: 'block', width: '100%', height, objectFit: 'cover', objectPosition: 'center 58%', borderRadius: data.theme === 'forest' ? '80px 80px 4px 4px' : 4 }} />
+    {art.caption && <div style={{ fontSize: 9, color: MUTED, marginTop: 7 }}>{art.caption}</div>}
+  </div>
+}
+
+export function OpeningPage({ data }: { data: KitData }) {
+  const sections = [
+    ...(data.listing ? [['property', 'Get to know your stay', 'Your property’s story, amenities and photos.']] : []),
+    ['arrival', 'Arrive & settle in', 'Your address, arrival notes and a way to reach your host.'],
+    ...(data.details.wifiName ? [['home', 'Make yourself at home', 'Your Wi-Fi connection and the details your host has shared.']] : []),
+    ...(data.picks.length ? [['local', 'Explore the neighborhood', `${data.picks.length} local places, with individual pages and map links.`]] : []),
+    ['checkout', 'Until next time', 'Your checkout notes and one last goodbye.'],
+  ]
+  return <Sheet data={data} section="Start here" title="A little book for your stay." intro={data.message || 'Settle in, find your bearings, and make a few new memories.'}>
+    <ArtRibbon data={data} height={sections.length >= 4 ? 120 : 230} />
+    <div style={{ display: 'grid', gap: 17, marginTop: 28 }}>
+      {sections.map(([key, title, text], index) => <div key={key} style={{ display: 'flex', gap: 22, borderBottom: `1px solid ${LINE}`, paddingBottom: 17 }}>
+        <span style={{ fontFamily: SERIF, fontSize: 32, color: ACCENT }}>{String(index + 1).padStart(2, '0')}</span>
+        <div><div style={{ fontFamily: SERIF, fontSize: 28 }}>{title}</div><p style={{ ...copy, fontSize: 15, margin: '5px 0 0' }}>{text}</p></div>
+      </div>)}
+    </div>
+    <p style={{ ...copy, fontSize: 13, marginTop: 22 }}>Keep this PDF on your phone or leave a printed copy for your guests. Map links work with a tap; printed codes open with your phone’s camera.</p>
+  </Sheet>
+}
+
 export function ArrivalPage({ data }: { data: KitData }) {
   const d = data.details
   return (
@@ -296,10 +309,15 @@ export function ArrivalPage({ data }: { data: KitData }) {
       title="A smooth arrival."
       intro="The details you need to find your way and settle in."
     >
+      <ArtRibbon data={data} height={data.details.parking ? 70 : 150} />
       <div style={box}>
-        <Detail title="Property address">{data.address}</Detail>
+        <Detail title={data.listing && !data.address ? "Area · confirm the exact address with your host" : "Property address"}>{data.address || data.listing?.location}</Detail>
         <Detail title="Check-in">{d.checkIn}</Detail>
       </div>
+      {data.address && !data.sample && <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.address)}`} style={{ display: 'flex', alignItems: 'center', gap: 18, marginTop: 20, textDecoration: 'none', color: INK }}>
+        <QRCodeSVG value={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.address)}`} size={76} bgColor="#fff" fgColor="#173f33" marginSize={3} />
+        <span style={{ fontSize: 15 }}>Find your way here ↗<br/><span style={{ fontSize: 12, color: MUTED }}>Tap or scan for Google Maps. Confirm entry details with your host.</span></span>
+      </a>}
       <Detail title="Finding your way in">{d.arrival}</Detail>
       <Detail title="Parking & getting around">{d.parking}</Detail>
       {d.hostContact && (
@@ -419,93 +437,38 @@ export function RulesPage({ data }: { data: KitData }) {
     </Sheet>
   )
 }
-function Places({ data, offset }: { data: KitData; offset: number }) {
-  return (
-    <Sheet
-      data={data}
-      section={offset ? 'More nearby' : 'The neighborhood'}
-      title={offset ? 'Keep exploring.' : 'Step outside.'}
-      intro={
-        data.sample ? 'Your host’s favorite places. Illustrative recommendations for this sample.' : data.city
-          ? `A few places to explore in ${data.city}. Tap a card in the PDF or scan its code for Google Maps.`
-          : 'Tap a card in the PDF or scan its code for Google Maps.'
-      }
-    >
-      <div style={{ display: 'grid', gap: 12 }}>
-        {data.picks.slice(offset, offset + 4).map((p, i) => (
-          <a
-            key={p.place_id}
-            href={data.sample ? undefined : mapsUrl(p)}
-            style={{
-              ...box,
-              display: 'flex',
-              gap: 24,
-              alignItems: 'center',
-              color: INK,
-              textDecoration: 'none',
-              padding: 12,
-            }}
-          >
-            <div
-              style={{
-                background: '#fff',
-                padding: 6,
-                borderRadius: 8,
-                flexShrink: 0,
-              }}
-            >
-              {p.photo_url ? <img src={p.photo_url} alt="" style={{ width: 90, height: 90, objectFit: 'cover', borderRadius: 6 }} /> : <QRCodeSVG
-                value={mapsUrl(p)}
-                size={84}
-                level="M"
-                fgColor="#183d32"
-                bgColor="#fff"
-              />}
-            </div>
-            <div style={{ minWidth: 0, flex: 1 }}>
-              <div style={eyebrow}>
-                {String(offset + i + 1).padStart(2, '0')} / Explore nearby
-              </div>
-              <div
-                style={{
-                  fontFamily: SERIF,
-                  fontSize: 29,
-                  color: INK,
-                  lineHeight: 1.1,
-                  marginTop: 7,
-                  overflowWrap: 'anywhere',
-                }}
-              >
-                {p.name}
-              </div>
-              {p.blurb && (
-                <p style={{ ...copy, fontSize: 14, margin: '6px 0 0' }}>
-                  {p.blurb}
-                </p>
-              )}
-              <div style={{ fontSize: 12, color: MUTED, marginTop: 8 }}>
-                {data.sample ? 'Example host recommendation' : 'Open in Google Maps ↗'}
-                {!data.sample && p.photo_url && <QRCodeSVG value={mapsUrl(p)} size={44} level="M" style={{ float: 'right', marginLeft: 8 }} />}
-              </div>
-            </div>
-          </a>
-        ))}
-      </div>
-      <p style={{ ...copy, fontSize: 12, marginTop: 20 }}>
-        {data.sample ? 'Sample names and photographs. Your guide can include real places and Google Maps directions.' : 'Places from Google Maps. Check current hours and availability before visiting.'}
-      </p>
-    </Sheet>
-  )
-}
 export function LocalGuidePage({ data }: { data: KitData }) {
-  return <Places data={data} offset={0} />
+  return <Sheet data={data} section="The neighborhood" title="Good places. New memories." intro={data.sample ? 'Illustrative recommendations for this sample.' : `Places to explore around ${data.city || 'your stay'}. Each has its own page, with a map to take you there.`}>
+    <ArtRibbon data={data} height={data.picks.length > 8 ? 70 : 100} />
+    <div style={{ display: 'grid', gap: 0 }}>
+      {data.picks.map((pick, i) => <a key={pick.place_id} href={data.sample ? undefined : mapsUrl(pick)} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '8px 0', borderBottom: `1px solid ${LINE}`, textDecoration: 'none', color: INK }}>
+        <span style={{ ...eyebrow, width: 28 }}>{String(i + 1).padStart(2, '0')}</span>
+        <span style={{ fontFamily: SERIF, fontSize: data.picks.length > 8 ? 20 : 22, lineHeight: 1.1 }}>{pick.name}</span>
+        <span style={{ marginLeft: 'auto' }}>↗</span>
+      </a>)}
+    </div>
+    <p style={{ ...copy, fontSize: 12, marginTop: 22 }}>{data.sample ? 'Sample names and photographs.' : 'Places from Google Maps. Check current hours and availability before visiting.'}</p>
+  </Sheet>
 }
-export function MorePlacesPage({ data }: { data: KitData }) {
-  return <Places data={data} offset={4} />
+
+function PlacePage({ data, index }: { data: KitData; index: number }) {
+  const pick = data.picks[index]
+  if (!pick) return null
+  const art = bookArtwork(data)
+  return <Sheet data={data} section={`Explore / ${String(index + 1).padStart(2, '0')}`} title={pick.name} titleSize={pick.name.length > 65 ? 38 : 46}>
+    <div style={{ position: 'relative', margin: '26px 0', border: data.theme === 'coast' ? '8px solid white' : undefined, transform: data.theme === 'coast' ? 'rotate(-1deg)' : undefined }}>
+      <img src={pick.photo_url || art.src} alt={pick.photo_url ? pick.name : ''} style={{ display: 'block', width: '100%', height: pick.name.length > 65 ? 290 : 350, objectFit: 'cover', borderRadius: data.theme === 'forest' ? '110px 110px 4px 4px' : 2 }} />
+    </div>
+    <p style={{ fontSize: 10, color: MUTED, margin: '-16px 0 24px' }}>{pick.photo_url ? (data.sample ? 'Sample photograph' : 'Place photo via Google Maps') : 'Decorative collection artwork · place photo unavailable'}</p>
+    {pick.blurb && <p style={{ ...copy, fontFamily: SERIF, fontSize: 25, color: INK, margin: '0 0 24px' }}>{pick.blurb}</p>}
+    <a href={data.sample ? undefined : mapsUrl(pick)} style={{ display: 'flex', gap: 24, alignItems: 'center', borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}`, padding: '24px 0', textDecoration: 'none', color: INK }}>
+      <QRCodeSVG value={mapsUrl(pick)} size={118} level="M" fgColor="#173f33" bgColor="#fff" marginSize={4} />
+      <div><div style={eyebrow}>Take the next turn</div><div style={{ fontFamily: SERIF, fontSize: 30, margin: '8px 0' }}>Open in Google Maps ↗</div><p style={{ ...copy, fontSize: 14, margin: 0 }}>Directions, current hours and more photos.<br/>Tap here or scan with your camera.</p></div>
+    </a>
+    <p style={{ ...copy, fontSize: 12, marginTop: 20 }}>{data.sample ? 'Illustrative recommendation for this sample guide.' : 'Check opening hours, reservations and accessibility before you set out.'}</p>
+  </Sheet>
 }
-export function ExtraPlacesPage({ data }: { data: KitData }) {
-  return <Places data={data} offset={8} />
-}
+
 export function CheckoutPage({ data }: { data: KitData }) {
   return (
     <Sheet
@@ -516,6 +479,7 @@ export function CheckoutPage({ data }: { data: KitData }) {
         data.checkout || 'Please check your booking for your checkout time.'
       }
     >
+      <ArtRibbon data={data} height={data.details.checkoutSteps.length > 2 ? 90 : 170} />
       <Checklist
         numbered
         items={[
@@ -523,7 +487,7 @@ export function CheckoutPage({ data }: { data: KitData }) {
           ...customLines(data.details.customCheckout),
         ]}
       />
-      <div style={{ ...box, marginTop: 40 }}>
+      <div style={{ ...box, marginTop: 24 }}>
         <div style={{ fontFamily: SERIF, fontSize: 40, lineHeight: 1.1 }}>
           Thank you for staying.
         </div>
@@ -560,19 +524,48 @@ export function MessagesPage({ data }: { data: KitData }) {
     </Sheet>
   )
 }
+function PropertyStoryPage({ data, index }: { data: KitData; index: number }) {
+  const text = listingParagraphs(data.listing?.description || '')[index]
+  const photo = data.listing?.photos[index % (data.listing?.photos.length || 1)]
+  return <Sheet data={data} section="Your property" title={index === 0 ? 'Get to know your stay.' : 'A little more about your stay.'} titleSize={48}>
+    {photo && <img src={photo.url} alt={photo.caption} crossOrigin="anonymous" style={{ width: '100%', height: 210, objectFit: 'cover', borderRadius: 8, margin: '24px 0' }} />}
+    <p style={{ ...copy, fontSize: 17, lineHeight: 1.55, marginTop: 20 }}>{text}</p>
+    <p style={{ fontSize: 11, color: MUTED, marginTop: 'auto' }}>Property details from the listing. Your host can update these before sharing.</p>
+  </Sheet>
+}
+function PropertyAmenitiesPage({ data, index }: { data: KitData; index: number }) {
+  const amenities = data.listing?.amenities.slice(index * 16, (index + 1) * 16) || []
+  return <Sheet data={data} section="At your stay" title="The comforts of home." intro="Amenities listed for this property." titleSize={48}>
+    <ArtRibbon data={data} height={140}/>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px 22px', marginTop: 14 }}>{amenities.map(item => <div key={item} style={{ fontSize: 16, lineHeight: 1.4, paddingBottom: 12, borderBottom: `1px solid ${LINE}`, overflowWrap: 'anywhere' }}>{item}</div>)}</div>
+  </Sheet>
+}
+function PropertyGalleryPage({ data, index }: { data: KitData; index: number }) {
+  const photos = data.listing?.photos.slice(index * 2, (index + 1) * 2) || []
+  return <Sheet data={data} section="A look around" title="Make yourself at home." titleSize={48}>
+    <div style={{ display: 'grid', gap: 20, marginTop: 26 }}>{photos.map(photo => <figure key={photo.url} style={{ margin: 0 }}><img src={photo.url} alt={photo.caption} crossOrigin="anonymous" style={{ width: '100%', height: 280, objectFit: 'cover', borderRadius: 8 }}/><figcaption style={{ fontSize: 12, color: MUTED, marginTop: 7 }}>{photo.caption}</figcaption></figure>)}</div>
+  </Sheet>
+}
+
 export const KIT_PAGES = [
   { key: 'cover', label: 'Welcome cover', Page: CoverPage },
+  { key: 'opening', label: 'Inside your guide', Page: OpeningPage },
+  ...Array.from({ length: 27 }, (_, index) => ({ key: `property-story-${index + 1}`, label: `About your property ${index + 1}`, Page: ({ data }: { data: KitData }) => <PropertyStoryPage data={data} index={index} /> })),
+  ...Array.from({ length: 4 }, (_, index) => ({ key: `property-amenities-${index + 1}`, label: `Property amenities ${index + 1}`, Page: ({ data }: { data: KitData }) => <PropertyAmenitiesPage data={data} index={index} /> })),
+  ...Array.from({ length: 3 }, (_, index) => ({ key: `property-gallery-${index + 1}`, label: `Property photos ${index + 1}`, Page: ({ data }: { data: KitData }) => <PropertyGalleryPage data={data} index={index} /> })),
   { key: 'arrival', label: 'Arrival & host contact', Page: ArrivalPage },
   { key: 'welcome', label: 'Wi-Fi sign', Page: WelcomeSignPage },
   { key: 'home', label: 'House essentials', Page: HomePage },
   { key: 'rules', label: 'House rules', Page: RulesPage },
   { key: 'guide', label: 'Local guide', Page: LocalGuidePage },
-  { key: 'more', label: 'More local places', Page: MorePlacesPage },
-  { key: 'extra', label: 'Host favorites', Page: ExtraPlacesPage },
+  ...Array.from({ length: 12 }, (_, index) => ({ key: `place-${index + 1}`, label: `Local place ${index + 1}`, Page: ({ data }: { data: KitData }) => <PlacePage data={data} index={index} /> })),
   { key: 'checkout', label: 'Checkout card', Page: CheckoutPage },
 ] as const
 export function availableKitPages(data: KitData) {
   return KIT_PAGES.filter((p) => {
+    if (p.key.startsWith('property-story-')) return Number(p.key.split('-').pop()) <= listingParagraphs(data.listing?.description || '').length
+    if (p.key.startsWith('property-amenities-')) return Number(p.key.split('-').pop()) <= Math.ceil((data.listing?.amenities.length || 0) / 16)
+    if (p.key.startsWith('property-gallery-')) return Number(p.key.split('-').pop()) <= Math.ceil((data.listing?.photos.length || 0) / 2)
     if (p.key === 'welcome') return !!data.details.wifiName.trim()
     if (p.key === 'home')
       return !!(data.details.homeTips.trim() || data.details.safety.trim())
@@ -582,10 +575,9 @@ export function availableKitPages(data: KitData) {
         customLines(data.details.customRules).length > 0
       )
     if (p.key === 'guide') return data.picks.length > 0
-    if (p.key === 'more') return data.picks.length > 4
-    if (p.key === 'extra') return data.picks.length > 8
+    if (p.key.startsWith('place-')) return Number(p.key.slice(6)) <= data.picks.length
     return true
-  })
+  }).map(p => p.key.startsWith('place-') ? { ...p, label: data.picks[Number(p.key.slice(6)) - 1].name } : p)
 }
 
 /** Raster pages retain link annotations, so the same PDF works in print and on a phone. */
@@ -594,7 +586,7 @@ export async function buildKitPdf(
   options: { paper?: PaperSize; title?: string } = {},
 ): Promise<Blob> {
   if (!pages.length) throw new Error('Choose at least one page to download.')
-  const [{ toPng }, { PDFDocument, PDFName, PDFString }] = await Promise.all([
+  const [{ toJpeg }, { PDFDocument, PDFName, PDFString }] = await Promise.all([
     import('html-to-image'),
     import('pdf-lib'),
   ])
@@ -611,22 +603,23 @@ export async function buildKitPdf(
       throw new Error(
         'One page has too much text. Shorten your notes and try again.',
       )
-    const dataUrl = await toPng(node, {
+    const dataUrl = await toJpeg(node, {
       // Places photos share an endpoint; their query strings identify different images.
       includeQueryParams: true,
       width: PAGE_W,
       height: PAGE_H,
-      pixelRatio: 2.5,
+      pixelRatio: 2,
+      quality: 0.94,
       backgroundColor: node.style?.backgroundColor || '#fff',
     })
-    const png = await pdf.embedPng(dataUrl)
+    const pageImage = await pdf.embedJpg(dataUrl)
     const [width, height] =
       options.paper === 'a4' ? [595.28, 841.89] : [612, 792]
     const sheet = pdf.addPage([width, height])
     const scale = Math.min(width / PAGE_W, height / PAGE_H)
     const left = (width - PAGE_W * scale) / 2
     const bottom = (height - PAGE_H * scale) / 2
-    sheet.drawImage(png, {
+    sheet.drawImage(pageImage, {
       x: left,
       y: bottom,
       width: PAGE_W * scale,

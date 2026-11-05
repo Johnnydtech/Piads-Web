@@ -121,6 +121,7 @@ export function WelcomeBookGenerator({
   const [deliveryHasPhone, setDeliveryHasPhone] = useState(false);
   const [autoRequestEmail, setAutoRequestEmail] = useState(false);
   const [address, setAddress] = useState("");
+  const [listingAuthorized, setListingAuthorized] = useState(false);
   const [result, setResult] = useState<Generated | null>(null);
   const [createdAt, setCreatedAt] = useState(0);
   const [picks, setPicks] = useState<WelcomePick[]>([]);
@@ -241,7 +242,7 @@ export function WelcomeBookGenerator({
     event.preventDefault();
     if (busy) return;
     if (address.trim().length < 3) {
-      setError("Enter your rental’s street address and city.");
+      setError("Paste your Airbnb listing link, or enter your rental’s street address and city.");
       return;
     }
     if (NEEDS_CAPTCHA && !token) {
@@ -255,9 +256,10 @@ export function WelcomeBookGenerator({
       const res = await fetch(`${API_URL}/api/v1/guests/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        signal: AbortSignal.timeout(45000),
+        signal: AbortSignal.timeout(150000),
         body: JSON.stringify({
           address: address.trim(),
+          listing_authorized: listingAuthorized,
           turnstile_token: token,
         }),
       });
@@ -271,16 +273,18 @@ export function WelcomeBookGenerator({
         createdAt: Date.now(),
         result: data,
         guestName: "",
-        propertyName: data.location.city
+        propertyName: data.listing?.title || (data.location.city
           ? `Your stay in ${data.location.city}`
-          : "Your rental",
+          : "Your rental"),
+        photo: data.listing?.photos[0]?.url || null,
         message: DEFAULT_MESSAGE,
         checkout: DEFAULT_CHECKOUT,
         picks: data.picks,
         neutralBackground: false,
         bookTheme, step: 5, deliveryEmail: requestEmail.trim(), requestDelivery: true,
         kit: { ...DEFAULT_KIT, hostContact: "Message your host through your booking app.",
-          arrival: "Check your booking messages for arrival instructions and access details." },
+          arrival: "Check your booking messages for arrival instructions and access details.",
+          customRules: data.listing?.rules.join("\n") || "" },
       };
       if (!(await saveDraft(draft)))
         throw new Error(
@@ -340,7 +344,8 @@ export function WelcomeBookGenerator({
   };
   const kitData: KitData = {
     propertyName: propertyName.trim(),
-    address: result?.location.formatted_address || address,
+    address: result?.listing ? kit.propertyAddress?.trim() : (result?.location.formatted_address || address),
+    listing: result?.listing,
     photo: (useArtwork && artwork) || photo,
     artwork: useArtwork ? artwork : null,
     theme: bookTheme,
@@ -466,6 +471,12 @@ export function WelcomeBookGenerator({
       handoffWindow.current.focus();
       return;
     }
+    if (result.listing && !kit.propertyAddress?.trim()) {
+      setPropertySection(0);
+      goStep(3);
+      setError("Add your exact property address in Your property before connecting this guide to a TV.");
+      return;
+    }
     if (!verifiedToken) { setPendingAction("transfer"); return; }
     handoffCleanup.current?.();
     setError("");
@@ -478,7 +489,7 @@ export function WelcomeBookGenerator({
             ? "journal"
             : "illustrated",
       createdAt: Date.now(),
-      address: result.location.formatted_address,
+      address: result.listing ? kit.propertyAddress?.trim() || result.location.formatted_address : result.location.formatted_address,
       propertyName: propertyName.trim(),
       guestName: guestName.trim(),
       message: message.trim(),
@@ -571,7 +582,8 @@ export function WelcomeBookGenerator({
   }
 
   if (!workspace) return <GuideSplash address={address} email={requestEmail} theme={bookTheme}
-    onAddress={setAddress} onEmail={setRequestEmail} onTheme={setBookTheme} busy={busy} error={error}
+    listingAuthorized={listingAuthorized} onListingAuthorized={setListingAuthorized}
+    onAddress={value => { setAddress(value); setListingAuthorized(false); }} onEmail={setRequestEmail} onTheme={setBookTheme} busy={busy} error={error}
     onSubmit={generate} onToken={onToken} captchaReset={captchaReset} />;
 
   if (!loaded)
@@ -641,6 +653,7 @@ export function WelcomeBookGenerator({
             <button type="button" className={styles.secondary} disabled={!!exportKind} onClick={() => goStep(0)}>Make a change</button>
           </div>
           {deliverySent && <div className={styles.success} role="status"><Check size={20}/><div><strong>Your download link is on its way.</strong><p>Check {deliveryEmail}, including spam. Your private link works for 7 days.</p></div></div>}
+          {result?.listing && <p role="status" style={{ fontSize: 14, lineHeight: 1.6, color: '#5e6660' }}>Imported from your Airbnb listing. Review the details before sharing. The map location is approximate; add your exact address, Wi-Fi and entry instructions yourself. {result.listing.warnings.join(' ')}</p>}
           <div className={styles.readyPages} aria-label="Your generated guide pages">
             {selectedPages.map(({key,label,Page}) => <article key={key}>
               <div className={styles.readyPage}><div style={{width:PAGE_W,height:PAGE_H,transform:"scale(.3)",transformOrigin:"top left"}}><Page data={kitData}/></div></div>
@@ -696,6 +709,9 @@ export function WelcomeBookGenerator({
                       onChange={(e) => setPropertyName(e.target.value)}
                     />
                   </Field>
+                  {result.listing && <Field label="Exact property address (optional)" hint="Airbnb only shares an approximate area. Add the arrival address you want in your guide.">
+                    <input value={kit.propertyAddress || ''} maxLength={200} onChange={e => setKit(current => ({...current, propertyAddress: e.target.value}))} />
+                  </Field>}
                   <Field
                     label="Guest name (optional)"
                     hint="Leave blank for a welcome that works for every stay."
@@ -707,6 +723,11 @@ export function WelcomeBookGenerator({
                       onChange={(e) => setGuestName(e.target.value)}
                     />
                   </Field>
+                  {result.listing && <details className={styles.restore}>
+                    <summary>Review imported property details</summary>
+                    <Field label="Property description"><textarea rows={6} maxLength={16000} value={result.listing.description} onChange={e => setResult(current => current?.listing ? {...current, listing: {...current.listing, description: e.target.value}} : current)} /></Field>
+                    <Field label="Amenities" hint="One per line. Remove anything guests cannot use during their stay."><textarea rows={5} value={result.listing.amenities.join('\n')} onChange={e => setResult(current => current?.listing ? {...current, listing: {...current.listing, amenities: e.target.value.split('\n').slice(0,64).map(item => item.slice(0,120))}} : current)} /></Field>
+                  </details>}
                 </div>
                 <div>
                   <Field label="Welcome message">

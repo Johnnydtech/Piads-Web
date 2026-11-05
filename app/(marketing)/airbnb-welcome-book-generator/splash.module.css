@@ -36,3 +36,5 @@
 @media(min-width:900px) and (max-height:800px) { .splash { padding-top:8px; gap:50px; } .copy h1 { font-size:46px; } .intro { margin-bottom:16px; font-size:15px; } .eyebrow { margin-bottom:12px; } .label,.form .styles { margin-bottom:12px; } .product { max-width:440px; justify-self:center; width:100%; } }
 @media(max-width:760px) { .splash { grid-template-columns:1fr; gap:24px; padding:16px 20px 28px; min-height:0; max-width:520px; } .copy h1 { font-size:39px; } .eyebrow { font-size:10px; margin-bottom:12px; } .intro { font-size:15px; margin-bottom:18px; } .product { max-width:340px; width:100%; justify-self:center; } }
 @media(prefers-reduced-motion:reduce) { .spin { animation:none; } }
+
+.sourceHelp { color:#647168; font-size:12px; line-height:1.5; margin:-7px 0 16px; }

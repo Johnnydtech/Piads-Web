@@ -31,7 +31,7 @@ export function BookShowcase() {
             <p><strong>Free Wi-Fi QR code included.</strong> A little scan, an easier arrival. Add your Wi-Fi details when you create your own guide.</p>
             <a className={styles.tryPhone} href={`${base}/guest-demo?style=${book.key}`}>Try the phone guide <span aria-hidden>↗</span></a>
             <div className={styles.links}>
-              <a href={`${base}/samples?style=${book.key}`}>Browse 7 pages ↗</a>
+              <a href={`${base}/samples?style=${book.key}`}>Browse the guide ↗</a>
               <SampleDownload style={book.key} />
             </div>
           </div>

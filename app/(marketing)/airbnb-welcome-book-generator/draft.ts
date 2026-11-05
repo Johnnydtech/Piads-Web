@@ -1,10 +1,11 @@
 import type { WelcomePick, WelcomeScreenData } from '@/components/welcome-screen'
-import type { KitDetails } from './kit-text'
+import type { KitDetails, ImportedListing } from './kit-text'
 export const GENERATOR_PATH = '/airbnb-welcome-book-generator'
 export const RESULT_PATH = `${GENERATOR_PATH}/your-guide`
 const KEY = 'piads:welcome-generator:key:v3'
 const TTL = 24 * 60 * 60 * 1000
 export interface Generated {
+  listing?: ImportedListing
   location: { formatted_address: string; city: string }
   utc_offset_minutes: number | null
   background_url: string | null

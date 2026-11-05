@@ -1,6 +1,6 @@
 // Run: node --experimental-strip-types scripts/test-welcome-kit.mjs
 import assert from 'node:assert/strict'
-import { DEFAULT_KIT, guestMessages, mapsUrl, wifiQrValue } from '../app/(marketing)/airbnb-welcome-book-generator/kit-text.ts'
+import { DEFAULT_KIT, listingParagraphs, bookArtwork, guestMessages, mapsUrl, wifiQrValue } from '../app/(marketing)/airbnb-welcome-book-generator/kit-text.ts'
 
 // Phones parse "WIFI:T:<auth>;S:<ssid>;P:<password>;;". The separators must be
 // escaped inside values, or a password with ";" joins the wrong network.
@@ -41,3 +41,20 @@ assert.match(auto.text, /hosting you at our place\./)
 for (const m of guestMessages(base)) assert.ok(!/ [–—-] /.test(m.text), m.title)
 
 console.log('All welcome kit checks passed.')
+
+// The address-only flow gets finished art in every style without private host details.
+for (const [theme, name] of Object.entries({forest:'illustrated-stay',coast:'weekend-postcard',clay:'retreat-journal'})) {
+  const result = bookArtwork({theme})
+  assert.equal(result.src, `/guest-demo/art/${name}.jpg`)
+  assert.match(result.caption, /not a photo of this property/)
+}
+assert.deepEqual(bookArtwork({photo:'https://example.com/my-house.jpg'}), {src:'https://example.com/my-house.jpg',caption:''})
+assert.match(bookArtwork({photo:'old.jpg',artwork:'new.jpg'}).caption, /AI artwork/)
+assert.equal(bookArtwork({photo:'old.jpg',artwork:'new.jpg'}).src, 'new.jpg')
+
+// Long imported prose must survive pagination without loss or oversized pages.
+const prose = ('A comfortable home with useful details. '.repeat(450)).trim()
+const chunks = listingParagraphs(prose)
+assert.equal(chunks.join(' '), prose)
+assert.ok(chunks.every(chunk => chunk.length <= 950))
+assert.deepEqual(listingParagraphs('   '), [])
