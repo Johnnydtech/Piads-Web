@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Loader2, X } from "lucide-react";
 import { TurnstileWidget } from "@/components/turnstile-widget";
+import MarketingOptIn from "./MarketingOptIn";
 import styles from "./generator.module.css";
 import access from "./access.module.css";
 import { SAMPLE_STYLES, type SampleStyle } from "./samples/sample-data";
@@ -13,11 +14,12 @@ export async function generatorRequest(path: string, init: RequestInit) {
   if (!response.ok) { const error = new Error(body?.detail?.message || "We couldn’t complete that request. Please try again."); Object.assign(error, { status: response.status }); throw error; }
   return body.data;
 }
-export default function GeneratorAccess({ open, onClose, onVerified, sampleStyle, initialEmail = "", autoRequest = false, requirePhone = false, verificationLabel = "Verify & continue" }: {
-  initialEmail?: string; autoRequest?: boolean; requirePhone?: boolean; verificationLabel?: string;
+export default function GeneratorAccess({ open, onClose, onVerified, sampleStyle, initialEmail = "", initialMarketingOptIn = false, autoRequest = false, requirePhone = false, verificationLabel = "Verify & continue" }: {
+  initialMarketingOptIn?: boolean; initialEmail?: string; autoRequest?: boolean; requirePhone?: boolean; verificationLabel?: string;
   sampleStyle?: SampleStyle;
   open: boolean; onClose: () => void; onVerified: (token: string, email: string, hasPhone: boolean) => void;
 }) {
+  const [marketingOptIn, setMarketingOptIn] = useState(initialMarketingOptIn);
   const [email, setEmail] = useState(initialEmail);
   const started = useRef(false);
   const [phone, setPhone] = useState("");
@@ -40,7 +42,7 @@ export default function GeneratorAccess({ open, onClose, onVerified, sampleStyle
     setBusy(true); setError("");
     try {
       if (!session) {
-        const data = await generatorRequest("contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email.trim(), phone: phone.trim() || null, turnstile_token: captcha }) });
+        const data = await generatorRequest("contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email.trim(), phone: phone.trim() || null, turnstile_token: captcha, marketing_opt_in: marketingOptIn }) });
         setSession(data.token);
       } else {
         await generatorRequest("verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token: session, code, sample_style: sampleStyle }) });
@@ -60,7 +62,8 @@ export default function GeneratorAccess({ open, onClose, onVerified, sampleStyle
         {session ? <label>Verification code<input autoFocus inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} value={code} onChange={e => setCode(e.target.value.replace(/\D/g, ""))} required /></label> : <>
           <label>Email<input autoFocus type="email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} required maxLength={254} /></label>
           {requirePhone && <label>Phone<input type="tel" autoComplete="tel" value={phone} onChange={e => setPhone(e.target.value)} required maxLength={32} placeholder="+1 (555) 123-4567" /></label>}
-          <p className={access.note}>{requirePhone ? "Your phone helps us limit free artwork to one per person. It does not subscribe you to calls or texts." : "We’ll save your email with your guide request and send a private download link. This does not subscribe you to marketing emails."} <a href="/privacy" target="_blank" rel="noreferrer">Privacy policy</a></p>
+          <p className={access.note}>{requirePhone ? "Your phone helps us limit free artwork to one per person. It does not subscribe you to calls or texts." : "We’ll save your email with your guide request and send a private download link. The optional checkbox below lets you choose whether to receive tips and setup emails."} <a href="/privacy" target="_blank" rel="noreferrer">Privacy policy</a></p>
+          <MarketingOptIn checked={marketingOptIn} onChange={setMarketingOptIn} />
           <TurnstileWidget key={reset} onToken={setCaptcha} />
         </>}
         {error && <p role="alert" className={styles.error}>{error}</p>}

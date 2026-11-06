@@ -4,11 +4,13 @@ import { ArrowRight, Check, Loader2, Mail, MapPin } from "lucide-react";
 import { BookCollection } from "./sample-experience";
 import { BOOK_THEMES, type BookTheme } from "./kit";
 import { TurnstileWidget } from "@/components/turnstile-widget";
+import MarketingOptIn from "./MarketingOptIn";
 import s from "./splash.module.css";
 
 const LISTING_IMPORT = process.env.NEXT_PUBLIC_GUEST_LISTING_IMPORT_ENABLED === "true";
 
 type Props = {
+  marketingOptIn: boolean; onMarketingOptIn: (value: boolean) => void;
   listingAuthorized: boolean; onListingAuthorized: (value: boolean) => void;
   address: string; email: string; theme: BookTheme; busy: boolean; error: string;
   onAddress: (value: string) => void; onEmail: (value: string) => void;
@@ -45,6 +47,7 @@ export default function GuideSplash(p: Props) {
           <label className={s.label}>Email for your free guide
             <span className={s.input}><Mail size={18} aria-hidden/><input name="email" type="email" inputMode="email" autoComplete="email" enterKeyHint="go" required maxLength={254} placeholder="you@example.com" value={p.email} onChange={e => p.onEmail(e.target.value)} /></span>
           </label>
+          <MarketingOptIn checked={p.marketingOptIn} onChange={p.onMarketingOptIn} />
           <TurnstileWidget onToken={p.onToken} resetKey={p.captchaReset}/>
           <button className={s.submit} type="submit" disabled={p.busy}>{p.busy ? <><Loader2 size={18} className={s.spin}/> Creating your guide…</> : <>Create & email my free guide <ArrowRight size={18}/></>}</button>
         </fieldset>

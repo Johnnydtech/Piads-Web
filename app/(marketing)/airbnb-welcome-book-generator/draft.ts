@@ -36,6 +36,7 @@ export interface GuideDraft {
   deliveryToken?: string
   requestDelivery?: boolean
   deliveryHasPhone?: boolean
+  marketingOptIn?: boolean
   deliveryEmail?: string
 }
 // Private details and images are encrypted at rest. The key lives only in this tab.

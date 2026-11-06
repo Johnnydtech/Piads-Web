@@ -119,6 +119,7 @@ export function WelcomeBookGenerator({
   const [loaded, setLoaded] = useState(false);
   const [requestEmail, setRequestEmail] = useState("");
   const [deliveryHasPhone, setDeliveryHasPhone] = useState(false);
+  const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [autoRequestEmail, setAutoRequestEmail] = useState(false);
   const [address, setAddress] = useState("");
   const [listingAuthorized, setListingAuthorized] = useState(false);
@@ -190,6 +191,7 @@ export function WelcomeBookGenerator({
         setExcludedPages(draft.excludedPages || []); setStep(draft.step ?? 5);
         setPropertySection(draft.propertySection ?? 0); setGuestSection(draft.guestSection ?? 0);
         setDeliveryToken(draft.deliveryToken || ""); setDeliveryEmail(draft.deliveryEmail || "");
+        setMarketingOptIn(draft.marketingOptIn === true);
         setRequestEmail(draft.deliveryEmail || ""); setDeliveryHasPhone(draft.deliveryHasPhone ?? false);
         if (workspace && draft.requestDelivery) { setPendingAction("kit"); setAutoRequestEmail(true); }
       }
@@ -204,13 +206,13 @@ export function WelcomeBookGenerator({
     const timer = window.setTimeout(() => {
       void saveDraft({ version: 3, createdAt, result, guestName, propertyName, message, checkout, picks,
         neutralBackground, kit, photo, artwork, useArtwork, artDescription, bookTheme, paperSize,
-        excludedPages, step, propertySection, guestSection, deliveryToken, deliveryEmail, deliveryHasPhone,
+        excludedPages, step, propertySection, guestSection, deliveryToken, deliveryEmail, deliveryHasPhone, marketingOptIn,
       }).then(saved => { if (!cancelled) setDraftStatus(saved ? "saved" : "failed"); });
     }, 200);
     return () => { cancelled = true; window.clearTimeout(timer); };
   }, [workspace, loaded, result, createdAt, guestName, propertyName, message, checkout, picks,
       neutralBackground, kit, photo, artwork, useArtwork, artDescription, bookTheme, paperSize,
-      excludedPages, step, propertySection, guestSection, deliveryToken, deliveryEmail, deliveryHasPhone]);
+      excludedPages, step, propertySection, guestSection, deliveryToken, deliveryEmail, deliveryHasPhone, marketingOptIn]);
   useEffect(() => {
     if (draftStatus === "saved") return;
     const warn = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = ""; };
@@ -281,7 +283,7 @@ export function WelcomeBookGenerator({
         checkout: DEFAULT_CHECKOUT,
         picks: data.picks,
         neutralBackground: false,
-        bookTheme, step: 5, deliveryEmail: requestEmail.trim(), requestDelivery: true,
+        bookTheme, marketingOptIn, step: 5, deliveryEmail: requestEmail.trim(), requestDelivery: true,
         kit: { ...DEFAULT_KIT, hostContact: "Message your host through your booking app.",
           arrival: "Check your booking messages for arrival instructions and access details.",
           customRules: data.listing?.rules.join("\n") || "" },
@@ -581,7 +583,7 @@ export function WelcomeBookGenerator({
     handoffCleanup.current = cleanup;
   }
 
-  if (!workspace) return <GuideSplash address={address} email={requestEmail} theme={bookTheme}
+  if (!workspace) return <GuideSplash marketingOptIn={marketingOptIn} onMarketingOptIn={setMarketingOptIn} address={address} email={requestEmail} theme={bookTheme}
     listingAuthorized={listingAuthorized} onListingAuthorized={setListingAuthorized}
     onAddress={value => { setAddress(value); setListingAuthorized(false); }} onEmail={setRequestEmail} onTheme={setBookTheme} busy={busy} error={error}
     onSubmit={generate} onToken={onToken} captchaReset={captchaReset} />;
@@ -1439,7 +1441,7 @@ export function WelcomeBookGenerator({
         )}
       </section>
       {workspace && loaded && result && draftStatus !== "saved" && <p className={styles.fineprint} role={draftStatus === "failed" ? "alert" : undefined}>{draftStatus === "failed" ? "This browser couldn’t save your latest edits. Keep this tab open and email your guide before leaving." : "Saving your guide in this tab…"}</p>}
-      <GeneratorAccess verificationLabel={pendingAction === "kit" ? "Verify & email my guide" : pendingAction === "png" ? "Verify & email my TV image" : "Verify & continue"} key={`${pendingAction || "closed"}:${deliveryEmail}`} initialEmail={deliveryEmail} autoRequest={autoRequestEmail && pendingAction === "kit"} requirePhone={pendingAction === "art"} open={pendingAction !== null} onClose={() => { setPendingAction(null); setAutoRequestEmail(false); }} onVerified={(verifiedToken, verifiedEmail, hasPhone) => {
+      <GeneratorAccess initialMarketingOptIn={marketingOptIn} verificationLabel={pendingAction === "kit" ? "Verify & email my guide" : pendingAction === "png" ? "Verify & email my TV image" : "Verify & continue"} key={`${pendingAction || "closed"}:${deliveryEmail}`} initialEmail={deliveryEmail} autoRequest={autoRequestEmail && pendingAction === "kit"} requirePhone={pendingAction === "art"} open={pendingAction !== null} onClose={() => { setPendingAction(null); setAutoRequestEmail(false); }} onVerified={(verifiedToken, verifiedEmail, hasPhone) => {
         const action = pendingAction; setDeliveryToken(verifiedToken); setDeliveryEmail(verifiedEmail); setDeliveryHasPhone(hasPhone); setAutoRequestEmail(false); setPendingAction(null);
         if (action === "art") void createArtwork(verifiedToken);
         else if (action === "transfer") void connectTv(verifiedToken);
