@@ -1,0 +1,80 @@
+---
+title: "Digital Signage Security: How to Lock Down Your Venue's Screens (2026 Guide)"
+description: "Practical steps to stop customers and bad actors from hijacking your signage — kiosk mode, network setup, and brand-safe ad approval, by player type."
+publishedAt: "2026-11-11"
+author: "PiAds Team"
+tags: ["security", "hardware", "setup", "digital-signage"]
+---
+
+Most venues don't think about signage security until something embarrassing happens: a customer taps a TV's touchscreen and lands on the Android home screen mid-lunch rush, a browser-based player gets left logged into an admin tab in full view, or an ad slides onto the screen that nobody at the venue actually approved. None of these are hacking in the dramatic sense — they're just unlocked doors nobody thought to close.
+
+The good news is that signage security for a small venue isn't complicated. It's a short list of settings and habits, most of which take minutes to apply once and then never think about again.
+
+## Where the real risk is, by player type
+
+Not every signage setup carries the same exposure. Here's how the common options stack up.
+
+| Player type | Main risk | How exposed by default | Lock-down effort |
+|---|---|---|---|
+| Fire TV Stick / Cube | Customer hits the home button, exits the app | Low — remote-only input limits fiddling | Minutes |
+| Android TV / tablet | Touchscreen access to settings, notifications, other apps | Medium — full OS is reachable if not configured | Moderate |
+| Raspberry Pi | Physical access to the device itself (SD card, ports) | Low once running — but no remote to accidentally exit with | Minimal, mostly physical |
+| Browser (web player) | Logged-in tab, browser chrome, bookmarks bar, address bar | Medium-high — it's a real browser unless locked into kiosk mode | Moderate |
+
+The pattern: dedicated, remote-free hardware (a [Fire TV Stick](/blog/fire-tv-stick-digital-signage-setup-guide) or a [Raspberry Pi](/blog/raspberry-pi-vs-fire-tv-vs-android-digital-signage)) is naturally harder to tamper with than a touchscreen tablet or an open browser tab, simply because there's less for a curious customer's finger to find. That's not a reason to avoid Android or browser setups — both run signage fine — it just means a few extra settings matter more on those platforms.
+
+## Physical and network basics first
+
+Before any software setting, two low-tech steps close most of the gap:
+
+- **Put the device on its own Wi-Fi network or guest VLAN**, separate from your point-of-sale system, back-office computers, or staff devices. If the signage device is ever compromised, it shouldn't have a path to anything that matters.
+- **Mount hardware out of easy reach**, and route cables so a passerby can't casually unplug a stick or yank an HDMI cable loose. This matters more for touchscreens and tablets sitting at counter height than for a Fire TV Stick tucked behind a wall-mounted TV.
+
+Neither of these costs anything beyond a few minutes of setup, and they eliminate the single biggest risk category: physical tampering by someone with no bad intent, just idle hands.
+
+## Software lock-down, by platform
+
+- **Fire TV**: Use a dedicated profile for signage if the TV is ever used for anything else, and disable "Quick Settings" access from the remote if your TV model allows a restricted remote. Most of the time, a Fire TV Stick running the PiAds app full-screen with no other apps installed is already locked down enough — there's simply nothing else on the device to get into.
+- **Android TV / tablets**: Turn off notifications, disable access to Settings from any on-screen menu if the launcher allows it, and consider a dedicated "kiosk launcher" app if the device is a touchscreen tablet facing customers. The same settings that make [Android TV behave like an appliance](/blog/android-tv-digital-signage-setup-guide) for reliability — disabling the screensaver, sleep timer, and auto-updates — double as security settings, since they close the paths a customer could stumble into.
+- **Raspberry Pi**: Security here is almost entirely physical — a Pi running signage software in a locked enclosure with no exposed ports is about as tamper-proof as signage gets. Just don't leave an SSH port open to the public internet with a default password; close remote access entirely unless you're actively maintaining the device.
+- **Browser (web player)**: Run it in your browser's full-screen "kiosk mode" (most browsers support this with a launch flag or an extension), not just a maximized window with visible tabs and an address bar. A dedicated, logged-in browser profile used for nothing else — no email, no personal accounts — is worth the extra five minutes of setup.
+
+## The brand-safety side of security
+
+There's a second kind of "security" that matters just as much as locking down a device: making sure nothing ever appears on your screen that you didn't approve. This is where a lot of free or DIY signage setups quietly fall short — anyone with upload access, or a compromised login, can push content live instantly, menu, ad, or otherwise.
+
+PiAds builds the approval step into the ad marketplace itself: local advertisers can submit a booking, but **every ad requires your approval before it ever airs**. Nothing reaches your screen without a human at your venue signing off on it first — which is a meaningful security boundary, not just a content-quality one. It's part of why venues running the local ad marketplace keep **75% of every ad booking**, with the platform itself costing **$10 per screen per month**, every feature included, no contracts.
+
+## Honest trade-off
+
+If your signage is one TV running static images in a back office nobody but staff ever sees, a lot of this is overkill — a basic Fire TV Stick with default settings is plenty secure for a setup with zero public-facing risk. The settings above earn their keep specifically when a screen is customer-facing, touchscreen, or carrying paid third-party content. Match the effort to the exposure.
+
+## Getting started
+
+1. Put signage devices on a separate network or VLAN from anything sensitive
+2. Mount hardware out of easy customer reach and route cables cleanly
+3. Apply the platform-specific lock-down settings above for whichever player you're running
+4. If you're running local ads, confirm your approval workflow actually requires your sign-off before anything airs
+
+For the full device lineup and what each one supports, see our [Fire TV player page](/players/fire-tv) and the complete [devices comparison](/devices). If you're still choosing a platform, our [best digital signage software roundup](/blog/best-digital-signage-software-small-business) and [what is digital signage](/blog/what-is-digital-signage) guide cover the basics.
+
+## FAQ
+
+**Can a customer accidentally change what's on my screen?**
+On a locked-down Fire TV Stick or Raspberry Pi, essentially no — there's no remote access or touchscreen for them to use. On Android tablets or browser setups, it's possible unless the lock-down settings above are applied.
+
+**Is a browser-based signage player less secure than a dedicated app?**
+It can be, by default, since it's a real browser with tabs and an address bar. Running it in full-screen kiosk mode on a dedicated profile closes almost all of that gap, and it's still a fine choice for testing or temporary setups — see our [browser-based digital signage guide](/blog/browser-based-digital-signage).
+
+**Does PiAds vet ads before they go live on my screen?**
+Every ad booked through the marketplace requires your approval before it airs. Nothing goes live on your screen without you seeing it first.
+
+**My screen went offline — is that a security issue?**
+Usually not — it's almost always Wi-Fi, power, or a router restart rather than anything malicious. Our [offline troubleshooting guide](/blog/digital-signage-screen-offline-troubleshooting-guide) covers the common causes.
+
+**What does locking down a screen cost?**
+Nothing extra. The settings above are free changes to hardware you already own. PiAds itself runs $10 per screen per month with every feature included, regardless of which player or lock-down settings you use.
+
+---
+
+*Want ad content you control end-to-end, with approval built in? [Start free at PiAds](https://app.piads.co/sign-up?role=venue) — no contract, no hardware lock-in.*
