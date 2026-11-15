@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllPosts()
 
   const staticPages: MetadataRoute.Sitemap = [
+    { url: `${baseUrl}/knowledge-base`, lastModified: new Date("2026-11-14"), changeFrequency: "monthly", priority: 0.8 },
     {
       url: baseUrl,
       lastModified: new Date(PRODUCT_REVIEWED_AT),

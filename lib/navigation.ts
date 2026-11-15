@@ -66,6 +66,7 @@ export const footerColumns: {
   {
     heading: "Learn",
     links: [
+      { name: "Knowledge Base", href: "/knowledge-base" },
       { name: "Free Airbnb Welcome Book Generator", href: "/airbnb-welcome-book-generator" },
       { name: "Free Digital Signage", href: "/free-digital-signage" },
       {
