@@ -32,15 +32,17 @@ export function SeasonalLogo({ light = false, width, darkAware = false }: { ligh
         <img src="/logo/piads-logo-text.png" alt="PiAds" width={1536} height={1024} />
       </span>
       {festive && <svg className={styles.hat} viewBox="0 0 90 68" fill="none" aria-hidden="true" focusable="false">
-        <path d="M12 46C17 29 26 9 43 7C60 5 65 17 69 30L77 39L65 45C55 37 56 26 46 22C43 31 45 40 44 49Z" fill="#A72235" />
+        <g className={styles.hatCrown}>
+        <path d="M12 46C17 29 26 9 43 7C60 5 65 17 69 30L77 39L65 45C55 37 56 26 46 22C43 31 49 40 54 47Z" fill="#A72235" />
         <path d="M17 43C23 25 31 12 43 11C50 10 54 13 57 16C40 9 35 33 34 46Z" fill="#D54750" />
         <path d="M48 22C51 29 53 40 57 43" stroke="#761F2C" strokeWidth="3" strokeLinecap="round" />
-        <path d="M10 43C19 40 38 42 49 47C55 50 52 60 47 60L9 55C3 54 3 46 10 43Z" fill="#FFF9E8" stroke="#DED6C3" />
-        <path d="M10 46L11 51M18 45L18 53M27 46L27 54M36 47L35 55M44 49L43 56" stroke="white" strokeWidth="3" strokeLinecap="round" />
         <g className={styles.pomPom}>
         <path d="M70 33C74 30 80 32 82 36C89 38 87 44 84 47C81 54 74 52 71 49C64 48 64 40 68 38Z" fill="#FFF9E8" stroke="#DED6C3" />
         <path d="M72 36C76 34 80 35 81 38" stroke="white" strokeWidth="3" strokeLinecap="round" />
         </g>
+        </g>
+        <path d="M9 44Q31 35 54 43C60 45 59 52 54 54Q32 47 11 55C5 57 3 48 9 44Z" fill="#FFF9E8" stroke="#DED6C3" />
+        <path d="M11 46L12 51M20 43L21 49M30 42L30 48M40 43L39 49M50 45L48 51" stroke="white" strokeWidth="3" strokeLinecap="round" />
       </svg>}
     </span>
   );
