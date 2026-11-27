@@ -39,21 +39,7 @@
   width: 140px;
   height: 55px;
   flex-shrink: 0;
-  overflow: hidden;
-}
-.brand img {
-  position: absolute;
-  /* Fit the supplied asset's full wordmark, including its trailing flourish. */
-  width: 137.142857%;
-  height: auto;
-  max-width: none;
-  left: -25%;
-  top: 50%;
-  transform: translateY(-44.921875%);
-  object-fit: contain;
-}
-.brandLight img {
-  filter: brightness(0) invert(1);
+  overflow: visible;
 }
 .desktopNav {
   display: flex;
@@ -445,4 +431,17 @@
   .footerBottom > div {
     gap: 25px;
   }
+}
+
+/* A warm ivory frame, cranberry ribbon and quiet evergreen details. */
+.christmasHeader { background: #FAF6ED; }
+.christmasHeader .announcement { background: #7F2634; color: #FFF3DC; letter-spacing: .02em; }
+.christmasHeader .announcement a { color: #F4DEAB; }
+.christmasHeader .headerRow { max-width: none; padding-inline: max(4.5%, calc((100% - 1310px) / 2)); }
+.christmasHeader .start { background: #822E39; color: #FFF7E9; }
+.footer { position: relative; }
+@media (max-width: 540px) {
+  .christmasHeader .headerRow { padding-inline: 20px; }
+  .christmasHeader .announcement > span { display: inline-flex; font-size: .68rem; }
+  .christmasHeader .announcement > a { display: none; }
 }

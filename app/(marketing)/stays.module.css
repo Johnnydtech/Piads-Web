@@ -2331,3 +2331,36 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Christmas 2026: editorial winter photography and warm, tactile colors. */
+.christmasHero { background: #18291F; border: 1px solid #C4AE7440; }
+.christmasPhoto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.christmasHero .heroShade { background: linear-gradient(90deg, #10261FD9, #10261F50 42%, transparent 65%), linear-gradient(0deg, #10201980, transparent 30%); }
+.christmasHero .heroContent { max-width: 840px; padding-top: 65px; }
+.christmasHero .eyebrow { color: #F0D7A4; letter-spacing: .19em; font-size: .7rem; }
+.christmasHero .eyebrow > span { font-size: 1.25rem; margin-right: 3px; }
+.christmasHero h1 { font-size: clamp(3.7rem, 6.2vw, 6.1rem); letter-spacing: -.055em; color: #FFF9EC; margin-block: 24px; }
+.christmasHero h1 em { color: #E7C992; }
+.christmasHero .heroDescription { color: #E2E4D8; max-width: 395px; }
+.christmasHero .buttonLime { background: #9B3545; color: #FFF8E9; border: 1px solid #CD7D8060; box-shadow: 0 5px 24px #36131E40; }
+.christmasHero .buttonLime:hover { background: #B23F50; }
+.christmasSignature { position: absolute; z-index: 2; right: 4%; bottom: 48px; display: flex; gap: 14px; align-items: center; color: #FFF4D9; padding: 16px 23px; border: 1px solid #F6E4BE40; background: #142C2580; backdrop-filter: blur(18px); border-radius: 5px; font-size: .67rem; text-transform: uppercase; letter-spacing: .12em; }
+.christmasSignature > span:first-child { color: #E7C992; font-size: 2rem; }
+.christmasSignature em { display: block; font-family: var(--font-editorial), Georgia, serif; font-size: 1.5rem; text-transform: none; letter-spacing: -.02em; }
+.christmasHero .scrollCue { display: none; }
+@media (max-width: 900px) {
+ .christmasHero .heroContent { max-width: 610px; }
+ .christmasSignature { right: 25px; bottom: 45px; }
+}
+@media (max-width: 600px) {
+ .christmasHero { min-height: 800px; height: auto; }
+ .christmasPhoto { object-position: 73% center; }
+ .christmasHero .heroShade { background: linear-gradient(180deg, #122B25F2 0%, #122B25D9 42%, #122B2520 72%, #122B2560); }
+ .christmasHero .heroContent { padding: 38px 23px 335px; }
+ .christmasHero h1 { font-size: clamp(2.8rem, 10.7vw, 4rem); line-height: 1.07; }
+ .christmasHero .eyebrow { font-size: .63rem; letter-spacing: .13em; }
+ .christmasHero .heroDescription { font-size: .92rem; line-height: 1.65; max-width: 330px; }
+ .christmasHero .heroButtons { gap: 18px; }
+ .christmasSignature { right: 20px; bottom: 57px; padding: 12px 16px; }
+ .christmasSignature em { font-size: 1.3rem; }
+}

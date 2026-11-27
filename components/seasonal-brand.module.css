@@ -1,0 +1,40 @@
+.logo { display: block; position: relative; width: 100%; height: 100%; flex-shrink: 0; }
+.crop { display: block; position: absolute; inset: 0; overflow: hidden; }
+.crop img { position: absolute; width: 137.142857%; height: auto; max-width: none; left: -25%; top: 50%; transform: translateY(-44.921875%); object-fit: contain; }
+.light .crop img, :global(.dark) .darkAware .crop img { filter: brightness(0) invert(1); }
+.hat { position: absolute; width: 38%; height: auto; left: -2%; top: -27%; transform: rotate(-12deg); filter: drop-shadow(0 2px 1px #183d321a); pointer-events: none; }
+.greeting { display: inline-flex; align-items: center; gap: 9px; }
+.greeting > span { color: #ddc385; }
+
+.trim { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.branchLeft, .branchRight { position: absolute; top: 0; width: 180px; height: 78px; opacity: .9; }
+.branchLeft { left: -14px; }
+.branchRight { right: -14px; transform: scaleX(-1); }
+@media (max-width: 1100px) { .branchLeft, .branchRight { width: 105px; height: 45px; opacity: .7; } }
+@media (max-width: 540px) { .branchLeft { display: none; } .branchRight { width: 78px; height: 34px; } }
+
+/* Anchor the sway at the brim so the hat stays perched on the P. */
+.hat {
+  transform-origin: 35% 76%;
+  animation: christmasHatSway 5.6s ease-in-out 1s infinite;
+}
+.pomPom {
+  transform-box: fill-box;
+  transform-origin: center top;
+  animation: christmasPomBounce 5.6s ease-in-out 1s infinite;
+}
+@keyframes christmasHatSway {
+  0%, 38%, 100% { transform: rotate(-12deg); }
+  9% { transform: rotate(-18deg); }
+  19% { transform: rotate(-7deg); }
+  29% { transform: rotate(-14deg); }
+}
+@keyframes christmasPomBounce {
+  0%, 40%, 100% { transform: translateY(0); }
+  12% { transform: translateY(2px) rotate(5deg); }
+  23% { transform: translateY(-1.5px) rotate(-4deg); }
+  32% { transform: translateY(.7px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hat, .pomPom { animation: none; }
+}

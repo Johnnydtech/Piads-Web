@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useChristmasSeason } from "@/components/seasonal-brand";
 import { trackCta } from "@/lib/analytics";
 import {
   ArrowUpRight,
@@ -29,26 +30,26 @@ const SIGN_UP = `${APP_URL}/sign-up?role=venue_owner`;
 const GUIDE_URL = "/airbnb-welcome-book-generator";
 
 export function HomeContent() {
+  const festive = useChristmasSeason();
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
     <div className={styles.site} id="top">
-      <section className={styles.hero} aria-labelledby="hero-title">
-        <CoastalHeroMedia />
+      <section className={`${styles.hero} ${festive ? styles.christmasHero : ""}`} aria-labelledby="hero-title">
+        {festive === null ? null : festive ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img className={styles.christmasPhoto} src="/seasonal/christmas-stay-2026.jpg" alt="A Christmas tree glowing beside a guest welcome screen in a cozy winter cabin" fetchPriority="high" width={1672} height={941} />
+        ) : <CoastalHeroMedia />}
         <div className={styles.heroShade} />
         <div className={styles.heroContent}>
           <p className={styles.eyebrow}>
-            <span className={styles.liveDot} /> FOR HOSTS & PROPERTY MANAGERS
+            {festive ? <><span aria-hidden="true">✦</span> THE CHRISTMAS EDIT · 2026</> : <><span className={styles.liveDot} /> FOR HOSTS & PROPERTY MANAGERS</>}
           </p>
           <h1 id="hero-title">
-            A better stay
-            <br />
-            starts with <em>hello.</em>
+            {festive ? <>Make room<br />for <em>Christmas.</em></> : <>A better stay<br />starts with <em>hello.</em></>}
           </h1>
           <p className={styles.heroDescription}>
-            PiAds turns your TVs into digital guest welcome screens, with house
-            guides and local recommendations. Manage one stay or a whole
-            portfolio from one simple dashboard.
+            {festive ? "A warm welcome on every screen. Bring personal greetings, house guides and local favorites to your guests this Christmas, all from one simple dashboard." : "PiAds turns your TVs into digital guest welcome screens, with house guides and local recommendations. Manage one stay or a whole portfolio from one simple dashboard."}
           </p>
           <div className={styles.heroButtons}>
             <a className={styles.buttonLime} href={GUIDE_URL} onClick={() => trackCta("Create your free welcome guide", "hero")}>
@@ -65,7 +66,7 @@ export function HomeContent() {
             <Check size={14} /> Free guide. No account needed. Connect a TV when you’re ready.
           </p>
         </div>
-        <a
+        {!festive && <a
           className={styles.arrivalCard}
           href="#experience"
           aria-label="Explore the welcome guide preview"
@@ -98,7 +99,8 @@ export function HomeContent() {
               />
             </div>
           </div>
-        </a>
+        </a>}
+        {festive && <div className={styles.christmasSignature}><span aria-hidden="true">✦</span><span>A season of<br /><em>thoughtful little touches.</em></span></div>}
         <div className={styles.heroCaption}>
           <MapPin size={13} /> A better guest experience, wherever you host.
         </div>

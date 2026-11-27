@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
+import { SeasonalMessage, ChristmasTrim, useChristmasSeason } from "@/components/seasonal-brand";
 import { Brand } from "./brand";
 import { footerColumns } from "@/lib/navigation";
 import styles from "./site-shell.module.css";
@@ -48,6 +49,7 @@ const groups = [
 ];
 
 export function Header() {
+  const festive = useChristmasSeason();
   const pathname = usePathname();
   const [active, setActive] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -84,7 +86,7 @@ export function Header() {
   };
   return (
     <header
-      className={styles.header}
+      className={`${styles.header} ${festive ? styles.christmasHeader : ""}`}
       ref={header}
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget as Node))
@@ -95,12 +97,13 @@ export function Header() {
         Skip to content
       </a>
       <div className={styles.announcement}>
-        <span>One property or a whole portfolio.</span>
+        <SeasonalMessage fallback="One property or a whole portfolio." />
         <Link href="/pricing">
           Free with approved ad slots <ArrowUpRight size={13} />
         </Link>
       </div>
       <div className={styles.headerRow}>
+        <ChristmasTrim />
         <Brand />
         <nav className={styles.desktopNav} aria-label="Main navigation">
           {groups.map((group) => (

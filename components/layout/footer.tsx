@@ -2,6 +2,7 @@
 import { SignupLink } from "@/components/signup-link";
 import Link from "next/link";
 import { ArrowUpRight, Sun } from "lucide-react";
+import { SeasonalMessage, ChristmasTrim } from "@/components/seasonal-brand";
 import { Brand } from "./brand";
 import { footerColumns } from "@/lib/navigation";
 import styles from "./site-shell.module.css";
@@ -10,11 +11,12 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.piads.co";
 export function Footer() {
   return (
     <footer className={styles.footer}>
+      <ChristmasTrim />
       <div className={styles.footerIntro}>
         <div>
           <Brand light />
           <p>
-            A little screen. A more memorable experience.
+            <SeasonalMessage fallback="A little screen. A more memorable experience." />
             <br />
             For hosts, property managers, and places people gather.
           </p>
